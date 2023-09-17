@@ -817,6 +817,9 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             },
         },
     },
+    /*    zamgService: {
+
+    }*/
 };
 export const Defaults = {
     state: {

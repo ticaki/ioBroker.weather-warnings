@@ -172,6 +172,7 @@ export class WeatherWarnings extends utils.Adapter {
      * Using this method requires "common.messagebox" property to be set to true in io-package.json
      */
     private async onMessage(obj: ioBroker.Message): Promise<void> {
+        this.log.error(`Retrieve a msg`);
         if (typeof obj === 'object' && obj.message) {
             this.log.debug(`Retrieve ${obj.command} from ${obj.from} message: JSON.stringify(obj)`);
             switch (obj.command) {
@@ -187,16 +188,18 @@ export class WeatherWarnings extends utils.Adapter {
                                 dataArray.splice(0, 1);
                                 dataArray.forEach((element) => {
                                     const value = element.split(';')[0];
-                                    const city = element.split(';')[1];
+                                    //const city = element.split(';')[1];
                                     const cityText = element.split(';')[2];
                                     if (
-                                        city &&
-                                        (city.startsWith('Stadt') ||
-                                            city.startsWith('Groß') ||
-                                            city.startsWith('Groß') ||
-                                            city.startsWith('Gemeinde'))
+                                        value &&
+                                        (value.startsWith('10') ||
+                                            value.startsWith('9') ||
+                                            value.startsWith('8') ||
+                                            value.startsWith('7'))
                                     ) {
+                                        this.log.debug(`${cityText} #${value}`);
                                         if (text) text.push(`${cityText} #${value}`);
+                                        //if (text) text.push(JSON.parse(`{label:${cityText}, value:${value}}`));
                                     }
                                 });
                                 text.sort((a, b) => {

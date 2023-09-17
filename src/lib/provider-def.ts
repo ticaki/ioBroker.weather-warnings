@@ -103,6 +103,50 @@ type dataImportConvert = {
     source?: string;
 };
 
+export type dataImportZamgType = {
+    type: string;
+    geometry: {
+        type: string;
+        coordinates: Array<Array<Array<Array<number>>>>;
+    };
+    properties: {
+        location: {
+            type: string;
+            properties: {
+                gemeindenr: number;
+                name: string;
+                urlname: string;
+            };
+        };
+        warnings: Array<{
+            type: string;
+            properties: dataImportZamgProperties;
+        }>;
+    };
+};
+
+type dataImportZamgProperties = {
+    warnid: number;
+    chgid: number;
+    verlaufid: number;
+    warntypid: number;
+    begin: string;
+    end: string;
+    create: string;
+    text: string;
+    auswirkungen: string;
+    empfehlungen: string;
+    meteotext: string;
+    updategrund: string;
+    warnstufeid: number;
+    rawinfo: {
+        wtype: number;
+        wlevel: number;
+        start: string;
+        end: string;
+    };
+};
+
 export type DataImportType = void | null | undefined | dataImportDwdType;
 
 export type DataDbConvertType = null | undefined | dbDataImportDwd;
