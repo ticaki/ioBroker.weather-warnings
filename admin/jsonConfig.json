@@ -1,0 +1,112 @@
+{
+	"i18n": true,
+	"type": "panel",
+	"items": {
+		"option1": {
+			"type": "checkbox",
+			"label": "option1",
+			"newLine": true
+		},
+		"option2": {
+			"type": "text",
+			"label": "option2",
+			"newLine": true
+		}
+	}
+}
+{
+	"i18n": true,
+	"type": "tabs",
+	"items": {
+		"_options": {
+			"type": "panel",
+			"label": "basicconfig",
+			"items": {
+				"option1": {
+					"type": "checkbox",
+					"sm": 12,
+					"md": 6,
+					"lg": 3,
+					"label": "option1",
+					"newLine": true
+				},
+				"option2": {
+					"type": "text",
+					"sm": 12,
+					"md": 6,
+					"lg": 3,
+					"label": "option2",
+					"newLine": true
+				},
+				"dwdSelectId": {
+					"type": "autocompleteSendTo",
+					"command": "dwd.name",
+					"jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
+					"freeSolo": false,
+					"alsoDependsOn": [
+						"dwdSelectId"
+					],
+					"sm": 2,
+					"md": 2,
+					"lg": 2,
+					"label": "dwdSelectId",
+					"newLine": true
+				}
+			}
+		},
+		"_options2": {
+			"type": "panel",
+			"label": "Advanced",
+			"items": {
+				"option1": {
+					"type": "checkbox",
+					"label": "option1",
+					"newLine": true
+				}
+			}
+		},
+		"_options3": {
+			"type": "panel",
+			"label": "Email",
+			"items": {
+				"option1": {
+					"type": "checkbox",
+					"label": "option1",
+					"newLine": true
+				}
+			}
+		},
+		"_options4": {
+			"type": "panel",
+			"label": "Telegram",
+			"items": {
+				"option1": {
+					"type": "checkbox",
+					"label": "option1",
+					"newLine": true
+				}
+			}
+		},
+		"_options5": {
+			"type": "panel",
+			"label": "Pushover",
+			"items": {
+				"option1": {
+					"type": "checkbox",
+					"label": "option1",
+					"newLine": true
+				}
+			}
+		},
+		"_options6": {
+			"type": "panel",
+			"label": "Whatsapp",
+			"items": {}
+		},
+		"_options7": {
+			"type": "panel",
+			"label": "Options",
+			"items": {}
+		}
+	}
+}
