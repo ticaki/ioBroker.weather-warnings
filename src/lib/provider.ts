@@ -220,22 +220,22 @@ export class ProviderController extends BaseClass {
             switch (options.service) {
                 case 'dwdService':
                     if (Array.isArray(options.warncellId)) {
-                        throw new Error('Error 122 options is a Array');
+                        throw new Error('Error 122 warncellId is a Array');
                     } else p = new DWDProvider(this.adapter, { warncellId: options.warncellId });
                     break;
                 case 'uwzService':
                     if (Array.isArray(options.warncellId)) {
-                        throw new Error('Error 123 options is a Array');
+                        throw new Error('Error 123 warncellId is a Array');
                     } else p = new UWZProvider(this.adapter, { warncellId: options.warncellId });
                     break;
                 case 'zamgService':
                     if (!Array.isArray(options.warncellId)) {
-                        throw new Error('Error 124 options is not an Array');
+                        throw new Error('Error 124 warncellId is not an Array');
                     } else p = new ZAMGProvider(this.adapter, { warncellId: options.warncellId });
                     break;
                 case 'ninaService':
                     if (!Array.isArray(options.warncellId)) {
-                        throw new Error('Error 125 options is not an Array');
+                        throw new Error('Error 125 warncellId is not an Array');
                     } else p = new NINAProvider(this.adapter, { warncellId: options.warncellId });
                     break;
             }
@@ -258,10 +258,10 @@ export class ProviderController extends BaseClass {
     update(): void {
         if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);
         updater(this);
-        async function updater(self: any, index: number = 0): Promise<void> {
+        async function updater(self: any, index: number = -1): Promise<void> {
             if (self.unload) return;
-            if (index < self.provider.length) {
-                if (self.provider[index++]) await self.provider[index++].update();
+            if (++index < self.provider.length) {
+                if (self.provider[index]) await self.provider[index].update();
                 self.refreshTimeRef = self.adapter.setTimeout(updater, 500, self, index);
             } else {
                 self.refreshTimeRef = self.adapter.setTimeout(self.update, self.adapter.refreshTime);
