@@ -58,14 +58,16 @@
 		"type": "weather",
 		"compact": true,
 		"connectionType": "cloud",
-		"dataSource": "poll",
-		"messagebox": true,
+		"dataSource": "poll",	
+        "supportedMessages": {    
+                "custom": true
+            },
 		"adminUI": {
 			"config": "json"
 		},
 		"dependencies": [
 			{
-				"js-controller": ">=3.3.22"
+				"js-controller": ">=5.0.12"
 			}
 		],
 		"globalDependencies": [
@@ -77,8 +79,10 @@
 	"native": {
 		"option1": true,
 		"option2": "42",
-		"dwdWarncellTextUrl": "https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3"
-    
+		"dwdWarncellTextUrl": "https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3",
+        "dwdSelectId":"",
+        "zamgSelectID":["",""],
+        "uwzSelectID":""    
 	},
 	"objects": [],
 	"instanceObjects": []

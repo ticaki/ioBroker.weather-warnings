@@ -1,10 +1,16 @@
 // Provider
 
 import axios from 'axios';
-import { WeatherWarnings } from '../main';
-import { PROVIDER_OPTIONS, statesObjectsWarnings } from './def/dwd';
+import WeatherWarnings from '../main';
+import { PROVIDER_OPTIONS, genericStateObjects, statesObjectsWarnings } from './def/definitionen';
 import { BaseClass, Library } from './library';
-import { DataImportType, providerServices } from './provider-def';
+import {
+    DataImportType,
+    dataImportDwdType,
+    dataImportUWZType,
+    dataImportZamgType,
+    providerServices,
+} from './def/provider-def';
 
 type ProvideOptionsTypeInternal = {
     service: providerServices;
@@ -20,8 +26,6 @@ type CoordinateProvideOptionsType = {
     warncellId: [string, string];
 };
 
-type ProvideClassType = DWDProvider | ZAMGProvider | UWZProvider | NINAProvider | METROProvider | null;
-
 class BaseProvider extends BaseClass {
     service: providerServices;
     url: string = '';
@@ -35,10 +39,20 @@ class BaseProvider extends BaseClass {
         this.library = this.adapter.library;
         this.setService(options.service);
         this.log.setLogPrefix(`${name}-${options.warncellId}`);
+        this.init();
+    }
+    async init(): Promise<void> {
+        this.library.writedp(
+            `${this.name}.info`,
+            undefined,
+            this.library.getChannelObject(await this.library.getObjectDefFromJson(`info`, genericStateObjects)),
+        );
+        this.setConnected(false);
     }
 
     delete(): void {
         this.rawData = null;
+        this.setConnected(false);
     }
 
     getService(): providerServices {
@@ -79,12 +93,16 @@ class BaseProvider extends BaseClass {
         }
         return this.url;
     }
+    async setConnected(status: boolean): Promise<void> {
+        const objDef = await this.library.getObjectDefFromJson(`info.connection`, genericStateObjects);
+        this.library.writedp(`${this.name}.info.connection`, !!status, objDef);
+    }
     async update(): Promise<void> {
         // tue nichts
     }
     // General function that retrieves data
-    async updateData(): Promise<DataImportType> {
-        if (!this.url || !this.warncellId) {
+    async getDataFromProvider(): Promise<DataImportType> {
+        if (this.url || !this.warncellId) {
             this.log.debug(
                 // eslint-disable-next-line prettier/prettier
                 `Warn (31) this.url: ${this.url} this.warncellid: ${this.warncellId} this.service: ${this.getService()}`,
@@ -108,6 +126,7 @@ class BaseProvider extends BaseClass {
             return;*/
             const result = await axios.get(this.url);
             if (result.status == 200) {
+                await this.setConnected(true);
                 return typeof result.data == 'object' ? result.data : JSON.parse(result.data);
             } else {
                 this.log.warn('Warn(23) ' + result.statusText);
@@ -119,6 +138,7 @@ class BaseProvider extends BaseClass {
                 this.log.error(`Error(22) no data for ${this.getService()} with Error ${error}`);
             }
         }
+        await this.setConnected(false);
         return null;
     }
     /**
@@ -134,10 +154,19 @@ class BaseProvider extends BaseClass {
             this.adapter.library.writeState(`${prefix}`, key, data[key]);
         }
     }
+    async updateData(data: any, counter: number): Promise<void> {
+        if (!data) return;
+        await this.library.writeFromJson(
+            `${this.name}.warning${counter}`,
+            `${this.service}.raw`,
+            statesObjectsWarnings,
+            data,
+        );
+    }
 }
 
 // nuzte klassen um Daten zu parsen
-class DWDProvider extends BaseProvider {
+export class DWDProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: StringProvideOptionsType) {
         super(adapter, { ...options, service: 'dwdService' }, `dwd`);
         this.warncellId = options.warncellId;
@@ -145,29 +174,24 @@ class DWDProvider extends BaseProvider {
             PROVIDER_OPTIONS.dwdService.url_base +
             (this.warncellId.startsWith('9') || this.warncellId.startsWith('10')
                 ? PROVIDER_OPTIONS.dwdService.url_appendix_land
-                : PROVIDER_OPTIONS.dwdService.url_appendix_town) +
-            PROVIDER_OPTIONS.dwdService.url_warncellid;
+                : PROVIDER_OPTIONS.dwdService.url_appendix_town);
         this.url = this.setUrl(url, [this.warncellId]);
     }
 
     async updateData(): Promise<void> {
-        const result = await super.updateData();
+        const result = (await this.getDataFromProvider()) as dataImportDwdType;
         if (!result) return;
 
         this.log.debug(JSON.stringify(result));
         this.log.debug(`Got ${result.totalFeatures} warnings from server`);
         for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.totalFeatures; a++) {
-            this.library.writeJson(
-                `${this.name}.warning${a}`,
-                `${this.service}.raw`,
-                statesObjectsWarnings,
-                result.features[a].properties,
-            );
+            await super.updateData(result.features[a].properties, a);
         }
+        this.library.garbageColleting(`${this.name}.warning`);
         //this.library.writeJson('', '', this.rawData, this.getStatesObjectsWarnings('raw').false);
     }
 }
-class ZAMGProvider extends BaseProvider {
+export class ZAMGProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: CoordinateProvideOptionsType) {
         super(adapter, { ...options, service: 'zamgService' }, `zamg`);
         this.warncellId = options.warncellId;
@@ -175,27 +199,44 @@ class ZAMGProvider extends BaseProvider {
     }
 
     async updateData(): Promise<void> {
-        const result = await super.updateData();
+        const result = (await this.getDataFromProvider()) as dataImportZamgType;
+        if (!result) return;
         this.log.debug(JSON.stringify(result));
+        if (!result.properties || !result.properties.warnings) {
+            this.log.debug(`Got 0 warnings from server`);
+            return;
+        } else this.log.debug(`Got ${result.properties.warnings.length} warnings from server`);
+        for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
+            // special case for zamg
+            result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
+            await super.updateData(result.properties.warnings[a].properties, a);
+        }
+        this.library.garbageColleting(`${this.name}.warning`);
     }
 }
-class UWZProvider extends BaseProvider {
+export class UWZProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: StringProvideOptionsType) {
         super(adapter, { ...options, service: 'uwzService' }, `uwz`);
-        this.warncellId = options.warncellId;
+        this.warncellId = options.warncellId.toUpperCase();
         this.setUrl('', [this.warncellId]);
     }
     async updateData(): Promise<void> {
-        const result = await super.updateData();
+        const result = (await this.getDataFromProvider()) as dataImportUWZType;
+        if (result && result.results) {
+            for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
+                await super.updateData(result.results[a], a);
+            }
+        }
         this.log.debug(JSON.stringify(result));
+        this.library.garbageColleting(`${this.name}.warning`);
     }
 }
-class NINAProvider extends BaseProvider {
+export class NINAProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: CoordinateProvideOptionsType) {
         super(adapter, { ...options, service: 'ninaService' }, `nina`);
     }
 }
-class METROProvider extends BaseProvider {
+export class METROProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: CoordinateProvideOptionsType) {
         super(adapter, { ...options, service: 'metroService' }, `nina`);
     }
@@ -256,17 +297,23 @@ export class ProviderController extends BaseClass {
         if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);
     }
 
-    update(): void {
-        if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);
-        updater(this);
-        async function updater(self: any, index: number = -1): Promise<void> {
+    updateEndless(self: any): void {
+        if (self.refreshTimeRef) self.adapter.clearTimeout(self.refreshTimeRef);
+        if (self.provider.length == 0) return;
+        updater(self);
+        async function updater(self: any, index: number = 0): Promise<void> {
             if (self.unload) return;
-            if (++index < self.provider.length) {
-                if (self.provider[index]) await self.provider[index].update();
+            if (index < self.provider.length) {
+                if (self.provider[index]) await self.provider[index].updateData();
+                index++;
                 self.refreshTimeRef = self.adapter.setTimeout(updater, 500, self, index);
             } else {
-                self.refreshTimeRef = self.adapter.setTimeout(self.update, self.adapter.refreshTime);
+                self.refreshTimeRef = self.adapter.setTimeout(self.updateEndless, self.refreshTime || 600000);
             }
         }
     }
+    providersExist(): boolean {
+        return this.provider.length > 0;
+    }
 }
+export type ProvideClassType = DWDProvider | ZAMGProvider | UWZProvider | NINAProvider | METROProvider | null;

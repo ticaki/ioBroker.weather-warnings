@@ -10,6 +10,7 @@ declare global {
             //providerController: ProviderController;
             //library: any;
             expandArray: boolean;
+            dwdSelectId: number;
         }
     }
 }

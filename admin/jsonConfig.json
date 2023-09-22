@@ -34,8 +34,21 @@
 					"sm": 2,
 					"md": 2,
 					"lg": 2,
-					"label": "dwdSelectId",
+					"label": "DWD District/City ID selection",
 					"newLine": true
+				},
+                "dwdSelectShowName": {
+					"type": "textSendTo",
+					"command": "dwd.name.text",
+					"jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
+					"alsoDependsOn": [
+						"dwdSelectId"
+					],
+					"sm": 2,
+					"md": 2,
+					"lg": 2,
+					"label": "DWD District/City ID Name",
+					
 				}
 			}
 		},
