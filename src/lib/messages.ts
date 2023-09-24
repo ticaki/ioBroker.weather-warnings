@@ -1,39 +1,12 @@
 import WeatherWarnings from '../main';
 import { genericStateObjects, statesObjectsWarnings } from './def/definitionen';
+import { warnTypeName } from './def/messages-def';
+import { dwdLevel } from './def/messages-def';
+import { level } from './def/messages-def';
+import { color } from './def/messages-def';
+import { customFormatedKeysDef } from './def/messages-def';
 import { BaseClass, Library } from './library';
 import { ProvideClassType } from './provider';
-
-/**
- * Conversion jsons as a tool for formatedKeys.
- */
-const color = {
-    generic: {
-        0: `#00ff00`, // 0 - Grün
-        1: `#00ff00`, // 1 - Dunkelgrün
-        2: `#fffc04`, // 2 - Gelb Wetterwarnungen (Stufe 2)
-        3: `#ffb400`, // 3 - Orange Warnungen vor markantem Wetter (Stufe 3)
-        4: `#ff0000`, // 4 - Rot Unwetterwarnungen (Stufe 4) // im grunde höchste Stufe in diesem Skript.
-        5: `#ff00ff`, // 5 - Violett Warnungen vor extremem Unwetter (nur DWD/ Weltuntergang nach aktueller Erfahrung)
-    },
-    zamgColor: {
-        0: `#00ff00`, // 0 - Grün
-        1: `#01DF3A`,
-        3: `#ffc400`,
-        4: `#ff0404`,
-    },
-    textGeneric: {
-        0: 'green',
-        1: 'dark green',
-        2: 'yellow',
-        3: 'orange',
-        4: 'red',
-        5: 'violet',
-    },
-};
-const level = {
-    uwz: { green: 0, darkgreen: 0, yellow: 1, orange: 2, red: 3, violet: 4 },
-};
-const dwdLevel = { minor: 1, moderate: 2, severe: 3, extreme: 4 };
 
 /**
  * bla
@@ -91,10 +64,10 @@ export class Messages extends BaseClass {
         },
 
         uwzService: {
-            starttime: { jsonata: `$fromMillis(dtgStart,"[H#1]:[m01]"),"\${this.timeOffset}"` },
-            startdate: { jsonata: `$fromMillis(dtgStart,"[D01].[M01]"),"\${this.timeOffset}"` },
-            endtime: { jsonata: `$fromMillis(dtgEnd,"[H#1]:[m01]"),"\${this.timeOffset}"` },
-            enddate: { jsonata: `$fromMillis(dtgEnd,"[D01].[M01]"),"\${this.timeOffset}"` },
+            starttime: { jsonata: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
+            startdate: { jsonata: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
+            endtime: { jsonata: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
+            enddate: { jsonata: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")` },
             startdayofweek: {
                 typescript: {
                     node: `dtgStart`,
@@ -112,23 +85,59 @@ export class Messages extends BaseClass {
             weathertext: { jsonata: `` },
             ceiling: { jsonata: `payload.altMin` }, // max höhe
             altitude: { jsonata: `payload.altMax` }, // min höhe
-            warnlevelname: { jsonata: `` },
+            warnlevelname: {
+                jsonata: `$string(($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                    level.uwz,
+                )}, $i[2]); $lookup(${JSON.stringify(color.textGeneric)},$string($l))))`,
+            },
             warnlevelnumber: {
-                jsonata: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : lookup(${JSON.stringify(
+                jsonata: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
                 )}, $i[2]))`,
             },
             warnlevelcolor: {
                 jsonata: `$lookup(${JSON.stringify(
                     color.generic,
-                )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : lookup(${JSON.stringify(
+                )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
                 )}, $i[2]))))`,
             },
             warntypename: { jsonata: `type` },
             location: { jsonata: `areaID` },
         },
-
+        zamgService: {
+            starttime: { jsonata: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
+            startdate: { jsonata: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
+            endtime: { jsonata: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
+            enddate: { jsonata: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")` },
+            startdayofweek: {
+                typescript: {
+                    node: `$number(rawinfo.start)`,
+                    cmd: 'dayoftheweek',
+                },
+            },
+            enddayofweek: {
+                typescript: {
+                    node: `$number(rawinfo.end)`,
+                    cmd: 'dayoftheweek',
+                },
+            },
+            headline: { jsonata: `text` },
+            description: { jsonata: `auswirkungen` },
+            weathertext: { jsonata: `meteotext` },
+            ceiling: { jsonata: `` }, // max höhe
+            altitude: { jsonata: `` }, // min höhe
+            warnlevelname: { jsonata: `` },
+            warnlevelnumber: {
+                jsonata: `$string(rawinfo.wlevel)`,
+            },
+            warnlevelcolor: {
+                jsonata: `$lookup(${JSON.stringify(color.zamgColor)},$string(rawinfo.wlevel))`,
+            },
+            warntypename: { jsonata: `$lookup(${JSON.stringify(warnTypeName.zamgService)},$string(rawinfo.wtype))` },
+            location: { jsonata: `` },
+            instruction: { jsonata: `empfehlungen` },
+        },
         default: {
             starttime: { jsonata: `` },
             startdate: { jsonata: `` },
@@ -146,6 +155,7 @@ export class Messages extends BaseClass {
             warnlevelcolor: { jsonata: `` },
             warntypename: { jsonata: `` },
             location: { jsonata: `` },
+            instruction: { jsonata: `` },
         },
     };
     constructor(adapter: WeatherWarnings, name: string, provider: ProvideClassType, data: object) {
@@ -165,10 +175,11 @@ export class Messages extends BaseClass {
         switch (provider.service) {
             case `dwdService`:
             case `uwzService`:
+            case `zamgService`:
                 const json = this.formatedKeyCommand[provider.service];
                 for (const k in json) {
                     const key = k as keyof customFormatedKeysDef;
-                    const data = this.formatedKeyCommand.dwdService[key];
+                    const data = this.formatedKeyCommand[provider.service][key];
                     this.addFormatedDefinition(key, data);
                 }
                 break;
@@ -192,7 +203,9 @@ export class Messages extends BaseClass {
                     location: { jsonata: `` },
                 };
         }
-        this.updateFormatedData(false);
+    }
+    async init(): Promise<customFormatedKeysDef> {
+        return await this.updateFormatedData(true);
     }
     async formatMessages(): Promise<void> {
         if (!this.formatedData) return;
@@ -305,25 +318,6 @@ export class Messages extends BaseClass {
     }
     //async init(msg: any): Promise<void> {}
 }
-
-export type customFormatedKeysDef = {
-    starttime?: string;
-    startdate?: string;
-    endtime?: string;
-    enddate?: string;
-    startdayofweek?: string;
-    enddayofweek?: string;
-    headline?: string;
-    description?: string;
-    weathertext?: string;
-    ceiling?: string; // max höhe
-    altitude?: string; // min höhe
-    warnlevelname?: string;
-    warnlevelnumber?: string;
-    warnlevelcolor?: string; // RGB im Hexformat
-    warntypename?: string;
-    location?: string;
-};
 
 type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
     ? { [K in keyof Obj]: ChangeTypeOfKeys<Obj[K], newKey> }

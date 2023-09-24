@@ -268,6 +268,13 @@ export class Library extends BaseClass {
         }
         return JSON.parse(JSON.stringify(obj));
     }
+    cloneGenericObject(obj: object): object {
+        if (typeof obj !== 'object') {
+            this.log.error(`Error clone object target is type: ${typeof obj}`);
+            return obj;
+        }
+        return JSON.parse(JSON.stringify(obj));
+    }
     readdp(dp: string): LibraryStateVal {
         return this.stateDataBase[this.cleandp(dp)];
     }
@@ -281,8 +288,8 @@ export class Library extends BaseClass {
             try {
                 result = await jsonata(cmd).evaluate(data);
             } catch (error: any) {
-                this.log.error(error);
-                this.log.error(`The cmd: ${cmd} is invaild.`);
+                this.log.error(error.message);
+                this.log.error(`The cmd: ${cmd} is invaild Message: ${error.message}.`);
             }
         } else {
             result = {};

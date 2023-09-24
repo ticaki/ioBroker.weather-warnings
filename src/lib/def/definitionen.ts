@@ -1,4 +1,4 @@
-import { customFormatedKeysDef } from '../messages';
+import { customFormatedKeysDef } from './messages-def';
 import { dataImportDwdTypeProperties, dataImportUwzTypeProperties, dataImportZamgTypeProperties } from './provider-def';
 
 type ChangeTypeOfKeys<Obj> = Obj extends object
