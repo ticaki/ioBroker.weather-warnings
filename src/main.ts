@@ -8,7 +8,7 @@ import * as utils from '@iobroker/adapter-core';
 
 import axios from 'axios';
 import 'source-map-support/register';
-import { dwdWarncellIdLong } from './lib/others/dwdWarncellIdLong.js';
+import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 axios.defaults.timeout = 8000;
