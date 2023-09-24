@@ -153,7 +153,7 @@
                             "filter": false,
                             "sort": false,
                             "default": "",
-                            "validator": "const x={};for (const c of globalData.table1) {if (x[c.table1Unique]==='x') return false; x[c.table1Unique]='x';}; return true;",
+                            "validator": "const x={};for (const c of globalData.templateTable) {if (x[c.templateKey]==='x') return false; x[c.templateKey]='x';}; return true;",
                             "validatorNoSaveOnError": true
                         },
                         {
