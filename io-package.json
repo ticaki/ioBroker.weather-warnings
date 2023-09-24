@@ -1,85 +1,108 @@
 {
-	"common": {
-		"name": "weather-warnings",
-		"version": "0.0.1",
-		"news": {
-			"0.0.1": {
-				"en": "initial release",
-				"de": "Erstveröffentlichung",
-				"ru": "Начальная версия",
-				"pt": "lançamento inicial",
-				"nl": "Eerste uitgave",
-				"fr": "Première version",
-				"it": "Versione iniziale",
-				"es": "Versión inicial",
-				"pl": "Pierwsze wydanie",
-				"uk": "Початкова версія",
-				"zh-cn": "首次出版"
-			}
-		},
-		"title": "Weather Warnings",
-		"titleLang": {
-			"en": "Weather Warnings",
-			"de": "Wetterwarnungen",
-			"ru": "Предупреждения о погоде",
-			"pt": "Avisos meteorológicos",
-			"nl": "Weerwaarschuwingen",
-			"fr": "Avertissements météorologiques",
-			"it": "Avvisi meteo",
-			"es": "Advertencias meteorológicas",
-			"pl": "Ostrzeżenia pogodowe",
-			"uk": "Попередження про погоду",
-			"zh-cn": "天气警告"
-		},
-		"desc": {
-			"en": "weather-warnings",
-			"de": "Wetterwarnungen",
-			"ru": "предупреждения о погоде",
-			"pt": "avisos meteorológicos",
-			"nl": "weerwaarschuwingen",
-			"fr": "avertissements météorologiques",
-			"it": "allerta meteo",
-			"es": "advertencias-meteorológicas",
-			"pl": "ostrzeżenia pogodowe",
-			"uk": "погодні попередження",
-			"zh-cn": "天气警报"
-		},
-		"authors": ["ticaki <github@renopoint.de>"],
-		"keywords": ["weather", "dwd", "uwz", "zamg", "nina", "warnings", "push"],
-		"license": "MIT",
-		"platform": "Javascript/Node.js",
-		"main": "build/main.js",
-		"icon": "weather-warnings.png",
-		"enabled": true,
-		"extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
-		"readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
-		"loglevel": "info",
-		"mode": "daemon",
-		"type": "weather",
-		"compact": true,
-		"connectionType": "cloud",
-		"dataSource": "poll",
-		"messagebox": true,
-		"adminUI": {
-			"config": "json"
-		},
-		"dependencies": [
-			{
-				"js-controller": ">=3.3.22"
-			}
-		],
-		"globalDependencies": [
-			{
-				"admin": ">=5.1.13"
-			}
-		]
-	},
-	"native": {
-		"option1": true,
-		"option2": "42",
-		"dwdWarncellTextUrl": "https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3"
-    
-	},
-	"objects": [],
-	"instanceObjects": []
+    "common": {
+        "name": "weather-warnings",
+        "version": "0.2.0",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "uk": "Початкова версія",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "Weather Warnings",
+        "titleLang": {
+            "en": "Weather Warnings",
+            "de": "Wetterwarnungen",
+            "ru": "Предупреждения о погоде",
+            "pt": "Avisos meteorológicos",
+            "nl": "Weerwaarschuwingen",
+            "fr": "Avertissements météorologiques",
+            "it": "Avvisi meteo",
+            "es": "Advertencias meteorológicas",
+            "pl": "Ostrzeżenia pogodowe",
+            "uk": "Попередження про погоду",
+            "zh-cn": "天气警告"
+        },
+        "desc": {
+            "en": "weather-warnings",
+            "de": "Wetterwarnungen",
+            "ru": "предупреждения о погоде",
+            "pt": "avisos meteorológicos",
+            "nl": "weerwaarschuwingen",
+            "fr": "avertissements météorologiques",
+            "it": "allerta meteo",
+            "es": "advertencias-meteorológicas",
+            "pl": "ostrzeżenia pogodowe",
+            "uk": "погодні попередження",
+            "zh-cn": "天气警报"
+        },
+        "authors": [
+            "ticaki <github@renopoint.de>"
+        ],
+        "keywords": [
+            "weather",
+            "dwd",
+            "uwz",
+            "zamg",
+            "nina",
+            "warnings",
+            "push"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "build/main.js",
+        "icon": "weather-warnings.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
+        "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "weather",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "supportedMessages": {
+            "custom": true
+        },
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=5.0.12"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
+    },
+    "native": {
+        "dwdSelectId": "",
+        "zamgSelectID": "",
+        "uwzSelectID": "",
+        "useTestWarnings": false,
+        "dwdEnabled": false,
+        "uwzEnabled": false,
+        "zamgEnabled": false,
+        "refreshTime": 15,
+        "messageTemplate": [],
+        "templateTable": [
+            {
+                "templateKey": "test",
+                "template": "Just for Testing ${starttime}"
+            }
+        ]
+    },
+    "objects": [],
+    "instanceObjects": []
 }

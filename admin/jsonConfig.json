@@ -1,19 +1,4 @@
-{
-	"i18n": true,
-	"type": "panel",
-	"items": {
-		"option1": {
-			"type": "checkbox",
-			"label": "option1",
-			"newLine": true
-		},
-		"option2": {
-			"type": "text",
-			"label": "option2",
-			"newLine": true
-		}
-	}
-}
+
 {
 	"i18n": true,
 	"type": "tabs",
@@ -22,90 +7,179 @@
 			"type": "panel",
 			"label": "basicconfig",
 			"items": {
-				"option1": {
+				"dwdEnabled": {
+					"type": "checkbox",
+					"sm": 6,
+					"md": 4,
+					"lg": 2,
+					"label": "Activate DWD",
+					"newLine": true
+				},
+				"uwzEnabled": {
+					"type": "checkbox",
+					"sm": 6,
+					"md": 4,
+					"lg": 2,
+					"label": "Activate UWZ",
+					"newLine": true
+				},
+				"zamgEnabled": {
+					"type": "checkbox",
+					"sm": 6,
+					"md": 4,
+					"lg": 2,
+					"label": "Activate ZAMG",
+					"newLine": true
+				},
+                "refreshTime": {
+					"type": "number",
+                    "label": "Update interval for all providers. (in minutes)",
+                    "min":5,
+                    "step": 1,
+                    "sm": 8,
+					"md": 4,
+					"lg": 2
+				},
+                "dividerHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Testing",
+                    "size": 2
+                },
+                "useTestWarnings": {
 					"type": "checkbox",
 					"sm": 12,
 					"md": 6,
 					"lg": 3,
-					"label": "option1",
+					"label": "Activate Testwarnings",
 					"newLine": true
-				},
-				"option2": {
-					"type": "text",
-					"sm": 12,
-					"md": 6,
-					"lg": 3,
-					"label": "option2",
-					"newLine": true
-				},
+				}
+			}
+		},
+		"_dwdpanel": {
+			"type": "panel",
+			"label": "DWD",
+            "hidden": "!data.dwdEnabled",
+			"items": {
 				"dwdSelectId": {
 					"type": "autocompleteSendTo",
 					"command": "dwd.name",
 					"jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
 					"freeSolo": false,
+                    
 					"alsoDependsOn": [
 						"dwdSelectId"
 					],
-					"sm": 2,
-					"md": 2,
-					"lg": 2,
-					"label": "dwdSelectId",
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"label": "DWD District/City ID selection",
+					"newLine": true
+				},
+                "dwdSelectShowName": {
+					"type": "textSendTo",
+					"command": "dwd.name.text",
+					"jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
+					"alsoDependsOn": [
+						"dwdSelectId"
+					],
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"label": "DWD District/City ID Name"
+					
+				}
+			}
+		},
+		"_uwzpanel": {
+			"type": "panel",
+			"label": "UWZ",
+            "hidden": "!data.uwzEnabled",
+			"items": {
+                "uwzSelectDescription": {
+                    "type": "staticText",
+                    "text": "UWZ ID diese besteht aus Länderkennzeichen und Postleitzahl (DE12345, AT54321)",
+                    "newLine": true
+                },
+				"uwzSelectID": {
+					"type": "text",
+					"label": "DE12345",
 					"newLine": true
 				}
 			}
 		},
-		"_options2": {
+		"_zamgpanel": {
 			"type": "panel",
-			"label": "Advanced",
+			"label": "ZAMG",
+            "hidden": "!data.zamgEnabled",
 			"items": {
-				"option1": {
-					"type": "checkbox",
-					"label": "option1",
-					"newLine": true
-				}
+				
+                "coordinates1Txt": {
+                    "type": "staticText",
+                    "text": "COORDINATES (divider: #)",
+                    "newLine": true
+                },
+                "zamgSelectID": {
+                    "type": "coordinates",
+                    "divider": "#",
+                    "useSystemName": false,
+                    "newLine": true,
+                    "sm": 12,
+					"md": 6,
+					"lg": 4
+                }
 			}
 		},
-		"_options3": {
+		"_templates": {
 			"type": "panel",
-			"label": "Email",
+			"label": "Templates",
+            
 			"items": {
-				"option1": {
-					"type": "checkbox",
-					"label": "option1",
-					"newLine": true
-				}
-			}
-		},
-		"_options4": {
-			"type": "panel",
-			"label": "Telegram",
-			"items": {
-				"option1": {
-					"type": "checkbox",
-					"label": "option1",
-					"newLine": true
-				}
-			}
-		},
-		"_options5": {
-			"type": "panel",
-			"label": "Pushover",
-			"items": {
-				"option1": {
-					"type": "checkbox",
-					"label": "option1",
-					"newLine": true
-				}
+				"templateTable": {
+                    "type": "table",
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "label": "",
+                    "showSecondAddAt": 5,
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "templateKey",
+                            "width": "10% ",
+                            "title": "Unique Identifier",
+                            "tooltip": "Enter a unique text",
+                            "filter": false,
+                            "sort": false,
+                            "default": "",
+                            "validator": "const x={};for (const c of globalData.table1) {if (x[c.table1Unique]==='x') return false; x[c.table1Unique]='x';}; return true;",
+                            "validatorNoSaveOnError": true
+                        },
+                        {
+                            "type": "text",
+                            "attr": "template",
+                            "width": "90% ",
+                            "title": "Text",
+                            "tooltip": "Enter your template text.",
+                            "filter": false,
+                            "sort": false,
+                            "default": ""
+                        }
+                    ]
+                }
 			}
 		},
 		"_options6": {
 			"type": "panel",
 			"label": "Whatsapp",
+            "hidden": "true",
 			"items": {}
 		},
 		"_options7": {
 			"type": "panel",
 			"label": "Options",
+            "hidden": "true",
 			"items": {}
 		}
 	}

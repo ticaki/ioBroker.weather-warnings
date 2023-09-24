@@ -6,20 +6,20 @@
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
 
-import { dwdWarncellIdLong } from './lib/others/dwdWarncellIdLong.js';
-//const dwdDefinition = require(`${__dirname}/lib/def/dwd.js`);
-
 import axios from 'axios';
+import 'source-map-support/register';
+import { dwdWarncellIdLong } from './lib/others/dwdWarncellIdLong.js';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 
-export class WeatherWarnings extends utils.Adapter {
+class WeatherWarnings extends utils.Adapter {
     library: Library;
     providerController: ProviderController | null = null;
     numOfRawWarnings: number = 5;
+    adminTimeoutRef: any = null;
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
@@ -31,6 +31,7 @@ export class WeatherWarnings extends utils.Adapter {
         this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
         this.library = new Library(this);
+        this.providerController = new ProviderController(this);
     }
 
     /**
@@ -40,15 +41,13 @@ export class WeatherWarnings extends utils.Adapter {
         // Initialize your adapter here
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
-        this.log.info('config option1: ' + this.config.option1);
-        this.log.info('config option2: ' + this.config.option2);
 
         /*
         For every state in the system there has to be also an object of type state
         Here a simple template for a boolean variable named "testVariable"
         Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
         */
-        await this.setObjectNotExistsAsync('testVariable', {
+        /*await this.setObjectNotExistsAsync('testVariable', {
             type: 'state',
             common: {
                 name: 'testVariable',
@@ -58,10 +57,10 @@ export class WeatherWarnings extends utils.Adapter {
                 write: true,
             },
             native: {},
-        });
+        });*/
 
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-        this.subscribeStates('testVariable');
+        //this.subscribeStates('testVariable');
         // You can also add a subscription for multiple states. The following line watches all states starting with "lights."
         // this.subscribeStates('lights.*');
         // Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
@@ -71,15 +70,6 @@ export class WeatherWarnings extends utils.Adapter {
             setState examples
             you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
         */
-        // the variable testVariable is set to true as command (ack=false)
-        await this.setStateAsync('testVariable', true);
-
-        // same thing, but the value is flagged "ack"
-        // ack should be always set to true if the value is received from or acknowledged from the target system
-        await this.setStateAsync('testVariable', { val: true, ack: true });
-
-        // same thing, but the state is deleted after 30s (getState will return null afterwards)
-        await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
 
         // examples for the checkPassword/checkGroup functions
         let result = await this.checkPasswordAsync('admin', 'iobroker');
@@ -88,38 +78,49 @@ export class WeatherWarnings extends utils.Adapter {
         result = await this.checkGroupAsync('admin', 'admin');
         this.log.info('check group user admin group admin: ' + result);
 
-        this.providerController = new ProviderController(this);
         //laengen: 13.05501, breiten: 47.80949
-        this.setTimeout(
-            function (self) {
+        setTimeout(
+            async function (self: any) {
+                if (!self.providerController) return;
                 if (!self) return;
-                //@ts-expect-error naja
-                const provider = self.providerController.createProviderIfNotExist({
-                    service: 'dwdService',
-                    warncellId: '805374012', //805111000 Düssel - kirn 807133052
-                });
-                if (provider) provider.updateData();
-                //@ts-expect-error naja
-                const provider2 = self.providerController.createProviderIfNotExist({
-                    service: 'zamgService',
-                    warncellId: ['13.05501', '47.80949'], //805111000 Düssel - kirn 807133052
-                });
-                if (provider2) provider2.updateData();
-                //@ts-expect-error naja
-                const provider3 = self.providerController.createProviderIfNotExist({
-                    service: 'uwzService',
-                    warncellId: 'DE55606', //Land + PLZ
-                });
-                if (provider3) provider3.updateData();
+                try {
+                    const states = await self.getStatesAsync('*');
+                    self.library.initStates(states);
+                } catch (error) {
+                    self.log.error(`catch (1): init error while reading states! ${error}`);
+                }
+                // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
+                if (self.config.dwdSelectId > 10000 && self.config.dwdEnabled) {
+                    self.providerController.createProviderIfNotExist({
+                        service: 'dwdService',
+                        warncellId: self.config.dwdSelectId, //805111000 Düssel - kirn 807133052
+                    });
+                }
+                if (
+                    self.config.zamgEnabled &&
+                    self.config.zamgSelectID &&
+                    typeof self.config.zamgSelectID == 'string'
+                ) {
+                    const zamgArr = self.config.zamgSelectID.split('#');
+                    if (zamgArr.length == 2) {
+                        self.providerController.createProviderIfNotExist({
+                            service: 'zamgService',
+                            warncellId: zamgArr, //805111000 Düssel - kirn 807133052
+                        });
+                    }
+                }
+                if (self.config.uwzEnabled && self.config.uwzSelectID) {
+                    self.providerController.createProviderIfNotExist({
+                        service: 'uwzService',
+                        warncellId: 'UWZ' + self.config.uwzSelectID.toUpperCase(), //UWZ + Land + PLZ
+                    });
+                }
+
+                self.providerController.updateEndless(self.providerController);
             },
             4000,
             this,
         );
-        /*const provider = this.providerController.createProviderIfNotExist({
-            service: 'dwdService',
-            warncellId: '805374012', //805111000 Düssel - kirn 807133052
-        });
-        if (provider) provider.updateData();*/
     }
 
     /**
@@ -132,7 +133,7 @@ export class WeatherWarnings extends utils.Adapter {
             // clearTimeout(timeout2);
             // ...
             // clearInterval(interval1);
-
+            if (this.providerController) this.providerController.delete();
             callback();
         } catch (e) {
             callback();
@@ -173,35 +174,39 @@ export class WeatherWarnings extends utils.Adapter {
      */
     private async onMessage(obj: ioBroker.Message): Promise<void> {
         if (typeof obj === 'object' && obj.message) {
-            this.log.debug(`Retrieve ${obj.command} from ${obj.from} message: JSON.stringify(obj)`);
+            this.log.debug(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
             switch (obj.command) {
                 case 'dwd.name':
+                case 'dwd.name.text':
                     if (obj.callback) {
+                        if (this.adminTimeoutRef) this.clearTimeout(this.adminTimeoutRef);
                         try {
-                            let data = dwdWarncellIdLong;
-                            if (!data) data = await axios.get(this.config.dwdWarncellTextUrl);
-                            const text: string[] = [];
-                            if (true) {
+                            this.log.debug(`message ${obj.command} start gathering data.`);
+                            const data = dwdWarncellIdLong;
+                            //if (!data) data = await axios.get(this.config.dwdWarncellTextUrl);
+                            const text: any[] = [];
+                            if (text.length == 0) {
                                 const dataArray: string[] = data.split('\n');
 
                                 dataArray.splice(0, 1);
                                 dataArray.forEach((element) => {
                                     const value = element.split(';')[0];
-                                    const city = element.split(';')[1];
-                                    const cityText = element.split(';')[2];
+                                    const cityText = element.split(';')[1];
+                                    //const cityText = element.split(';')[2];
                                     if (
-                                        city &&
-                                        (city.startsWith('Stadt') ||
-                                            city.startsWith('Groß') ||
-                                            city.startsWith('Groß') ||
-                                            city.startsWith('Gemeinde'))
+                                        value &&
+                                        (value.startsWith('10') ||
+                                            value.startsWith('9') ||
+                                            value.startsWith('8') ||
+                                            value.startsWith('7'))
                                     ) {
-                                        if (text) text.push(`${cityText} #${value}`);
+                                        //if (text) text.push(`${cityText} #${value}`);
+                                        if (text) text.push({ label: cityText, value: value.trim() });
                                     }
                                 });
                                 text.sort((a, b) => {
-                                    const nameA = a.toUpperCase(); // ignore upper and lowercase
-                                    const nameB = b.toUpperCase(); // ignore upper and lowercase
+                                    const nameA = a.label.toUpperCase(); // ignore upper and lowercase
+                                    const nameB = b.label.toUpperCase(); // ignore upper and lowercase
                                     if (nameA < nameB) {
                                         return -1;
                                     }
@@ -213,14 +218,33 @@ export class WeatherWarnings extends utils.Adapter {
                                 });
                             }
                             const msg = obj.message;
-                            if (msg.dwd.length) {
-                                const result = text.filter((a) => a.toUpperCase().startsWith(msg.dwd.toUpperCase()));
-                                this.sendTo(obj.from, obj.command, result, obj.callback);
+                            if (msg.dwd.length > 2) {
+                                const result = text.filter(
+                                    (a) =>
+                                        (a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase())) ||
+                                        (!isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)),
+                                );
+                                if (result.length == 1) this.config.dwdSelectId = result[0].value;
+                                this.log.debug('inside of send to ' + msg.dwd + '   ' + JSON.stringify(result));
+                                if (obj.command == 'dwd.name') this.sendTo(obj.from, obj.command, result, obj.callback);
+                                else if (obj.command == 'dwd.name.text')
+                                    this.sendTo(
+                                        obj.from,
+                                        obj.command,
+                                        result.length == 1 ? result[0].label : '',
+                                        obj.callback,
+                                    );
+                                this.log.debug(`ID is is: ${this.config.dwdSelectId}`);
                             } else {
-                                this.sendTo(obj.from, obj.command, text, obj.callback);
+                                this.log.debug(`else because length is: ${msg.dwd.length}`);
+                                if (obj.command == 'dwd.name.text')
+                                    this.sendTo(obj.from, obj.command, '', obj.callback);
+                                else this.sendTo(obj.from, obj.command, text, obj.callback);
                             }
                         } catch (e) {
-                            this.sendTo(obj.from, obj.command, [{ label: 'N/A', value: '' }], obj.callback);
+                            this.log.error(`catch (41): ${e}`);
+                            if (obj.command == 'dwd.name.text') this.sendTo(obj.from, obj.command, '', obj.callback);
+                            else this.sendTo(obj.from, obj.command, [{ label: 'N/A', value: '' }], obj.callback);
                         }
                     }
                     break;
@@ -236,3 +260,4 @@ if (require.main !== module) {
     // otherwise start the instance directly
     (() => new WeatherWarnings())();
 }
+export = WeatherWarnings;
