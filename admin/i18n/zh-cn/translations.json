@@ -1,5 +1,15 @@
 {
-	"weather-warnings adapter settings": "weather-warnings的适配器设置",
-	"option1": "选项1",
-	"option2": "选项2"
+    "dividerHdr": "测试",
+    "dwdEnabled": "激活DWD",
+    "dwdSelectId": "DWD 区/市 ID 选择",
+    "dwdSelectShowName": "DWD 区/城市 ID 名称",
+    "option1": "选项1",
+    "option2": "选项2",
+    "refreshTime": "所有提供商的更新间隔。 （以分钟为单位）",
+    "templateKey": "唯一标识符",
+    "useTestWarnings": "激活测试警告",
+    "uwzEnabled": "激活UWZ",
+    "uwzSelectDescription": "UWZ ID 由国家/地区代码和邮政编码组成（DE12345、AT54321）",
+    "weather-warnings adapter settings": "weather-warnings的适配器设置",
+    "zamgEnabled": "激活ZAMG"
 }

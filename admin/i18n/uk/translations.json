@@ -1,5 +1,15 @@
 {
-	"weather-warnings adapter settings": "Налаштування адаптера для weather-warnings",
-	"option1": "варіант1",
-	"option2": "варіант2"
+    "dividerHdr": "Тестування",
+    "dwdEnabled": "Активуйте DWD",
+    "dwdSelectId": "Вибір ідентифікатора району/міста DWD",
+    "dwdSelectShowName": "DWD Назва району/міста",
+    "option1": "варіант1",
+    "option2": "варіант2",
+    "refreshTime": "Інтервал оновлення для всіх провайдерів. (за хвилини)",
+    "templateKey": "Унікальний ідентифікатор",
+    "useTestWarnings": "Активуйте тестові попередження",
+    "uwzEnabled": "Активуйте UWZ",
+    "uwzSelectDescription": "UWZ ID складається з коду країни та поштового індексу (DE12345, AT54321)",
+    "weather-warnings adapter settings": "Налаштування адаптера для weather-warnings",
+    "zamgEnabled": "Активуйте ZAMG"
 }

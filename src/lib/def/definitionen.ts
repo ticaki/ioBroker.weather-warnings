@@ -1,32 +1,45 @@
-export interface statesObjectsWarningsType {
-    [key: string]:
-        | customChannelType
-        | ioBroker.StateObject
-        | {
-              raw:
-                  | customChannelType
-                  | {
-                        [key: string]:
-                            | customChannelType
-                            | {
-                                  [key: string]:
-                                      | customChannelType
-                                      | {
-                                            [key: string]: ioBroker.StateObject;
-                                        }
-                                      | ioBroker.StateObject;
-                              }
-                            | ioBroker.StateObject;
-                    };
+import { customFormatedKeysDef } from '../messages';
+import { dataImportDwdTypeProperties, dataImportUwzTypeProperties, dataImportZamgTypeProperties } from './provider-def';
+
+type ChangeTypeOfKeys<Obj> = Obj extends object
+    ? { [K in keyof Obj]-?: ChangeTypeOfKeys<Obj[K]> } & customChannelType
+    : ioBroker.StateObject;
+
+type customChannelType = { _channel: ioBroker.ChannelObject | ioBroker.DeviceObject };
+/*type NestedKeyOf<ObjectType extends object> = {
+    [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
+        ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+        : `${Key}`;
+}[keyof ObjectType & (string | number)];*/
+
+export type statesObjectsWarningsType =
+    | {
+          [key: string]:
+              | customChannelType
+              | {
+                    raw?:
+                        | ChangeTypeOfKeys<dataImportDwdTypeProperties>
+                        | ChangeTypeOfKeys<dataImportUwzTypeProperties>
+                        | ChangeTypeOfKeys<dataImportZamgTypeProperties>;
+                };
+      }
+    | {
+          allService: {
+              formatedkeys: customChannelType | { [Property in keyof customFormatedKeysDef]: ioBroker.StateObject };
           };
-}
-type customChannelType = { _channel: ioBroker.ChannelObject };
+      };
 
 export const genericStateObjects: {
     info: customChannelType & {
         connection: ioBroker.StateObject;
+        testMode: ioBroker.StateObject;
     };
     state: ioBroker.StateObject;
+    warningDevice: ioBroker.DeviceObject;
+    formatedKeysDevice: ioBroker.DeviceObject;
+    messageStates: customChannelType & {
+        message: ioBroker.StateObject;
+    };
 } = {
     info: {
         _channel: {
@@ -52,6 +65,18 @@ export const genericStateObjects: {
             },
             native: {},
         },
+        testMode: {
+            _id: 'testMode',
+            type: 'state',
+            common: {
+                name: 'If the adapter is running in test mode, restart to exit the mode.',
+                type: 'boolean',
+                role: 'indicator',
+                read: true,
+                write: false,
+            },
+            native: {},
+        },
     },
     state: {
         _id: 'No_definition',
@@ -65,6 +90,44 @@ export const genericStateObjects: {
             write: false,
         },
         native: {},
+    },
+    warningDevice: {
+        _id: 'warning',
+        type: 'device',
+        common: {
+            name: 'Warnings from Server',
+        },
+        native: {},
+    },
+    formatedKeysDevice: {
+        _id: 'formatedKeys',
+        type: 'device',
+        common: {
+            name: 'Variables that can be used in the admin settings to configure the messages.',
+        },
+        native: {},
+    },
+    messageStates: {
+        _channel: {
+            _id: 'messages',
+            type: 'channel',
+            common: {
+                name: 'Outgoing formated messages.',
+            },
+            native: {},
+        },
+        message: {
+            _id: 'message',
+            type: 'state',
+            common: {
+                name: 'Outgoing formated message.',
+                type: 'string',
+                role: 'text',
+                read: true,
+                write: false,
+            },
+            native: {},
+        },
     },
 };
 
@@ -254,6 +317,19 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'CATEGORY',
+
+                    type: 'string',
+                    role: '',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            REFERENCES: {
+                _id: 'REFERENCES',
+                type: 'state',
+                common: {
+                    name: 'REFERENCES',
 
                     type: 'string',
                     role: '',
@@ -560,230 +636,110 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
-            // StatesDefinition für DWD intern
-            // https://isabel.dwd.de/DE/leistungen/opendata/help/warnungen/cap_dwd_profile_de_pdf_1_11.pdf?__blob=publicationFile&v=3
-            begin: {
-                _id: 'begin',
+            GC_STATE: {
+                _id: 'GC_STATE',
                 type: 'state',
                 common: {
-                    name: 'Warning begin',
+                    name: 'GC_STATE',
+
+                    type: 'string',
+                    role: '',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            GC_WARNCELLID: {
+                _id: 'GC_WARNCELLID',
+                type: 'state',
+                common: {
+                    name: 'GC_WARNCELLID',
 
                     type: 'number',
-                    role: 'value.time',
+                    role: '',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            description: {
-                _id: 'description',
+            INFO_ID: {
+                _id: 'INFO_ID',
                 type: 'state',
                 common: {
-                    name: 'Warning description',
+                    name: 'INFO_ID',
 
                     type: 'string',
-                    role: 'weather.state',
+                    role: '',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            end: {
-                _id: 'end',
+            PROCESSTIME: {
+                _id: 'PROCESSTIME',
                 type: 'state',
                 common: {
-                    name: 'Warning end',
-
-                    type: 'number',
-                    role: 'value.time',
-                    read: true,
-                    write: false,
-                },
-                native: {},
-            },
-            headline: {
-                _id: 'headline',
-                type: 'state',
-                common: {
-                    name: 'Warning description',
+                    name: 'PROCESSTIME',
 
                     type: 'string',
-                    role: 'weather.state',
+                    role: '',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            level: {
-                _id: 'level',
-                type: 'state',
+        },
+    },
+    uwzService: {
+        _channel: {
+            _id: 'uwz',
+            type: 'channel',
+            common: {
+                name: {
+                    en: 'UWZ Warnings',
+                    de: 'UWZ Warnungen',
+                },
+            },
+            native: {},
+        },
+        raw: {
+            _channel: {
+                _id: 'raw',
+                type: 'channel',
                 common: {
-                    name: 'Warning level',
-
-                    type: 'number',
-                    role: 'value.warning',
-                    read: true,
-                    write: false,
-                    states: { 1: 'Minor', 2: 'Moderate', 3: 'Severe', 4: 'Extreme' },
+                    name: 'Unchanged data',
                 },
                 native: {},
             },
-            map: {
-                _id: 'map',
+            center: {
+                _id: 'center',
                 type: 'state',
                 common: {
-                    name: 'Link to chart',
-
+                    name: 'text',
                     type: 'string',
-                    role: 'weather.chart.url',
+                    role: 'value',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            object: {
-                _id: 'object',
+            areaID: {
+                _id: 'areaID',
                 type: 'state',
                 common: {
-                    name: 'JSON object with warning',
-
+                    name: 'text',
                     type: 'string',
-                    role: 'weather.json',
+                    role: 'value',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            severity: {
-                _id: 'severity',
+            dtgEnd: {
+                _id: 'dtgEnd',
                 type: 'state',
                 common: {
-                    name: 'Warning severity',
-
-                    type: 'number',
-                    role: 'value.severity',
-                    read: true,
-                    write: false,
-                    states: {
-                        0: 'None',
-                        1: 'Minor',
-                        2: 'Moderate',
-                        3: 'Severe',
-                        4: 'Extreme',
-                    },
-                },
-                native: {},
-            },
-            text: {
-                _id: 'text',
-                type: 'state',
-                common: {
-                    name: 'Warning text',
-
-                    type: 'string',
-                    role: 'weather.title.short',
-                    read: true,
-                    write: false,
-                },
-                native: {},
-            },
-            typ: {
-                _id: 'type',
-                type: 'state',
-                common: {
-                    name: 'Warning type',
-
-                    type: 'number',
-                    role: 'weather.type',
-                    read: true,
-                    write: false,
-                    states: {
-                        0: 'Thunderstorm',
-                        1: 'Wind/Storm',
-                        2: 'Rain',
-                        3: 'Snow',
-                        4: 'Fog',
-                        5: 'Frost',
-                        6: 'Ice',
-                        7: 'Thawing',
-                        8: 'Heat',
-                        9: 'UV warning',
-                    },
-                },
-                native: {},
-            },
-            //https://www.dwd.de/DE/leistungen/opendata/help/warnungen/warning_codes_pdf.pdf;jsessionid=DE70C7EFE6921B96B26AA66B70CE5365.live21061?__blob=publicationFile&v=5
-            ec_ii_type: {
-                _id: 'ec_ii_type',
-                type: 'state',
-                common: {
-                    name: 'Warningtype EC_II',
-
-                    type: 'number',
-                    role: 'weather.type',
-                    read: true,
-                    write: false,
-                },
-                native: {},
-            },
-            urgency: {
-                _id: 'urgency',
-                type: 'state',
-                common: {
-                    name: 'Warning urgency',
-
-                    type: 'string',
-                    role: 'text',
-                    read: true,
-                    write: false,
-                },
-                native: {},
-            },
-            responseType: {
-                _id: 'responseType',
-                type: 'state',
-                common: {
-                    name: 'Warning responseType',
-
-                    type: 'string',
-                    role: 'text',
-                    read: true,
-                    write: false,
-                },
-                native: {},
-            },
-            certainty: {
-                _id: 'certainty',
-                type: 'state',
-                common: {
-                    name: 'Warning certainty',
-
-                    type: 'string',
-                    role: 'text',
-                    read: true,
-                    write: false,
-                },
-                native: {},
-            },
-            altitude: {
-                _id: 'altitude',
-                type: 'state',
-                common: {
-                    name: 'Start Höhenlage der Warnung',
-
-                    type: 'number',
-                    role: 'text',
-                    read: true,
-                    write: false,
-                },
-                native: {},
-            },
-            ceiling: {
-                _id: 'ceiling',
-                type: 'state',
-                common: {
-                    name: 'End Höhenlage der Warnung',
-
+                    name: 'End Time of warning',
                     type: 'number',
                     role: 'value',
                     read: true,
@@ -791,68 +747,395 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
-            color: {
-                _id: 'color',
+            areaType: {
+                _id: 'Warnid',
                 type: 'state',
                 common: {
-                    name: 'Farbe',
-
+                    name: 'text',
                     type: 'string',
-                    role: 'text',
+                    role: 'value',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            HTMLShort: {
-                _id: 'HTMLShort',
+            dtgStart: {
+                _id: 'Warnid',
                 type: 'state',
                 common: {
-                    name: 'Warning text html',
-
-                    type: 'string',
-                    role: 'text',
+                    name: 'Start Time of warning',
+                    type: 'number',
+                    role: 'value',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            HTMLLong: {
-                _id: 'HTMLLong',
+            payload: {
+                _channel: {
+                    _id: 'payload',
+                    type: 'channel',
+                    common: {
+                        name: 'Payload of warning.',
+                    },
+                    native: {},
+                },
+                id: {
+                    _id: 'Warnid',
+                    type: 'state',
+                    common: {
+                        name: 'text',
+                        type: 'string',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+                creation: {
+                    _id: 'Warnid',
+                    type: 'state',
+                    common: {
+                        name: 'Id of Warning',
+                        type: 'number',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+                uwzLevel: {
+                    _id: 'Warnid',
+                    type: 'state',
+                    common: {
+                        name: 'Id of Warning',
+                        type: 'number',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+                translationsShortText: {
+                    _channel: {
+                        _id: 'raw',
+                        type: 'channel',
+                        common: {
+                            name: 'Translation short',
+                        },
+                        native: {},
+                    },
+                    FR: {
+                        _id: 'FR',
+                        type: 'state',
+                        common: {
+                            name: 'French',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    LU: {
+                        _id: 'LU',
+                        type: 'state',
+                        common: {
+                            name: 'Luxembourg',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    EN: {
+                        _id: 'EN',
+                        type: 'state',
+                        common: {
+                            name: 'English',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    ES: {
+                        _id: 'Warnid',
+                        type: 'state',
+                        common: {
+                            name: 'Spanish',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    NL: {
+                        _id: 'Warnid',
+                        type: 'state',
+                        common: {
+                            name: 'Netherlands',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    DE: {
+                        _id: 'Warnid',
+                        type: 'state',
+                        common: {
+                            name: 'German',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    IT: {
+                        _id: 'Warnid',
+                        type: 'state',
+                        common: {
+                            name: 'Italy',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    DK: {
+                        _id: 'Warnid',
+                        type: 'state',
+                        common: {
+                            name: 'Denmark',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                },
+                translationsLongText: {
+                    _channel: {
+                        _id: 'raw',
+                        type: 'channel',
+                        common: {
+                            name: 'Translation long',
+                        },
+                        native: {},
+                    },
+                    FR: {
+                        _id: 'FR',
+                        type: 'state',
+                        common: {
+                            name: 'French',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    LU: {
+                        _id: 'LU',
+                        type: 'state',
+                        common: {
+                            name: 'Luxembourg',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    EN: {
+                        _id: 'EN',
+                        type: 'state',
+                        common: {
+                            name: 'English',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    ES: {
+                        _id: 'ES',
+                        type: 'state',
+                        common: {
+                            name: 'Spanish',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    NL: {
+                        _id: 'NL',
+                        type: 'state',
+                        common: {
+                            name: 'Netherlands',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    DE: {
+                        _id: 'DE',
+                        type: 'state',
+                        common: {
+                            name: 'German',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    IT: {
+                        _id: 'IT',
+                        type: 'state',
+                        common: {
+                            name: 'Italy',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                    DK: {
+                        _id: 'DK',
+                        type: 'state',
+                        common: {
+                            name: 'Denmark',
+                            type: 'string',
+                            role: 'value',
+                            read: true,
+                            write: false,
+                        },
+                        native: {},
+                    },
+                },
+                fileName: {
+                    _id: 'filename',
+                    type: 'state',
+                    common: {
+                        name: 'Name of the file at the data provider.',
+                        type: 'string',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+                levelName: {
+                    _id: 'Warnid',
+                    type: 'state',
+                    common: {
+                        name: 'Name of the level.',
+                        type: 'string',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+                shortText: {
+                    _id: 'shortText',
+                    type: 'state',
+                    common: {
+                        name: 'Short text in default language.',
+                        type: 'string',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+                longText: {
+                    _id: 'Warnid',
+                    type: 'state',
+                    common: {
+                        name: 'Long text in default language.',
+                        type: 'string',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+                altMin: {
+                    _id: 'Warnid',
+                    type: 'state',
+                    common: {
+                        name: 'Warning applies from a height of (in meter).',
+                        type: 'number',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+                altMax: {
+                    _id: 'Warnid',
+                    type: 'state',
+                    common: {
+                        name: 'Warning applies up to a height of (in meter).',
+                        type: 'number',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                    },
+                    native: {},
+                },
+            },
+            severity: {
+                _id: 'Warnid',
                 type: 'state',
                 common: {
-                    name: 'Warning text html',
-
-                    type: 'string',
-                    role: 'text',
+                    name: 'Severity of the warning',
+                    type: 'number',
+                    role: 'value',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            HTMLVeryLong: {
-                _id: 'HTMLVeryLong',
+            type: {
+                _id: 'Type of warning.',
                 type: 'state',
                 common: {
-                    name: 'Warning text very long html',
-
-                    type: 'string',
-                    role: 'text',
+                    name: 'Id of Warning',
+                    type: 'number',
+                    role: 'value',
                     read: true,
                     write: false,
-                },
-                native: {},
-            },
-            instruction: {
-                _id: 'instruction',
-                type: 'state',
-                common: {
-                    name: 'Warning instruction text html',
-
-                    type: 'string',
-                    role: 'text',
-                    read: true,
-                    write: false,
+                    states: {
+                        0: `n_a`,
+                        1: `unbekannt`,
+                        2: `Sturm`,
+                        3: `Schneefall`,
+                        4: `Starkregen`,
+                        5: `Extremfrost`,
+                        6: `Waldbrandgefahr`,
+                        7: `Gewitter`,
+                        8: `Glätte`,
+                        9: `Hitze`,
+                        10: `Glatteisregen`,
+                        11: `Bodenfrost`,
+                    },
                 },
                 native: {},
             },
@@ -1123,452 +1406,208 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             },
         },
     },
-    uwzService: {
-        _channel: {
-            _id: 'uwz',
-            type: 'channel',
-            common: {
-                name: {
-                    en: 'UWZ Warnings',
-                    de: 'UWZ Warnungen',
-                },
-            },
-            native: {},
-        },
-        raw: {
+    allService: {
+        formatedkeys: {
             _channel: {
                 _id: 'raw',
                 type: 'channel',
                 common: {
-                    name: 'Unchanged data',
+                    name: {
+                        en: 'Formated Datapoint',
+                    },
                 },
                 native: {},
             },
-            center: {
-                _id: 'center',
+
+            starttime: {
+                _id: 'starttime',
                 type: 'state',
                 common: {
-                    name: 'text',
+                    name: 'Start Time HH:MM of Warning',
                     type: 'string',
-                    role: 'value',
+                    role: 'text',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            areaID: {
-                _id: 'areaID',
+            startdate: {
+                _id: 'begin',
                 type: 'state',
                 common: {
-                    name: 'text',
+                    name: 'Start Date of Warning',
                     type: 'string',
-                    role: 'value',
+                    role: 'text',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            dtgEnd: {
-                _id: 'dtgEnd',
+            endtime: {
+                _id: 'begin',
                 type: 'state',
                 common: {
-                    name: 'End Time of warning',
-                    type: 'number',
-                    role: 'value',
-                    read: true,
-                    write: false,
-                },
-                native: {},
-            },
-            areaType: {
-                _id: 'Warnid',
-                type: 'state',
-                common: {
-                    name: 'text',
+                    name: 'End Time of Warning',
                     type: 'string',
-                    role: 'value',
+                    role: 'text',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            dtgStart: {
-                _id: 'Warnid',
+            enddate: {
+                _id: 'begin',
                 type: 'state',
                 common: {
-                    name: 'Start Time of warning',
-                    type: 'number',
-                    role: 'value',
+                    name: 'End Date of Warning',
+                    type: 'string',
+                    role: 'text',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            payload: {
-                _channel: {
-                    _id: 'raw',
-                    type: 'channel',
-                    common: {
-                        name: 'Payload of Warning',
-                    },
-                    native: {},
-                },
-                translationsLongText: {
-                    _channel: {
-                        _id: 'raw',
-                        type: 'channel',
-                        common: {
-                            name: 'Translation long',
-                        },
-                        native: {},
-                    },
-                    FR: {
-                        _id: 'FR',
-                        type: 'state',
-                        common: {
-                            name: 'French',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    LU: {
-                        _id: 'LU',
-                        type: 'state',
-                        common: {
-                            name: 'Luxembourg',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    EN: {
-                        _id: 'EN',
-                        type: 'state',
-                        common: {
-                            name: 'English',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    ES: {
-                        _id: 'ES',
-                        type: 'state',
-                        common: {
-                            name: 'Spanish',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    NL: {
-                        _id: 'NL',
-                        type: 'state',
-                        common: {
-                            name: 'Netherlands',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    DE: {
-                        _id: 'DE',
-                        type: 'state',
-                        common: {
-                            name: 'German',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    IT: {
-                        _id: 'IT',
-                        type: 'state',
-                        common: {
-                            name: 'Italy',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    DK: {
-                        _id: 'DK',
-                        type: 'state',
-                        common: {
-                            name: 'Denmark',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                },
-                id: {
-                    _id: 'Warnid',
-                    type: 'state',
-                    common: {
-                        name: 'text',
-                        type: 'string',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-                creation: {
-                    _id: 'Warnid',
-                    type: 'state',
-                    common: {
-                        name: 'Id of Warning',
-                        type: 'number',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-                uwzLevel: {
-                    _id: 'Warnid',
-                    type: 'state',
-                    common: {
-                        name: 'Id of Warning',
-                        type: 'number',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-                translationsShortText: {
-                    _channel: {
-                        _id: 'raw',
-                        type: 'channel',
-                        common: {
-                            name: 'Translation short',
-                        },
-                        native: {},
-                    },
-                    FR: {
-                        _id: 'FR',
-                        type: 'state',
-                        common: {
-                            name: 'French',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    LU: {
-                        _id: 'LU',
-                        type: 'state',
-                        common: {
-                            name: 'Luxembourg',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    EN: {
-                        _id: 'EN',
-                        type: 'state',
-                        common: {
-                            name: 'English',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    ES: {
-                        _id: 'Warnid',
-                        type: 'state',
-                        common: {
-                            name: 'Spanish',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    NL: {
-                        _id: 'Warnid',
-                        type: 'state',
-                        common: {
-                            name: 'Netherlands',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    DE: {
-                        _id: 'Warnid',
-                        type: 'state',
-                        common: {
-                            name: 'German',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    IT: {
-                        _id: 'Warnid',
-                        type: 'state',
-                        common: {
-                            name: 'Italy',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                    DK: {
-                        _id: 'Warnid',
-                        type: 'state',
-                        common: {
-                            name: 'Denmark',
-                            type: 'string',
-                            role: 'value',
-                            read: true,
-                            write: false,
-                        },
-                        native: {},
-                    },
-                },
-                fileName: {
-                    _id: 'filename',
-                    type: 'state',
-                    common: {
-                        name: 'Name of the file at the data provider.',
-                        type: 'string',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-                levelName: {
-                    _id: 'Warnid',
-                    type: 'state',
-                    common: {
-                        name: 'Name of the level.',
-                        type: 'string',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-                shortText: {
-                    _id: 'shortText',
-                    type: 'state',
-                    common: {
-                        name: 'Short text in default language.',
-                        type: 'string',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-                longText: {
-                    _id: 'Warnid',
-                    type: 'state',
-                    common: {
-                        name: 'Long text in default language.',
-                        type: 'string',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-                altMin: {
-                    _id: 'Warnid',
-                    type: 'state',
-                    common: {
-                        name: 'Warning applies from a height of (in meter).',
-                        type: 'number',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-                altMax: {
-                    _id: 'Warnid',
-                    type: 'state',
-                    common: {
-                        name: 'Warning applies up to a height of (in meter).',
-                        type: 'number',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                    },
-                    native: {},
-                },
-            },
-            severity: {
-                _id: 'Warnid',
+            startdayofweek: {
+                _id: 'begin',
                 type: 'state',
                 common: {
-                    name: 'Severity of the warning',
-                    type: 'number',
-                    role: 'value',
+                    name: 'Start day of the week of Warning',
+                    type: 'string',
+                    role: 'text',
                     read: true,
                     write: false,
                 },
                 native: {},
             },
-            type: {
-                _id: 'Type of warning.',
+            enddayofweek: {
+                _id: 'begin',
                 type: 'state',
                 common: {
-                    name: 'Id of Warning',
-                    type: 'number',
-                    role: 'value',
+                    name: 'End day of the week of Warning',
+                    type: 'string',
+                    role: 'text',
                     read: true,
                     write: false,
-                    states: {
-                        0: `n_a`,
-                        1: `unbekannt`,
-                        2: `Sturm`,
-                        3: `Schneefall`,
-                        4: `Starkregen`,
-                        5: `Extremfrost`,
-                        6: `Waldbrandgefahr`,
-                        7: `Gewitter`,
-                        8: `Glätte`,
-                        9: `Hitze`,
-                        10: `Glatteisregen`,
-                        11: `Bodenfrost`,
-                    },
+                },
+                native: {},
+            },
+            headline: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'headline of warning',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            description: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Description of warning.',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            weathertext: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Weather description of warning.',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            ceiling: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Start Time fo Warning',
+                    type: 'number',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            }, // max höhe
+            altitude: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Start Time fo Warning',
+                    type: 'number',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            }, // min höhe
+            warnlevelname: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Level of Warning as Colorname',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            warnlevelnumber: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Level of Warning as Number',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            warnlevelcolor: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Level of Warning as Color',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            }, // RGB im Hexformat
+            warntypename: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'The Type of warning',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            location: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Location',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
                 },
                 native: {},
             },

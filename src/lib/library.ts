@@ -92,7 +92,7 @@ export class Library extends BaseClass {
         if (objectDefinition)
             objectDefinition.native = { ...(objectDefinition.native || {}), objectDefinitionReference: objNode };
 
-        if (typeof data === 'object') {
+        if (typeof data === 'object' && data !== null) {
             // handle array
             if (Array.isArray(data)) {
                 if (!objectDefinition) return;
@@ -149,6 +149,7 @@ export class Library extends BaseClass {
     async getObjectDefFromJson(key: string, data: any): Promise<ioBroker.Object> {
         let result = await jsonata(`${key}`).evaluate(data);
         if (result === null || result === undefined) {
+            this.log.warn(`No definition for ${key}!`);
             result = genericStateObjects.state;
         }
         return this.cloneObject(result);
@@ -276,11 +277,24 @@ export class Library extends BaseClass {
     ): Promise<string | { [key: string]: string }> {
         let result: any;
         if (typeof cmd === 'string') {
-            result = await jsonata(cmd).evaluate(data);
+            if (cmd === '') return '';
+            try {
+                result = await jsonata(cmd).evaluate(data);
+            } catch (error: any) {
+                this.log.error(error);
+                this.log.error(`The cmd: ${cmd} is invaild.`);
+            }
         } else {
             result = {};
             for (const k in cmd) {
-                result[k] = await jsonata(cmd[k]).evaluate(data);
+                if (cmd[k]) {
+                    try {
+                        result[k] = await jsonata(cmd[k]).evaluate(data);
+                    } catch (error: any) {
+                        this.log.error(error);
+                        this.log.error(`The cmd: ${cmd[k]} for key ${k} is invaild.`);
+                    }
+                }
             }
         }
         return result;

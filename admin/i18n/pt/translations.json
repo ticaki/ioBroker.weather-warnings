@@ -1,5 +1,15 @@
 {
-	"weather-warnings adapter settings": "Configurações do adaptador para weather-warnings",
-	"option1": "Opção 1",
-	"option2": "opção 2"
+    "dividerHdr": "Teste",
+    "dwdEnabled": "Ativar DWD",
+    "dwdSelectId": "Seleção de ID de distrito/cidade DWD",
+    "dwdSelectShowName": "Nome do ID do distrito/cidade DWD",
+    "option1": "Opção 1",
+    "option2": "opção 2",
+    "refreshTime": "Intervalo de atualização para todos os provedores. (em minutos)",
+    "templateKey": "Identificador único",
+    "useTestWarnings": "Ativar avisos de teste",
+    "uwzEnabled": "Ativar UWZ",
+    "uwzSelectDescription": "ID UWZ consiste no código do país e no código postal (DE12345, AT54321)",
+    "weather-warnings adapter settings": "Configurações do adaptador para weather-warnings",
+    "zamgEnabled": "Ativar ZAMG"
 }

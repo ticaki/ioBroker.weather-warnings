@@ -1,5 +1,15 @@
 {
-	"weather-warnings adapter settings": "Adapterinstellingen voor weather-warnings",
-	"option1": "Optie 1",
-	"option2": "Optie 2"
+    "dividerHdr": "Testen",
+    "dwdEnabled": "Activeer DWD",
+    "dwdSelectId": "DWD District/Stads-ID selectie",
+    "dwdSelectShowName": "DWD District/Stad ID-naam",
+    "option1": "Optie 1",
+    "option2": "Optie 2",
+    "refreshTime": "Update-interval voor alle providers. (in minuten)",
+    "templateKey": "Unieke identificatie",
+    "useTestWarnings": "Activeer Testwaarschuwingen",
+    "uwzEnabled": "Activeer UWZ",
+    "uwzSelectDescription": "UWZ ID dit bestaat uit landcode en postcode (DE12345, AT54321)",
+    "weather-warnings adapter settings": "Adapterinstellingen voor weather-warnings",
+    "zamgEnabled": "Activeer ZAMG"
 }

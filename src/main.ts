@@ -41,8 +41,6 @@ class WeatherWarnings extends utils.Adapter {
         // Initialize your adapter here
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
-        this.log.info('config option1: ' + this.config.option1);
-        this.log.info('config option2: ' + this.config.option2);
 
         /*
         For every state in the system there has to be also an object of type state
@@ -92,22 +90,31 @@ class WeatherWarnings extends utils.Adapter {
                     self.log.error(`catch (1): init error while reading states! ${error}`);
                 }
                 // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
-                if (self.config.dwdSelectId > 10000) {
+                if (self.config.dwdSelectId > 10000 && self.config.dwdEnabled) {
                     self.providerController.createProviderIfNotExist({
                         service: 'dwdService',
                         warncellId: self.config.dwdSelectId, //805111000 Düssel - kirn 807133052
                     });
                 }
-
-                self.providerController.createProviderIfNotExist({
-                    service: 'zamgService',
-                    warncellId: ['13.05501', '47.80949'], //805111000 Düssel - kirn 807133052
-                });
-
-                self.providerController.createProviderIfNotExist({
-                    service: 'uwzService',
-                    warncellId: 'UWZDE55606', //UWZ + Land + PLZ
-                });
+                if (
+                    self.config.zamgEnabled &&
+                    self.config.zamgSelectID &&
+                    typeof self.config.zamgSelectID == 'string'
+                ) {
+                    const zamgArr = self.config.zamgSelectID.split('#');
+                    if (zamgArr.length == 2) {
+                        self.providerController.createProviderIfNotExist({
+                            service: 'zamgService',
+                            warncellId: zamgArr, //805111000 Düssel - kirn 807133052
+                        });
+                    }
+                }
+                if (self.config.uwzEnabled && self.config.uwzSelectID) {
+                    self.providerController.createProviderIfNotExist({
+                        service: 'uwzService',
+                        warncellId: 'UWZ' + self.config.uwzSelectID.toUpperCase(), //UWZ + Land + PLZ
+                    });
+                }
 
                 self.providerController.updateEndless(self.providerController);
             },
@@ -175,8 +182,8 @@ class WeatherWarnings extends utils.Adapter {
                         if (this.adminTimeoutRef) this.clearTimeout(this.adminTimeoutRef);
                         try {
                             this.log.debug(`message ${obj.command} start gathering data.`);
-                            let data = dwdWarncellIdLong;
-                            if (!data) data = await axios.get(this.config.dwdWarncellTextUrl);
+                            const data = dwdWarncellIdLong;
+                            //if (!data) data = await axios.get(this.config.dwdWarncellTextUrl);
                             const text: any[] = [];
                             if (text.length == 0) {
                                 const dataArray: string[] = data.split('\n');

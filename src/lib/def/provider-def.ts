@@ -14,7 +14,7 @@ export type dataImportDwdType =
                       type: string;
                       coordinates: number[][][][];
                   };
-                  properties: dataImportDwdFlatType;
+                  properties: dataImportDwdTypeProperties;
                   geometry_name: string;
                   bbox: number[];
               },
@@ -31,7 +31,7 @@ export type dataImportDwdType =
           };
       };
 
-type dataImportDwdFlatType = {
+export type dataImportDwdTypeProperties = {
     AREADESC: string;
     NAME: string;
     WARNCELLID: number;
@@ -68,53 +68,60 @@ type dataImportDwdFlatType = {
     PARAMETERVALUE: string;
     ALTITUDE: number;
     CEILING: number;
+    REFERENCES?: string;
+    GC_STATE: string;
+    GC_WARNCELLID: number;
+    INFO_ID: string;
+    PROCESSTIME: string;
 };
 
 export type dataImportUWZType =
     | nullType
     | {
-          results: Array<{
-              center: string;
-              areaID: string;
-              dtgEnd: number;
-              areaType: string;
-              dtgStart: number;
-              payload: {
-                  translationsLongText: {
-                      FR?: string;
-                      LU?: string;
-                      EN?: string;
-                      ES?: string;
-                      NL?: string;
-                      DE?: string;
-                      IT?: string;
-                      DK?: string;
-                  };
-                  id: string;
-                  creation: number;
-                  uwzLevel: number;
-                  translationsShortText: {
-                      FR?: string;
-                      LU?: string;
-                      EN?: string;
-                      ES?: string;
-                      NL?: string;
-                      DE?: string;
-                      IT?: string;
-                      DK?: string;
-                  };
-                  fileName: string;
-                  levelName: string;
-                  shortText: string;
-                  longText: string;
-                  altMin: number;
-                  altMax: number;
-              };
-              severity: number;
-              type: number;
-          }>;
+          results: Array<dataImportUwzTypeProperties>;
           cached: number;
       };
+
+export type dataImportUwzTypeProperties = {
+    center: string;
+    areaID: string;
+    dtgEnd: number;
+    areaType: string;
+    dtgStart: number;
+    severity: number;
+    type: number;
+    payload: {
+        id: string;
+        creation: number;
+        uwzLevel: number;
+        translationsShortText: {
+            FR?: string;
+            LU?: string;
+            EN?: string;
+            ES?: string;
+            NL?: string;
+            DE?: string;
+            IT?: string;
+            DK?: string;
+        };
+        translationsLongText: {
+            FR?: string;
+            LU?: string;
+            EN?: string;
+            ES?: string;
+            NL?: string;
+            DE?: string;
+            IT?: string;
+            DK?: string;
+        };
+        fileName: string;
+        levelName: string;
+        shortText: string;
+        longText: string;
+        altMin: number;
+        altMax: number;
+    };
+};
 
 export type dataImportZamgType =
     | nullType
@@ -135,12 +142,12 @@ export type dataImportZamgType =
               };
               warnings: Array<{
                   type: string;
-                  properties: dataImportZamgProperties;
+                  properties: dataImportZamgTypeProperties;
               }>;
           };
       };
 
-type dataImportZamgProperties = {
+export type dataImportZamgTypeProperties = {
     nachrichtentyp?: string;
     warnid: number;
     chgid: number;

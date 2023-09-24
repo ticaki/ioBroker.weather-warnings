@@ -4,13 +4,19 @@
 declare global {
     namespace ioBroker {
         interface AdapterConfig {
-            option1: boolean;
-            option2: string;
-            dwdWarncellTextUrl: string;
-            //providerController: ProviderController;
-            //library: any;
             expandArray: boolean;
+
             dwdSelectId: number;
+            zamgSelectID: string;
+            useTestWarnings: boolean;
+            dwdEnabled: boolean;
+            zamgEnabled: boolean;
+            uwzEnabled: boolean;
+            refreshTime: number;
+            templateTable: {
+                templateKey: string;
+                template: string;
+            }[];
         }
     }
 }
