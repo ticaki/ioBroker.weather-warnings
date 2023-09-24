@@ -157,6 +157,12 @@ class BaseProvider extends BaseClass {
         await this.setConnected(false);
         return null;
     }
+    async finishUpdateData(): Promise<void> {
+        for (let m = 0; m < this.messages.length; m++) {
+            await this.messages[m].writeFormatedKeys(m);
+            await this.messages[m].formatMessages();
+        }
+    }
     /**
      * generic write function for flat Objects
      * @param prefix {string}   prefix in datatree
@@ -179,6 +185,23 @@ class BaseProvider extends BaseClass {
             statesObjectsWarnings,
             data,
         );
+    }
+    async sendMessages(override = false): Promise<number> {
+        if (this.messages.length == 0 && !override) {
+            /**
+             * All Warnings removed should be done by providercontroller.
+             */
+            return 0;
+        } else {
+            /**
+             * send Messages, remove old one
+             */
+            let messagesSend = 0;
+            for (let m = 0; m < this.messages.length; m++) {
+                messagesSend += await this.messages[m].sendMessage();
+            }
+            return messagesSend;
+        }
     }
 }
 
@@ -209,8 +232,11 @@ export class DWDProvider extends BaseProvider {
              * filter messages dwd
              */
             const index = this.messages.findIndex((m) => m.rawWarning.IDENTIFIER == w.properties.IDENTIFIER);
+
             if (index == -1) {
-                this.messages.push(new Messages(this.adapter, 'dwd-msg', this, w.properties));
+                const nmessage = new Messages(this.adapter, 'dwd-msg', this, w.properties);
+                await nmessage.init();
+                if (nmessage) this.messages.push(nmessage);
             } else {
                 this.messages[index].updateData(w.properties);
             }
@@ -227,7 +253,7 @@ export class DWDProvider extends BaseProvider {
                     if (msg === delMsg) continue;
                     if (delMsg.notDeleted) continue;
                     if (delMsg.formatedData === undefined) continue; // überflüssig?
-                    if (delMsg.rawWarning.EC_ID == msg.rawWarning.EC_ID) {
+                    if (delMsg.rawWarning.EC_II == msg.rawWarning.EC_II) {
                         if (
                             delMsg.formatedData.warnlevelnumber !== undefined &&
                             formatedData.warnlevelnumber !== undefined &&
@@ -236,7 +262,7 @@ export class DWDProvider extends BaseProvider {
                             msg.silentUpdate();
                         }
                         this.messages[m2].delete();
-                        delete this.messages[m2];
+                        this.messages.slice(Number(m2), 1);
                         breakit = true;
                         break;
                     }
@@ -248,27 +274,7 @@ export class DWDProvider extends BaseProvider {
          * Hier war ich dran
          */
         //this.library.writeJson('', '', this.rawData, this.getStatesObjectsWarnings('raw').false);
-        for (let m = 0; m < this.messages.length; m++) {
-            this.messages[m].writeFormatedKeys(m);
-            this.messages[m].formatMessages();
-        }
-    }
-    async sendMessages(override = false): Promise<number> {
-        if (this.messages.length == 0 && !override) {
-            /**
-             * All Warnings removed should be done by providercontroller.
-             */
-            return 0;
-        } else {
-            /**
-             * send Messages, remove old one
-             */
-            let messagesSend = 0;
-            for (let m = 0; m < this.messages.length; m++) {
-                messagesSend += await this.messages[m].sendMessage();
-            }
-            return messagesSend;
-        }
+        await this.finishUpdateData();
     }
 }
 
@@ -296,14 +302,15 @@ export class ZAMGProvider extends BaseProvider {
                 (m) => m.rawWarning.properties.warnid == result.properties.warnings[a].properties.warnid,
             );
             if (index == -1) {
-                this.messages.push(
-                    new Messages(this.adapter, 'zamg-msg', this, result.properties.warnings[a].properties),
-                );
+                const nmessage = new Messages(this.adapter, 'zamg-msg', this, result.properties.warnings[a].properties);
+                await nmessage.init();
+                this.messages.push(nmessage);
             } else {
                 this.messages[index].updateData(result.properties.warnings[a].properties);
             }
         }
         this.library.garbageColleting(`${this.name}.warning`);
+        await this.finishUpdateData();
     }
 }
 
@@ -321,7 +328,9 @@ export class UWZProvider extends BaseProvider {
 
                 const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
                 if (index == -1) {
-                    this.messages.push(new Messages(this.adapter, 'uwz-msg', this, result.results[a]));
+                    const nmessage = new Messages(this.adapter, 'uwz-msg', this, result.results[a]);
+                    await nmessage.init();
+                    this.messages.push(nmessage);
                 } else {
                     this.messages[index].updateData(result.results[a]);
                 }
@@ -330,6 +339,7 @@ export class UWZProvider extends BaseProvider {
             this.log.debug(`Got ${result.results.length} warnings from server`);
         }
         this.library.garbageColleting(`${this.name}.warning`);
+        await this.finishUpdateData();
     }
 }
 export class NINAProvider extends BaseProvider {
@@ -424,9 +434,13 @@ export class ProviderController extends BaseClass {
                 that.setConnected();
                 let messagesSend = 0;
                 for (const a in that.provider) {
-                    messagesSend += await that.provider[a].sendMessages();
+                    try {
+                        messagesSend += await that.provider[a].sendMessages();
+                    } catch (error) {
+                        that.log.error(error);
+                    }
                 }
-                that.adapter.log.debug(`${that.name} send ${messagesSend} messages.`);
+                that.log.debug(`send ${messagesSend} messages.`);
                 that.refreshTimeRef = that.adapter.setTimeout(that.updateEndless, that.refreshTime || 600000, that);
             }
         }
