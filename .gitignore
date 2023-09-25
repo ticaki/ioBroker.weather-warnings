@@ -3,13 +3,6 @@
 
 !.github
 
-*.map
-*.js
-
-main.js
-main.js.map
-
-
 *.code-workspace
 node_modules
 nbproject

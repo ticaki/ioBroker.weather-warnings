@@ -198,6 +198,8 @@ export class Library extends BaseClass {
         if (obj && obj.type !== 'state') return;
 
         if (node && node.val != val) {
+            if (obj && obj.common && obj.common.type != typeof val && val !== undefined)
+                val = this.convertToType(val, obj.common.type);
             await this.adapter.setStateAsync(dp, { val: val, ts: Date.now(), ack: true });
         }
         if (node) this.setdb(dp, node.type, val, true);
