@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.2.0-alpha.0",
+    "version": "0.2.1-alpha.0",
     "news": {
+      "0.2.1-alpha.0": {
+        "en": "initial release",
+        "de": "Erstes Alpha Release",
+        "ru": "начальный выпуск",
+        "pt": "lançamento inicial",
+        "nl": "niet",
+        "fr": "initial release",
+        "it": "rilascio iniziale",
+        "es": "liberación inicial",
+        "pl": "pierwsze wydanie",
+        "uk": "початковий реліз",
+        "zh-cn": "初步释放"
+      }
     },
     "title": "Weather Warnings",
     "titleLang": {

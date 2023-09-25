@@ -103,7 +103,7 @@ Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.2.1-alpha.0 (2023-09-25)
 * (ticaki) initial release
 
 ## License
