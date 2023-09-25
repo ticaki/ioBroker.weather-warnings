@@ -291,6 +291,33 @@ const testData = {
                     },
                     type: 'Warning',
                 },
+                {
+                    properties: {
+                        auswirkungen:
+                            '* Kleine Muren, lokal überflutete Straßen\n* Punktuell kann es zu Überschwemmungen kommen, Keller können überflutet werden.\n* Blitzschlag kann zu Stromausfällen führen und Gebäude oder Bäume in Brand stecken.\n* Aufgrund von Sturmböen können Gegenstände herumgewirbelt werden, Äste abbrechen und vereinzelt auch Bäume umfallen.',
+                        begin: '18.09.2023 17:00',
+                        chgid: 0,
+                        create: '2023-09-17 07:00:00+00',
+                        empfehlungen:
+                            '* Schließen Sie Fenster, Türen und Garagentore sowie Dachfenster und Lichtkuppeln!\n* Verlassen Sie bei einem herannahenden Gewitter umgehend Gewässer!\n* Suchen Sie vor allem im Gebirge rechtzeitig Schutz!\n* Beachten Sie Gewitter- und Sturmwarnungen an Seen!',
+                        end: '18.09.2023 23:00',
+                        meteotext:
+                            'Im Vorfeld einer Kaltfront bilden sich ab dem späteren Nachmittag bzw. in der ersten Nachthälfte teils kräftige Gewitter. Eine Hauptgefahr sind Sturmböen aus West. Auch Hagel und Starkregen können gebietsweise dabei sein.',
+                        rawinfo: {
+                            end: '1695070800',
+                            start: '1695049200',
+                            wlevel: 3,
+                            wtype: 4,
+                        },
+                        text: 'Gelbe Gewitterwarnung von Mo, 18.09.2023 17:00 bis Mo, 18.09.2023 23:00',
+                        updategrund: '',
+                        verlaufid: 1,
+                        warnid: 4266,
+                        warnstufeid: 3,
+                        warntypid: 4,
+                    },
+                    type: 'Warning',
+                },
             ],
         },
         type: 'Feature',

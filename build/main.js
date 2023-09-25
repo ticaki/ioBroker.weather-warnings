@@ -42,10 +42,7 @@ class WeatherWarnings extends utils.Adapter {
     this.providerController = new import_provider.ProviderController(this);
   }
   async onReady() {
-    let result = await this.checkPasswordAsync("admin", "iobroker");
-    this.log.info("check user admin pw iobroker: " + result);
-    result = await this.checkGroupAsync("admin", "admin");
-    this.log.info("check group user admin group admin: " + result);
+    this.log.info(`Refresh Interval: ${this.config.refreshTime} minutes`);
     setTimeout(
       async function(self) {
         if (!self.providerController)
@@ -59,12 +56,14 @@ class WeatherWarnings extends utils.Adapter {
           self.log.error(`catch (1): init error while reading states! ${error}`);
         }
         if (self.config.dwdSelectId > 1e4 && self.config.dwdEnabled) {
+          self.log.info("DWD activated. Retrieve data.");
           self.providerController.createProviderIfNotExist({
             service: "dwdService",
             warncellId: self.config.dwdSelectId
           });
         }
         if (self.config.zamgEnabled && self.config.zamgSelectID && typeof self.config.zamgSelectID == "string") {
+          self.log.info("ZAMG activated. Retrieve data.");
           const zamgArr = self.config.zamgSelectID.split("#");
           if (zamgArr.length == 2) {
             self.providerController.createProviderIfNotExist({
@@ -74,6 +73,7 @@ class WeatherWarnings extends utils.Adapter {
           }
         }
         if (self.config.uwzEnabled && self.config.uwzSelectID) {
+          self.log.info("UWZ activated. Retrieve data.");
           self.providerController.createProviderIfNotExist({
             service: "uwzService",
             warncellId: "UWZ" + self.config.uwzSelectID.toUpperCase()

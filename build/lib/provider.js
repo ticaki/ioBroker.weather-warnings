@@ -36,7 +36,7 @@ var import_axios = __toESM(require("axios"));
 var import_definitionen = require("./def/definitionen");
 var import_library = require("./library");
 var import_messages = require("./messages");
-var import_test = require("./test");
+var import_test_warnings = require("./test-warnings");
 class BaseProvider extends import_library.BaseClass {
   service;
   url = "";
@@ -110,7 +110,7 @@ class BaseProvider extends import_library.BaseClass {
       const objDef = await this.library.getObjectDefFromJson(`info.testMode`, import_definitionen.genericStateObjects);
       this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
       if (this.adapter.config.useTestWarnings) {
-        return (0, import_test.getTestData)(this.service);
+        return (0, import_test_warnings.getTestData)(this.service);
       } else {
         const result = await import_axios.default.get(this.url);
         if (result.status == 200) {
@@ -243,7 +243,7 @@ class ZAMGProvider extends BaseProvider {
       result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
       await super.updateData(result.properties.warnings[a].properties, a);
       const index = this.messages.findIndex(
-        (m) => m.rawWarning.properties.warnid == result.properties.warnings[a].properties.warnid
+        (m) => m.rawWarning.warnid == result.properties.warnings[a].properties.warnid
       );
       if (index == -1) {
         const nmessage = new import_messages.Messages(this.adapter, "zamg-msg", this, result.properties.warnings[a].properties);

@@ -16,12 +16,12 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var test_exports = {};
-__export(test_exports, {
+var test_warnings_exports = {};
+__export(test_warnings_exports, {
   getTestData: () => getTestData,
   useTestData: () => useTestData
 });
-module.exports = __toCommonJS(test_exports);
+module.exports = __toCommonJS(test_warnings_exports);
 function useTestData() {
   return true;
 }
@@ -303,6 +303,30 @@ const testData = {
             warntypid: 5
           },
           type: "Warning"
+        },
+        {
+          properties: {
+            auswirkungen: "* Kleine Muren, lokal \xFCberflutete Stra\xDFen\n* Punktuell kann es zu \xDCberschwemmungen kommen, Keller k\xF6nnen \xFCberflutet werden.\n* Blitzschlag kann zu Stromausf\xE4llen f\xFChren und Geb\xE4ude oder B\xE4ume in Brand stecken.\n* Aufgrund von Sturmb\xF6en k\xF6nnen Gegenst\xE4nde herumgewirbelt werden, \xC4ste abbrechen und vereinzelt auch B\xE4ume umfallen.",
+            begin: "18.09.2023 17:00",
+            chgid: 0,
+            create: "2023-09-17 07:00:00+00",
+            empfehlungen: "* Schlie\xDFen Sie Fenster, T\xFCren und Garagentore sowie Dachfenster und Lichtkuppeln!\n* Verlassen Sie bei einem herannahenden Gewitter umgehend Gew\xE4sser!\n* Suchen Sie vor allem im Gebirge rechtzeitig Schutz!\n* Beachten Sie Gewitter- und Sturmwarnungen an Seen!",
+            end: "18.09.2023 23:00",
+            meteotext: "Im Vorfeld einer Kaltfront bilden sich ab dem sp\xE4teren Nachmittag bzw. in der ersten Nachth\xE4lfte teils kr\xE4ftige Gewitter. Eine Hauptgefahr sind Sturmb\xF6en aus West. Auch Hagel und Starkregen k\xF6nnen gebietsweise dabei sein.",
+            rawinfo: {
+              end: "1695070800",
+              start: "1695049200",
+              wlevel: 3,
+              wtype: 4
+            },
+            text: "Gelbe Gewitterwarnung von Mo, 18.09.2023 17:00 bis Mo, 18.09.2023 23:00",
+            updategrund: "",
+            verlaufid: 1,
+            warnid: 4266,
+            warnstufeid: 3,
+            warntypid: 4
+          },
+          type: "Warning"
         }
       ]
     },
@@ -348,4 +372,4 @@ function getTestData(service) {
   getTestData,
   useTestData
 });
-//# sourceMappingURL=test.js.map
+//# sourceMappingURL=test-warnings.js.map

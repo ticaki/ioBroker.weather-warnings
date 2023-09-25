@@ -1515,6 +1515,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
+            instruction: {
+                _id: 'instruction',
+                type: 'state',
+                common: {
+                    name: 'Recommendations for action of the warning.',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
             weathertext: {
                 _id: 'begin',
                 type: 'state',

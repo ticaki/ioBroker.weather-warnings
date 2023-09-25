@@ -12,7 +12,7 @@ import {
     providerServices,
 } from './def/provider-def';
 import { Messages } from './messages';
-import { getTestData } from './test';
+import { getTestData } from './test-warnings';
 
 type ProvideOptionsTypeInternal = {
     service: providerServices;
@@ -299,7 +299,7 @@ export class ZAMGProvider extends BaseProvider {
             await super.updateData(result.properties.warnings[a].properties, a);
 
             const index = this.messages.findIndex(
-                (m) => m.rawWarning.properties.warnid == result.properties.warnings[a].properties.warnid,
+                (m) => m.rawWarning.warnid == result.properties.warnings[a].properties.warnid,
             );
             if (index == -1) {
                 const nmessage = new Messages(this.adapter, 'zamg-msg', this, result.properties.warnings[a].properties);
