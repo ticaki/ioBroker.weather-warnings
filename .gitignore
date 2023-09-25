@@ -5,7 +5,6 @@
 
 *.map
 *.js
-build
 
 main.js
 main.js.map
