@@ -53,7 +53,7 @@ const genericStateObjects = {
       _id: "testMode",
       type: "state",
       common: {
-        name: "If the adapter is running in test mode, restart to exit the mode.",
+        name: "If the adapter is running in test mode!",
         type: "boolean",
         role: "indicator",
         read: true,
