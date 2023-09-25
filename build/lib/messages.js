@@ -252,10 +252,20 @@ class Messages extends import_library.BaseClass {
         const obj = this.formatedKeysJsonataDefinition[key];
         if (obj !== void 0 && obj.jsonata !== void 0) {
           const cmd = obj.jsonata.replace(`\${this.timeOffset}`, timeOffset);
-          temp[key] = await this.library.readWithJsonata(
+          const result = await this.library.readWithJsonata(
             this.rawWarning,
             cmd
           );
+          if (typeof result == "object") {
+            for (const a in result) {
+              if (temp[key])
+                temp[key] += ", ";
+              else
+                temp[key] = "";
+              temp[key] += result[a];
+            }
+          } else
+            temp[key] = result;
         }
       }
       for (const key in this.formatedKeysJsonataDefinition) {

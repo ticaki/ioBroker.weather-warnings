@@ -246,10 +246,18 @@ export class Messages extends BaseClass {
                     // reset the offset because of daylight saving time
                     const cmd = obj.jsonata.replace(`\${this.timeOffset}`, timeOffset);
 
-                    temp[key] = (await this.library.readWithJsonata(
+                    const result = (await this.library.readWithJsonata(
                         this.rawWarning,
                         cmd,
                     )) as keyof customFormatedKeysDef;
+                    // Handling for uwzService translations in jsons with different Names - but onl 1 Key here.
+                    if (typeof result == 'object') {
+                        for (const a in result as object) {
+                            if (temp[key]) temp[key] += ', ';
+                            else temp[key] = '';
+                            temp[key] += result[a];
+                        }
+                    } else temp[key] = result;
                 }
             }
             for (const key in this.formatedKeysJsonataDefinition) {
