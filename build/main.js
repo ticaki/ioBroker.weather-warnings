@@ -43,6 +43,7 @@ class WeatherWarnings extends utils.Adapter {
   }
   async onReady() {
     this.log.info(`Refresh Interval: ${this.config.refreshTime} minutes`);
+    this.library.internalConvert();
     setTimeout(
       async function(self) {
         if (!self.providerController)

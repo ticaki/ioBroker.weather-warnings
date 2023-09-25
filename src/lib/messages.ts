@@ -26,136 +26,138 @@ export class Messages extends BaseClass {
 
     formatedKeyCommand: { [key: string]: customformatedKeysJsonataDefinition } = {
         dwdService: {
-            starttime: { jsonata: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
-            startdate: { jsonata: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
-            endtime: { jsonata: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
-            enddate: { jsonata: `$fromMillis($toMillis(EXPIRES),"[D01].[M01]","\${this.timeOffset}")` },
+            starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
+            startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
+            endtime: { node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
+            enddate: { node: `$fromMillis($toMillis(EXPIRES),"[D01].[M01]","\${this.timeOffset}")` },
             startdayofweek: {
-                typescript: {
-                    node: `ONSET`,
-                    cmd: 'dayoftheweek',
-                },
+                node: `ONSET`,
+                cmd: 'dayoftheweek',
             },
             enddayofweek: {
-                typescript: {
-                    node: `EXPIRES`,
-                    cmd: 'dayoftheweek',
-                },
+                node: `EXPIRES`,
+                cmd: 'dayoftheweek',
             },
-            headline: { jsonata: `HEADLINE` },
-            description: { jsonata: `DESCRIPTION` },
-            weathertext: { jsonata: `` },
-            ceiling: { jsonata: `$floor(CEILING * 0.3048)` }, // max höhe
-            altitude: { jsonata: `$floor(ALTITUDE * 0.3048)` }, // min höhe
+            headline: { node: `HEADLINE` },
+            description: { node: `DESCRIPTION` },
+            weathertext: { node: `` },
+            ceiling: { node: `$floor(CEILING * 0.3048)` }, // max höhe
+            altitude: { node: `$floor(ALTITUDE * 0.3048)` }, // min höhe
             warnlevelcolor: {
-                jsonata: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+                node: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
                     color.generic,
                 )},$string($temp)))`,
             }, // RGB im Hexformat
             warnlevelname: {
-                jsonata: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+                node: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
                     color.textGeneric,
                 )},$string($temp)))`,
+                cmd: 'translate',
             },
-            warnlevelnumber: { jsonata: `$lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY))` },
+            warnlevelnumber: { node: `$lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY))` },
 
-            warntypename: { jsonata: `EC_GROUP` },
-            location: { jsonata: `AREADESC` },
+            warntypename: {
+                node: `$lookup(${JSON.stringify(warnTypeName.dwdService)}, $string(EC_II))`,
+                cmd: 'translate',
+            },
+            location: { node: `AREADESC` },
         },
 
         uwzService: {
-            starttime: { jsonata: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
-            startdate: { jsonata: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
-            endtime: { jsonata: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
-            enddate: { jsonata: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")` },
+            starttime: { node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
+            startdate: { node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
+            endtime: { node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
+            enddate: { node: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")` },
             startdayofweek: {
-                typescript: {
-                    node: `dtgStart`,
-                    cmd: 'dayoftheweek',
-                },
+                node: `dtgStart`,
+                cmd: 'dayoftheweek',
             },
             enddayofweek: {
-                typescript: {
-                    node: `dtgEnd`,
-                    cmd: 'dayoftheweek',
-                },
+                node: `dtgEnd`,
+                cmd: 'dayoftheweek',
             },
-            headline: { jsonata: `payload.translationsShortText` },
-            description: { jsonata: `payload.translationsLongText` },
-            weathertext: { jsonata: `` },
-            ceiling: { jsonata: `payload.altMin` }, // max höhe
-            altitude: { jsonata: `payload.altMax` }, // min höhe
+            headline: { node: `payload.translationsShortText` },
+            description: { node: `payload.translationsLongText` },
+            weathertext: { node: `` },
+            ceiling: { node: `payload.altMin` }, // max höhe
+            altitude: { node: `payload.altMax` }, // min höhe
             warnlevelname: {
-                jsonata: `$string(($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                node: `$string(($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
                 )}, $i[2]); $lookup(${JSON.stringify(color.textGeneric)},$string($l))))`,
+                cmd: 'translate',
             },
             warnlevelnumber: {
-                jsonata: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                node: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
                 )}, $i[2]))`,
             },
             warnlevelcolor: {
-                jsonata: `$lookup(${JSON.stringify(
+                node: `$lookup(${JSON.stringify(
                     color.generic,
                 )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
                 )}, $i[2]))))`,
             },
-            warntypename: { jsonata: `type` },
-            location: { jsonata: `areaID` },
+            warntypename: {
+                node: `$lookup(${JSON.stringify(warnTypeName.uwzService)}, $string(type))`,
+                cmd: 'translate',
+            },
+            location: { node: `areaID` },
         },
         zamgService: {
-            starttime: { jsonata: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
-            startdate: { jsonata: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
-            endtime: { jsonata: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
-            enddate: { jsonata: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")` },
+            starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
+            startdate: { node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
+            endtime: { node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
+            enddate: { node: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")` },
             startdayofweek: {
-                typescript: {
-                    node: `$number(rawinfo.start)`,
-                    cmd: 'dayoftheweek',
-                },
+                node: `$number(rawinfo.start)`,
+                cmd: 'dayoftheweek',
             },
             enddayofweek: {
-                typescript: {
-                    node: `$number(rawinfo.end)`,
-                    cmd: 'dayoftheweek',
-                },
+                node: `$number(rawinfo.end)`,
+                cmd: 'dayoftheweek',
             },
-            headline: { jsonata: `text` },
-            description: { jsonata: `auswirkungen` },
-            weathertext: { jsonata: `meteotext` },
-            ceiling: { jsonata: `` }, // max höhe
-            altitude: { jsonata: `` }, // min höhe
-            warnlevelname: { jsonata: `` },
+            headline: { node: `text` },
+            description: { node: `auswirkungen` },
+            weathertext: { node: `meteotext` },
+            ceiling: { node: `` }, // max höhe
+            altitude: { node: `` }, // min höhe
+            warnlevelname: {
+                node: `$lookup(${JSON.stringify(color.textGeneric)},$string(rawinfo.wlevel))`,
+                cmd: 'translate',
+            },
             warnlevelnumber: {
-                jsonata: `$string(rawinfo.wlevel)`,
+                node: `$string(rawinfo.wlevel)`,
             },
             warnlevelcolor: {
-                jsonata: `$lookup(${JSON.stringify(color.zamgColor)},$string(rawinfo.wlevel))`,
+                node: `$lookup(${JSON.stringify(color.zamgColor)},$string(rawinfo.wlevel))`,
             },
-            warntypename: { jsonata: `$lookup(${JSON.stringify(warnTypeName.zamgService)},$string(rawinfo.wtype))` },
-            location: { jsonata: `` },
-            instruction: { jsonata: `empfehlungen` },
+            warntypename: {
+                node: `$lookup(${JSON.stringify(warnTypeName.zamgService)},$string(rawinfo.wtype))`,
+                cmd: 'translate',
+            },
+            location: { node: `` },
+            instruction: { node: `empfehlungen` },
         },
         default: {
-            starttime: { jsonata: `` },
-            startdate: { jsonata: `` },
-            endtime: { jsonata: `` },
-            enddate: { jsonata: `` },
-            startdayofweek: { jsonata: `` },
-            enddayofweek: { jsonata: `` },
-            headline: { jsonata: `` },
-            description: { jsonata: `` },
-            weathertext: { jsonata: `` },
-            ceiling: { jsonata: `` }, // max höhe
-            altitude: { jsonata: `` }, // min höhe
-            warnlevelname: { jsonata: `` },
-            warnlevelnumber: { jsonata: `` },
-            warnlevelcolor: { jsonata: `` },
-            warntypename: { jsonata: `` },
-            location: { jsonata: `` },
-            instruction: { jsonata: `` },
+            starttime: { node: `` },
+            startdate: { node: `` },
+            endtime: { node: `` },
+            enddate: { node: `` },
+            startdayofweek: { node: `` },
+            enddayofweek: { node: `` },
+            headline: { node: `` },
+            description: { node: `` },
+            weathertext: { node: `` },
+            ceiling: { node: `` }, // max höhe
+            altitude: { node: `` }, // min höhe
+            warnlevelname: { node: `` },
+            warnlevelnumber: { node: `` },
+            warnlevelcolor: { node: `` },
+            warntypename: { node: `` },
+            location: { node: `` },
+            instruction: { node: `` },
         },
     };
     constructor(adapter: WeatherWarnings, name: string, provider: ProvideClassType, data: object) {
@@ -185,22 +187,22 @@ export class Messages extends BaseClass {
                 break;
             default:
                 this.formatedKeysJsonataDefinition = {
-                    starttime: { jsonata: `` },
-                    startdate: { jsonata: `` },
-                    endtime: { jsonata: `` },
-                    enddate: { jsonata: `` },
-                    startdayofweek: { jsonata: `` },
-                    enddayofweek: { jsonata: `` },
-                    headline: { jsonata: `` },
-                    description: { jsonata: `` },
-                    weathertext: { jsonata: `` },
-                    ceiling: { jsonata: `` }, // max höhe
-                    altitude: { jsonata: `` }, // min höhe
-                    warnlevelname: { jsonata: `` },
-                    warnlevelnumber: { jsonata: `` },
-                    warnlevelcolor: { jsonata: `` },
-                    warntypename: { jsonata: `` },
-                    location: { jsonata: `` },
+                    starttime: { node: `` },
+                    startdate: { node: `` },
+                    endtime: { node: `` },
+                    enddate: { node: `` },
+                    startdayofweek: { node: `` },
+                    enddayofweek: { node: `` },
+                    headline: { node: `` },
+                    description: { node: `` },
+                    weathertext: { node: `` },
+                    ceiling: { node: `` }, // max höhe
+                    altitude: { node: `` }, // min höhe
+                    warnlevelname: { node: `` },
+                    warnlevelnumber: { node: `` },
+                    warnlevelcolor: { node: `` },
+                    warntypename: { node: `` },
+                    location: { node: `` },
                 };
         }
     }
@@ -242,14 +244,16 @@ export class Messages extends BaseClass {
             const temp: any = {};
             for (const key in this.formatedKeysJsonataDefinition) {
                 const obj = this.formatedKeysJsonataDefinition[key as keyof customFormatedKeysDef];
-                if (obj !== undefined && obj.jsonata !== undefined) {
+                if (obj !== undefined && obj.node !== undefined) {
                     // reset the offset because of daylight saving time
-                    const cmd = obj.jsonata.replace(`\${this.timeOffset}`, timeOffset);
+                    const cmd = obj.node.replace(`\${this.timeOffset}`, timeOffset);
 
-                    const result = (await this.library.readWithJsonata(
+                    let result = (await this.library.readWithJsonata(
                         this.rawWarning,
                         cmd,
                     )) as keyof customFormatedKeysDef;
+                    if (obj.cmd !== undefined)
+                        result = (await this.readWithTypescript(result, obj.cmd)) as keyof customFormatedKeysDef;
                     // Handling for uwzService translations in jsons with different Names - but onl 1 Key here.
                     if (typeof result == 'object') {
                         for (const a in result as object) {
@@ -260,12 +264,6 @@ export class Messages extends BaseClass {
                     } else temp[key] = result;
                 }
             }
-            for (const key in this.formatedKeysJsonataDefinition) {
-                const obj = this.formatedKeysJsonataDefinition[key as keyof customFormatedKeysDef];
-                if (obj !== undefined && obj.typescript !== undefined) {
-                    temp[key] = (await this.readWithTypescript(obj.typescript)) as keyof customFormatedKeysDef;
-                }
-            }
             this.formatedData = temp as customFormatedKeysDef;
             this.updated = false;
         }
@@ -274,14 +272,16 @@ export class Messages extends BaseClass {
         }
         return this.formatedData;
     }
-    async readWithTypescript(val: { cmd: string; node: string }): Promise<string | number> {
-        if (!this.rawWarning && !val) {
+    async readWithTypescript(data: any, cmd: string): Promise<string | number> {
+        if (!this.rawWarning && !cmd) {
             throw new Error('readWithTypescript called without rawWarning or val!');
         }
-        const data = (await this.library.readWithJsonata(this.rawWarning, val.node)) as string;
-        switch (val.cmd) {
+        switch (cmd) {
             case 'dayoftheweek': {
-                return new Date(data).toLocaleDateString('de-DE', { weekday: 'long' });
+                return new Date(data as string | number | Date).toLocaleDateString('de-DE', { weekday: 'long' });
+            }
+            case 'translate': {
+                return this.library.getTranslation(data);
             }
         }
         return '';
@@ -353,7 +353,4 @@ export type customformatedKeysJsonataDefinition = {
     location: customFormatedKeysDefSubtype;
 };*/
 
-type customFormatedKeysDefSubtype = {
-    jsonata?: string;
-    typescript?: { cmd: 'dayoftheweek'; node: string };
-};
+type customFormatedKeysDefSubtype = { cmd?: 'dayoftheweek' | 'translate'; node: string };

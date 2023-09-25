@@ -1,6 +1,9 @@
 import jsonata from 'jsonata';
 import { genericStateObjects, statesObjectsWarningsType } from './def/definitionen';
 import WeatherWarnings from '../main';
+import _fs from 'fs';
+import { exec } from 'child_process';
+import { color, warnTypeName } from './def/messages-def';
 
 // only change this for other adapters
 type AdapterClassDefinition = WeatherWarnings;
@@ -62,6 +65,7 @@ class CustomLog {
 
 export class Library extends BaseClass {
     stateDataBase: { [key: string]: LibraryStateVal } = {};
+    language: string | undefined;
     constructor(adapter: AdapterClassDefinition, _options: any = null) {
         super(adapter, 'library');
         this.stateDataBase = {};
@@ -370,5 +374,81 @@ export class Library extends BaseClass {
                 }
             }
         }
+    }
+    //helper code to translate things
+    async writeNodes(name: string, json: { [key: string]: any }): Promise<void> {
+        const source: { [key: string]: any } = {};
+        for (const key in json) {
+            const node = json[key];
+            if (typeof node !== 'object') {
+                source[key] = node;
+            } else {
+                source[key] = node['en'];
+            }
+        }
+        this.writeJsonToFile(name, source);
+    }
+    async getTranslation(text: string | { [key: string]: string }): Promise<string> {
+        if (typeof text == 'object') {
+            if (!this.language) {
+                const obj = await this.adapter.getForeignObjectAsync('system.config');
+                if (obj) this.language = obj.common.language;
+
+                if (!this.language || !text[this.language]) this.language = 'en';
+            }
+            return text[this.language];
+        } else return text;
+    }
+    //eslint-disable-next-line
+async covertI18n(name:string, json:{[key: string]: any}):Promise<any> {
+        const language = ['en', 'de', 'ru', 'pt', 'nl', 'fr', 'it', 'es', 'pl', 'uk', 'zh-cn'];
+        const translations: { [key: string]: any } = {};
+        for (const n in language) translations[language[n]] = await this.readJsonFromFile(name, language[n]);
+        for (const key in json) {
+            json[key] = {};
+            for (const n in language) json[key][language[n]] = translations[language[n]][key];
+        }
+        await this.writeJsonToFile(name, json, true);
+    }
+
+    async writeJsonToFile(name: string, json: { [key: string]: any }, isFile = false): Promise<any> {
+        //.dataTest/admin
+        const file = isFile
+            ? './.dev-data/' + name + '.json'
+            : './.dev-data/' + name + '/admin/i18n/en/translations.json';
+
+        await _fs.writeFile(file, JSON.stringify(json), function () {});
+    }
+    async readJsonFromFile(name: string, dir: string): Promise<any> {
+        return JSON.parse(
+            (await _fs.readFileSync(`./.dev-data/${name}/admin/i18n/${dir}/translations.json`)) as unknown as string,
+        );
+    }
+    // npm run translate -- -a ./.dataTest/Nodes/admin
+    // eslint-disable-next-line
+ async internalConvert():Promise<void> {
+        const json = color.textGeneric;
+        return;
+        if (_fs.existsSync('./.dev-data')) {
+            await this.writeNodes('translation', json);
+            await this.runShell();
+            await this.covertI18n('translation', json);
+            this.adapter.log.debug('The file was saved!');
+        }
+        return;
+    }
+    async runShell(): Promise<void> {
+        return await new Promise((resolve, reject) => {
+            exec('npm run translate -- -a ./.dev-data/translation/admin', function (error) {
+                if (error !== null) {
+                    console.log('exec error: ' + error);
+                    // Reject if there is an error:
+                    return reject(error);
+                }
+
+                // Otherwise resolve the promise:
+                resolve();
+            });
+        });
     }
 }

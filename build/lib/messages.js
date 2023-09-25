@@ -39,134 +39,136 @@ class Messages extends import_library.BaseClass {
   messages = [];
   formatedKeyCommand = {
     dwdService: {
-      starttime: { jsonata: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
-      startdate: { jsonata: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
-      endtime: { jsonata: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
-      enddate: { jsonata: `$fromMillis($toMillis(EXPIRES),"[D01].[M01]","\${this.timeOffset}")` },
+      starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
+      startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
+      endtime: { node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
+      enddate: { node: `$fromMillis($toMillis(EXPIRES),"[D01].[M01]","\${this.timeOffset}")` },
       startdayofweek: {
-        typescript: {
-          node: `ONSET`,
-          cmd: "dayoftheweek"
-        }
+        node: `ONSET`,
+        cmd: "dayoftheweek"
       },
       enddayofweek: {
-        typescript: {
-          node: `EXPIRES`,
-          cmd: "dayoftheweek"
-        }
+        node: `EXPIRES`,
+        cmd: "dayoftheweek"
       },
-      headline: { jsonata: `HEADLINE` },
-      description: { jsonata: `DESCRIPTION` },
-      weathertext: { jsonata: `` },
-      ceiling: { jsonata: `$floor(CEILING * 0.3048)` },
-      altitude: { jsonata: `$floor(ALTITUDE * 0.3048)` },
+      headline: { node: `HEADLINE` },
+      description: { node: `DESCRIPTION` },
+      weathertext: { node: `` },
+      ceiling: { node: `$floor(CEILING * 0.3048)` },
+      altitude: { node: `$floor(ALTITUDE * 0.3048)` },
       warnlevelcolor: {
-        jsonata: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+        node: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
           import_messages_def4.color.generic
         )},$string($temp)))`
       },
       warnlevelname: {
-        jsonata: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+        node: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
           import_messages_def4.color.textGeneric
-        )},$string($temp)))`
+        )},$string($temp)))`,
+        cmd: "translate"
       },
-      warnlevelnumber: { jsonata: `$lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY))` },
-      warntypename: { jsonata: `EC_GROUP` },
-      location: { jsonata: `AREADESC` }
+      warnlevelnumber: { node: `$lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY))` },
+      warntypename: {
+        node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.dwdService)}, $string(EC_II))`,
+        cmd: "translate"
+      },
+      location: { node: `AREADESC` }
     },
     uwzService: {
-      starttime: { jsonata: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
-      startdate: { jsonata: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
-      endtime: { jsonata: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
-      enddate: { jsonata: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")` },
+      starttime: { node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
+      startdate: { node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
+      endtime: { node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
+      enddate: { node: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")` },
       startdayofweek: {
-        typescript: {
-          node: `dtgStart`,
-          cmd: "dayoftheweek"
-        }
+        node: `dtgStart`,
+        cmd: "dayoftheweek"
       },
       enddayofweek: {
-        typescript: {
-          node: `dtgEnd`,
-          cmd: "dayoftheweek"
-        }
+        node: `dtgEnd`,
+        cmd: "dayoftheweek"
       },
-      headline: { jsonata: `payload.translationsShortText` },
-      description: { jsonata: `payload.translationsLongText` },
-      weathertext: { jsonata: `` },
-      ceiling: { jsonata: `payload.altMin` },
-      altitude: { jsonata: `payload.altMax` },
+      headline: { node: `payload.translationsShortText` },
+      description: { node: `payload.translationsLongText` },
+      weathertext: { node: `` },
+      ceiling: { node: `payload.altMin` },
+      altitude: { node: `payload.altMax` },
       warnlevelname: {
-        jsonata: `$string(($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+        node: `$string(($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
           import_messages_def3.level.uwz
-        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def4.color.textGeneric)},$string($l))))`
+        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def4.color.textGeneric)},$string($l))))`,
+        cmd: "translate"
       },
       warnlevelnumber: {
-        jsonata: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+        node: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
           import_messages_def3.level.uwz
         )}, $i[2]))`
       },
       warnlevelcolor: {
-        jsonata: `$lookup(${JSON.stringify(
+        node: `$lookup(${JSON.stringify(
           import_messages_def4.color.generic
         )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
           import_messages_def3.level.uwz
         )}, $i[2]))))`
       },
-      warntypename: { jsonata: `type` },
-      location: { jsonata: `areaID` }
+      warntypename: {
+        node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.uwzService)}, $string(type))`,
+        cmd: "translate"
+      },
+      location: { node: `areaID` }
     },
     zamgService: {
-      starttime: { jsonata: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
-      startdate: { jsonata: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
-      endtime: { jsonata: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
-      enddate: { jsonata: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")` },
+      starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
+      startdate: { node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
+      endtime: { node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
+      enddate: { node: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")` },
       startdayofweek: {
-        typescript: {
-          node: `$number(rawinfo.start)`,
-          cmd: "dayoftheweek"
-        }
+        node: `$number(rawinfo.start)`,
+        cmd: "dayoftheweek"
       },
       enddayofweek: {
-        typescript: {
-          node: `$number(rawinfo.end)`,
-          cmd: "dayoftheweek"
-        }
+        node: `$number(rawinfo.end)`,
+        cmd: "dayoftheweek"
       },
-      headline: { jsonata: `text` },
-      description: { jsonata: `auswirkungen` },
-      weathertext: { jsonata: `meteotext` },
-      ceiling: { jsonata: `` },
-      altitude: { jsonata: `` },
-      warnlevelname: { jsonata: `` },
+      headline: { node: `text` },
+      description: { node: `auswirkungen` },
+      weathertext: { node: `meteotext` },
+      ceiling: { node: `` },
+      altitude: { node: `` },
+      warnlevelname: {
+        node: `$lookup(${JSON.stringify(import_messages_def4.color.textGeneric)},$string(rawinfo.wlevel))`,
+        cmd: "translate"
+      },
       warnlevelnumber: {
-        jsonata: `$string(rawinfo.wlevel)`
+        node: `$string(rawinfo.wlevel)`
       },
       warnlevelcolor: {
-        jsonata: `$lookup(${JSON.stringify(import_messages_def4.color.zamgColor)},$string(rawinfo.wlevel))`
+        node: `$lookup(${JSON.stringify(import_messages_def4.color.zamgColor)},$string(rawinfo.wlevel))`
       },
-      warntypename: { jsonata: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.zamgService)},$string(rawinfo.wtype))` },
-      location: { jsonata: `` },
-      instruction: { jsonata: `empfehlungen` }
+      warntypename: {
+        node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.zamgService)},$string(rawinfo.wtype))`,
+        cmd: "translate"
+      },
+      location: { node: `` },
+      instruction: { node: `empfehlungen` }
     },
     default: {
-      starttime: { jsonata: `` },
-      startdate: { jsonata: `` },
-      endtime: { jsonata: `` },
-      enddate: { jsonata: `` },
-      startdayofweek: { jsonata: `` },
-      enddayofweek: { jsonata: `` },
-      headline: { jsonata: `` },
-      description: { jsonata: `` },
-      weathertext: { jsonata: `` },
-      ceiling: { jsonata: `` },
-      altitude: { jsonata: `` },
-      warnlevelname: { jsonata: `` },
-      warnlevelnumber: { jsonata: `` },
-      warnlevelcolor: { jsonata: `` },
-      warntypename: { jsonata: `` },
-      location: { jsonata: `` },
-      instruction: { jsonata: `` }
+      starttime: { node: `` },
+      startdate: { node: `` },
+      endtime: { node: `` },
+      enddate: { node: `` },
+      startdayofweek: { node: `` },
+      enddayofweek: { node: `` },
+      headline: { node: `` },
+      description: { node: `` },
+      weathertext: { node: `` },
+      ceiling: { node: `` },
+      altitude: { node: `` },
+      warnlevelname: { node: `` },
+      warnlevelnumber: { node: `` },
+      warnlevelcolor: { node: `` },
+      warntypename: { node: `` },
+      location: { node: `` },
+      instruction: { node: `` }
     }
   };
   constructor(adapter, name, provider, data) {
@@ -193,22 +195,22 @@ class Messages extends import_library.BaseClass {
         break;
       default:
         this.formatedKeysJsonataDefinition = {
-          starttime: { jsonata: `` },
-          startdate: { jsonata: `` },
-          endtime: { jsonata: `` },
-          enddate: { jsonata: `` },
-          startdayofweek: { jsonata: `` },
-          enddayofweek: { jsonata: `` },
-          headline: { jsonata: `` },
-          description: { jsonata: `` },
-          weathertext: { jsonata: `` },
-          ceiling: { jsonata: `` },
-          altitude: { jsonata: `` },
-          warnlevelname: { jsonata: `` },
-          warnlevelnumber: { jsonata: `` },
-          warnlevelcolor: { jsonata: `` },
-          warntypename: { jsonata: `` },
-          location: { jsonata: `` }
+          starttime: { node: `` },
+          startdate: { node: `` },
+          endtime: { node: `` },
+          enddate: { node: `` },
+          startdayofweek: { node: `` },
+          enddayofweek: { node: `` },
+          headline: { node: `` },
+          description: { node: `` },
+          weathertext: { node: `` },
+          ceiling: { node: `` },
+          altitude: { node: `` },
+          warnlevelname: { node: `` },
+          warnlevelnumber: { node: `` },
+          warnlevelcolor: { node: `` },
+          warntypename: { node: `` },
+          location: { node: `` }
         };
     }
   }
@@ -250,12 +252,14 @@ class Messages extends import_library.BaseClass {
       const temp = {};
       for (const key in this.formatedKeysJsonataDefinition) {
         const obj = this.formatedKeysJsonataDefinition[key];
-        if (obj !== void 0 && obj.jsonata !== void 0) {
-          const cmd = obj.jsonata.replace(`\${this.timeOffset}`, timeOffset);
-          const result = await this.library.readWithJsonata(
+        if (obj !== void 0 && obj.node !== void 0) {
+          const cmd = obj.node.replace(`\${this.timeOffset}`, timeOffset);
+          let result = await this.library.readWithJsonata(
             this.rawWarning,
             cmd
           );
+          if (obj.cmd !== void 0)
+            result = await this.readWithTypescript(result, obj.cmd);
           if (typeof result == "object") {
             for (const a in result) {
               if (temp[key])
@@ -268,12 +272,6 @@ class Messages extends import_library.BaseClass {
             temp[key] = result;
         }
       }
-      for (const key in this.formatedKeysJsonataDefinition) {
-        const obj = this.formatedKeysJsonataDefinition[key];
-        if (obj !== void 0 && obj.typescript !== void 0) {
-          temp[key] = await this.readWithTypescript(obj.typescript);
-        }
-      }
       this.formatedData = temp;
       this.updated = false;
     }
@@ -282,14 +280,16 @@ class Messages extends import_library.BaseClass {
     }
     return this.formatedData;
   }
-  async readWithTypescript(val) {
-    if (!this.rawWarning && !val) {
+  async readWithTypescript(data, cmd) {
+    if (!this.rawWarning && !cmd) {
       throw new Error("readWithTypescript called without rawWarning or val!");
     }
-    const data = await this.library.readWithJsonata(this.rawWarning, val.node);
-    switch (val.cmd) {
+    switch (cmd) {
       case "dayoftheweek": {
         return new Date(data).toLocaleDateString("de-DE", { weekday: "long" });
+      }
+      case "translate": {
+        return this.library.getTranslation(data);
       }
     }
     return "";
