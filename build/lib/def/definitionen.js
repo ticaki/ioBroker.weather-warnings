@@ -1584,7 +1584,7 @@ const PROVIDER_OPTIONS = {
     }
   },
   zamgService: {
-    url: "https://warnungen.zamg.at/wsapp/api/getWarningsForCoords?lon=#  #&lat=#+  +#1&lang=de"
+    url: "https://warnungen.zamg.at/wsapp/api/getWarningsForCoords?lat=#  #&lon=#+  +#1&lang=de"
   },
   uwzService: {
     url: `http://feed.alertspro.meteogroup.com/AlertsPro/AlertsProPollService.php?method=getWarning&language=de&areaID=#  #`
