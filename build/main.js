@@ -42,7 +42,12 @@ class WeatherWarnings extends utils.Adapter {
     this.providerController = new import_provider.ProviderController(this);
   }
   async onReady() {
-    this.log.info(`Refresh Interval: ${this.config.refreshTime} minutes`);
+    if (this.providerController) {
+      this.providerController.init();
+      this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 6e4} minutes`);
+    } else {
+      throw new Error("Provider controller doesnt exists.");
+    }
     this.library.internalConvert();
     setTimeout(
       async function(self) {

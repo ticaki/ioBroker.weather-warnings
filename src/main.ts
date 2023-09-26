@@ -11,6 +11,7 @@ import 'source-map-support/register';
 import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
+import { existsSync } from 'fs';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -38,7 +39,12 @@ class WeatherWarnings extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     private async onReady(): Promise<void> {
-        this.log.info(`Refresh Interval: ${this.config.refreshTime} minutes`);
+        if (this.providerController) {
+            this.providerController.init();
+            this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 60000} minutes`);
+        } else {
+            throw new Error('Provider controller doesnt exists.');
+        }
         this.library.internalConvert();
         setTimeout(
             async function (self: any) {

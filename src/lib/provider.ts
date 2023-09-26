@@ -167,12 +167,10 @@ class BaseProvider extends BaseClass {
                 return 0;
             });
             await this.messages[m].writeFormatedKeys(m);
-            this.library.garbageColleting(
-                `${this.name}.formatedKeys`,
-                (this.providerController.refreshTime || 600000) / 2,
-            );
+
             await this.messages[m].formatMessages();
         }
+        this.library.garbageColleting(`${this.name}.formatedKeys`, (this.providerController.refreshTime || 600000) / 2);
     }
     /**
      * generic write function for flat Objects
@@ -383,10 +381,12 @@ export class ProviderController extends BaseClass {
     refreshTimeRef = null;
     connection = true;
     name = 'provider';
-    refreshTime: number;
+    refreshTime: number = 300000;
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
+    }
+    init(): void {
         this.refreshTime = (this.adapter.config.refreshTime < 5 ? 5 : this.adapter.config.refreshTime) * 60000;
     }
 
@@ -440,7 +440,7 @@ export class ProviderController extends BaseClass {
         this.provider = [];
         if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);
     }
-
+    sendNoMessages(): void {}
     updateEndless(that: ProviderController): void {
         that.connection = false;
         if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);

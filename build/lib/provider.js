@@ -138,12 +138,9 @@ class BaseProvider extends import_library.BaseClass {
         return 0;
       });
       await this.messages[m].writeFormatedKeys(m);
-      this.library.garbageColleting(
-        `${this.name}.formatedKeys`,
-        (this.providerController.refreshTime || 6e5) / 2
-      );
       await this.messages[m].formatMessages();
     }
+    this.library.garbageColleting(`${this.name}.formatedKeys`, (this.providerController.refreshTime || 6e5) / 2);
   }
   async dumpData(prefix, data) {
     if (!prefix || !data || typeof data !== "object")
@@ -319,9 +316,11 @@ class ProviderController extends import_library.BaseClass {
   refreshTimeRef = null;
   connection = true;
   name = "provider";
-  refreshTime;
+  refreshTime = 3e5;
   constructor(adapter) {
     super(adapter, "provider");
+  }
+  init() {
     this.refreshTime = (this.adapter.config.refreshTime < 5 ? 5 : this.adapter.config.refreshTime) * 6e4;
   }
   createProviderIfNotExist(options) {
@@ -374,6 +373,8 @@ class ProviderController extends import_library.BaseClass {
     this.provider = [];
     if (this.refreshTimeRef)
       this.adapter.clearTimeout(this.refreshTimeRef);
+  }
+  sendNoMessages() {
   }
   updateEndless(that) {
     that.connection = false;
