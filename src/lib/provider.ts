@@ -31,6 +31,7 @@ type CoordinateProvideOptionsType = {
     providerController: ProviderController;
 };
 
+/** Base class for every provider */
 class BaseProvider extends BaseClass {
     service: providerServices;
     url: string = '';
@@ -137,7 +138,7 @@ class BaseProvider extends BaseClass {
             const objDef = await this.library.getObjectDefFromJson(`info.testMode`, genericStateObjects);
             this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
             if (this.adapter.config.useTestWarnings) {
-                return getTestData(this.service);
+                return this.library.cloneGenericObject(getTestData(this.service) as object) as DataImportType;
             } else {
                 const result = await axios.get(this.url);
                 if (result.status == 200) {
@@ -157,9 +158,19 @@ class BaseProvider extends BaseClass {
         await this.setConnected(false);
         return null;
     }
+    //** Called at the end of updateData() from every childclass */
     async finishUpdateData(): Promise<void> {
         for (let m = 0; m < this.messages.length; m++) {
+            this.messages.sort((a, b) => {
+                if (a.formatedData && a.formatedData.startunixtime && b.formatedData && b.formatedData.startunixtime)
+                    return (a.formatedData.startunixtime as number) - (b.formatedData.startunixtime as number);
+                return 0;
+            });
             await this.messages[m].writeFormatedKeys(m);
+            this.library.garbageColleting(
+                `${this.name}.formatedKeys`,
+                (this.providerController.refreshTime || 600000) / 2,
+            );
             await this.messages[m].formatMessages();
         }
     }
@@ -186,21 +197,23 @@ class BaseProvider extends BaseClass {
             data,
         );
     }
-    async sendMessages(override = false): Promise<number> {
+    /** Call on ever message sendMessage(), and remove notDelete == false messages after this. */
+    async sendMessages(override = false): Promise<void> {
         if (this.messages.length == 0 && !override) {
             /**
              * All Warnings removed should be done by providercontroller.
              */
-            return 0;
+            return;
         } else {
             /**
              * send Messages, remove old one
              */
-            let messagesSend = 0;
-            for (let m = 0; m < this.messages.length; m++) {
-                messagesSend += await this.messages[m].sendMessage();
+
+            for (const m in this.messages) {
+                const removeIt = await this.messages[m].sendMessage();
+                if (removeIt) this.messages.splice(Number(m), 1);
             }
-            return messagesSend;
+            return;
         }
     }
 }
@@ -217,12 +230,15 @@ export class DWDProvider extends BaseProvider {
                 : PROVIDER_OPTIONS.dwdService.url_appendix_town);
         this.url = this.setUrl(url, [this.warncellId]);
     }
-
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as dataImportDwdType;
         if (!result) return;
         //this.log.debug(JSON.stringify(result));
         this.log.debug(`Got ${result.totalFeatures} warnings from server`);
+        result.features.sort((a, b) => {
+            return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
+        });
+        this.messages.forEach((a) => (a.notDeleted = false));
         for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.totalFeatures; a++) {
             const w = result.features[a];
             if (w.properties.STATUS == 'Test') continue;
@@ -251,13 +267,13 @@ export class DWDProvider extends BaseProvider {
                 for (const m2 in this.messages) {
                     const delMsg = this.messages[m2];
                     if (msg === delMsg) continue;
-                    if (delMsg.notDeleted) continue;
+                    //if (delMsg.notDeleted) continue;
                     if (delMsg.formatedData === undefined) continue; // überflüssig?
                     if (delMsg.rawWarning.EC_II == msg.rawWarning.EC_II) {
                         if (
                             delMsg.formatedData.warnlevelnumber !== undefined &&
                             formatedData.warnlevelnumber !== undefined &&
-                            delMsg.formatedData.warnlevelnumber >= formatedData.warnlevelnumber
+                            delMsg.formatedData.warnlevelnumber <= formatedData.warnlevelnumber
                         ) {
                             msg.silentUpdate();
                         }
@@ -293,8 +309,13 @@ export class ZAMGProvider extends BaseProvider {
             this.log.debug(`Got 0 warnings from server`);
             return;
         } else this.log.debug(`Got ${result.properties.warnings.length} warnings from server`);
+        result.properties.warnings.sort((a, b) => {
+            return Number(a.properties.rawinfo.start) - Number(b.properties.rawinfo.start);
+        });
+        this.messages.forEach((a) => (a.notDeleted = false));
         for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
             // special case for zamg
+            result.properties.warnings[a].properties.location = result.properties.location.properties.name;
             result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
             await super.updateData(result.properties.warnings[a].properties, a);
 
@@ -322,22 +343,26 @@ export class UWZProvider extends BaseProvider {
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as dataImportUWZType;
-        if (result && result.results) {
-            for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
-                await super.updateData(result.results[a], a);
+        if (!result || !result.results) return;
+        result.results.sort((a, b) => {
+            return a.dtgStart - b.dtgStart;
+        });
+        this.messages.forEach((a) => (a.notDeleted = false));
+        for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
+            await super.updateData(result.results[a], a);
 
-                const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
-                if (index == -1) {
-                    const nmessage = new Messages(this.adapter, 'uwz-msg', this, result.results[a]);
-                    await nmessage.init();
-                    this.messages.push(nmessage);
-                } else {
-                    this.messages[index].updateData(result.results[a]);
-                }
+            const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
+            if (index == -1) {
+                const nmessage = new Messages(this.adapter, 'uwz-msg', this, result.results[a]);
+                await nmessage.init();
+                this.messages.push(nmessage);
+            } else {
+                this.messages[index].updateData(result.results[a]);
             }
-            //this.log.debug(JSON.stringify(result));
-            this.log.debug(`Got ${result.results.length} warnings from server`);
         }
+        //this.log.debug(JSON.stringify(result));
+        this.log.debug(`Got ${result.results.length} warnings from server`);
+
         this.library.garbageColleting(`${this.name}.warning`);
         await this.finishUpdateData();
     }
@@ -357,11 +382,11 @@ export class ProviderController extends BaseClass {
     provider: ProvideClassType[] = [];
     refreshTimeRef = null;
     connection = true;
-    name = 'all';
+    name = 'provider';
+    refreshTime: number;
 
     constructor(adapter: WeatherWarnings) {
-        super(adapter, 'Provider Controller');
-        //@ts-expect-error write code for next line
+        super(adapter, 'provider');
         this.refreshTime = (this.adapter.config.refreshTime < 5 ? 5 : this.adapter.config.refreshTime) * 60000;
     }
 
@@ -432,15 +457,37 @@ export class ProviderController extends BaseClass {
                 that.refreshTimeRef = that.adapter.setTimeout(updater, 500, that, index);
             } else {
                 that.setConnected();
-                let messagesSend = 0;
+                let activMessages = 0;
                 for (const a in that.provider) {
-                    try {
-                        messagesSend += await that.provider[a].sendMessages();
-                    } catch (error) {
-                        that.log.error(error);
+                    let am = 0;
+                    for (const b in that.provider[a].messages) {
+                        if (that.provider[a].messages[b].notDeleted) am++;
                     }
+                    that.adapter.library.writedp(
+                        `${that.provider[a].name}.activWarnings`,
+                        am,
+                        genericStateObjects.activWarnings,
+                    );
+                    activMessages += am;
                 }
-                that.log.debug(`send ${messagesSend} messages.`);
+
+                if (activMessages) {
+                    for (const a in that.provider) {
+                        try {
+                            await that.provider[a].sendMessages();
+                        } catch (error) {
+                            that.log.error(error);
+                        }
+                    }
+                } else {
+                    that.sendNoMessages();
+                }
+                that.adapter.library.writedp(
+                    `${that.name}.activWarnings`,
+                    activMessages,
+                    genericStateObjects.activWarnings,
+                );
+                that.log.debug(`We have ${activMessages} active messages.`);
                 that.refreshTimeRef = that.adapter.setTimeout(that.updateEndless, that.refreshTime || 600000, that);
             }
         }

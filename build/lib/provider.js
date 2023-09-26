@@ -110,7 +110,7 @@ class BaseProvider extends import_library.BaseClass {
       const objDef = await this.library.getObjectDefFromJson(`info.testMode`, import_definitionen.genericStateObjects);
       this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
       if (this.adapter.config.useTestWarnings) {
-        return (0, import_test_warnings.getTestData)(this.service);
+        return this.library.cloneGenericObject((0, import_test_warnings.getTestData)(this.service));
       } else {
         const result = await import_axios.default.get(this.url);
         if (result.status == 200) {
@@ -132,7 +132,16 @@ class BaseProvider extends import_library.BaseClass {
   }
   async finishUpdateData() {
     for (let m = 0; m < this.messages.length; m++) {
+      this.messages.sort((a, b) => {
+        if (a.formatedData && a.formatedData.startunixtime && b.formatedData && b.formatedData.startunixtime)
+          return a.formatedData.startunixtime - b.formatedData.startunixtime;
+        return 0;
+      });
       await this.messages[m].writeFormatedKeys(m);
+      this.library.garbageColleting(
+        `${this.name}.formatedKeys`,
+        (this.providerController.refreshTime || 6e5) / 2
+      );
       await this.messages[m].formatMessages();
     }
   }
@@ -156,13 +165,14 @@ class BaseProvider extends import_library.BaseClass {
   }
   async sendMessages(override = false) {
     if (this.messages.length == 0 && !override) {
-      return 0;
+      return;
     } else {
-      let messagesSend = 0;
-      for (let m = 0; m < this.messages.length; m++) {
-        messagesSend += await this.messages[m].sendMessage();
+      for (const m in this.messages) {
+        const removeIt = await this.messages[m].sendMessage();
+        if (removeIt)
+          this.messages.splice(Number(m), 1);
       }
-      return messagesSend;
+      return;
     }
   }
 }
@@ -178,6 +188,10 @@ class DWDProvider extends BaseProvider {
     if (!result)
       return;
     this.log.debug(`Got ${result.totalFeatures} warnings from server`);
+    result.features.sort((a, b) => {
+      return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
+    });
+    this.messages.forEach((a) => a.notDeleted = false);
     for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.totalFeatures; a++) {
       const w = result.features[a];
       if (w.properties.STATUS == "Test")
@@ -203,12 +217,10 @@ class DWDProvider extends BaseProvider {
           const delMsg = this.messages[m2];
           if (msg === delMsg)
             continue;
-          if (delMsg.notDeleted)
-            continue;
           if (delMsg.formatedData === void 0)
             continue;
           if (delMsg.rawWarning.EC_II == msg.rawWarning.EC_II) {
-            if (delMsg.formatedData.warnlevelnumber !== void 0 && formatedData.warnlevelnumber !== void 0 && delMsg.formatedData.warnlevelnumber >= formatedData.warnlevelnumber) {
+            if (delMsg.formatedData.warnlevelnumber !== void 0 && formatedData.warnlevelnumber !== void 0 && delMsg.formatedData.warnlevelnumber <= formatedData.warnlevelnumber) {
               msg.silentUpdate();
             }
             this.messages[m2].delete();
@@ -239,7 +251,12 @@ class ZAMGProvider extends BaseProvider {
       return;
     } else
       this.log.debug(`Got ${result.properties.warnings.length} warnings from server`);
+    result.properties.warnings.sort((a, b) => {
+      return Number(a.properties.rawinfo.start) - Number(b.properties.rawinfo.start);
+    });
+    this.messages.forEach((a) => a.notDeleted = false);
     for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
+      result.properties.warnings[a].properties.location = result.properties.location.properties.name;
       result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
       await super.updateData(result.properties.warnings[a].properties, a);
       const index = this.messages.findIndex(
@@ -265,20 +282,24 @@ class UWZProvider extends BaseProvider {
   }
   async updateData() {
     const result = await this.getDataFromProvider();
-    if (result && result.results) {
-      for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
-        await super.updateData(result.results[a], a);
-        const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
-        if (index == -1) {
-          const nmessage = new import_messages.Messages(this.adapter, "uwz-msg", this, result.results[a]);
-          await nmessage.init();
-          this.messages.push(nmessage);
-        } else {
-          this.messages[index].updateData(result.results[a]);
-        }
+    if (!result || !result.results)
+      return;
+    result.results.sort((a, b) => {
+      return a.dtgStart - b.dtgStart;
+    });
+    this.messages.forEach((a) => a.notDeleted = false);
+    for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
+      await super.updateData(result.results[a], a);
+      const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
+      if (index == -1) {
+        const nmessage = new import_messages.Messages(this.adapter, "uwz-msg", this, result.results[a]);
+        await nmessage.init();
+        this.messages.push(nmessage);
+      } else {
+        this.messages[index].updateData(result.results[a]);
       }
-      this.log.debug(`Got ${result.results.length} warnings from server`);
     }
+    this.log.debug(`Got ${result.results.length} warnings from server`);
     this.library.garbageColleting(`${this.name}.warning`);
     await this.finishUpdateData();
   }
@@ -297,9 +318,10 @@ class ProviderController extends import_library.BaseClass {
   provider = [];
   refreshTimeRef = null;
   connection = true;
-  name = "all";
+  name = "provider";
+  refreshTime;
   constructor(adapter) {
-    super(adapter, "Provider Controller");
+    super(adapter, "provider");
     this.refreshTime = (this.adapter.config.refreshTime < 5 ? 5 : this.adapter.config.refreshTime) * 6e4;
   }
   createProviderIfNotExist(options) {
@@ -372,15 +394,37 @@ class ProviderController extends import_library.BaseClass {
         that2.refreshTimeRef = that2.adapter.setTimeout(updater, 500, that2, index);
       } else {
         that2.setConnected();
-        let messagesSend = 0;
+        let activMessages = 0;
         for (const a in that2.provider) {
-          try {
-            messagesSend += await that2.provider[a].sendMessages();
-          } catch (error) {
-            that2.log.error(error);
+          let am = 0;
+          for (const b in that2.provider[a].messages) {
+            if (that2.provider[a].messages[b].notDeleted)
+              am++;
           }
+          that2.adapter.library.writedp(
+            `${that2.provider[a].name}.activWarnings`,
+            am,
+            import_definitionen.genericStateObjects.activWarnings
+          );
+          activMessages += am;
         }
-        that2.log.debug(`send ${messagesSend} messages.`);
+        if (activMessages) {
+          for (const a in that2.provider) {
+            try {
+              await that2.provider[a].sendMessages();
+            } catch (error) {
+              that2.log.error(error);
+            }
+          }
+        } else {
+          that2.sendNoMessages();
+        }
+        that2.adapter.library.writedp(
+          `${that2.name}.activWarnings`,
+          activMessages,
+          import_definitionen.genericStateObjects.activWarnings
+        );
+        that2.log.debug(`We have ${activMessages} active messages.`);
         that2.refreshTimeRef = that2.adapter.setTimeout(that2.updateEndless, that2.refreshTime || 6e5, that2);
       }
     }

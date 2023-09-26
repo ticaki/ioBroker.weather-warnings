@@ -111,6 +111,18 @@ const genericStateObjects = {
       },
       native: {}
     }
+  },
+  activWarnings: {
+    _id: "activWarnings",
+    type: "state",
+    common: {
+      name: "Number of warnings.",
+      type: "number",
+      role: "text",
+      read: true,
+      write: false
+    },
+    native: {}
   }
 };
 const statesObjectsWarnings = {
@@ -1235,6 +1247,18 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      location: {
+        _id: "location",
+        type: "state",
+        common: {
+          name: "Location",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       meteotext: {
         _id: "meteotext",
         type: "state",
@@ -1493,6 +1517,18 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
+          name: "Level of Warning as Levelname",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      warnlevelcolorname: {
+        _id: "begin",
+        type: "state",
+        common: {
           name: "Level of Warning as Colorname",
           type: "string",
           role: "text",
@@ -1513,11 +1549,11 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
-      warnlevelcolor: {
+      warnlevelcolorhex: {
         _id: "begin",
         type: "state",
         common: {
-          name: "Level of Warning as Color",
+          name: "Level of Warning as Color(hex)",
           type: "string",
           role: "text",
           read: true,
@@ -1544,6 +1580,18 @@ const statesObjectsWarnings = {
           name: "Location",
           type: "string",
           role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      startunixtime: {
+        _id: "startunixtime",
+        type: "state",
+        common: {
+          name: "Unixtimestamp for starttime (internal use)",
+          type: "number",
+          role: "value",
           read: true,
           write: false
         },

@@ -35,10 +35,11 @@ class Messages extends import_library.BaseClass {
   rawWarning;
   newMessage = true;
   updated = false;
-  notDeleted = false;
+  notDeleted = true;
   messages = [];
   formatedKeyCommand = {
     dwdService: {
+      startunixtime: { node: `$toMillis(ONSET)` },
       starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
       startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
       endtime: { node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -56,14 +57,20 @@ class Messages extends import_library.BaseClass {
       weathertext: { node: `` },
       ceiling: { node: `$floor(CEILING * 0.3048)` },
       altitude: { node: `$floor(ALTITUDE * 0.3048)` },
-      warnlevelcolor: {
+      warnlevelcolorhex: {
         node: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
           import_messages_def4.color.generic
         )},$string($temp)))`
       },
-      warnlevelname: {
+      warnlevelcolorname: {
         node: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
           import_messages_def4.color.textGeneric
+        )},$string($temp)))`,
+        cmd: "translate"
+      },
+      warnlevelname: {
+        node: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+          import_messages_def.textLevels.textGeneric
         )},$string($temp)))`,
         cmd: "translate"
       },
@@ -75,6 +82,7 @@ class Messages extends import_library.BaseClass {
       location: { node: `AREADESC` }
     },
     uwzService: {
+      startunixtime: { node: `$number(dtgStart)` },
       starttime: { node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
       startdate: { node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
       endtime: { node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -92,10 +100,10 @@ class Messages extends import_library.BaseClass {
       weathertext: { node: `` },
       ceiling: { node: `payload.altMin` },
       altitude: { node: `payload.altMax` },
-      warnlevelname: {
-        node: `$string(($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+      warnlevelcolorname: {
+        node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
           import_messages_def3.level.uwz
-        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def4.color.textGeneric)},$string($l))))`,
+        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def4.color.textGeneric)},$string($l)))`,
         cmd: "translate"
       },
       warnlevelnumber: {
@@ -103,12 +111,18 @@ class Messages extends import_library.BaseClass {
           import_messages_def3.level.uwz
         )}, $i[2]))`
       },
-      warnlevelcolor: {
+      warnlevelcolorhex: {
         node: `$lookup(${JSON.stringify(
           import_messages_def4.color.generic
         )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
           import_messages_def3.level.uwz
         )}, $i[2]))))`
+      },
+      warnlevelname: {
+        node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+          import_messages_def3.level.uwz
+        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def.textLevels.textGeneric)},$string($l)))`,
+        cmd: "translate"
       },
       warntypename: {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.uwzService)}, $string(type))`,
@@ -117,6 +131,7 @@ class Messages extends import_library.BaseClass {
       location: { node: `areaID` }
     },
     zamgService: {
+      startunixtime: { node: `$number(rawinfo.start)` },
       starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
       startdate: { node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
       endtime: { node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -134,21 +149,25 @@ class Messages extends import_library.BaseClass {
       weathertext: { node: `meteotext` },
       ceiling: { node: `` },
       altitude: { node: `` },
-      warnlevelname: {
+      warnlevelcolorname: {
         node: `$lookup(${JSON.stringify(import_messages_def4.color.textGeneric)},$string(rawinfo.wlevel))`,
         cmd: "translate"
       },
       warnlevelnumber: {
         node: `$string(rawinfo.wlevel)`
       },
-      warnlevelcolor: {
+      warnlevelcolorhex: {
         node: `$lookup(${JSON.stringify(import_messages_def4.color.zamgColor)},$string(rawinfo.wlevel))`
+      },
+      warnlevelname: {
+        node: `$lookup(${JSON.stringify(import_messages_def.textLevels.textGeneric)},$string(rawinfo.wlevel))`,
+        cmd: "translate"
       },
       warntypename: {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.zamgService)},$string(rawinfo.wtype))`,
         cmd: "translate"
       },
-      location: { node: `` },
+      location: { node: `location` },
       instruction: { node: `empfehlungen` }
     },
     default: {
@@ -165,7 +184,8 @@ class Messages extends import_library.BaseClass {
       altitude: { node: `` },
       warnlevelname: { node: `` },
       warnlevelnumber: { node: `` },
-      warnlevelcolor: { node: `` },
+      warnlevelcolorhex: { node: `` },
+      warnlevelcolorname: { node: `` },
       warntypename: { node: `` },
       location: { node: `` },
       instruction: { node: `` }
@@ -208,7 +228,8 @@ class Messages extends import_library.BaseClass {
           altitude: { node: `` },
           warnlevelname: { node: `` },
           warnlevelnumber: { node: `` },
-          warnlevelcolor: { node: `` },
+          warnlevelcolorhex: { node: `` },
+          warnlevelcolorname: { node: `` },
           warntypename: { node: `` },
           location: { node: `` }
         };
@@ -234,7 +255,13 @@ class Messages extends import_library.BaseClass {
         const key = t[0];
         if (key && this.formatedData[key] !== void 0)
           msg += this.formatedData[key];
-        else
+        else if (key && this.formatedData[key.toLowerCase()] !== void 0) {
+          let m = this.formatedData[key.toLowerCase()];
+          if (typeof m == "string" && m.length > 0) {
+            m = m[0].toUpperCase() + (key[key.length - 1] == key[key.length - 1].toUpperCase() ? m.slice(1).toUpperCase() : m.slice(1));
+          }
+          msg += m;
+        } else
           msg += key;
         if (t.length > 1)
           msg += t[1];
@@ -300,9 +327,10 @@ class Messages extends import_library.BaseClass {
   }
   silentUpdate() {
     this.newMessage = false;
+    this.notDeleted = true;
   }
   async sendMessage(override = false) {
-    if (!this.newMessage && !override || this.messages.length == 0)
+    if (!this.newMessage && !override || this.messages.length == 0 || !this.notDeleted)
       return 0;
     for (let a = 0; a < this.messages.length; a++) {
       const msg = this.messages[a];
@@ -315,15 +343,19 @@ class Messages extends import_library.BaseClass {
     return 1;
   }
   delete() {
-    this.library.garbageColleting(`${this.provider.name}.formated`);
+    this.notDeleted = false;
+    this.newMessage = false;
+    this.updated = false;
   }
   async writeFormatedKeys(index) {
-    this.library.writeFromJson(
-      `${this.provider.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
-      `allService.formatedkeys`,
-      import_definitionen.statesObjectsWarnings,
-      this.formatedData
-    );
+    if (this.notDeleted) {
+      this.library.writeFromJson(
+        `${this.provider.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
+        `allService.formatedkeys`,
+        import_definitionen.statesObjectsWarnings,
+        this.formatedData
+      );
+    }
   }
   addFormatedDefinition(key, arg) {
     if (arg === void 0)

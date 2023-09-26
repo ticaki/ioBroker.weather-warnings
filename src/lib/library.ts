@@ -3,7 +3,6 @@ import { genericStateObjects, statesObjectsWarningsType } from './def/definition
 import WeatherWarnings from '../main';
 import _fs from 'fs';
 import { exec } from 'child_process';
-import { color, warnTypeName } from './def/messages-def';
 
 // only change this for other adapters
 type AdapterClassDefinition = WeatherWarnings;
@@ -427,7 +426,7 @@ async covertI18n(name:string, json:{[key: string]: any}):Promise<any> {
     // npm run translate -- -a ./.dataTest/Nodes/admin
     // eslint-disable-next-line
  async internalConvert():Promise<void> {
-        const json = color.textGeneric;
+        const json = {};
         return;
         if (_fs.existsSync('./.dev-data')) {
             await this.writeNodes('translation', json);

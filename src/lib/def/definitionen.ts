@@ -40,6 +40,7 @@ export const genericStateObjects: {
     messageStates: customChannelType & {
         message: ioBroker.StateObject;
     };
+    activWarnings: ioBroker.StateObject;
 } = {
     info: {
         _channel: {
@@ -129,6 +130,18 @@ export const genericStateObjects: {
             native: {},
         },
     },
+    activWarnings: {
+        _id: 'activWarnings',
+        type: 'state',
+        common: {
+            name: 'Number of warnings.',
+            type: 'number',
+            role: 'text',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
 };
 
 export const statesObjectsWarnings: statesObjectsWarningsType = {
@@ -161,7 +174,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'area description',
-
                     type: 'string',
                     role: '',
                     read: true,
@@ -174,7 +186,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'NAME',
-
                     type: 'string',
                     role: '',
                     read: true,
@@ -187,7 +198,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'WARNCELLID',
-
                     type: 'number',
                     role: '',
                     read: true,
@@ -200,7 +210,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'IDENTIFIER',
-
                     type: 'string',
                     role: '',
                     read: true,
@@ -213,7 +222,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'SENDER',
-
                     type: 'string',
                     role: '',
                     read: true,
@@ -226,7 +234,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'SENT',
-
                     type: 'string',
                     role: '',
                     read: true,
@@ -239,7 +246,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'STATUS',
-
                     type: 'string',
                     role: '',
                     read: true,
@@ -252,7 +258,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'MSGTYPE',
-
                     type: 'string',
                     role: '',
                     read: true,
@@ -265,7 +270,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'SOURCE',
-
                     type: 'string',
                     role: '',
                     read: true,
@@ -1192,7 +1196,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Course id',
-
                     type: 'number',
                     role: 'value',
                     read: true,
@@ -1205,7 +1208,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Type of Warning as ID',
-
                     type: 'number',
                     role: 'value',
                     read: true,
@@ -1231,7 +1233,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'End Time of Warning',
-
                     type: 'string',
                     role: 'text',
                     read: true,
@@ -1244,7 +1245,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Create Time of Warning',
-
                     type: 'string',
                     role: 'text',
                     read: true,
@@ -1257,7 +1257,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Short Text of Warning',
-
                     type: 'string',
                     role: 'text',
                     read: true,
@@ -1296,7 +1295,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Messagetype',
-
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            location: {
+                _id: 'location',
+                type: 'state',
+                common: {
+                    name: 'Location',
                     type: 'string',
                     role: 'text',
                     read: true,
@@ -1309,7 +1319,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Weather-related information',
-
                     type: 'string',
                     role: 'text',
                     read: true,
@@ -1322,7 +1331,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Update reason',
-
                     type: 'string',
                     role: 'text',
                     read: true,
@@ -1335,7 +1343,6 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Warnlevel id',
-
                     type: 'number',
                     role: 'value',
                     read: true,
@@ -1567,6 +1574,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 _id: 'begin',
                 type: 'state',
                 common: {
+                    name: 'Level of Warning as Levelname',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            warnlevelcolorname: {
+                _id: 'begin',
+                type: 'state',
+                common: {
                     name: 'Level of Warning as Colorname',
                     type: 'string',
                     role: 'text',
@@ -1587,11 +1606,11 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
-            warnlevelcolor: {
+            warnlevelcolorhex: {
                 _id: 'begin',
                 type: 'state',
                 common: {
-                    name: 'Level of Warning as Color',
+                    name: 'Level of Warning as Color(hex)',
                     type: 'string',
                     role: 'text',
                     read: true,
@@ -1618,6 +1637,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                     name: 'Location',
                     type: 'string',
                     role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            startunixtime: {
+                _id: 'startunixtime',
+                type: 'state',
+                common: {
+                    name: 'Unixtimestamp for starttime (internal use)',
+                    type: 'number',
+                    role: 'value',
                     read: true,
                     write: false,
                 },

@@ -50,7 +50,6 @@ var import_jsonata = __toESM(require("jsonata"));
 var import_definitionen = require("./def/definitionen");
 var import_fs = __toESM(require("fs"));
 var import_child_process = require("child_process");
-var import_messages_def = require("./def/messages-def");
 var _adapter, _prefix;
 class BaseClass {
   unload = false;
@@ -367,7 +366,7 @@ class Library extends BaseClass {
     );
   }
   async internalConvert() {
-    const json = import_messages_def.color.textGeneric;
+    const json = {};
     return;
     if (import_fs.default.existsSync("./.dev-data")) {
       await this.writeNodes("translation", json);

@@ -1,6 +1,6 @@
 import WeatherWarnings from '../main';
 import { genericStateObjects, statesObjectsWarnings } from './def/definitionen';
-import { warnTypeName } from './def/messages-def';
+import { textLevels, warnTypeName } from './def/messages-def';
 import { dwdLevel } from './def/messages-def';
 import { level } from './def/messages-def';
 import { color } from './def/messages-def';
@@ -15,17 +15,20 @@ export class Messages extends BaseClass {
     provider: ProvideClassType;
     library: Library;
     formatedKeysJsonataDefinition: customformatedKeysJsonataDefinition = {};
-    formatedData: customFormatedKeysDef | undefined;
+    formatedData: customFormatedKeysInit;
     rawWarning: any;
-
-    newMessage: boolean = true; //display a new message for sending messages
+    /** message is a new message */
+    newMessage: boolean = true;
+    /** message got a update lately */
     updated: boolean = false;
-    notDeleted: boolean = false;
+    /**dont delete this message */
+    notDeleted: boolean = true;
 
     messages: { message: string; key: string }[] = [];
-
+    /** jsonata/typscript cmd to gather data from warning json */
     formatedKeyCommand: { [key: string]: customformatedKeysJsonataDefinition } = {
         dwdService: {
+            startunixtime: { node: `$toMillis(ONSET)` },
             starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
             startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
             endtime: { node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -43,14 +46,20 @@ export class Messages extends BaseClass {
             weathertext: { node: `` },
             ceiling: { node: `$floor(CEILING * 0.3048)` }, // max höhe
             altitude: { node: `$floor(ALTITUDE * 0.3048)` }, // min höhe
-            warnlevelcolor: {
+            warnlevelcolorhex: {
                 node: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
                     color.generic,
                 )},$string($temp)))`,
             }, // RGB im Hexformat
-            warnlevelname: {
+            warnlevelcolorname: {
                 node: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
                     color.textGeneric,
+                )},$string($temp)))`,
+                cmd: 'translate',
+            },
+            warnlevelname: {
+                node: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+                    textLevels.textGeneric,
                 )},$string($temp)))`,
                 cmd: 'translate',
             },
@@ -64,6 +73,7 @@ export class Messages extends BaseClass {
         },
 
         uwzService: {
+            startunixtime: { node: `$number(dtgStart)` },
             starttime: { node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
             startdate: { node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
             endtime: { node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -81,10 +91,10 @@ export class Messages extends BaseClass {
             weathertext: { node: `` },
             ceiling: { node: `payload.altMin` }, // max höhe
             altitude: { node: `payload.altMax` }, // min höhe
-            warnlevelname: {
-                node: `$string(($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+            warnlevelcolorname: {
+                node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
-                )}, $i[2]); $lookup(${JSON.stringify(color.textGeneric)},$string($l))))`,
+                )}, $i[2]); $lookup(${JSON.stringify(color.textGeneric)},$string($l)))`,
                 cmd: 'translate',
             },
             warnlevelnumber: {
@@ -92,12 +102,18 @@ export class Messages extends BaseClass {
                     level.uwz,
                 )}, $i[2]))`,
             },
-            warnlevelcolor: {
+            warnlevelcolorhex: {
                 node: `$lookup(${JSON.stringify(
                     color.generic,
                 )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
                 )}, $i[2]))))`,
+            },
+            warnlevelname: {
+                node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                    level.uwz,
+                )}, $i[2]); $lookup(${JSON.stringify(textLevels.textGeneric)},$string($l)))`,
+                cmd: 'translate',
             },
             warntypename: {
                 node: `$lookup(${JSON.stringify(warnTypeName.uwzService)}, $string(type))`,
@@ -106,6 +122,7 @@ export class Messages extends BaseClass {
             location: { node: `areaID` },
         },
         zamgService: {
+            startunixtime: { node: `$number(rawinfo.start)` },
             starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
             startdate: { node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
             endtime: { node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -123,21 +140,25 @@ export class Messages extends BaseClass {
             weathertext: { node: `meteotext` },
             ceiling: { node: `` }, // max höhe
             altitude: { node: `` }, // min höhe
-            warnlevelname: {
+            warnlevelcolorname: {
                 node: `$lookup(${JSON.stringify(color.textGeneric)},$string(rawinfo.wlevel))`,
                 cmd: 'translate',
             },
             warnlevelnumber: {
                 node: `$string(rawinfo.wlevel)`,
             },
-            warnlevelcolor: {
+            warnlevelcolorhex: {
                 node: `$lookup(${JSON.stringify(color.zamgColor)},$string(rawinfo.wlevel))`,
+            },
+            warnlevelname: {
+                node: `$lookup(${JSON.stringify(textLevels.textGeneric)},$string(rawinfo.wlevel))`,
+                cmd: 'translate',
             },
             warntypename: {
                 node: `$lookup(${JSON.stringify(warnTypeName.zamgService)},$string(rawinfo.wtype))`,
                 cmd: 'translate',
             },
-            location: { node: `` },
+            location: { node: `location` },
             instruction: { node: `empfehlungen` },
         },
         default: {
@@ -154,7 +175,8 @@ export class Messages extends BaseClass {
             altitude: { node: `` }, // min höhe
             warnlevelname: { node: `` },
             warnlevelnumber: { node: `` },
-            warnlevelcolor: { node: `` },
+            warnlevelcolorhex: { node: `` },
+            warnlevelcolorname: { node: `` },
             warntypename: { node: `` },
             location: { node: `` },
             instruction: { node: `` },
@@ -200,15 +222,17 @@ export class Messages extends BaseClass {
                     altitude: { node: `` }, // min höhe
                     warnlevelname: { node: `` },
                     warnlevelnumber: { node: `` },
-                    warnlevelcolor: { node: `` },
+                    warnlevelcolorhex: { node: `` },
+                    warnlevelcolorname: { node: `` },
                     warntypename: { node: `` },
                     location: { node: `` },
                 };
         }
     }
-    async init(): Promise<customFormatedKeysDef> {
+    async init(): Promise<customFormatedKeysResult> {
         return await this.updateFormatedData(true);
     }
+
     async formatMessages(): Promise<void> {
         if (!this.formatedData) return;
         const templates = this.adapter.config.templateTable;
@@ -223,14 +247,25 @@ export class Messages extends BaseClass {
                 const t = token.split('}');
                 const key = t[0] as keyof customFormatedKeysDef;
                 if (key && this.formatedData[key] !== undefined) msg += this.formatedData[key];
-                else msg += key;
+                else if (key && this.formatedData[key.toLowerCase() as keyof customFormatedKeysDef] !== undefined) {
+                    let m = this.formatedData[key.toLowerCase() as keyof customFormatedKeysDef];
+                    if (typeof m == 'string' && m.length > 0) {
+                        m =
+                            m[0].toUpperCase() +
+                            (key[key.length - 1] == key[key.length - 1].toUpperCase()
+                                ? m.slice(1).toUpperCase()
+                                : m.slice(1));
+                    }
+                    msg += m;
+                } else msg += key;
                 if (t.length > 1) msg += t[1];
             }
             messages.push({ key: templates[a].templateKey, message: msg });
         }
         this.messages = messages;
     }
-    async updateFormatedData(update: boolean = false): Promise<customFormatedKeysDef> {
+
+    async updateFormatedData(update: boolean = false): Promise<customFormatedKeysResult> {
         if (!this.rawWarning && !this.formatedData) {
             throw new Error(`${this.log.getName()} rawWarning and formatedDate empty!`);
         }
@@ -286,15 +321,18 @@ export class Messages extends BaseClass {
         }
         return '';
     }
+    //** Update rawWanrings and dont delete message */
     updateData(data: object): void {
         this.rawWarning = data;
         this.notDeleted = true;
     }
+    //** dont send a message and dont delete this*/
     silentUpdate(): void {
         this.newMessage = false;
+        this.notDeleted = true;
     }
     async sendMessage(override = false): Promise<number> {
-        if ((!this.newMessage && !override) || this.messages.length == 0) return 0;
+        if ((!this.newMessage && !override) || this.messages.length == 0 || !this.notDeleted) return 0;
         for (let a = 0; a < this.messages.length; a++) {
             const msg = this.messages[a];
             this.library.writedp(
@@ -306,15 +344,19 @@ export class Messages extends BaseClass {
         return 1;
     }
     delete(): void {
-        this.library.garbageColleting(`${this.provider.name}.formated`);
+        this.notDeleted = false;
+        this.newMessage = false;
+        this.updated = false;
     }
     async writeFormatedKeys(index: number): Promise<void> {
-        this.library.writeFromJson(
-            `${this.provider.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
-            `allService.formatedkeys`,
-            statesObjectsWarnings,
-            this.formatedData,
-        );
+        if (this.notDeleted) {
+            this.library.writeFromJson(
+                `${this.provider.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
+                `allService.formatedkeys`,
+                statesObjectsWarnings,
+                this.formatedData,
+            );
+        }
     }
     addFormatedDefinition(
         key: keyof customformatedKeysJsonataDefinition,
@@ -332,7 +374,8 @@ type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
     : newKey;
 
 export type customformatedKeysJsonataDefinition = ChangeTypeOfKeys<customFormatedKeysDef, customFormatedKeysDefSubtype>;
-
+export type customFormatedKeysInit = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined> | undefined;
+export type customFormatedKeysResult = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined>;
 /*
 export type customformatedKeysJsonataDefinition = {
     starttime: customFormatedKeysDefSubtype;

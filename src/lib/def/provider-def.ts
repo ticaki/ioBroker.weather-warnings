@@ -1,7 +1,9 @@
+/**Available provider identifier strings */
 export type providerServices = 'dwdService' | 'zamgService' | 'ninaService' | 'uwzService' | 'metroService';
 
 type nullType = null | undefined | void;
 
+/** Full dwd import jsons */
 export type dataImportDwdType =
     | nullType
     | {
@@ -31,6 +33,7 @@ export type dataImportDwdType =
           };
       };
 
+/** dwd import json that we use */
 export type dataImportDwdTypeProperties = {
     AREADESC: string;
     NAME: string;
@@ -74,14 +77,14 @@ export type dataImportDwdTypeProperties = {
     INFO_ID: string;
     PROCESSTIME: string;
 };
-
+/**Full uwz import json. */
 export type dataImportUWZType =
     | nullType
     | {
           results: Array<dataImportUwzTypeProperties>;
           cached: number;
       };
-
+/**uwz import json that we use. */
 export type dataImportUwzTypeProperties = {
     center: string;
     areaID: string;
@@ -122,7 +125,7 @@ export type dataImportUwzTypeProperties = {
         altMax: number;
     };
 };
-
+/**Full zamg import json */
 export type dataImportZamgType =
     | nullType
     | {
@@ -146,9 +149,10 @@ export type dataImportZamgType =
               }>;
           };
       };
-
+/**zamg import json that we use. */
 export type dataImportZamgTypeProperties = {
     nachrichtentyp?: string;
+    location?: string;
     warnid: number;
     chgid: number;
     verlaufid: number;
@@ -193,22 +197,3 @@ export type DataImportType = nullType | dataImportDwdType | dataImportZamgType |
         },
     },
 };*/
-
-export interface warningDataKeys {
-    start: number;
-    end: number;
-    ec_ii_type: number;
-    picture: string;
-    level: number;
-    areaID: string;
-    altitudeStart: number;
-    altitudeEnd: number;
-    web: string;
-    webname: string;
-    typename: string;
-    description: string;
-    headline: string;
-    instruction: string;
-    urgency: string;
-    last_seen: number;
-}
