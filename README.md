@@ -20,11 +20,11 @@ Describe your project here
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.2.2-alpha1.0 (2023-09-26)
 * (ticaki) more CustomTokens,
 * translations for warntypes, warnlevelcolor,
 * total active warningcounts
-* remove old warnings 
+* remove old warnings
 
 ### 0.2.1-alpha.0 (2023-09-25)
 * (ticaki) initial release
