@@ -322,7 +322,7 @@ export class Library extends BaseClass {
      * @param states States that are to be read into the database during initialisation.
      * @returns void
      */
-    async initStates(states: { [key: string]: { val: ioBroker.StateValue; ts: number; ack: boolean } }): void {
+    async initStates(states: { [key: string]: { val: ioBroker.StateValue; ts: number; ack: boolean } }): Promise<void> {
         if (!states) return;
         for (const state in states) {
             const dp = state.replace(`${this.adapter.name}.${this.adapter.instance}.`, '');
