@@ -124,7 +124,7 @@ class BaseProvider extends import_library.BaseClass {
       if (import_axios.default.isAxiosError(error)) {
         this.log.warn(`Warn(21) axios error for ${this.getService()} url: ${this.url}`);
       } else {
-        this.log.error(`Error(22) no data for ${this.getService()} with Error ${error}`);
+        this.log.error(`Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`);
       }
     }
     await this.setConnected(false);
@@ -164,10 +164,26 @@ class BaseProvider extends import_library.BaseClass {
     if (this.messages.length == 0 && !override) {
       return;
     } else {
+      const jsonMessage = {};
       for (const m in this.messages) {
         const removeIt = await this.messages[m].sendMessage();
         if (removeIt)
           this.messages.splice(Number(m), 1);
+        else {
+          for (const k in this.messages[m].messages) {
+            const key = this.messages[m].messages[k].key;
+            const msg = this.messages[m].messages[k].message;
+            jsonMessage[key] = jsonMessage[key] || [];
+            jsonMessage[key].push(msg);
+          }
+        }
+      }
+      for (const key in jsonMessage) {
+        this.library.writedp(
+          `${this.name}.messages.${key}_array`,
+          JSON.stringify(jsonMessage[key]),
+          import_definitionen.genericStateObjects.messageStates.messageJson
+        );
       }
       return;
     }
@@ -177,8 +193,8 @@ class DWDProvider extends BaseProvider {
   constructor(adapter, options) {
     super(adapter, { ...options, service: "dwdService" }, `dwd`);
     this.warncellId = options.warncellId;
-    const url = import_definitionen.PROVIDER_OPTIONS.dwdService.url_base + (this.warncellId.startsWith("9") || this.warncellId.startsWith("10") ? import_definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_land : import_definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_town);
-    this.url = this.setUrl(url, [this.warncellId]);
+    const url = import_definitionen.PROVIDER_OPTIONS.dwdService.url_base + (this.warncellId.startsWith("9") || this.warncellId.startsWith("10") ? import_definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_land : import_definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_town) + import_definitionen.PROVIDER_OPTIONS.dwdService.url_language;
+    this.url = this.setUrl(url, [this.warncellId, options.language]);
   }
   async updateData() {
     const result = await this.getDataFromProvider();
@@ -237,7 +253,7 @@ class ZAMGProvider extends BaseProvider {
   constructor(adapter, options) {
     super(adapter, { ...options, service: "zamgService" }, `zamg`);
     this.warncellId = options.warncellId;
-    this.setUrl("", [this.warncellId[0], this.warncellId[1]]);
+    this.setUrl("", [this.warncellId[0], this.warncellId[1], options.language]);
   }
   async updateData() {
     const result = await this.getDataFromProvider();
@@ -275,7 +291,7 @@ class UWZProvider extends BaseProvider {
   constructor(adapter, options) {
     super(adapter, { ...options, service: "uwzService" }, `uwz`);
     this.warncellId = options.warncellId.toUpperCase();
-    this.setUrl("", [this.warncellId]);
+    this.setUrl("", [this.warncellId, options.language]);
   }
   async updateData() {
     const result = await this.getDataFromProvider();
@@ -334,25 +350,41 @@ class ProviderController extends import_library.BaseClass {
           if (Array.isArray(options.warncellId)) {
             throw new Error("Error 122 warncellId is a Array");
           }
-          p = new DWDProvider(this.adapter, { warncellId: options.warncellId, providerController: this });
+          p = new DWDProvider(this.adapter, {
+            warncellId: options.warncellId,
+            providerController: this,
+            language: this.adapter.config.dwdLanguage
+          });
           break;
         case "uwzService":
           if (Array.isArray(options.warncellId)) {
             throw new Error("Error 123 warncellId is a Array");
           }
-          p = new UWZProvider(this.adapter, { warncellId: options.warncellId, providerController: this });
+          p = new UWZProvider(this.adapter, {
+            warncellId: options.warncellId,
+            providerController: this,
+            language: this.adapter.config.uwzLanguage
+          });
           break;
         case "zamgService":
           if (!Array.isArray(options.warncellId)) {
             throw new Error("Error 124 warncellId is not an Array");
           }
-          p = new ZAMGProvider(this.adapter, { warncellId: options.warncellId, providerController: this });
+          p = new ZAMGProvider(this.adapter, {
+            warncellId: options.warncellId,
+            providerController: this,
+            language: this.adapter.config.zamgLanguage
+          });
           break;
         case "ninaService":
           if (!Array.isArray(options.warncellId)) {
             throw new Error("Error 125 warncellId is not an Array");
           }
-          p = new NINAProvider(this.adapter, { warncellId: options.warncellId, providerController: this });
+          p = new NINAProvider(this.adapter, {
+            warncellId: options.warncellId,
+            providerController: this,
+            language: this.adapter.config.dwdLanguage
+          });
           break;
         default:
           throw new Error("Error 126 service is not defined");
@@ -394,41 +426,40 @@ class ProviderController extends import_library.BaseClass {
         index++;
         that2.refreshTimeRef = that2.adapter.setTimeout(updater, 500, that2, index);
       } else {
-        that2.setConnected();
-        let activMessages = 0;
-        for (const a in that2.provider) {
-          let am = 0;
-          for (const b in that2.provider[a].messages) {
-            if (that2.provider[a].messages[b].notDeleted)
-              am++;
-          }
-          that2.adapter.library.writedp(
-            `${that2.provider[a].name}.activWarnings`,
-            am,
-            import_definitionen.genericStateObjects.activWarnings
-          );
-          activMessages += am;
-        }
-        if (activMessages) {
-          for (const a in that2.provider) {
-            try {
-              await that2.provider[a].sendMessages();
-            } catch (error) {
-              that2.log.error(error);
-            }
-          }
-        } else {
-          that2.sendNoMessages();
-        }
-        that2.adapter.library.writedp(
-          `${that2.name}.activWarnings`,
-          activMessages,
-          import_definitionen.genericStateObjects.activWarnings
-        );
-        that2.log.debug(`We have ${activMessages} active messages.`);
+        await that2.doEndOfUpdater();
         that2.refreshTimeRef = that2.adapter.setTimeout(that2.updateEndless, that2.refreshTime || 6e5, that2);
       }
     }
+  }
+  async doEndOfUpdater() {
+    this.setConnected();
+    let activMessages = 0;
+    for (const a in this.provider) {
+      let am = 0;
+      for (const b in this.provider[a].messages) {
+        if (this.provider[a].messages[b].notDeleted)
+          am++;
+      }
+      this.adapter.library.writedp(
+        `${this.provider[a].name}.activWarnings`,
+        am,
+        import_definitionen.genericStateObjects.activWarnings
+      );
+      activMessages += am;
+    }
+    if (activMessages) {
+      for (const a in this.provider) {
+        try {
+          await this.provider[a].sendMessages();
+        } catch (error) {
+          this.log.error(error);
+        }
+      }
+    } else {
+      this.sendNoMessages();
+    }
+    this.adapter.library.writedp(`${this.name}.activWarnings`, activMessages, import_definitionen.genericStateObjects.activWarnings);
+    this.log.debug(`We have ${activMessages} active messages.`);
   }
   providersExist() {
     return this.provider.length > 0;

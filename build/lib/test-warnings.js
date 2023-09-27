@@ -348,7 +348,7 @@ function getTestData(service) {
     for (const i in testData.uwzService.results) {
       const f = testData.uwzService.results[i];
       const start = Date.now() + Math.random() * 12e5 + 3e5;
-      if (f.dtgStart + 36e5 < start) {
+      if (f.dtgEnd + 36e5 < start) {
         f.dtgStart = new Date(start).getTime();
         f.dtgEnd = new Date(start + Math.random() * 24e5 + 3e5).getTime();
       }
@@ -358,7 +358,7 @@ function getTestData(service) {
     for (const i in testData.zamgService.properties.warnings) {
       const f = testData.zamgService.properties.warnings[i];
       const start = Date.now() + Math.random() * 12e5 + 3e5;
-      if (Number(f.properties.rawinfo.start) + 36e5 < start) {
+      if (Number(f.properties.rawinfo.end) + 36e5 < start) {
         f.properties.rawinfo.start = new Date(start).getTime().toString();
         f.properties.rawinfo.start = new Date(start + Math.random() * 24e5 + 3e5).getTime().toString();
       }

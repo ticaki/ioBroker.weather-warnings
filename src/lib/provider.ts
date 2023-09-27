@@ -18,17 +18,20 @@ type ProvideOptionsTypeInternal = {
     service: providerServices;
     warncellId: string | [string, string];
     providerController: ProviderController;
-};
+    language: string;
+} & (StringProvideOptionsType | CoordinateProvideOptionsType);
 
 type ProvideOptionsType = ProvideOptionsTypeInternal;
 
-type StringProvideOptionsType = {
+type StringProvideOptionsType = BaseProviderOptionsType & {
     warncellId: string;
-    providerController: ProviderController;
 };
-type CoordinateProvideOptionsType = {
+type CoordinateProvideOptionsType = BaseProviderOptionsType & {
     warncellId: [string, string];
+};
+type BaseProviderOptionsType = {
     providerController: ProviderController;
+    language: string;
 };
 
 /** Base class for every provider */
@@ -152,7 +155,7 @@ class BaseProvider extends BaseClass {
             if (axios.isAxiosError(error)) {
                 this.log.warn(`Warn(21) axios error for ${this.getService()} url: ${this.url}`);
             } else {
-                this.log.error(`Error(22) no data for ${this.getService()} with Error ${error}`);
+                this.log.error(`Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`);
             }
         }
         await this.setConnected(false);
@@ -195,7 +198,7 @@ class BaseProvider extends BaseClass {
             data,
         );
     }
-    /** Call on ever message sendMessage(), and remove notDelete == false messages after this. */
+    /** Call on every message sendMessage() and removed notDelete == false messages after this. */
     async sendMessages(override = false): Promise<void> {
         if (this.messages.length == 0 && !override) {
             /**
@@ -206,10 +209,25 @@ class BaseProvider extends BaseClass {
             /**
              * send Messages, remove old one
              */
-
+            const jsonMessage: { [key: string]: string[] } = {};
             for (const m in this.messages) {
                 const removeIt = await this.messages[m].sendMessage();
                 if (removeIt) this.messages.splice(Number(m), 1);
+                else {
+                    for (const k in this.messages[m].messages) {
+                        const key = this.messages[m].messages[k].key;
+                        const msg = this.messages[m].messages[k].message;
+                        jsonMessage[key] = jsonMessage[key] || [];
+                        jsonMessage[key].push(msg);
+                    }
+                }
+            }
+            for (const key in jsonMessage) {
+                this.library.writedp(
+                    `${this.name}.messages.${key}_array`,
+                    JSON.stringify(jsonMessage[key]),
+                    genericStateObjects.messageStates.messageJson,
+                );
             }
             return;
         }
@@ -225,8 +243,9 @@ export class DWDProvider extends BaseProvider {
             PROVIDER_OPTIONS.dwdService.url_base +
             (this.warncellId.startsWith('9') || this.warncellId.startsWith('10')
                 ? PROVIDER_OPTIONS.dwdService.url_appendix_land
-                : PROVIDER_OPTIONS.dwdService.url_appendix_town);
-        this.url = this.setUrl(url, [this.warncellId]);
+                : PROVIDER_OPTIONS.dwdService.url_appendix_town) +
+            PROVIDER_OPTIONS.dwdService.url_language;
+        this.url = this.setUrl(url, [this.warncellId, options.language]);
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as dataImportDwdType;
@@ -296,7 +315,7 @@ export class ZAMGProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: CoordinateProvideOptionsType) {
         super(adapter, { ...options, service: 'zamgService' }, `zamg`);
         this.warncellId = options.warncellId;
-        this.setUrl('', [this.warncellId[0], this.warncellId[1]]);
+        this.setUrl('', [this.warncellId[0], this.warncellId[1], options.language]);
     }
 
     async updateData(): Promise<void> {
@@ -337,7 +356,7 @@ export class UWZProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: StringProvideOptionsType) {
         super(adapter, { ...options, service: 'uwzService' }, `uwz`);
         this.warncellId = options.warncellId.toUpperCase();
-        this.setUrl('', [this.warncellId]);
+        this.setUrl('', [this.warncellId, options.language]);
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as dataImportUWZType;
@@ -401,25 +420,41 @@ export class ProviderController extends BaseClass {
                     if (Array.isArray(options.warncellId)) {
                         throw new Error('Error 122 warncellId is a Array');
                     }
-                    p = new DWDProvider(this.adapter, { warncellId: options.warncellId, providerController: this });
+                    p = new DWDProvider(this.adapter, {
+                        warncellId: options.warncellId,
+                        providerController: this,
+                        language: this.adapter.config.dwdLanguage,
+                    });
                     break;
                 case 'uwzService':
                     if (Array.isArray(options.warncellId)) {
                         throw new Error('Error 123 warncellId is a Array');
                     }
-                    p = new UWZProvider(this.adapter, { warncellId: options.warncellId, providerController: this });
+                    p = new UWZProvider(this.adapter, {
+                        warncellId: options.warncellId,
+                        providerController: this,
+                        language: this.adapter.config.uwzLanguage,
+                    });
                     break;
                 case 'zamgService':
                     if (!Array.isArray(options.warncellId)) {
                         throw new Error('Error 124 warncellId is not an Array');
                     }
-                    p = new ZAMGProvider(this.adapter, { warncellId: options.warncellId, providerController: this });
+                    p = new ZAMGProvider(this.adapter, {
+                        warncellId: options.warncellId,
+                        providerController: this,
+                        language: this.adapter.config.zamgLanguage,
+                    });
                     break;
                 case 'ninaService':
                     if (!Array.isArray(options.warncellId)) {
                         throw new Error('Error 125 warncellId is not an Array');
                     }
-                    p = new NINAProvider(this.adapter, { warncellId: options.warncellId, providerController: this });
+                    p = new NINAProvider(this.adapter, {
+                        warncellId: options.warncellId,
+                        providerController: this,
+                        language: this.adapter.config.dwdLanguage,
+                    });
                     break;
                 default:
                     throw new Error('Error 126 service is not defined');
@@ -456,41 +491,40 @@ export class ProviderController extends BaseClass {
                 index++;
                 that.refreshTimeRef = that.adapter.setTimeout(updater, 500, that, index);
             } else {
-                that.setConnected();
-                let activMessages = 0;
-                for (const a in that.provider) {
-                    let am = 0;
-                    for (const b in that.provider[a].messages) {
-                        if (that.provider[a].messages[b].notDeleted) am++;
-                    }
-                    that.adapter.library.writedp(
-                        `${that.provider[a].name}.activWarnings`,
-                        am,
-                        genericStateObjects.activWarnings,
-                    );
-                    activMessages += am;
-                }
-
-                if (activMessages) {
-                    for (const a in that.provider) {
-                        try {
-                            await that.provider[a].sendMessages();
-                        } catch (error) {
-                            that.log.error(error);
-                        }
-                    }
-                } else {
-                    that.sendNoMessages();
-                }
-                that.adapter.library.writedp(
-                    `${that.name}.activWarnings`,
-                    activMessages,
-                    genericStateObjects.activWarnings,
-                );
-                that.log.debug(`We have ${activMessages} active messages.`);
+                await that.doEndOfUpdater();
                 that.refreshTimeRef = that.adapter.setTimeout(that.updateEndless, that.refreshTime || 600000, that);
             }
         }
+    }
+    async doEndOfUpdater(): Promise<void> {
+        this.setConnected();
+        let activMessages = 0;
+        for (const a in this.provider) {
+            let am = 0;
+            for (const b in this.provider[a].messages) {
+                if (this.provider[a].messages[b].notDeleted) am++;
+            }
+            this.adapter.library.writedp(
+                `${this.provider[a].name}.activWarnings`,
+                am,
+                genericStateObjects.activWarnings,
+            );
+            activMessages += am;
+        }
+
+        if (activMessages) {
+            for (const a in this.provider) {
+                try {
+                    await this.provider[a].sendMessages();
+                } catch (error) {
+                    this.log.error(error as string);
+                }
+            }
+        } else {
+            this.sendNoMessages();
+        }
+        this.adapter.library.writedp(`${this.name}.activWarnings`, activMessages, genericStateObjects.activWarnings);
+        this.log.debug(`We have ${activMessages} active messages.`);
     }
     providersExist(): boolean {
         return this.provider.length > 0;

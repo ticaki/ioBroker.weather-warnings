@@ -39,6 +39,7 @@ export const genericStateObjects: {
     formatedKeysDevice: ioBroker.DeviceObject;
     messageStates: customChannelType & {
         message: ioBroker.StateObject;
+        messageJson: ioBroker.StateObject;
     };
     activWarnings: ioBroker.StateObject;
 } = {
@@ -124,6 +125,18 @@ export const genericStateObjects: {
                 name: 'Outgoing formated message.',
                 type: 'string',
                 role: 'text',
+                read: true,
+                write: false,
+            },
+            native: {},
+        },
+        messageJson: {
+            _id: 'messageJson',
+            type: 'state',
+            common: {
+                name: 'All active warnings in a array.',
+                type: 'string',
+                role: 'array',
                 read: true,
                 write: false,
             },

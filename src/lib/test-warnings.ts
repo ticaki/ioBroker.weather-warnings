@@ -338,7 +338,7 @@ export function getTestData(service: string): DataImportType {
         for (const i in testData.uwzService.results) {
             const f = testData.uwzService.results[i];
             const start = Date.now() + Math.random() * 1200000 + 300000;
-            if (f.dtgStart + 3600000 < start) {
+            if (f.dtgEnd + 3600000 < start) {
                 f.dtgStart = new Date(start).getTime();
                 f.dtgEnd = new Date(start + Math.random() * 2400000 + 300000).getTime();
             }
@@ -348,7 +348,7 @@ export function getTestData(service: string): DataImportType {
         for (const i in testData.zamgService.properties.warnings) {
             const f = testData.zamgService.properties.warnings[i];
             const start = Date.now() + Math.random() * 1200000 + 300000;
-            if (Number(f.properties.rawinfo.start) + 3600000 < start) {
+            if (Number(f.properties.rawinfo.end) + 3600000 < start) {
                 f.properties.rawinfo.start = new Date(start).getTime().toString();
                 f.properties.rawinfo.start = new Date(start + Math.random() * 2400000 + 300000).getTime().toString();
             }

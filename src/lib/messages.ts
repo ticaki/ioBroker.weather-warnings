@@ -1,10 +1,6 @@
 import WeatherWarnings from '../main';
 import { genericStateObjects, statesObjectsWarnings } from './def/definitionen';
-import { textLevels, warnTypeName } from './def/messages-def';
-import { dwdLevel } from './def/messages-def';
-import { level } from './def/messages-def';
-import { color } from './def/messages-def';
-import { customFormatedKeysDef } from './def/messages-def';
+import { textLevels, warnTypeName, dwdLevel, level, color, customFormatedKeysDef } from './def/messages-def';
 import { BaseClass, Library } from './library';
 import { ProvideClassType } from './provider';
 
@@ -21,9 +17,9 @@ export class Messages extends BaseClass {
     newMessage: boolean = true;
     /** message got a update lately */
     updated: boolean = false;
-    /**dont delete this message */
+    /**Indicate if message is marked for remove. */
     notDeleted: boolean = true;
-
+    templates: ioBroker.AdapterConfig['templateTable'];
     messages: { message: string; key: string }[] = [];
     /** jsonata/typscript cmd to gather data from warning json */
     formatedKeyCommand: { [key: string]: customformatedKeysJsonataDefinition } = {
@@ -195,6 +191,7 @@ export class Messages extends BaseClass {
         this.provider = provider;
         this.library = this.adapter.library;
         this.rawWarning = data;
+        this.templates = this.adapter.config.templateTable;
 
         switch (provider.service) {
             case `dwdService`:
@@ -331,18 +328,31 @@ export class Messages extends BaseClass {
         this.newMessage = false;
         this.notDeleted = true;
     }
-    async sendMessage(override = false): Promise<number> {
-        if ((!this.newMessage && !override) || this.messages.length == 0 || !this.notDeleted) return 0;
-        for (let a = 0; a < this.messages.length; a++) {
-            const msg = this.messages[a];
-            this.library.writedp(
-                `${this.provider.name}.messages.${msg.key}`,
-                msg.message,
-                genericStateObjects.messageStates.message,
-            );
+    async sendMessage(override = false): Promise<boolean> {
+        if (this.messages.length == 0) return false;
+        if (this.notDeleted) {
+            if (this.newMessage || override) {
+                for (let a = 0; a < this.messages.length; a++) {
+                    const msg = this.messages[a];
+                    this.library.writedp(
+                        `${this.provider.name}.messages.${msg.key}`,
+                        msg.message,
+                        genericStateObjects.messageStates.message,
+                    );
+                }
+            }
+        } else {
+            this.sendRemoveMessage();
+            return true;
         }
-        return 1;
+
+        this.newMessage = false;
+        return false;
     }
+    sendRemoveMessage(): void {
+        // Sende aufgehoben meldung wird nur aufgerufen wenn Mitteilungen vorhanden sind
+    }
+
     delete(): void {
         this.notDeleted = false;
         this.newMessage = false;
@@ -376,24 +386,5 @@ type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
 export type customformatedKeysJsonataDefinition = ChangeTypeOfKeys<customFormatedKeysDef, customFormatedKeysDefSubtype>;
 export type customFormatedKeysInit = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined> | undefined;
 export type customFormatedKeysResult = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined>;
-/*
-export type customformatedKeysJsonataDefinition = {
-    starttime: customFormatedKeysDefSubtype;
-    startdate: customFormatedKeysDefSubtype;
-    endtime: customFormatedKeysDefSubtype;
-    enddate: customFormatedKeysDefSubtype;
-    startdayofweek: customFormatedKeysDefSubtype;
-    enddayofweek: customFormatedKeysDefSubtype;
-    headline: customFormatedKeysDefSubtype;
-    description: customFormatedKeysDefSubtype;
-    weathertext?: customFormatedKeysDefSubtype;
-    ceiling: customFormatedKeysDefSubtype; // max höhe
-    altitude: customFormatedKeysDefSubtype; // min höhe
-    warnlevelname: customFormatedKeysDefSubtype;
-    warnlevelnumber: customFormatedKeysDefSubtype;
-    warnlevelcolor: customFormatedKeysDefSubtype; // RGB im Hexformat
-    warntypename: customFormatedKeysDefSubtype;
-    location: customFormatedKeysDefSubtype;
-};*/
 
 type customFormatedKeysDefSubtype = { cmd?: 'dayoftheweek' | 'translate'; node: string };

@@ -1,45 +1,44 @@
-
 {
-	"i18n": true,
-	"type": "tabs",
-	"items": {
-		"_options": {
-			"type": "panel",
-			"label": "basicconfig",
-			"items": {
-				"dwdEnabled": {
-					"type": "checkbox",
-					"sm": 6,
-					"md": 4,
-					"lg": 2,
-					"label": "Activate DWD",
-					"newLine": true
-				},
-				"uwzEnabled": {
-					"type": "checkbox",
-					"sm": 6,
-					"md": 4,
-					"lg": 2,
-					"label": "Activate UWZ",
-					"newLine": true
-				},
-				"zamgEnabled": {
-					"type": "checkbox",
-					"sm": 6,
-					"md": 4,
-					"lg": 2,
-					"label": "Activate ZAMG",
-					"newLine": true
-				},
+    "i18n": true,
+    "type": "tabs",
+    "items": {
+        "_options": {
+            "type": "panel",
+            "label": "basicconfig",
+            "items": {
+                "dwdEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "Activate DWD",
+                    "newLine": true
+                },
+                "uwzEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "Activate UWZ",
+                    "newLine": true
+                },
+                "zamgEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "Activate ZAMG",
+                    "newLine": true
+                },
                 "refreshTime": {
-					"type": "number",
+                    "type": "number",
                     "label": "Update interval for all providers. (in minutes)",
-                    "min":5,
+                    "min": 5,
                     "step": 1,
                     "sm": 8,
-					"md": 4,
-					"lg": 2
-				},
+                    "md": 4,
+                    "lg": 2
+                },
                 "dividerHdr": {
                     "newLine": true,
                     "type": "header",
@@ -47,73 +46,224 @@
                     "size": 2
                 },
                 "useTestWarnings": {
-					"type": "checkbox",
-					"sm": 12,
-					"md": 6,
-					"lg": 3,
-					"label": "Activate Testwarnings",
-					"newLine": true
-				}
-			}
-		},
-		"_dwdpanel": {
-			"type": "panel",
-			"label": "DWD",
+                    "type": "checkbox",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "label": "Activate Testwarnings",
+                    "newLine": true
+                }
+            }
+        },
+        "_dwdpanel": {
+            "type": "panel",
+            "label": "DWD",
             "hidden": "!data.dwdEnabled",
-			"items": {
-				"dwdSelectId": {
-					"type": "autocompleteSendTo",
-					"command": "dwd.name",
-					"jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
-					"freeSolo": false,
-                    
-					"alsoDependsOn": [
-						"dwdSelectId"
-					],
-					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"label": "DWD District/City ID selection",
-					"newLine": true
-				},
+            "items": {
+                "dwdSelectId": {
+                    "type": "autocompleteSendTo",
+                    "command": "dwd.name",
+                    "jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
+                    "freeSolo": false,
+                    "alsoDependsOn": [
+                        "dwdSelectId"
+                    ],
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "label": "DWD District/City ID selection",
+                    "newLine": true
+                },
                 "dwdSelectShowName": {
-					"type": "textSendTo",
-					"command": "dwd.name.text",
-					"jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
-					"alsoDependsOn": [
-						"dwdSelectId"
-					],
-					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"label": "DWD District/City ID Name"
-					
-				}
-			}
-		},
-		"_uwzpanel": {
-			"type": "panel",
-			"label": "UWZ",
+                    "type": "textSendTo",
+                    "command": "dwd.name.text",
+                    "jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
+                    "alsoDependsOn": [
+                        "dwdSelectId"
+                    ],
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "label": "DWD District/City ID Name"
+                },
+                "dwdLanguage": {
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "german",
+                            "value": "ger"
+                        },
+                        {
+                            "label": "english",
+                            "value": "eng"
+                        },
+                        {
+                            "label": "french",
+                            "value": "fre"
+                        },
+                        {
+                            "label": "italy",
+                            "value": "ita"
+                        },
+                        {
+                            "label": "spanish",
+                            "value": "spa"
+                        },
+                        {
+                            "label": "hungarian",
+                            "value": "hun"
+                        },
+                        {
+                            "label": "swedish",
+                            "value": "swe"
+                        },
+                        {
+                            "label": "dutch",
+                            "value": "dut"
+                        },
+                        {
+                            "label": "estonian",
+                            "value": "est"
+                        },
+                        {
+                            "label": "finnish",
+                            "value": "fin"
+                        },
+                        {
+                            "label": "icelandic",
+                            "value": "ice"
+                        },
+                        {
+                            "label": "swiss german",
+                            "value": "gsw"
+                        },
+                        {
+                            "label": "romanian_moldavian",
+                            "value": "rum"
+                        },
+                        {
+                            "label": "polish",
+                            "value": "pol"
+                        },
+                        {
+                            "label": "czech",
+                            "value": "cze"
+                        },
+                        {
+                            "label": "danish",
+                            "value": "dan"
+                        },
+                        {
+                            "label": "norwegian",
+                            "value": "nor"
+                        },
+                        {
+                            "label": "portuguese",
+                            "value": "por"
+                        },
+                        {
+                            "label": "lithuanian",
+                            "value": "lit"
+                        },
+                        {
+                            "label": "greek",
+                            "value": "gre"
+                        },
+                        {
+                            "label": "latvian",
+                            "value": "lav"
+                        },
+                        {
+                            "label": "irish",
+                            "value": "gle"
+                        },
+                        {
+                            "label": "croatian",
+                            "value": "hrv"
+                        },
+                        {
+                            "label": "maltese",
+                            "value": "mlt"
+                        },
+                        {
+                            "label": "slovak",
+                            "value": "slo"
+                        },
+                        {
+                            "label": "bulgarian",
+                            "value": "bul"
+                        },
+                        {
+                            "label": "slovenian",
+                            "value": "slv"
+                        }
+                    ],
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3
+                }
+            }
+        },
+        "_uwzpanel": {
+            "type": "panel",
+            "label": "UWZ",
             "hidden": "!data.uwzEnabled",
-			"items": {
+            "items": {
                 "uwzSelectDescription": {
                     "type": "staticText",
                     "text": "UWZ ID diese besteht aus Länderkennzeichen und Postleitzahl (DE12345, AT54321)",
                     "newLine": true
                 },
-				"uwzSelectID": {
-					"type": "text",
-					"label": "DE12345",
-					"newLine": true
-				}
-			}
-		},
-		"_zamgpanel": {
-			"type": "panel",
-			"label": "ZAMG",
+                "uwzSelectID": {
+                    "type": "text",
+                    "label": "DE12345",
+                    "newLine": true
+                },
+                "uwzLanguage": {
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "german",
+                            "value": "DE"
+                        },
+                        {
+                            "label": "english",
+                            "value": "EN"
+                        },
+                        {
+                            "label": "french",
+                            "value": "FR"
+                        },
+                        {
+                            "label": "luxembourg",
+                            "value": "LU"
+                        },
+                        {
+                            "label": "italy",
+                            "value": "IT"
+                        },
+                        {
+                            "label": "netherlands",
+                            "value": "NL"
+                        },
+                        {
+                            "label": "denmark",
+                            "value": "DK"
+                        }
+                    ],
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                }
+            }
+        },
+        "_zamgpanel": {
+            "type": "panel",
+            "label": "ZAMG",
             "hidden": "!data.zamgEnabled",
-			"items": {
-				
+            "items": {
                 "coordinates1Txt": {
                     "type": "staticText",
                     "text": "COORDINATES (divider: #)",
@@ -125,17 +275,37 @@
                     "useSystemName": false,
                     "newLine": true,
                     "sm": 12,
-					"md": 6,
-					"lg": 4
+                    "md": 6,
+                    "lg": 4
+                },
+                "zamgLanguage": {
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "german",
+                            "value": "de"
+                        },
+                        {
+                            "label": "english",
+                            "value": "en"
+                        },
+                        {
+                            "label": "french",
+                            "value": "fr"
+                        }
+                    ],
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
                 }
-			}
-		},
-		"_templates": {
-			"type": "panel",
-			"label": "Templates",
-            
-			"items": {
-				"templateTable": {
+            }
+        },
+        "_templates": {
+            "type": "panel",
+            "label": "Templates",
+            "items": {
+                "templateTable": {
                     "type": "table",
                     "newLine": true,
                     "sm": 12,
@@ -168,19 +338,19 @@
                         }
                     ]
                 }
-			}
-		},
-		"_options6": {
-			"type": "panel",
-			"label": "Whatsapp",
+            }
+        },
+        "_options6": {
+            "type": "panel",
+            "label": "Whatsapp",
             "hidden": "true",
-			"items": {}
-		},
-		"_options7": {
-			"type": "panel",
-			"label": "Options",
+            "items": {}
+        },
+        "_options7": {
+            "type": "panel",
+            "label": "Options",
             "hidden": "true",
-			"items": {}
-		}
-	}
+            "items": {}
+        }
+    }
 }

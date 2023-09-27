@@ -23,9 +23,6 @@ __export(messages_exports, {
 module.exports = __toCommonJS(messages_exports);
 var import_definitionen = require("./def/definitionen");
 var import_messages_def = require("./def/messages-def");
-var import_messages_def2 = require("./def/messages-def");
-var import_messages_def3 = require("./def/messages-def");
-var import_messages_def4 = require("./def/messages-def");
 var import_library = require("./library");
 class Messages extends import_library.BaseClass {
   provider;
@@ -36,6 +33,7 @@ class Messages extends import_library.BaseClass {
   newMessage = true;
   updated = false;
   notDeleted = true;
+  templates;
   messages = [];
   formatedKeyCommand = {
     dwdService: {
@@ -58,23 +56,23 @@ class Messages extends import_library.BaseClass {
       ceiling: { node: `$floor(CEILING * 0.3048)` },
       altitude: { node: `$floor(ALTITUDE * 0.3048)` },
       warnlevelcolorhex: {
-        node: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
-          import_messages_def4.color.generic
+        node: `($temp := $lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+          import_messages_def.color.generic
         )},$string($temp)))`
       },
       warnlevelcolorname: {
-        node: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
-          import_messages_def4.color.textGeneric
+        node: `($temp := $lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+          import_messages_def.color.textGeneric
         )},$string($temp)))`,
         cmd: "translate"
       },
       warnlevelname: {
-        node: `($temp := $lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+        node: `($temp := $lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
           import_messages_def.textLevels.textGeneric
         )},$string($temp)))`,
         cmd: "translate"
       },
-      warnlevelnumber: { node: `$lookup(${JSON.stringify(import_messages_def2.dwdLevel)},$lowercase(SEVERITY))` },
+      warnlevelnumber: { node: `$lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY))` },
       warntypename: {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.dwdService)}, $string(EC_II))`,
         cmd: "translate"
@@ -102,25 +100,25 @@ class Messages extends import_library.BaseClass {
       altitude: { node: `payload.altMax` },
       warnlevelcolorname: {
         node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-          import_messages_def3.level.uwz
-        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def4.color.textGeneric)},$string($l)))`,
+          import_messages_def.level.uwz
+        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def.color.textGeneric)},$string($l)))`,
         cmd: "translate"
       },
       warnlevelnumber: {
         node: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-          import_messages_def3.level.uwz
+          import_messages_def.level.uwz
         )}, $i[2]))`
       },
       warnlevelcolorhex: {
         node: `$lookup(${JSON.stringify(
-          import_messages_def4.color.generic
+          import_messages_def.color.generic
         )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-          import_messages_def3.level.uwz
+          import_messages_def.level.uwz
         )}, $i[2]))))`
       },
       warnlevelname: {
         node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-          import_messages_def3.level.uwz
+          import_messages_def.level.uwz
         )}, $i[2]); $lookup(${JSON.stringify(import_messages_def.textLevels.textGeneric)},$string($l)))`,
         cmd: "translate"
       },
@@ -150,14 +148,14 @@ class Messages extends import_library.BaseClass {
       ceiling: { node: `` },
       altitude: { node: `` },
       warnlevelcolorname: {
-        node: `$lookup(${JSON.stringify(import_messages_def4.color.textGeneric)},$string(rawinfo.wlevel))`,
+        node: `$lookup(${JSON.stringify(import_messages_def.color.textGeneric)},$string(rawinfo.wlevel))`,
         cmd: "translate"
       },
       warnlevelnumber: {
         node: `$string(rawinfo.wlevel)`
       },
       warnlevelcolorhex: {
-        node: `$lookup(${JSON.stringify(import_messages_def4.color.zamgColor)},$string(rawinfo.wlevel))`
+        node: `$lookup(${JSON.stringify(import_messages_def.color.zamgColor)},$string(rawinfo.wlevel))`
       },
       warnlevelname: {
         node: `$lookup(${JSON.stringify(import_messages_def.textLevels.textGeneric)},$string(rawinfo.wlevel))`,
@@ -202,6 +200,7 @@ class Messages extends import_library.BaseClass {
     this.provider = provider;
     this.library = this.adapter.library;
     this.rawWarning = data;
+    this.templates = this.adapter.config.templateTable;
     switch (provider.service) {
       case `dwdService`:
       case `uwzService`:
@@ -330,17 +329,27 @@ class Messages extends import_library.BaseClass {
     this.notDeleted = true;
   }
   async sendMessage(override = false) {
-    if (!this.newMessage && !override || this.messages.length == 0 || !this.notDeleted)
-      return 0;
-    for (let a = 0; a < this.messages.length; a++) {
-      const msg = this.messages[a];
-      this.library.writedp(
-        `${this.provider.name}.messages.${msg.key}`,
-        msg.message,
-        import_definitionen.genericStateObjects.messageStates.message
-      );
+    if (this.messages.length == 0)
+      return false;
+    if (this.notDeleted) {
+      if (this.newMessage || override) {
+        for (let a = 0; a < this.messages.length; a++) {
+          const msg = this.messages[a];
+          this.library.writedp(
+            `${this.provider.name}.messages.${msg.key}`,
+            msg.message,
+            import_definitionen.genericStateObjects.messageStates.message
+          );
+        }
+      }
+    } else {
+      this.sendRemoveMessage();
+      return true;
     }
-    return 1;
+    this.newMessage = false;
+    return false;
+  }
+  sendRemoveMessage() {
   }
   delete() {
     this.notDeleted = false;

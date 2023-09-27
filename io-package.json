@@ -1,121 +1,124 @@
 {
-  "common": {
-    "name": "weather-warnings",
-    "version": "0.2.2-alpha1.0",
-    "news": {
-      "0.2.2-alpha1.0": {
-        "en": "more CustomTokens,\ntranslations for warntypes, warnlevelcolor,\ntotal active warningcounts\nremove old warnings",
-        "de": "mehr CustomTokens,\nübersetzungen für warntypen, warnlevelcolor,\ngesamte aktive warnmeldungsanzahl\nalte warnungen entfernen",
-        "ru": "больше CustomTokens,\nпереводы для предупреждений, предупредительного,\nполное активное предупреждение\nудалить старые предупреждения",
-        "pt": "mais CustomTokens,\ntraduções para avisotipos, advertlevelcolor,\ntotal de alertas ativos\nremover avisos antigos",
-        "nl": "meer Custom Tokens,\nvertaling:,\ntotale actieve waarschuwingscounts\nverwijder oude waarschuwingen",
-        "fr": "plus CustomTokens,\ntraductions pour les mises en garde, avertissementlevelcolor,\ntotal des comptes d ' avertissement actifs\nsupprimer les vieux avertissements",
-        "it": "più CustomTokens,\ntraduzioni per i tipi di avvertimento, avvertilevelcolor,\ntotali di segnalazione attiva\nrimuovere vecchi avvisi",
-        "es": "más CustomTokens,\ntraducción para warntypes, warnlevelcolor,\ntotal active warningcounts\neliminar viejas advertencias",
-        "pl": "kliencki,\ntranslacje dla typów ostrzegawczych kolorów,\noficjalna strona ostrzegania\nusunąć stare ostrzeżenia",
-        "uk": "більше CustomTokens,\nпереклади для попередженнятипів, попереджають,\nзагальний активний контроль\nвидалити старі попередження",
-        "zh-cn": "更加习惯,\n战争原型、战地殖民者的翻译,\n积极警告总数\n取消旧警告"
-      },
-      "0.2.1-alpha.0": {
-        "en": "initial release",
-        "de": "Erstes Alpha Release",
-        "ru": "начальный выпуск",
-        "pt": "lançamento inicial",
-        "nl": "niet",
-        "fr": "initial release",
-        "it": "rilascio iniziale",
-        "es": "liberación inicial",
-        "pl": "pierwsze wydanie",
-        "uk": "початковий реліз",
-        "zh-cn": "初步释放"
-      }
+    "common": {
+        "name": "weather-warnings",
+        "version": "0.2.2-alpha1.0",
+        "news": {
+            "0.2.2-alpha1.0": {
+                "en": "more CustomTokens,\ntranslations for warntypes, warnlevelcolor,\ntotal active warningcounts\nremove old warnings",
+                "de": "mehr CustomTokens,\nübersetzungen für warntypen, warnlevelcolor,\ngesamte aktive warnmeldungsanzahl\nalte warnungen entfernen",
+                "ru": "больше CustomTokens,\nпереводы для предупреждений, предупредительного,\nполное активное предупреждение\nудалить старые предупреждения",
+                "pt": "mais CustomTokens,\ntraduções para avisotipos, advertlevelcolor,\ntotal de alertas ativos\nremover avisos antigos",
+                "nl": "meer Custom Tokens,\nvertaling:,\ntotale actieve waarschuwingscounts\nverwijder oude waarschuwingen",
+                "fr": "plus CustomTokens,\ntraductions pour les mises en garde, avertissementlevelcolor,\ntotal des comptes d ' avertissement actifs\nsupprimer les vieux avertissements",
+                "it": "più CustomTokens,\ntraduzioni per i tipi di avvertimento, avvertilevelcolor,\ntotali di segnalazione attiva\nrimuovere vecchi avvisi",
+                "es": "más CustomTokens,\ntraducción para warntypes, warnlevelcolor,\ntotal active warningcounts\neliminar viejas advertencias",
+                "pl": "kliencki,\ntranslacje dla typów ostrzegawczych kolorów,\noficjalna strona ostrzegania\nusunąć stare ostrzeżenia",
+                "uk": "більше CustomTokens,\nпереклади для попередженнятипів, попереджають,\nзагальний активний контроль\nвидалити старі попередження",
+                "zh-cn": "更加习惯,\n战争原型、战地殖民者的翻译,\n积极警告总数\n取消旧警告"
+            },
+            "0.2.1-alpha.0": {
+                "en": "initial release",
+                "de": "Erstes Alpha Release",
+                "ru": "начальный выпуск",
+                "pt": "lançamento inicial",
+                "nl": "niet",
+                "fr": "initial release",
+                "it": "rilascio iniziale",
+                "es": "liberación inicial",
+                "pl": "pierwsze wydanie",
+                "uk": "початковий реліз",
+                "zh-cn": "初步释放"
+            }
+        },
+        "title": "Weather Warnings",
+        "titleLang": {
+            "en": "Weather Warnings",
+            "de": "Wetterwarnungen",
+            "ru": "Предупреждения о погоде",
+            "pt": "Avisos meteorológicos",
+            "nl": "Weerwaarschuwingen",
+            "fr": "Avertissements météorologiques",
+            "it": "Avvisi meteo",
+            "es": "Advertencias meteorológicas",
+            "pl": "Ostrzeżenia pogodowe",
+            "uk": "Попередження про погоду",
+            "zh-cn": "天气警告"
+        },
+        "desc": {
+            "en": "weather-warnings",
+            "de": "Wetterwarnungen",
+            "ru": "предупреждения о погоде",
+            "pt": "avisos meteorológicos",
+            "nl": "weerwaarschuwingen",
+            "fr": "avertissements météorologiques",
+            "it": "allerta meteo",
+            "es": "advertencias-meteorológicas",
+            "pl": "ostrzeżenia pogodowe",
+            "uk": "погодні попередження",
+            "zh-cn": "天气警报"
+        },
+        "authors": [
+            "ticaki <github@renopoint.de>"
+        ],
+        "keywords": [
+            "weather",
+            "dwd",
+            "uwz",
+            "zamg",
+            "nina",
+            "warnings",
+            "push"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "build/main.js",
+        "icon": "weather-warnings.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
+        "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "weather",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "supportedMessages": {
+            "custom": true
+        },
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=5.0.12"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
     },
-    "title": "Weather Warnings",
-    "titleLang": {
-      "en": "Weather Warnings",
-      "de": "Wetterwarnungen",
-      "ru": "Предупреждения о погоде",
-      "pt": "Avisos meteorológicos",
-      "nl": "Weerwaarschuwingen",
-      "fr": "Avertissements météorologiques",
-      "it": "Avvisi meteo",
-      "es": "Advertencias meteorológicas",
-      "pl": "Ostrzeżenia pogodowe",
-      "uk": "Попередження про погоду",
-      "zh-cn": "天气警告"
+    "native": {
+        "dwdSelectId": "",
+        "zamgSelectID": "",
+        "uwzSelectID": "",
+        "useTestWarnings": false,
+        "dwdEnabled": false,
+        "uwzEnabled": false,
+        "zamgEnabled": false,
+        "refreshTime": 15,
+        "messageTemplate": [],
+        "templateTable": [
+            {
+                "templateKey": "test",
+                "template": "Just for Testing ${starttime}"
+            }
+        ],
+        "dwdLanguage": "ger",
+        "uwzLanguage": "DE",
+        "zamgLanguage": "de"
     },
-    "desc": {
-      "en": "weather-warnings",
-      "de": "Wetterwarnungen",
-      "ru": "предупреждения о погоде",
-      "pt": "avisos meteorológicos",
-      "nl": "weerwaarschuwingen",
-      "fr": "avertissements météorologiques",
-      "it": "allerta meteo",
-      "es": "advertencias-meteorológicas",
-      "pl": "ostrzeżenia pogodowe",
-      "uk": "погодні попередження",
-      "zh-cn": "天气警报"
-    },
-    "authors": [
-      "ticaki <github@renopoint.de>"
-    ],
-    "keywords": [
-      "weather",
-      "dwd",
-      "uwz",
-      "zamg",
-      "nina",
-      "warnings",
-      "push"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "main": "build/main.js",
-    "icon": "weather-warnings.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
-    "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "weather",
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "supportedMessages": {
-      "custom": true
-    },
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=5.0.12"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=5.1.13"
-      }
-    ]
-  },
-  "native": {
-    "dwdSelectId": "",
-    "zamgSelectID": "",
-    "uwzSelectID": "",
-    "useTestWarnings": false,
-    "dwdEnabled": false,
-    "uwzEnabled": false,
-    "zamgEnabled": false,
-    "refreshTime": 15,
-    "messageTemplate": [],
-    "templateTable": [
-      {
-        "templateKey": "test",
-        "template": "Just for Testing ${starttime}"
-      }
-    ]
-  },
-  "objects": [],
-  "instanceObjects": []
+    "objects": [],
+    "instanceObjects": []
 }

@@ -110,6 +110,18 @@ const genericStateObjects = {
         write: false
       },
       native: {}
+    },
+    messageJson: {
+      _id: "messageJson",
+      type: "state",
+      common: {
+        name: "All active warnings in a array.",
+        type: "string",
+        role: "array",
+        read: true,
+        write: false
+      },
+      native: {}
     }
   },
   activWarnings: {
