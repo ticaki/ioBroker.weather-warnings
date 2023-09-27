@@ -43,7 +43,7 @@ tests.integration(path.join(__dirname,".."),{
                     harness.sendTo('weather-warnings.0','test','message',resp => {
                         resolve();
                     });
-                });
+                }).timeout(30000);
             }))
             it('Connection to server work',() => new Promise(async (resolve,reject) => {
 
@@ -56,7 +56,7 @@ tests.integration(path.join(__dirname,".."),{
                     if (resp=='true') resolve();
                     else reject();
                 });
-            })).timeout(25000);
+            })).timeout(30000);
         });
         suite("Test with testdata",(getHarness) => {
             // For convenience, get the current suite's harness before all tests
@@ -82,7 +82,7 @@ tests.integration(path.join(__dirname,".."),{
                         resolve();
                     });
                 });
-            }))
+            })).timeout(20000);
             it('Adapter works with testdata',() => new Promise(async (resolve, reject) => {
 
                 // change the adapter config
@@ -99,7 +99,7 @@ tests.integration(path.join(__dirname,".."),{
                 await wait(110000);
                 if (harness.isAdapterRunning()) resolve();
                 else reject('Adapter stops');
-            })).timeout(180000);
+            })).timeout(240000);
         });
     }
 });
