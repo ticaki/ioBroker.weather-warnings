@@ -9,7 +9,7 @@
 [![NPM](https://nodei.co/npm/iobroker.weather-warnings.png?downloads=true)](https://nodei.co/npm/iobroker.weather-warnings/)
 
 **Tests:** ![Test and Release](https://github.com/ticaki/ioBroker.weather-warnings/workflows/Test%20and%20Release/badge.svg)
-![Just see what we get](https://github.com/github/ticaki/ioBroker.weather-warnings/workflows/Test%20and%20Release/badge.svg?event=push)
+![Just see what we get](https://github.com/ticaki/ioBroker.weather-warnings/workflows/Test%20and%20Release/badge.svg?event=push)
 ## weather-warnings adapter for ioBroker
 
 Describe your project here
