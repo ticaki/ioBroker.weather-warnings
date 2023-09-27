@@ -131,12 +131,12 @@ export const genericStateObjects: {
             native: {},
         },
         messageJson: {
-            _id: 'messageJson',
+            _id: 'messageArray',
             type: 'state',
             common: {
                 name: 'All active warnings in a array.',
-                type: 'string',
-                role: 'array',
+                type: 'array',
+                role: 'list',
                 read: true,
                 write: false,
             },

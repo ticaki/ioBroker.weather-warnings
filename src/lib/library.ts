@@ -10,6 +10,7 @@ type AdapterClassDefinition = WeatherWarnings;
 type LibraryStateVal = LibraryStateValJson | undefined;
 type LibraryStateValJson = {
     type: ioBroker.ObjectType;
+    stateTyp: string | undefined;
     val: ioBroker.StateValue | undefined;
     ts: number;
     ack: boolean;
@@ -195,17 +196,18 @@ export class Library extends BaseClass {
             }
             obj._id = `${this.adapter.name}.${this.adapter.instance}.${dp}`;
             await this.adapter.setObjectNotExistsAsync(dp, obj);
-            node = this.setdb(dp, obj.type, undefined, true);
+            const stateType = obj && obj.common && obj.common.type;
+            node = this.setdb(dp, obj.type, undefined, stateType, true);
         }
 
         if (obj && obj.type !== 'state') return;
 
         if (node && node.val != val) {
-            if (obj && obj.common && obj.common.type != typeof val && val !== undefined)
-                val = this.convertToType(val, obj.common.type);
+            const typ = (obj && obj.common && obj.common.type) || node.stateTyp;
+            if (typ && typ != typeof val && val !== undefined) val = this.convertToType(val, typ);
             await this.adapter.setStateAsync(dp, { val: val, ts: Date.now(), ack: true });
         }
-        if (node) this.setdb(dp, node.type, val, true);
+        if (node) this.setdb(dp, node.type, val, node.stateTyp, true);
     }
 
     /**
@@ -260,10 +262,14 @@ export class Library extends BaseClass {
         dp: string,
         type: ioBroker.ObjectType,
         val: ioBroker.StateValue | undefined,
+        stateType: string | undefined,
         ack: boolean = true,
         ts: number = Date.now(),
     ): LibraryStateVal {
-        this.stateDataBase[dp] = { type: type, val: val, ack: ack, ts: ts ? ts : Date.now() };
+        this.stateDataBase[dp] = { type: type, stateTyp: stateType, val: val, ack: ack, ts: ts ? ts : Date.now() };
+        return this.stateDataBase[dp];
+    }
+    getdb(dp: string): LibraryStateVal | undefined {
         return this.stateDataBase[dp];
     }
     cloneObject(obj: ioBroker.Object): ioBroker.Object {
@@ -316,14 +322,17 @@ export class Library extends BaseClass {
      * @param states States that are to be read into the database during initialisation.
      * @returns void
      */
-    initStates(states: { [key: string]: { val: ioBroker.StateValue; ts: number; ack: boolean } }): void {
+    async initStates(states: { [key: string]: { val: ioBroker.StateValue; ts: number; ack: boolean } }): void {
         if (!states) return;
         for (const state in states) {
             const dp = state.replace(`${this.adapter.name}.${this.adapter.instance}.`, '');
+            const obj = await this.adapter.getObjectAsync(dp);
+
             this.setdb(
                 dp,
                 'state',
                 states[state] && states[state].val ? states[state].val : undefined,
+                obj && obj.common && obj.common.type ? obj.common.type : undefined,
                 states[state] && states[state].ack,
                 states[state] && states[state].ts ? states[state].ts : Date.now(),
             );
@@ -345,11 +354,13 @@ export class Library extends BaseClass {
                     if (!state || state.val == undefined) continue;
                     if (state.ts < Date.now() - offset) {
                         let newVal: -1 | '' | '{}' | '[]' | false | null | undefined;
-                        switch (typeof state.val) {
+                        switch (state.stateTyp) {
                             case 'string':
-                                if (state.val.startsWith('{') && state.val.endsWith('}')) newVal = '{}';
-                                else if (state.val.startsWith('[') && state.val.endsWith(']')) newVal = '[]';
-                                else newVal = '';
+                                if (typeof state.val == 'string') {
+                                    if (state.val.startsWith('{') && state.val.endsWith('}')) newVal = '{}';
+                                    else if (state.val.startsWith('[') && state.val.endsWith(']')) newVal = '[]';
+                                    else newVal = '';
+                                } else newVal = '';
                                 break;
                             case 'bigint':
                             case 'number':

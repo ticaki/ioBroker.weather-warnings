@@ -87,7 +87,7 @@ class WeatherWarnings extends utils.Adapter {
         }
         self.providerController.updateEndless(self.providerController);
       },
-      4e3,
+      2e3,
       this
     );
   }
@@ -110,7 +110,9 @@ class WeatherWarnings extends utils.Adapter {
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {
       this.log.debug(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
-      switch (obj.command) {
+      let connected = true;
+      let state;
+      switch (String(obj.command)) {
         case "dwd.name":
         case "dwd.name.text":
           if (obj.callback) {
@@ -177,6 +179,54 @@ class WeatherWarnings extends utils.Adapter {
             }
           }
           break;
+        case "test":
+          this.log.debug(`Retrieve test message!`);
+          this.sendTo(obj.from, "test", "Test Message", obj.callback);
+          break;
+        case "test-connection":
+          if (obj.from !== "system.adapter.test.0") {
+            this.sendTo(obj.from, obj.command, "Dont use this command!", obj.callback);
+            return;
+          }
+          this.log.debug(`Retrieve test-connection message!`);
+          connected = true;
+          [
+            "provider.dwd.info.connection",
+            "provider.uwz.info.connection",
+            "provider.zamg.info.connection",
+            "info.connection"
+          ].forEach((a) => {
+            state = this.library.getdb(a);
+            if (state)
+              connected = connected && !!state.val;
+          });
+          this.sendTo(obj.from, obj.command, connected ? "true" : "false", obj.callback);
+          break;
+        case "test-data":
+          if (obj.from !== "system.adapter.test.0") {
+            this.sendTo(obj.from, obj.command, "Dont use this command!", obj.callback);
+            return;
+          }
+          connected = false;
+          [
+            "provider.dwd.info.connection",
+            "provider.uwz.info.connection",
+            "provider.zamg.info.connection",
+            "info.connection"
+          ].forEach((a) => {
+            state = this.library.getdb(a);
+            if (state)
+              connected = connected || !!state.val;
+          });
+          state = this.library.getdb("provider.activWarnings");
+          if (state)
+            connected = connected || state.val != 6;
+          this.sendTo(obj.from, obj.command, !connected ? "true" : "false", obj.callback);
+          this.config.useTestWarnings = false;
+          break;
+        default:
+          this.sendTo(obj.from, obj.command, "unknown message", obj.callback);
+          this.log.debug(`Retrieve unknown command ${obj.command} from ${obj.from}`);
       }
     }
   }

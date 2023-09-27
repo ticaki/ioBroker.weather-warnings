@@ -169,17 +169,19 @@ class Library extends BaseClass {
       }
       obj._id = `${this.adapter.name}.${this.adapter.instance}.${dp}`;
       await this.adapter.setObjectNotExistsAsync(dp, obj);
-      node = this.setdb(dp, obj.type, void 0, true);
+      const stateType = obj && obj.common && obj.common.type;
+      node = this.setdb(dp, obj.type, void 0, stateType, true);
     }
     if (obj && obj.type !== "state")
       return;
     if (node && node.val != val) {
-      if (obj && obj.common && obj.common.type != typeof val && val !== void 0)
-        val = this.convertToType(val, obj.common.type);
+      const typ = obj && obj.common && obj.common.type || node.stateTyp;
+      if (typ && typ != typeof val && val !== void 0)
+        val = this.convertToType(val, typ);
       await this.adapter.setStateAsync(dp, { val, ts: Date.now(), ack: true });
     }
     if (node)
-      this.setdb(dp, node.type, val, true);
+      this.setdb(dp, node.type, val, node.stateTyp, true);
   }
   cleandp(string, lowerCase = false) {
     if (!string && typeof string != "string")
@@ -215,8 +217,11 @@ class Library extends BaseClass {
     }
     return newValue;
   }
-  setdb(dp, type, val, ack = true, ts = Date.now()) {
-    this.stateDataBase[dp] = { type, val, ack, ts: ts ? ts : Date.now() };
+  setdb(dp, type, val, stateType, ack = true, ts = Date.now()) {
+    this.stateDataBase[dp] = { type, stateTyp: stateType, val, ack, ts: ts ? ts : Date.now() };
+    return this.stateDataBase[dp];
+  }
+  getdb(dp) {
     return this.stateDataBase[dp];
   }
   cloneObject(obj) {
@@ -262,15 +267,17 @@ class Library extends BaseClass {
     }
     return result;
   }
-  initStates(states) {
+  async initStates(states) {
     if (!states)
       return;
     for (const state in states) {
       const dp = state.replace(`${this.adapter.name}.${this.adapter.instance}.`, "");
+      const obj = await this.adapter.getObjectAsync(dp);
       this.setdb(
         dp,
         "state",
         states[state] && states[state].val ? states[state].val : void 0,
+        obj && obj.common && obj.common.type ? obj.common.type : void 0,
         states[state] && states[state].ack,
         states[state] && states[state].ts ? states[state].ts : Date.now()
       );
@@ -287,13 +294,16 @@ class Library extends BaseClass {
             continue;
           if (state.ts < Date.now() - offset) {
             let newVal;
-            switch (typeof state.val) {
+            switch (state.stateTyp) {
               case "string":
-                if (state.val.startsWith("{") && state.val.endsWith("}"))
-                  newVal = "{}";
-                else if (state.val.startsWith("[") && state.val.endsWith("]"))
-                  newVal = "[]";
-                else
+                if (typeof state.val == "string") {
+                  if (state.val.startsWith("{") && state.val.endsWith("}"))
+                    newVal = "{}";
+                  else if (state.val.startsWith("[") && state.val.endsWith("]"))
+                    newVal = "[]";
+                  else
+                    newVal = "";
+                } else
                   newVal = "";
                 break;
               case "bigint":

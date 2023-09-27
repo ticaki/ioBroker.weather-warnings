@@ -406,7 +406,7 @@ export class ProviderController extends BaseClass {
         super(adapter, 'provider');
     }
     init(): void {
-        this.refreshTime = (this.adapter.config.refreshTime < 5 ? 5 : this.adapter.config.refreshTime) * 60000;
+        this.refreshTime = this.adapter.config.refreshTime * 60000;
     }
 
     createProviderIfNotExist(options: ProvideOptionsType): ProvideClassType {

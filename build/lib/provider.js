@@ -337,7 +337,7 @@ class ProviderController extends import_library.BaseClass {
     super(adapter, "provider");
   }
   init() {
-    this.refreshTime = (this.adapter.config.refreshTime < 5 ? 5 : this.adapter.config.refreshTime) * 6e4;
+    this.refreshTime = this.adapter.config.refreshTime * 6e4;
   }
   createProviderIfNotExist(options) {
     const index = this.provider.findIndex(

@@ -73,7 +73,7 @@ class WeatherWarnings extends utils.Adapter {
                     if (zamgArr.length == 2) {
                         self.providerController.createProviderIfNotExist({
                             service: 'zamgService',
-                            warncellId: zamgArr, //805111000 Düssel - kirn 807133052
+                            warncellId: zamgArr, //
                         });
                     }
                 }
@@ -87,7 +87,7 @@ class WeatherWarnings extends utils.Adapter {
 
                 self.providerController.updateEndless(self.providerController);
             },
-            4000,
+            2000,
             this,
         );
     }
@@ -144,7 +144,9 @@ class WeatherWarnings extends utils.Adapter {
     private async onMessage(obj: ioBroker.Message): Promise<void> {
         if (typeof obj === 'object' && obj.message) {
             this.log.debug(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
-            switch (obj.command) {
+            let connected = true;
+            let state;
+            switch (String(obj.command)) {
                 case 'dwd.name':
                 case 'dwd.name.text':
                     if (obj.callback) {
@@ -217,6 +219,55 @@ class WeatherWarnings extends utils.Adapter {
                         }
                     }
                     break;
+                case 'test':
+                    this.log.debug(`Retrieve test message!`);
+                    this.sendTo(obj.from, 'test', 'Test Message', obj.callback);
+                    break;
+                /**testing online */
+                case 'test-connection':
+                    if (obj.from !== 'system.adapter.test.0') {
+                        this.sendTo(obj.from, obj.command, 'Dont use this command!', obj.callback);
+                        return;
+                    }
+                    this.log.debug(`Retrieve test-connection message!`);
+                    connected = true;
+                    [
+                        'provider.dwd.info.connection',
+                        'provider.uwz.info.connection',
+                        'provider.zamg.info.connection',
+                        'info.connection',
+                    ].forEach((a) => {
+                        state = this.library.getdb(a);
+                        if (state) connected = connected && !!state.val;
+                    });
+                    // connected === true is right
+                    this.sendTo(obj.from, obj.command, connected ? 'true' : 'false', obj.callback);
+                    break;
+                /**testing with testdata and switch then to online */
+                case 'test-data':
+                    if (obj.from !== 'system.adapter.test.0') {
+                        this.sendTo(obj.from, obj.command, 'Dont use this command!', obj.callback);
+                        return;
+                    }
+                    connected = false;
+                    [
+                        'provider.dwd.info.connection',
+                        'provider.uwz.info.connection',
+                        'provider.zamg.info.connection',
+                        'info.connection',
+                    ].forEach((a) => {
+                        state = this.library.getdb(a);
+                        if (state) connected = connected || !!state.val;
+                    });
+                    state = this.library.getdb('provider.activWarnings');
+                    if (state) connected = connected || state.val != 6;
+                    // connected === false is right
+                    this.sendTo(obj.from, obj.command, !connected ? 'true' : 'false', obj.callback);
+                    this.config.useTestWarnings = false;
+                    break;
+                default:
+                    this.sendTo(obj.from, obj.command, 'unknown message', obj.callback);
+                    this.log.debug(`Retrieve unknown command ${obj.command} from ${obj.from}`);
             }
         }
     }
