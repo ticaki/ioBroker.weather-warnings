@@ -110,6 +110,11 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) more translations
+* filter warn type, generic warntypes
+* more prebuild tests
+
 ### 0.2.2-alpha1.0 (2023-09-26)
 * (ticaki) more CustomTokens,
 * translations for warntypes, warnlevelcolor,
