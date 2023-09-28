@@ -3,6 +3,8 @@ import { genericStateObjects, statesObjectsWarningsType } from './def/definition
 import WeatherWarnings from '../main';
 import _fs from 'fs';
 import { exec } from 'child_process';
+import { genericWarntyp, textLevels, warnTypeName } from './def/messages-def';
+import { geti18nTranslation, seti18nTranslation, showi18nTranslation } from './translations';
 
 // only change this for other adapters
 type AdapterClassDefinition = WeatherWarnings;
@@ -80,6 +82,10 @@ export class Library extends BaseClass {
      * @param expandTree expand arrays up to 99
      * @returns  void
      */
+    init(): void {
+        this.updateTranslations();
+    }
+
     async writeFromJson(
         // provider.dwd.*warncellid*.warnung*1-5*
         prefix: string,
@@ -460,5 +466,45 @@ async covertI18n(name:string, json:{[key: string]: any}):Promise<any> {
                 resolve();
             });
         });
+    }
+    updateTranslations(): void {
+        for (const l in genericWarntyp) {
+            const key = 'genericWarntyp.' + l + '.name';
+            const translation = geti18nTranslation(key);
+            if (translation != '' && typeof translation == 'object' && translation.en !== '') {
+                genericWarntyp[l].name = translation as ioBroker.StringOrTranslated;
+            } else {
+                seti18nTranslation(key, genericWarntyp[l].name);
+            }
+        }
+        for (const l in warnTypeName) {
+            //@ts-expect-error faulheit
+            for (const l2 in warnTypeName[l]) {
+                const key = 'warnTypeName.' + l + '.' + l2;
+                const translation = geti18nTranslation(key);
+                if (translation != '' && typeof translation == 'object' && translation.en !== '') {
+                    //@ts-expect-error faulheit
+                    warnTypeName[l][l2] = translation as ioBroker.StringOrTranslated;
+                } else {
+                    //@ts-expect-error faulheit
+                    seti18nTranslation(key, warnTypeName[l][l2]);
+                }
+            }
+        }
+        for (const l in textLevels) {
+            //@ts-expect-error faulheit
+            for (const l2 in textLevels[l]) {
+                const key = 'textLevels.' + l + '.' + l2;
+                const translation = geti18nTranslation(key);
+                if (translation != '' && typeof translation == 'object' && translation.en !== '') {
+                    //@ts-expect-error faulheit
+                    textLevels[l][l2] = translation as ioBroker.StringOrTranslated;
+                } else {
+                    //@ts-expect-error faulheit
+                    seti18nTranslation(key, textLevels[l][l2]);
+                }
+            }
+        }
+        showi18nTranslation();
     }
 }

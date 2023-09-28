@@ -50,6 +50,8 @@ var import_jsonata = __toESM(require("jsonata"));
 var import_definitionen = require("./def/definitionen");
 var import_fs = __toESM(require("fs"));
 var import_child_process = require("child_process");
+var import_messages_def = require("./def/messages-def");
+var import_translations = require("./translations");
 var _adapter, _prefix;
 class BaseClass {
   unload = false;
@@ -99,6 +101,9 @@ class Library extends BaseClass {
   constructor(adapter, _options = null) {
     super(adapter, "library");
     this.stateDataBase = {};
+  }
+  init() {
+    this.updateTranslations();
   }
   async writeFromJson(prefix, objNode, def, data, expandTree = false) {
     if (!def || typeof def !== "object")
@@ -396,6 +401,40 @@ class Library extends BaseClass {
         resolve();
       });
     });
+  }
+  updateTranslations() {
+    for (const l in import_messages_def.genericWarntyp) {
+      const key = "genericWarntyp." + l + ".name";
+      const translation = (0, import_translations.geti18nTranslation)(key);
+      if (translation != "" && typeof translation == "object" && translation.en !== "") {
+        import_messages_def.genericWarntyp[l].name = translation;
+      } else {
+        (0, import_translations.seti18nTranslation)(key, import_messages_def.genericWarntyp[l].name);
+      }
+    }
+    for (const l in import_messages_def.warnTypeName) {
+      for (const l2 in import_messages_def.warnTypeName[l]) {
+        const key = "warnTypeName." + l + "." + l2;
+        const translation = (0, import_translations.geti18nTranslation)(key);
+        if (translation != "" && typeof translation == "object" && translation.en !== "") {
+          import_messages_def.warnTypeName[l][l2] = translation;
+        } else {
+          (0, import_translations.seti18nTranslation)(key, import_messages_def.warnTypeName[l][l2]);
+        }
+      }
+    }
+    for (const l in import_messages_def.textLevels) {
+      for (const l2 in import_messages_def.textLevels[l]) {
+        const key = "textLevels." + l + "." + l2;
+        const translation = (0, import_translations.geti18nTranslation)(key);
+        if (translation != "" && typeof translation == "object" && translation.en !== "") {
+          import_messages_def.textLevels[l][l2] = translation;
+        } else {
+          (0, import_translations.seti18nTranslation)(key, import_messages_def.textLevels[l][l2]);
+        }
+      }
+    }
+    (0, import_translations.showi18nTranslation)();
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

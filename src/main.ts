@@ -47,12 +47,14 @@ class WeatherWarnings extends utils.Adapter {
             throw new Error('Provider controller doesnt exists.');
         }
         this.log.debug(JSON.stringify(this.config.dwdTypeFilter));
+
         this.library.internalConvert();
 
         setTimeout(
             async function (self: any) {
                 if (!self.providerController) return;
                 if (!self) return;
+                self.library.init();
                 try {
                     const states = await self.getStatesAsync('*');
                     self.library.initStates(states);
@@ -178,7 +180,11 @@ class WeatherWarnings extends utils.Adapter {
                             const service = obj.message.service as 'dwdService' | 'uwzService' | 'zamgService';
                             for (const a in genericWarntyp) {
                                 if (genericWarntyp[a][service].length > 0) {
-                                    reply.push({ label: genericWarntyp[a].name, value: a });
+                                    this.log.debug(await this.library.getTranslation(genericWarntyp[a].name));
+                                    reply.push({
+                                        label: await this.library.getTranslation(genericWarntyp[a].name),
+                                        value: a,
+                                    });
                                 }
                             }
                         }

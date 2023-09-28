@@ -57,6 +57,7 @@ class WeatherWarnings extends utils.Adapter {
           return;
         if (!self)
           return;
+        self.library.init();
         try {
           const states = await self.getStatesAsync("*");
           self.library.initStates(states);
@@ -137,7 +138,11 @@ class WeatherWarnings extends utils.Adapter {
               const service = obj.message.service;
               for (const a in import_messages_def.genericWarntyp) {
                 if (import_messages_def.genericWarntyp[a][service].length > 0) {
-                  reply.push({ label: import_messages_def.genericWarntyp[a].name, value: a });
+                  this.log.debug(await this.library.getTranslation(import_messages_def.genericWarntyp[a].name));
+                  reply.push({
+                    label: await this.library.getTranslation(import_messages_def.genericWarntyp[a].name),
+                    value: a
+                  });
                 }
               }
             }

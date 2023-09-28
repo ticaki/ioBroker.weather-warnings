@@ -248,7 +248,7 @@ class Messages extends import_library.BaseClass {
   }
   filter(filter) {
     const typ = this.formatedData && this.formatedData.warntypenumber;
-    if (!typ)
+    if (typ == void 0)
       return true;
     let hit = false;
     for (const f in filter.type) {

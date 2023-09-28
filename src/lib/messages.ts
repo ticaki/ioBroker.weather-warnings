@@ -249,7 +249,7 @@ export class Messages extends BaseClass {
     }
     filter(filter: messageFilterType): boolean {
         const typ = this.formatedData && this.formatedData.warntypenumber;
-        if (!typ) return true;
+        if (typ == undefined) return true;
         let hit = false;
         for (const f in filter.type) {
             //if (this.provider.service || genericWarntyp[typ][this.provider.service] == undefined) continue;
