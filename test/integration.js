@@ -21,7 +21,7 @@ tests.integration(path.join(__dirname,".."),{
         // The adapter will run until the end of each suite.
 
         // Since the tests are heavily instrumented, each suite gives access to a so called "harness" to control the tests.
-        suite("Test Online",(getHarness) => {
+        suite("Test: Test Online",(getHarness) => {
             // For convenience, get the current suite's harness before all tests
             let harness;
             before(() => {
@@ -45,7 +45,7 @@ tests.integration(path.join(__dirname,".."),{
                     });
                 }).timeout(30000);
             }))
-            it('Connection to server work',() => new Promise(async (resolve,reject) => {
+            it('Test: Connection to server work',() => new Promise(async (resolve,reject) => {
 
                 // change the adapter config
                 await harness.startAdapterAndWait();
@@ -58,7 +58,7 @@ tests.integration(path.join(__dirname,".."),{
                 });
             })).timeout(30000);
         });
-        suite("Test with testdata",(getHarness) => {
+        suite("Test: Test with testdata",(getHarness) => {
             // For convenience, get the current suite's harness before all tests
             let harness;
             before(() => {
@@ -83,7 +83,7 @@ tests.integration(path.join(__dirname,".."),{
                     });
                 });
             })).timeout(20000);
-            it('Adapter works with testdata',() => new Promise(async (resolve, reject) => {
+            it('Test: Adapter works with testdata',() => new Promise(async (resolve, reject) => {
 
                 // change the adapter config
                 await harness.startAdapterAndWait();
@@ -93,7 +93,7 @@ tests.integration(path.join(__dirname,".."),{
                     else reject('message indicate and error!');
                 });
             })).timeout(60000);
-            it('Adapter works more than 2 Minute!',() => new Promise(async (resolve, reject) => {
+            it('Test: Adapter works more than 2 Minute!',() => new Promise(async (resolve, reject) => {
                 // change the adapter config
                 await harness.startAdapterAndWait();
                 await wait(110000);

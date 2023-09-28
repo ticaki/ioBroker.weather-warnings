@@ -41,5 +41,16 @@
     "maltese": "Maltees",
     "slovak": "Slowaaks",
     "bulgarian": "Bulgaars",
-    "slovenian": "Sloveens"
+    "slovenian": "Sloveens",
+    "warntype2": "storm",
+    "warntype4": "regen",
+    "warntype3": "sneeuwval",
+    "warntype5": "koud",
+    "warntype6": "bosbrand",
+    "warntype7": "onweersbui",
+    "warntype8": "ijzel/glad",
+    "warntype9": "warmte",
+    "warntype10": "hagel",
+    "warntype11": "mist",
+    "warntype12": "dooi"
 }

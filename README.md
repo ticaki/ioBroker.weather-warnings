@@ -19,7 +19,7 @@ Adapter ist noch in der Anfangsphase und soll schlußendlich dieses Skript: http
 
 Bis Version 0.4.x wird er weniger einen direkten Nutzen haben, sondern mehr ein "da geht die Reise hin" Ansichtsadapter sein.
 
-#### Aktueller Umfangsumfang:
+#### Aktueller Funktionsumfang:
 - Abruf von Wetterdaten folgender Dienste:
     - DWD Ort und Kreis
     - UWZ Postleitzahlengebiet
@@ -55,7 +55,7 @@ https://forum.iobroker.net/topic/68595/test-adapter-weather-warnings
 
 #### Kurze Erläuterung:
 
-![Bildschirmfoto 2023-09-24 um 19.45.19.png](/assets/uploads/files/1695577524739-bildschirmfoto-2023-09-24-um-19.45.19-resized.png) 
+![Bildschirmfoto 2023-09-24 um 19.45.19.png](https://forum.iobroker.net/assets/uploads/files/1695577524739-bildschirmfoto-2023-09-24-um-19.45.19.png) 
 
 **formatedKeys**: Die Datenpunkte darunter kann man in eigenen Meldungen verwenden.
 

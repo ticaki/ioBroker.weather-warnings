@@ -41,5 +41,16 @@
     "maltese": "мальтийский",
     "slovak": "словацкий",
     "bulgarian": "болгарский",
-    "slovenian": "словенский"
+    "slovenian": "словенский",
+    "warntype2": "буря",
+    "warntype4": "дождь",
+    "warntype3": "снегопад",
+    "warntype5": "холодный",
+    "warntype6": "лесной пожар",
+    "warntype7": "гроза",
+    "warntype8": "черный лед/скользкий",
+    "warntype9": "нагревать",
+    "warntype10": "град",
+    "warntype11": "туман",
+    "warntype12": "оттаять"
 }

@@ -11,6 +11,8 @@ import 'source-map-support/register';
 import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
+import { genericWarntyp } from './lib/def/messages-def';
+import { messageFilterTypeWithFilter } from './lib/def/provider-def';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -44,7 +46,9 @@ class WeatherWarnings extends utils.Adapter {
         } else {
             throw new Error('Provider controller doesnt exists.');
         }
+        this.log.debug(JSON.stringify(this.config.dwdTypeFilter));
         this.library.internalConvert();
+
         setTimeout(
             async function (self: any) {
                 if (!self.providerController) return;
@@ -55,10 +59,16 @@ class WeatherWarnings extends utils.Adapter {
                 } catch (error) {
                     self.log.error(`catch (1): init error while reading states! ${error}`);
                 }
+
                 // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
                 if (self.config.dwdSelectId > 10000 && self.config.dwdEnabled) {
+                    const options: messageFilterTypeWithFilter & { [key: string]: any } = {
+                        filter: { type: self.config.dwdTypeFilter },
+                        language: self.config.dwdLanguage,
+                    };
                     self.log.info('DWD activated. Retrieve data.');
                     self.providerController.createProviderIfNotExist({
+                        ...options,
                         service: 'dwdService',
                         warncellId: self.config.dwdSelectId, //805111000 Düssel - kirn 807133052
                     });
@@ -69,17 +79,27 @@ class WeatherWarnings extends utils.Adapter {
                     typeof self.config.zamgSelectID == 'string'
                 ) {
                     self.log.info('ZAMG activated. Retrieve data.');
+                    const options: messageFilterTypeWithFilter & { [key: string]: any } = {
+                        filter: { type: self.config.zamgTypeFilter },
+                        language: self.config.zamgLanguage,
+                    };
                     const zamgArr = self.config.zamgSelectID.split('#');
                     if (zamgArr.length == 2) {
                         self.providerController.createProviderIfNotExist({
+                            ...options,
                             service: 'zamgService',
                             warncellId: zamgArr, //
                         });
                     }
                 }
                 if (self.config.uwzEnabled && self.config.uwzSelectID) {
+                    const options: messageFilterTypeWithFilter & { [key: string]: any } = {
+                        filter: { type: self.config.uwzTypeFilter },
+                        language: self.config.uwzLanguage,
+                    };
                     self.log.info('UWZ activated. Retrieve data.');
                     self.providerController.createProviderIfNotExist({
+                        ...options,
                         service: 'uwzService',
                         warncellId: 'UWZ' + self.config.uwzSelectID.toUpperCase(), //UWZ + Land + PLZ
                     });
@@ -147,6 +167,24 @@ class WeatherWarnings extends utils.Adapter {
             let connected = true;
             let state;
             switch (String(obj.command)) {
+                case 'filterType':
+                    if (obj.callback) {
+                        const reply = [];
+                        if (
+                            obj.message &&
+                            obj.message.service &&
+                            ['dwdService', 'uwzService', 'zamgService'].indexOf(obj.message.service) != -1
+                        ) {
+                            const service = obj.message.service as 'dwdService' | 'uwzService' | 'zamgService';
+                            for (const a in genericWarntyp) {
+                                if (genericWarntyp[a][service].length > 0) {
+                                    reply.push({ label: genericWarntyp[a].name, value: a });
+                                }
+                            }
+                        }
+                        this.sendTo(obj.from, obj.command, reply, obj.callback);
+                    }
+                    break;
                 case 'dwd.name':
                 case 'dwd.name.text':
                     if (obj.callback) {

@@ -41,5 +41,16 @@
     "maltese": "maltés",
     "slovak": "eslovaco",
     "bulgarian": "búlgaro",
-    "slovenian": "esloveno"
+    "slovenian": "esloveno",
+    "warntype2": "tormenta",
+    "warntype4": "lluvia",
+    "warntype3": "nevada",
+    "warntype5": "frío",
+    "warntype6": "incendio forestal",
+    "warntype7": "tormenta",
+    "warntype8": "hielo negro/resbaladizo",
+    "warntype9": "calor",
+    "warntype10": "granizo",
+    "warntype11": "niebla",
+    "warntype12": "deshielo"
 }

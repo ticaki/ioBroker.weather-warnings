@@ -45,6 +45,7 @@ class BaseProvider extends import_library.BaseClass {
   library;
   messages = [];
   providerController;
+  filter;
   constructor(adapter, options, name) {
     super(adapter, "provider." + name);
     this.service = options.service;
@@ -52,6 +53,7 @@ class BaseProvider extends import_library.BaseClass {
     this.providerController = options.providerController;
     this.setService(options.service);
     this.log.setLogPrefix(`${name}-${options.warncellId}`);
+    this.filter = options.filter;
     this.init();
   }
   async init() {
@@ -214,7 +216,7 @@ class DWDProvider extends BaseProvider {
       if (index == -1) {
         const nmessage = new import_messages.Messages(this.adapter, "dwd-msg", this, w.properties);
         await nmessage.init();
-        if (nmessage)
+        if (nmessage && nmessage.filter(this.filter))
           this.messages.push(nmessage);
       } else {
         this.messages[index].updateData(w.properties);
@@ -278,7 +280,8 @@ class ZAMGProvider extends BaseProvider {
       if (index == -1) {
         const nmessage = new import_messages.Messages(this.adapter, "zamg-msg", this, result.properties.warnings[a].properties);
         await nmessage.init();
-        this.messages.push(nmessage);
+        if (nmessage && nmessage.filter(this.filter))
+          this.messages.push(nmessage);
       } else {
         this.messages[index].updateData(result.properties.warnings[a].properties);
       }
@@ -307,7 +310,8 @@ class UWZProvider extends BaseProvider {
       if (index == -1) {
         const nmessage = new import_messages.Messages(this.adapter, "uwz-msg", this, result.results[a]);
         await nmessage.init();
-        this.messages.push(nmessage);
+        if (nmessage && nmessage.filter(this.filter))
+          this.messages.push(nmessage);
       } else {
         this.messages[index].updateData(result.results[a]);
       }
@@ -351,9 +355,9 @@ class ProviderController extends import_library.BaseClass {
             throw new Error("Error 122 warncellId is a Array");
           }
           p = new DWDProvider(this.adapter, {
+            ...options,
             warncellId: options.warncellId,
-            providerController: this,
-            language: this.adapter.config.dwdLanguage
+            providerController: this
           });
           break;
         case "uwzService":
@@ -361,9 +365,9 @@ class ProviderController extends import_library.BaseClass {
             throw new Error("Error 123 warncellId is a Array");
           }
           p = new UWZProvider(this.adapter, {
+            ...options,
             warncellId: options.warncellId,
-            providerController: this,
-            language: this.adapter.config.uwzLanguage
+            providerController: this
           });
           break;
         case "zamgService":
@@ -371,9 +375,9 @@ class ProviderController extends import_library.BaseClass {
             throw new Error("Error 124 warncellId is not an Array");
           }
           p = new ZAMGProvider(this.adapter, {
+            ...options,
             warncellId: options.warncellId,
-            providerController: this,
-            language: this.adapter.config.zamgLanguage
+            providerController: this
           });
           break;
         case "ninaService":
@@ -381,6 +385,7 @@ class ProviderController extends import_library.BaseClass {
             throw new Error("Error 125 warncellId is not an Array");
           }
           p = new NINAProvider(this.adapter, {
+            ...options,
             warncellId: options.warncellId,
             providerController: this,
             language: this.adapter.config.dwdLanguage

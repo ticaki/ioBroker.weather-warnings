@@ -41,5 +41,16 @@
     "maltese": "maltese",
     "slovak": "slovacco",
     "bulgarian": "bulgaro",
-    "slovenian": "sloveno"
+    "slovenian": "sloveno",
+    "warntype2": "tempesta",
+    "warntype4": "piovere",
+    "warntype3": "nevicata",
+    "warntype5": "Freddo",
+    "warntype6": "incendio forestale",
+    "warntype7": "temporale",
+    "warntype8": "ghiaccio nero/scivoloso",
+    "warntype9": "Calore",
+    "warntype10": "salve",
+    "warntype11": "nebbia",
+    "warntype12": "scongelare"
 }

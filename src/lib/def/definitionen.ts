@@ -1643,6 +1643,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
+            warntypenumber: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Generic warntype as number.',
+                    type: 'number',
+                    role: 'value',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
             location: {
                 _id: 'begin',
                 type: 'state',

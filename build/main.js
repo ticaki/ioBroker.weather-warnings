@@ -23,6 +23,7 @@ var import_register = require("source-map-support/register");
 var import_dwdWarncellIdLong = require("./lib/def/dwdWarncellIdLong");
 var import_provider = require("./lib/provider.js");
 var import_library = require("./lib/library.js");
+var import_messages_def = require("./lib/def/messages-def");
 import_axios.default.defaults.timeout = 8e3;
 class WeatherWarnings extends utils.Adapter {
   library;
@@ -48,6 +49,7 @@ class WeatherWarnings extends utils.Adapter {
     } else {
       throw new Error("Provider controller doesnt exists.");
     }
+    this.log.debug(JSON.stringify(this.config.dwdTypeFilter));
     this.library.internalConvert();
     setTimeout(
       async function(self) {
@@ -62,25 +64,40 @@ class WeatherWarnings extends utils.Adapter {
           self.log.error(`catch (1): init error while reading states! ${error}`);
         }
         if (self.config.dwdSelectId > 1e4 && self.config.dwdEnabled) {
+          const options = {
+            filter: { type: self.config.dwdTypeFilter },
+            language: self.config.dwdLanguage
+          };
           self.log.info("DWD activated. Retrieve data.");
           self.providerController.createProviderIfNotExist({
+            ...options,
             service: "dwdService",
             warncellId: self.config.dwdSelectId
           });
         }
         if (self.config.zamgEnabled && self.config.zamgSelectID && typeof self.config.zamgSelectID == "string") {
           self.log.info("ZAMG activated. Retrieve data.");
+          const options = {
+            filter: { type: self.config.zamgTypeFilter },
+            language: self.config.zamgLanguage
+          };
           const zamgArr = self.config.zamgSelectID.split("#");
           if (zamgArr.length == 2) {
             self.providerController.createProviderIfNotExist({
+              ...options,
               service: "zamgService",
               warncellId: zamgArr
             });
           }
         }
         if (self.config.uwzEnabled && self.config.uwzSelectID) {
+          const options = {
+            filter: { type: self.config.uwzTypeFilter },
+            language: self.config.uwzLanguage
+          };
           self.log.info("UWZ activated. Retrieve data.");
           self.providerController.createProviderIfNotExist({
+            ...options,
             service: "uwzService",
             warncellId: "UWZ" + self.config.uwzSelectID.toUpperCase()
           });
@@ -113,6 +130,20 @@ class WeatherWarnings extends utils.Adapter {
       let connected = true;
       let state;
       switch (String(obj.command)) {
+        case "filterType":
+          if (obj.callback) {
+            const reply = [];
+            if (obj.message && obj.message.service && ["dwdService", "uwzService", "zamgService"].indexOf(obj.message.service) != -1) {
+              const service = obj.message.service;
+              for (const a in import_messages_def.genericWarntyp) {
+                if (import_messages_def.genericWarntyp[a][service].length > 0) {
+                  reply.push({ label: import_messages_def.genericWarntyp[a].name, value: a });
+                }
+              }
+            }
+            this.sendTo(obj.from, obj.command, reply, obj.callback);
+          }
+          break;
         case "dwd.name":
         case "dwd.name.text":
           if (obj.callback) {

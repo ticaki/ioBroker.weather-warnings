@@ -20,6 +20,10 @@ declare global {
             dwdLanguage: string;
             uwzLanguage: string;
             zamgLanguage: string;
+
+            dwdTypeFilter: string[];
+            zamgTypeFilter: string[];
+            uwzTypeFilter: string[];
         }
     }
 }

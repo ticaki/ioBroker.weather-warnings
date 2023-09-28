@@ -77,6 +77,9 @@ class Messages extends import_library.BaseClass {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.dwdService)}, $string(EC_II))`,
         cmd: "translate"
       },
+      warntypenumber: {
+        node: `$string(EC_II)`
+      },
       location: { node: `AREADESC` }
     },
     uwzService: {
@@ -126,6 +129,9 @@ class Messages extends import_library.BaseClass {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.uwzService)}, $string(type))`,
         cmd: "translate"
       },
+      warntypenumber: {
+        node: `$string(type)`
+      },
       location: { node: `areaID` }
     },
     zamgService: {
@@ -164,6 +170,9 @@ class Messages extends import_library.BaseClass {
       warntypename: {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.zamgService)},$string(rawinfo.wtype))`,
         cmd: "translate"
+      },
+      warntypenumber: {
+        node: `$string(rawinfo.wtype)`
       },
       location: { node: `location` },
       instruction: { node: `empfehlungen` }
@@ -236,6 +245,21 @@ class Messages extends import_library.BaseClass {
   }
   async init() {
     return await this.updateFormatedData(true);
+  }
+  filter(filter) {
+    const typ = this.formatedData && this.formatedData.warntypenumber;
+    if (!typ)
+      return true;
+    let hit = false;
+    for (const f in filter.type) {
+      if (import_messages_def.genericWarntyp[filter.type[f]][this.provider.service].indexOf(typ) != -1) {
+        hit = true;
+        break;
+      }
+    }
+    if (hit)
+      return false;
+    return true;
   }
   async formatMessages() {
     if (!this.formatedData)

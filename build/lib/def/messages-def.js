@@ -20,6 +20,7 @@ var messages_def_exports = {};
 __export(messages_def_exports, {
   color: () => color,
   dwdLevel: () => dwdLevel,
+  genericWarntyp: () => genericWarntyp,
   level: () => level,
   textLevels: () => textLevels,
   warnTypeName: () => warnTypeName
@@ -203,6 +204,35 @@ const color = {
       "zh-cn": "\u7D2B\u8272"
     }
   }
+};
+const genericWarntyp = {
+  1: { name: "unknown", dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
+  2: {
+    name: "storm",
+    dwdService: [40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 96, 79],
+    uwzService: [2],
+    zamgService: [1]
+  },
+  4: {
+    name: "rain",
+    dwdService: [96, 95, 66, 65, 64, 63, 62, 61, 59, 49, 48, 46, 45, 44, 42],
+    uwzService: [4],
+    zamgService: [2]
+  },
+  3: { name: "snowfall", dwdService: [70, 71, 72, 73, 74, 75, 76], uwzService: [3], zamgService: [3] },
+  5: { name: "cold", dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
+  6: { name: "forest fire", dwdService: [], uwzService: [6], zamgService: [] },
+  7: {
+    name: "thunderstorm",
+    dwdService: [90, 91, 92, 93, 95, 96, 31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49],
+    uwzService: [7],
+    zamgService: [5]
+  },
+  8: { name: "black ice/slippery", dwdService: [87, 85, 84, 24], uwzService: [8], zamgService: [4] },
+  9: { name: "heat", dwdService: [247, 248], uwzService: [9], zamgService: [6] },
+  10: { name: "hail", dwdService: [95, 96, 45, 46, 48, 49], uwzService: [], zamgService: [] },
+  11: { name: "fog", dwdService: [59], uwzService: [], zamgService: [] },
+  12: { name: "thaw", dwdService: [88, 89], uwzService: [], zamgService: [] }
 };
 const warnTypeName = {
   uwzService: {
@@ -1158,6 +1188,32 @@ const warnTypeName = {
       pl: "TEST-OSTRZE\u017BENIE NIEPOGODOWE",
       uk: "\u0422\u0415\u0421\u0422-\u041D\u0415\u041F\u041E\u0413\u041E\u0414\u0410-\u041F\u041E\u041F\u0415\u0420\u0415\u0414\u0416\u0415\u041D\u041D\u042F",
       "zh-cn": "\u6D4B\u8BD5-\u6076\u52A3\u5929\u6C14-\u8B66\u544A"
+    },
+    247: {
+      en: "Heat",
+      de: "Hitze",
+      ru: "\u0422\u0435\u043F\u043B\u043E",
+      pt: "Calor de calor",
+      nl: "Heet",
+      fr: "Heat",
+      it: "Calore",
+      es: "Calor",
+      pl: "Heat",
+      uk: "\u0422\u0435\u043F\u043B\u0438\u0446\u044F",
+      "zh-cn": "Heat"
+    },
+    248: {
+      en: "extreme heat",
+      de: "extreme Hitze",
+      ru: "\u044D\u043A\u0441\u0442\u0440\u0435\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u0442\u0435\u043F\u043B\u043E",
+      pt: "calor extremo",
+      nl: "extreme hitte",
+      fr: "chaleur extr\xEAme",
+      it: "calore estremo",
+      es: "calor extremo",
+      pl: "ciep\u0142o",
+      uk: "\u0435\u043A\u0441\u0442\u0440\u0435\u043C\u0430\u043B\u044C\u043D\u0430 \u0442\u0435\u043F\u043B\u0430",
+      "zh-cn": "\u6781\u7AEF\u5371\u9669"
     }
   }
 };
@@ -1169,6 +1225,7 @@ const dwdLevel = { minor: 1, moderate: 2, severe: 3, extreme: 4 };
 0 && (module.exports = {
   color,
   dwdLevel,
+  genericWarntyp,
   level,
   textLevels,
   warnTypeName

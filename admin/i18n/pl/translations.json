@@ -41,5 +41,16 @@
     "maltese": "maltański",
     "slovak": "słowacki",
     "bulgarian": "bułgarski",
-    "slovenian": "słoweński"
+    "slovenian": "słoweński",
+    "warntype2": "burza",
+    "warntype4": "deszcz",
+    "warntype3": "opady śniegu",
+    "warntype5": "zimno",
+    "warntype6": "pożar lasu",
+    "warntype7": "burza z piorunami",
+    "warntype8": "czarny lód/śliski",
+    "warntype9": "ciepło",
+    "warntype10": "grad",
+    "warntype11": "mgła",
+    "warntype12": "odwilż"
 }

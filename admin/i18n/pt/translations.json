@@ -41,5 +41,16 @@
     "maltese": "maltês",
     "slovak": "eslovaco",
     "bulgarian": "búlgaro",
-    "slovenian": "esloveno"
+    "slovenian": "esloveno",
+    "warntype2": "tempestade",
+    "warntype4": "chuva",
+    "warntype3": "queda de neve",
+    "warntype5": "frio",
+    "warntype6": "queimada",
+    "warntype7": "trovoada",
+    "warntype8": "gelo preto/escorregadio",
+    "warntype9": "aquecer",
+    "warntype10": "saudação",
+    "warntype11": "névoa",
+    "warntype12": "descongelamento"
 }

@@ -41,5 +41,16 @@
     "maltese": "maltese",
     "slovak": "slovak",
     "bulgarian": "bulgarian",
-    "slovenian": "slovenian"
+    "slovenian": "slovenian",
+    "warntype2": "storm",
+    "warntype4": "rain",
+    "warntype3": "snowfall",
+    "warntype5": "cold",
+    "warntype6": "forest fire",
+    "warntype7": "thunderstorm",
+    "warntype8": "black ice/slippery",
+    "warntype9": "heat", 
+    "warntype10": "hail",
+    "warntype11": "fog", 
+    "warntype12": "thaw"
 }

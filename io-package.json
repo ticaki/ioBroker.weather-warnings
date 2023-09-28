@@ -117,7 +117,10 @@
         ],
         "dwdLanguage": "ger",
         "uwzLanguage": "DE",
-        "zamgLanguage": "de"
+        "zamgLanguage": "de",
+        "dwdTypeFilter": [],
+        "zamgTypeFilter": [],
+        "uwzTypeFilter": []
     },
     "objects": [],
     "instanceObjects": []

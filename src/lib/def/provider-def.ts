@@ -2,7 +2,11 @@
 export type providerServices = 'dwdService' | 'zamgService' | 'ninaService' | 'uwzService' | 'metroService';
 
 type nullType = null | undefined | void;
-
+export type messageFilterTypeWithFilter = { filter: messageFilterType };
+export type messageFilterType = {
+    level?: number;
+    type: string[];
+};
 /** Full dwd import jsons */
 export type dataImportDwdType =
     | nullType

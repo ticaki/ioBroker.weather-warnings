@@ -41,5 +41,16 @@
     "maltese": "maltais",
     "slovak": "slovaque",
     "bulgarian": "bulgare",
-    "slovenian": "slovène"
+    "slovenian": "slovène",
+    "warntype2": "tempête",
+    "warntype4": "pluie",
+    "warntype3": "chute de neige",
+    "warntype5": "froid",
+    "warntype6": "feu de forêt",
+    "warntype7": "orage",
+    "warntype8": "glace noire/glissant",
+    "warntype9": "chaleur",
+    "warntype10": "grêle",
+    "warntype11": "brouillard",
+    "warntype12": "dégel"
 }

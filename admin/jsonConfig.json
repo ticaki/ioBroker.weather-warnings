@@ -202,7 +202,19 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 3
-                }
+                },
+                "dwdTypeFilter": {
+					"type": "selectSendTo",
+					"command": "filterType",
+					"jsonData": "{ \"service\": \"dwdService\" }",
+					"manual": true,
+                    "multiple": true,
+					"sm": 12,
+					"md": 5,
+					"lg": 3,
+					"label": "dwdTypeFilter",
+					"newLine": true
+				}
             }
         },
         "_uwzpanel": {
@@ -244,11 +256,11 @@
                             "value": "IT"
                         },
                         {
-                            "label": "netherlands",
+                            "label": "dutch",
                             "value": "NL"
                         },
                         {
-                            "label": "denmark",
+                            "label": "danish",
                             "value": "DK"
                         }
                     ],
@@ -256,7 +268,19 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4
-                }
+                },
+                "uwzTypeFilter": {
+					"type": "selectSendTo",
+					"command": "filterType",
+					"jsonData": "{ \"service\": \"uwzService\" }",
+					"manual": true,
+                    "multiple": true,
+					"sm": 12,
+					"md": 5,
+					"lg": 3,
+					"label": "dwdTypeFilter",
+					"newLine": true
+				}
             }
         },
         "_zamgpanel": {
@@ -298,7 +322,19 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4
-                }
+                },
+                "zamgTypeFilter": {
+					"type": "selectSendTo",
+					"command": "filterType",
+					"jsonData": "{ \"service\": \"zamgService\" }",
+					"manual": true,
+                    "multiple": true,
+					"sm": 12,
+					"md": 5,
+					"lg": 3,
+					"label": "dwdTypeFilter",
+					"newLine": true
+				}
             }
         },
         "_templates": {

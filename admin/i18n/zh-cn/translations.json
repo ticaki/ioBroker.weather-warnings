@@ -41,5 +41,16 @@
     "maltese": "马耳他语",
     "slovak": "斯洛伐克语",
     "bulgarian": "保加利亚语",
-    "slovenian": "斯洛文尼亚语"
+    "slovenian": "斯洛文尼亚语",
+    "warntype2": "风暴",
+    "warntype4": "雨",
+    "warntype3": "降雪",
+    "warntype5": "寒冷的",
+    "warntype6": "森林火灾",
+    "warntype7": "雷雨",
+    "warntype8": "黑冰/滑",
+    "warntype9": "热",
+    "warntype10": "冰雹",
+    "warntype11": "多雾路段",
+    "warntype12": "解冻"
 }

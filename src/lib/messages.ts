@@ -1,6 +1,15 @@
 import WeatherWarnings from '../main';
 import { genericStateObjects, statesObjectsWarnings } from './def/definitionen';
-import { textLevels, warnTypeName, dwdLevel, level, color, customFormatedKeysDef } from './def/messages-def';
+import {
+    textLevels,
+    warnTypeName,
+    dwdLevel,
+    level,
+    color,
+    customFormatedKeysDef,
+    genericWarntyp,
+} from './def/messages-def';
+import { messageFilterType } from './def/provider-def';
 import { BaseClass, Library } from './library';
 import { ProvideClassType } from './provider';
 
@@ -65,6 +74,9 @@ export class Messages extends BaseClass {
                 node: `$lookup(${JSON.stringify(warnTypeName.dwdService)}, $string(EC_II))`,
                 cmd: 'translate',
             },
+            warntypenumber: {
+                node: `$string(EC_II)`,
+            },
             location: { node: `AREADESC` },
         },
 
@@ -115,6 +127,9 @@ export class Messages extends BaseClass {
                 node: `$lookup(${JSON.stringify(warnTypeName.uwzService)}, $string(type))`,
                 cmd: 'translate',
             },
+            warntypenumber: {
+                node: `$string(type)`,
+            },
             location: { node: `areaID` },
         },
         zamgService: {
@@ -153,6 +168,9 @@ export class Messages extends BaseClass {
             warntypename: {
                 node: `$lookup(${JSON.stringify(warnTypeName.zamgService)},$string(rawinfo.wtype))`,
                 cmd: 'translate',
+            },
+            warntypenumber: {
+                node: `$string(rawinfo.wtype)`,
             },
             location: { node: `location` },
             instruction: { node: `empfehlungen` },
@@ -229,7 +247,21 @@ export class Messages extends BaseClass {
     async init(): Promise<customFormatedKeysResult> {
         return await this.updateFormatedData(true);
     }
-
+    filter(filter: messageFilterType): boolean {
+        const typ = this.formatedData && this.formatedData.warntypenumber;
+        if (!typ) return true;
+        let hit = false;
+        for (const f in filter.type) {
+            //if (this.provider.service || genericWarntyp[typ][this.provider.service] == undefined) continue;
+            //@ts-expect-error dann ebenso
+            if (genericWarntyp[filter.type[f]][this.provider.service].indexOf(typ) != -1) {
+                hit = true;
+                break;
+            }
+        }
+        if (hit) return false;
+        return true;
+    }
     async formatMessages(): Promise<void> {
         if (!this.formatedData) return;
         const templates = this.adapter.config.templateTable;
