@@ -1,3 +1,5 @@
+/* Regex to get "" around keys ([a-zA-Z_]+): "$1": */
+
 import de from '../../admin/i18n/de/translations.json';
 import en from '../../admin/i18n/en/translations.json';
 import es from '../../admin/i18n/es/translations.json';

@@ -11,7 +11,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "label": "Activate DWD",
+                    "label": "dwdEnabled",
                     "newLine": true
                 },
                 "telegram_Enabled": {
@@ -28,7 +28,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "label": "Activate UWZ",
+                    "label": "uwzEnabled",
                     "newLine": true
                 },
                 "whatsapp_Enabled": {
@@ -36,7 +36,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "label": "Activate Whatsapp",
+                    "label": "whatsapp_Enabled",
                     "newLine": false
                 },
                 "zamgEnabled": {
@@ -44,7 +44,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "label": "Activate ZAMG",
+                    "label": "zamgEnabled",
                     "newLine": true
                 },
                 "pushover_Enabled": {
@@ -85,7 +85,7 @@
             "label": "DWD",
             "hidden": "!data.dwdEnabled",
             "items": {
-                "dwdSelectId": {
+                "_dwdSelectId": {
                     "type": "autocompleteSendTo",
                     "command": "dwd.name",
                     "jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
@@ -93,26 +93,17 @@
                     "alsoDependsOn": [
                         "dwdSelectId"
                     ],
+                    "label": "dwdSelectId",
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
-                    "label": "DWD District/City ID selection",
+                    
                     "newLine": true
                 },
-                "dwdSelectShowName": {
-                    "type": "textSendTo",
-                    "command": "dwd.name.text",
-                    "jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
-                    "alsoDependsOn": [
-                        "dwdSelectId"
-                    ],
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "label": "DWD District/City ID Name"
-                },
+                
                 "dwdLanguage": {
                     "type": "select",
+                    "label": "WarnLanguage",
                     "options": [
                         {
                             "label": "german",
@@ -249,16 +240,17 @@
             "items": {
                 "uwzSelectDescription": {
                     "type": "staticText",
-                    "text": "UWZ ID diese besteht aus Länderkennzeichen und Postleitzahl (DE12345, AT54321)",
+                    "label": "uwzSelectDescription",
                     "newLine": true
                 },
                 "uwzSelectID": {
                     "type": "text",
-                    "label": "DE12345",
+                    "default": "DE12345",
                     "newLine": true
                 },
                 "uwzLanguage": {
                     "type": "select",
+                    "label":"WarnLanguage",
                     "options": [
                         {
                             "label": "german",
@@ -329,6 +321,7 @@
                 },
                 "zamgLanguage": {
                     "type": "select",
+                    "label": "WarnLanguage",
                     "options": [
                         {
                             "label": "german",
@@ -426,7 +419,7 @@
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.telegram_Adapter == 'none'",
-                    "label": "Activate DWD",
+                    "label": "dwdEnabled",
                     "newLine": true
                 },
                 "telegram_UwzEnabled": {
@@ -436,7 +429,7 @@
                     "lg": 2,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.telegram_Adapter == 'none'",
-                    "label": "Activate UWZ",
+                    "label": "uwzEnabled",
                     "newLine": true
                 },
                 "telegram_ZamgEnabled": {
@@ -446,7 +439,7 @@
                     "lg": 2,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.telegram_Adapter == 'none'",
-                    "label": "Activate ZAMG",
+                    "label": "zamgEnabled",
                     "newLine": true
                 },
                 "telegram_TypeFilter": {
@@ -459,7 +452,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 3,
-                    "label": "TypeFilter",
+                    "label": "push_TypeFilter",
                     "newLine": true
                 },
                 "telegram_LevelFilter": {
@@ -472,7 +465,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 3,
-                    "label": "levelFilter",
+                    "label": "push_LevelFilter",
                     "newLine": true
                 },
                 "telegram_MessageNew": {
@@ -541,7 +534,7 @@
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.whatsapp_Adapter == 'none'",
-                    "label": "Activate DWD",
+                    "label": "dwdEnabled",
                     "newLine": true
                 },
                 "whatsapp_UwzEnabled": {
@@ -551,7 +544,7 @@
                     "lg": 2,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.whatsapp_Adapter == 'none'",
-                    "label": "Activate UWZ",
+                    "label": "uwzEnabled",
                     "newLine": true
                 },
                 "whatsapp_ZamgEnabled": {
@@ -561,7 +554,7 @@
                     "lg": 2,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.whatsapp_Adapter == 'none'",
-                    "label": "Activate ZAMG",
+                    "label": "zamgEnabled",
                     "newLine": true
                 },
                 "whatsapp_TypeFilter": {
@@ -574,7 +567,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 3,
-                    "label": "TypeFilter",
+                    "label": "push_TypeFilter",
                     "newLine": true
                 },
                 "whatsapp_LevelFilter": {
@@ -587,7 +580,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 3,
-                    "label": "levelFilter",
+                    "label": "push_LevelFilter",
                     "newLine": true
                 },
                 "whatsapp_MessageNew": {
@@ -656,7 +649,7 @@
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.pushover_Adapter == 'none'",
-                    "label": "Activate DWD",
+                    "label": "dwdEnabled",
                     "newLine": true
                 },
                 "pushover_UwzEnabled": {
@@ -666,7 +659,7 @@
                     "lg": 2,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.pushover_Adapter == 'none'",
-                    "label": "Activate UWZ",
+                    "label": "uwzEnabled",
                     "newLine": true
                 },
                 "pushover_ZamgEnabled": {
@@ -676,7 +669,7 @@
                     "lg": 2,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.pushover_Adapter == 'none'",
-                    "label": "Activate ZAMG",
+                    "label": "zamgEnabled",
                     "newLine": true
                 },
                 "pushover_TypeFilter": {
@@ -689,7 +682,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 3,
-                    "label": "TypeFilter",
+                    "label": "push_TypeFilter",
                     "newLine": true
                 },
                 "pushover_LevelFilter": {
@@ -702,7 +695,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 3,
-                    "label": "levelFilter",
+                    "label": "push_LevelFilter",
                     "newLine": true
                 },
                 "pushover_MessageNew": {

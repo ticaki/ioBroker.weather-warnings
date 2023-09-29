@@ -127,6 +127,9 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 ### 0.2.1-alpha.0 (2023-09-25)
 * (ticaki) initial release
 
+
+Bild von <a href="https://de.freepik.com/vektoren-kostenlos/handgezeichnete-wettereffekte-set_18778981.htm#query=wetter%20symbole&position=49&from_view=keyword&track=ais">Freepik</a>
+
 ## License
 MIT License
 
