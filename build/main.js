@@ -49,7 +49,6 @@ class WeatherWarnings extends utils.Adapter {
     } else {
       throw new Error("Provider controller doesnt exists.");
     }
-    this.log.debug(JSON.stringify(this.config.dwdTypeFilter));
     this.library.internalConvert();
     setTimeout(
       async function(self) {

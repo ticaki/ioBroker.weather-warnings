@@ -110,7 +110,7 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.2.4-alpha.0 (2023-09-29)
 * (ticaki) add alerts
 
 ### 0.2.3-alpha.0 (2023-09-28)
