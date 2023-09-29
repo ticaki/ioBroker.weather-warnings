@@ -8,10 +8,22 @@ import {
     color,
     customFormatedKeysDef,
     genericWarntyp,
+    genericWarntypeType,
 } from './def/messages-def';
+import { notificationServiceBaseType } from './def/notificationService-def';
 import { messageFilterType } from './def/provider-def';
 import { BaseClass, Library } from './library';
 import { ProvideClassType } from './provider';
+
+type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
+    ? { [K in keyof Obj]: ChangeTypeOfKeys<Obj[K], newKey> }
+    : newKey;
+
+export type customformatedKeysJsonataDefinition = ChangeTypeOfKeys<customFormatedKeysDef, customFormatedKeysDefSubtype>;
+export type customFormatedKeysInit = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined> | undefined;
+export type customFormatedKeysResult = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined>;
+
+type customFormatedKeysDefSubtype = { cmd?: 'dayoftheweek' | 'translate'; node: string };
 
 /**
  * bla
@@ -30,10 +42,16 @@ export class Messages extends BaseClass {
     notDeleted: boolean = true;
     templates: ioBroker.AdapterConfig['templateTable'];
     messages: { message: string; key: string }[] = [];
+    starttime = 1;
+    endtime = 1;
+    ceiling = 0;
+    altitude = 0;
+    level = 0;
+    type = 0;
+    genericType: keyof genericWarntypeType = 1;
     /** jsonata/typscript cmd to gather data from warning json */
     formatedKeyCommand: { [key: string]: customformatedKeysJsonataDefinition } = {
         dwdService: {
-            startunixtime: { node: `$toMillis(ONSET)` },
             starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
             startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
             endtime: { node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -74,14 +92,10 @@ export class Messages extends BaseClass {
                 node: `$lookup(${JSON.stringify(warnTypeName.dwdService)}, $string(EC_II))`,
                 cmd: 'translate',
             },
-            warntypenumber: {
-                node: `$string(EC_II)`,
-            },
             location: { node: `AREADESC` },
         },
 
         uwzService: {
-            startunixtime: { node: `$number(dtgStart)` },
             starttime: { node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
             startdate: { node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
             endtime: { node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -97,8 +111,8 @@ export class Messages extends BaseClass {
             headline: { node: `payload.translationsShortText` },
             description: { node: `payload.translationsLongText` },
             weathertext: { node: `` },
-            ceiling: { node: `payload.altMin` }, // max höhe
-            altitude: { node: `payload.altMax` }, // min höhe
+            ceiling: { node: `payload.altMax` }, // max höhe
+            altitude: { node: `payload.altMin` }, // min höhe
             warnlevelcolorname: {
                 node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
@@ -127,13 +141,9 @@ export class Messages extends BaseClass {
                 node: `$lookup(${JSON.stringify(warnTypeName.uwzService)}, $string(type))`,
                 cmd: 'translate',
             },
-            warntypenumber: {
-                node: `$string(type)`,
-            },
             location: { node: `areaID` },
         },
         zamgService: {
-            startunixtime: { node: `$number(rawinfo.start)` },
             starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
             startdate: { node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
             endtime: { node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -168,9 +178,6 @@ export class Messages extends BaseClass {
             warntypename: {
                 node: `$lookup(${JSON.stringify(warnTypeName.zamgService)},$string(rawinfo.wtype))`,
                 cmd: 'translate',
-            },
-            warntypenumber: {
-                node: `$string(rawinfo.wtype)`,
             },
             location: { node: `location` },
             instruction: { node: `empfehlungen` },
@@ -245,16 +252,86 @@ export class Messages extends BaseClass {
         }
     }
     async init(): Promise<customFormatedKeysResult> {
+        switch (this.provider.service) {
+            case 'dwdService':
+                {
+                    this.starttime = Number(await this.library.readWithJsonata(this.rawWarning, `$toMillis(ONSET)`));
+                    this.endtime = Number(await this.library.readWithJsonata(this.rawWarning, `$toMillis(EXPIRES)`));
+                    this.ceiling = Number(
+                        await this.library.readWithJsonata(this.rawWarning, `$floor(CEILING * 0.3048)`),
+                    ); // max höhe
+                    this.altitude = Number(
+                        await this.library.readWithJsonata(this.rawWarning, `$floor(ALTITUDE * 0.3048)`),
+                    ); // min höhe
+                    this.level = Number(
+                        await this.library.readWithJsonata(
+                            this.rawWarning,
+                            `$number($lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY)))`,
+                        ),
+                    );
+                    this.type = Number(await this.library.readWithJsonata(this.rawWarning, `$number(EC_II)`));
+                }
+                break;
+
+            case 'uwzService':
+                {
+                    this.starttime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(dtgStart)`));
+                    this.endtime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(dtgEnd)`));
+                    this.ceiling = Number(await this.library.readWithJsonata(this.rawWarning, `payload.altMax`)); // max höhe
+                    this.altitude = Number(await this.library.readWithJsonata(this.rawWarning, `payload.altMin`)); // min höhe
+                    this.level = Number(
+                        await this.library.readWithJsonata(
+                            this.rawWarning,
+                            `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                                level.uwz,
+                            )}, $i[2]))`,
+                        ),
+                    );
+                    this.type = Number(await this.library.readWithJsonata(this.rawWarning, `$number(type)`));
+                }
+                break;
+            case 'zamgService':
+                {
+                    this.starttime = Number(
+                        await this.library.readWithJsonata(this.rawWarning, `$number(rawinfo.start)`),
+                    );
+                    this.endtime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(rawinfo.end)`));
+                    this.ceiling = -1;
+                    this.altitude = -1;
+                    this.level = Number(await this.library.readWithJsonata(this.rawWarning, `rawinfo.wlevel`));
+                    this.type = Number(await this.library.readWithJsonata(this.rawWarning, `rawinfo.wtype`));
+                }
+                break;
+            default: {
+                this.starttime = 1;
+                this.endtime = 1;
+                this.ceiling = -1;
+                this.altitude = -1;
+                this.level = -1;
+                this.type = 0;
+            }
+        }
+
+        for (const t in genericWarntyp) {
+            const o = genericWarntyp[Number(t) as keyof genericWarntypeType];
+            const s = this.provider.service;
+            //@ts-expect-error keine ahnung o und s sind definiert
+            if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
+                this.genericType = Number(t) as keyof genericWarntypeType;
+                break;
+            }
+        }
+
         return await this.updateFormatedData(true);
     }
     filter(filter: messageFilterType): boolean {
-        const typ = this.formatedData && this.formatedData.warntypenumber;
-        if (typ == undefined) return true;
+        this.type;
         let hit = false;
+        if (filter.level && filter.level > this.level) return false;
         for (const f in filter.type) {
             //if (this.provider.service || genericWarntyp[typ][this.provider.service] == undefined) continue;
             //@ts-expect-error dann ebenso
-            if (genericWarntyp[filter.type[f]][this.provider.service].indexOf(typ) != -1) {
+            if (genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1) {
                 hit = true;
                 break;
             }
@@ -410,13 +487,10 @@ export class Messages extends BaseClass {
     }
     //async init(msg: any): Promise<void> {}
 }
-
-type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
-    ? { [K in keyof Obj]: ChangeTypeOfKeys<Obj[K], newKey> }
-    : newKey;
-
-export type customformatedKeysJsonataDefinition = ChangeTypeOfKeys<customFormatedKeysDef, customFormatedKeysDefSubtype>;
-export type customFormatedKeysInit = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined> | undefined;
-export type customFormatedKeysResult = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined>;
-
-type customFormatedKeysDefSubtype = { cmd?: 'dayoftheweek' | 'translate'; node: string };
+export class NotificationClass extends BaseClass {
+    options: notificationServiceBaseType;
+    constructor(adapter: WeatherWarnings, notifcationOptions: notificationServiceBaseType) {
+        super(adapter, notifcationOptions.name);
+        this.options = notifcationOptions;
+    }
+}

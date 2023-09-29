@@ -18,7 +18,8 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var messages_exports = {};
 __export(messages_exports, {
-  Messages: () => Messages
+  Messages: () => Messages,
+  NotificationClass: () => NotificationClass
 });
 module.exports = __toCommonJS(messages_exports);
 var import_definitionen = require("./def/definitionen");
@@ -35,9 +36,15 @@ class Messages extends import_library.BaseClass {
   notDeleted = true;
   templates;
   messages = [];
+  starttime = 1;
+  endtime = 1;
+  ceiling = 0;
+  altitude = 0;
+  level = 0;
+  type = 0;
+  genericType = 1;
   formatedKeyCommand = {
     dwdService: {
-      startunixtime: { node: `$toMillis(ONSET)` },
       starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
       startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
       endtime: { node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -77,13 +84,9 @@ class Messages extends import_library.BaseClass {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.dwdService)}, $string(EC_II))`,
         cmd: "translate"
       },
-      warntypenumber: {
-        node: `$string(EC_II)`
-      },
       location: { node: `AREADESC` }
     },
     uwzService: {
-      startunixtime: { node: `$number(dtgStart)` },
       starttime: { node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
       startdate: { node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
       endtime: { node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -99,8 +102,8 @@ class Messages extends import_library.BaseClass {
       headline: { node: `payload.translationsShortText` },
       description: { node: `payload.translationsLongText` },
       weathertext: { node: `` },
-      ceiling: { node: `payload.altMin` },
-      altitude: { node: `payload.altMax` },
+      ceiling: { node: `payload.altMax` },
+      altitude: { node: `payload.altMin` },
       warnlevelcolorname: {
         node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
           import_messages_def.level.uwz
@@ -129,13 +132,9 @@ class Messages extends import_library.BaseClass {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.uwzService)}, $string(type))`,
         cmd: "translate"
       },
-      warntypenumber: {
-        node: `$string(type)`
-      },
       location: { node: `areaID` }
     },
     zamgService: {
-      startunixtime: { node: `$number(rawinfo.start)` },
       starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
       startdate: { node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
       endtime: { node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -170,9 +169,6 @@ class Messages extends import_library.BaseClass {
       warntypename: {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.zamgService)},$string(rawinfo.wtype))`,
         cmd: "translate"
-      },
-      warntypenumber: {
-        node: `$string(rawinfo.wtype)`
       },
       location: { node: `location` },
       instruction: { node: `empfehlungen` }
@@ -244,15 +240,81 @@ class Messages extends import_library.BaseClass {
     }
   }
   async init() {
+    switch (this.provider.service) {
+      case "dwdService":
+        {
+          this.starttime = Number(await this.library.readWithJsonata(this.rawWarning, `$toMillis(ONSET)`));
+          this.endtime = Number(await this.library.readWithJsonata(this.rawWarning, `$toMillis(EXPIRES)`));
+          this.ceiling = Number(
+            await this.library.readWithJsonata(this.rawWarning, `$floor(CEILING * 0.3048)`)
+          );
+          this.altitude = Number(
+            await this.library.readWithJsonata(this.rawWarning, `$floor(ALTITUDE * 0.3048)`)
+          );
+          this.level = Number(
+            await this.library.readWithJsonata(
+              this.rawWarning,
+              `$number($lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY)))`
+            )
+          );
+          this.type = Number(await this.library.readWithJsonata(this.rawWarning, `$number(EC_II)`));
+        }
+        break;
+      case "uwzService":
+        {
+          this.starttime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(dtgStart)`));
+          this.endtime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(dtgEnd)`));
+          this.ceiling = Number(await this.library.readWithJsonata(this.rawWarning, `payload.altMax`));
+          this.altitude = Number(await this.library.readWithJsonata(this.rawWarning, `payload.altMin`));
+          this.level = Number(
+            await this.library.readWithJsonata(
+              this.rawWarning,
+              `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                import_messages_def.level.uwz
+              )}, $i[2]))`
+            )
+          );
+          this.type = Number(await this.library.readWithJsonata(this.rawWarning, `$number(type)`));
+        }
+        break;
+      case "zamgService":
+        {
+          this.starttime = Number(
+            await this.library.readWithJsonata(this.rawWarning, `$number(rawinfo.start)`)
+          );
+          this.endtime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(rawinfo.end)`));
+          this.ceiling = -1;
+          this.altitude = -1;
+          this.level = Number(await this.library.readWithJsonata(this.rawWarning, `rawinfo.wlevel`));
+          this.type = Number(await this.library.readWithJsonata(this.rawWarning, `rawinfo.wtype`));
+        }
+        break;
+      default: {
+        this.starttime = 1;
+        this.endtime = 1;
+        this.ceiling = -1;
+        this.altitude = -1;
+        this.level = -1;
+        this.type = 0;
+      }
+    }
+    for (const t in import_messages_def.genericWarntyp) {
+      const o = import_messages_def.genericWarntyp[Number(t)];
+      const s = this.provider.service;
+      if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
+        this.genericType = Number(t);
+        break;
+      }
+    }
     return await this.updateFormatedData(true);
   }
   filter(filter) {
-    const typ = this.formatedData && this.formatedData.warntypenumber;
-    if (typ == void 0)
-      return true;
+    this.type;
     let hit = false;
+    if (filter.level && filter.level > this.level)
+      return false;
     for (const f in filter.type) {
-      if (import_messages_def.genericWarntyp[filter.type[f]][this.provider.service].indexOf(typ) != -1) {
+      if (import_messages_def.genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1) {
         hit = true;
         break;
       }
@@ -398,8 +460,16 @@ class Messages extends import_library.BaseClass {
     this.formatedKeysJsonataDefinition[key] = arg;
   }
 }
+class NotificationClass extends import_library.BaseClass {
+  options;
+  constructor(adapter, notifcationOptions) {
+    super(adapter, notifcationOptions.name);
+    this.options = notifcationOptions;
+  }
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  Messages
+  Messages,
+  NotificationClass
 });
 //# sourceMappingURL=messages.js.map

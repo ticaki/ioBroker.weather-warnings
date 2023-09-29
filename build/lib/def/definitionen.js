@@ -24,6 +24,18 @@ __export(definitionen_exports, {
   statesObjectsWarnings: () => statesObjectsWarnings
 });
 module.exports = __toCommonJS(definitionen_exports);
+var import_messages_def = require("./messages-def");
+function cloneObj(data) {
+  return JSON.parse(JSON.stringify(data));
+}
+const defaultChannel = {
+  _id: "",
+  type: "channel",
+  common: {
+    name: "Hey no description... "
+  },
+  native: {}
+};
 const genericStateObjects = {
   info: {
     _channel: {
@@ -1585,18 +1597,6 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
-      warntypenumber: {
-        _id: "begin",
-        type: "state",
-        common: {
-          name: "Generic warntype as number.",
-          type: "number",
-          role: "value",
-          read: true,
-          write: false
-        },
-        native: {}
-      },
       location: {
         _id: "begin",
         type: "state",
@@ -1608,18 +1608,64 @@ const statesObjectsWarnings = {
           write: false
         },
         native: {}
-      },
-      startunixtime: {
-        _id: "startunixtime",
-        type: "state",
+      }
+    },
+    alerts: {
+      _channel: {
+        _id: "",
+        type: "channel",
         common: {
-          name: "Unixtimestamp for starttime (internal use)",
-          type: "number",
-          role: "value",
-          read: true,
-          write: false
+          name: "Most important warning per warntype."
         },
         native: {}
+      },
+      storm: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "Storm" } }
+      },
+      hail: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "hail" } }
+      },
+      thunderstorm: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "thunderstorm" } }
+      },
+      rain: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "rain" } }
+      },
+      black_ice_slippery: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "black ice/slippery" } }
+      },
+      snowfall: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "snowfall" } }
+      },
+      thaw: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "thaw" } }
+      },
+      unknown: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "unknown" } }
+      },
+      cold: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "cold" } }
+      },
+      forest_fire: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "forest fire" } }
+      },
+      heat: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "heat" } }
+      },
+      fog: {
+        ...cloneObj(import_messages_def.genericWarntypState),
+        _channel: { ...defaultChannel, common: { name: "fog" } }
       }
     }
   }

@@ -37,6 +37,8 @@ tests.integration(path.join(__dirname,".."),{
                     obj.native.uwzSelectID='DE55606';
                     obj.native.zamgEnabled=true;
                     obj.native.zamgSelectID='48.333444483766975#14.6258983209036';
+                    obj.native.zamgTypeFilter=[5,1];
+                    obj.native.uwzTypeFilter=[5,1];
                     harness.objects.setObject(obj._id,obj)
                     // Start the adapter and wait until it has started
                     await harness.startAdapterAndWait();
@@ -75,6 +77,8 @@ tests.integration(path.join(__dirname,".."),{
                     obj.native.zamgEnabled=true;
                     obj.native.zamgSelectID='48.333444483766975#14.6258983209036';
                     obj.native.refreshTime=1;
+                    obj.native.zamgTypeFilter=[7];
+                    obj.native.uwzTypeFilter=[];
                     harness.objects.setObject(obj._id,obj)
                     // Start the adapter and wait until it has started
                     await harness.startAdapterAndWait();
@@ -89,8 +93,8 @@ tests.integration(path.join(__dirname,".."),{
                 await harness.startAdapterAndWait();
                 await wait(30000);
                 harness.sendTo('weather-warnings.0','test-data','message',resp => {
-                    if (resp == 'true') resolve();
-                    else reject('message indicate and error!');
+                    if (resp == 'ok') resolve(resp);
+                    else reject(resp);
                 });
             })).timeout(60000);
             it('Test: Adapter works more than 2 Minute!',() => new Promise(async (resolve, reject) => {

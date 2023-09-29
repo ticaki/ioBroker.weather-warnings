@@ -14,6 +14,8 @@ import {
 } from './def/provider-def';
 import { Messages } from './messages';
 import { getTestData } from './test-warnings';
+import { notificationServiceOptionsType } from './def/notificationService-def';
+import { genericWarntyp, genericWarntypeAlertJsonType, genericWarntypeType } from './def/messages-def';
 
 type ProvideOptionsTypeInternal = {
     service: providerServices;
@@ -116,6 +118,48 @@ class BaseProvider extends BaseClass {
     async update(): Promise<void> {
         // tue nichts
     }
+    static async setAlerts(
+        that: BaseProvider | ProviderController,
+        prefix: string,
+        data: { [key: string]: string | number | boolean },
+    ): Promise<void> {
+        await that.library.writeFromJson(prefix + '.alerts', 'allService.alerts', statesObjectsWarnings, data, false);
+    }
+    async getAlertsAndWrite(): Promise<genericWarntypeAlertJsonType> {
+        const reply: any = {};
+        for (const t in genericWarntyp) {
+            reply[genericWarntyp[Number(t) as keyof genericWarntypeType].id] = {
+                level: -1,
+                start: 1,
+                end: 1,
+                headline: '',
+                active: false,
+                type: -1,
+            };
+        }
+
+        if (!reply) throw new Error('error(234) reply not definied');
+        for (const a in this.messages) {
+            const m = this.messages[a];
+            if (!m) continue;
+            const name = genericWarntyp[m.genericType].id;
+            if (reply[name] === undefined) continue;
+            if (m.endtime < Date.now()) continue;
+
+            if (m.starttime < Date.now() && reply[name].level < m.level) {
+                reply[name] = {
+                    level: m.level,
+                    start: m.starttime,
+                    end: m.endtime,
+                    headline: m.formatedData !== undefined ? String(m.formatedData.headline) : '',
+                    active: m.starttime <= Date.now() && m.endtime >= Date.now(),
+                    type: -1,
+                };
+            }
+        }
+        await BaseProvider.setAlerts(this, this.name, reply);
+        return reply;
+    }
     // General function that retrieves data
     async getDataFromProvider(): Promise<DataImportType> {
         if (!this.url || !this.warncellId) {
@@ -169,9 +213,7 @@ class BaseProvider extends BaseClass {
     async finishUpdateData(): Promise<void> {
         for (let m = 0; m < this.messages.length; m++) {
             this.messages.sort((a, b) => {
-                if (a.formatedData && a.formatedData.startunixtime && b.formatedData && b.formatedData.startunixtime)
-                    return (a.formatedData.startunixtime as number) - (b.formatedData.startunixtime as number);
-                return 0;
+                return a.starttime - b.starttime;
             });
             await this.messages[m].writeFormatedKeys(m);
 
@@ -406,9 +448,11 @@ export class ProviderController extends BaseClass {
     connection = true;
     name = 'provider';
     refreshTime: number = 300000;
+    library: Library;
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
+        this.library = this.adapter.library;
     }
     init(): void {
         this.refreshTime = this.adapter.config.refreshTime * 60000;
@@ -502,6 +546,18 @@ export class ProviderController extends BaseClass {
             }
         }
     }
+    updateAlertEndless(that: any): void {
+        that.checkAlerts();
+        /** update every minute after 1.333 seconds. Avoid the full minute, full second and half second :) */
+        const timeout = 61333 - (Date.now() % 60000);
+        that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+    }
+    checkAlerts(): void {
+        for (const p in this.provider) {
+            this.provider[p].getAlertsAndWrite();
+        }
+    }
+
     async doEndOfUpdater(): Promise<void> {
         this.setConnected();
         let activMessages = 0;
@@ -539,5 +595,7 @@ export class ProviderController extends BaseClass {
         const objDef = await this.adapter.library.getObjectDefFromJson(`info.connection`, genericStateObjects);
         this.adapter.library.writedp(`info.connection`, !!status, objDef);
     }
+
+    createNotificationService(_options: notificationServiceOptionsType): void {}
 }
 export type ProvideClassType = DWDProvider | ZAMGProvider | UWZProvider | NINAProvider | METROProvider;

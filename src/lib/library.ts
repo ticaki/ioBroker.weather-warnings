@@ -3,7 +3,7 @@ import { genericStateObjects, statesObjectsWarningsType } from './def/definition
 import WeatherWarnings from '../main';
 import _fs from 'fs';
 import { exec } from 'child_process';
-import { genericWarntyp, textLevels, warnTypeName } from './def/messages-def';
+import { genericWarntyp, genericWarntypeType, textLevels, warnTypeName } from './def/messages-def';
 import { geti18nTranslation, seti18nTranslation, showi18nTranslation } from './translations';
 
 // only change this for other adapters
@@ -468,7 +468,8 @@ async covertI18n(name:string, json:{[key: string]: any}):Promise<any> {
         });
     }
     updateTranslations(): void {
-        for (const l in genericWarntyp) {
+        for (const b in genericWarntyp) {
+            const l = Number(b) as keyof genericWarntypeType;
             const key = 'genericWarntyp.' + l + '.name';
             const translation = geti18nTranslation(key);
             if (translation != '' && typeof translation == 'object' && translation.en !== '') {

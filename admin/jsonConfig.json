@@ -14,6 +14,15 @@
                     "label": "Activate DWD",
                     "newLine": true
                 },
+                "telegram_Enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "Activate Telegram",
+                    "newLine": false
+                },
+                
                 "uwzEnabled": {
                     "type": "checkbox",
                     "sm": 6,
@@ -22,6 +31,14 @@
                     "label": "Activate UWZ",
                     "newLine": true
                 },
+                "whatsapp_Enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "Activate Whatsapp",
+                    "newLine": false
+                },
                 "zamgEnabled": {
                     "type": "checkbox",
                     "sm": 6,
@@ -29,6 +46,14 @@
                     "lg": 2,
                     "label": "Activate ZAMG",
                     "newLine": true
+                },
+                "pushover_Enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "Activate Pushover",
+                    "newLine": false
                 },
                 "refreshTime": {
                     "type": "number",
@@ -204,17 +229,17 @@
                     "lg": 3
                 },
                 "dwdTypeFilter": {
-					"type": "selectSendTo",
-					"command": "filterType",
-					"jsonData": "{ \"service\": \"dwdService\" }",
-					"manual": true,
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"dwdService\" }",
+                    "manual": true,
                     "multiple": true,
-					"sm": 12,
-					"md": 5,
-					"lg": 3,
-					"label": "dwdTypeFilter",
-					"newLine": true
-				}
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "TypeFilter",
+                    "newLine": true
+                }
             }
         },
         "_uwzpanel": {
@@ -270,17 +295,17 @@
                     "lg": 4
                 },
                 "uwzTypeFilter": {
-					"type": "selectSendTo",
-					"command": "filterType",
-					"jsonData": "{ \"service\": \"uwzService\" }",
-					"manual": true,
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"uwzService\" }",
+                    "manual": true,
                     "multiple": true,
-					"sm": 12,
-					"md": 5,
-					"lg": 3,
-					"label": "dwdTypeFilter",
-					"newLine": true
-				}
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "TypeFilter",
+                    "newLine": true
+                }
             }
         },
         "_zamgpanel": {
@@ -324,17 +349,17 @@
                     "lg": 4
                 },
                 "zamgTypeFilter": {
-					"type": "selectSendTo",
-					"command": "filterType",
-					"jsonData": "{ \"service\": \"zamgService\" }",
-					"manual": true,
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"zamgService\" }",
+                    "manual": true,
                     "multiple": true,
-					"sm": 12,
-					"md": 5,
-					"lg": 3,
-					"label": "dwdTypeFilter",
-					"newLine": true
-				}
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "TypeFilter",
+                    "newLine": true
+                }
             }
         },
         "_templates": {
@@ -373,6 +398,351 @@
                             "default": ""
                         }
                     ]
+                }
+            }
+        },
+        "_telegram": {
+            "type": "panel",
+            "label": "telegram",
+            "hidden": "!data.telegram_Enabled",
+            "items": {
+                "telegram_Adapter": {
+                    "type": "selectSendTo",
+                    "command": "notificationService",
+                    "jsonData": "{ \"service\": \"telegram\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "SelectNotificationService",
+                    "newLine": true
+                },
+                "telegram_DwdEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.dwdEnabled",
+                    "default": "none",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "label": "Activate DWD",
+                    "newLine": true
+                },
+                "telegram_UwzEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.uwzEnabled",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "label": "Activate UWZ",
+                    "newLine": true
+                },
+                "telegram_ZamgEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.zamgEnabled",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "label": "Activate ZAMG",
+                    "newLine": true
+                },
+                "telegram_TypeFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"telegram\" }",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "manual": true,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "TypeFilter",
+                    "newLine": true
+                },
+                "telegram_LevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"telegram\" }",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "levelFilter",
+                    "newLine": true
+                },
+                "telegram_MessageNew": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"telegram\" }",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageNew",
+                    "newLine": true
+                },
+                "telegram_MessageRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"telegram\"}",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageRemove",
+                    "newLine": true
+                },
+                "telegram_MessageAllRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"telegram\"}",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageAllRemove",
+                    "newLine": true
+                }
+            }
+        },
+        "_whatsapp": {
+            "type": "panel",
+            "label": "whatsapp",
+            "hidden": "!data.whatsapp_Enabled",
+            "items": {
+                "whatsapp_Adapter": {
+                    "type": "selectSendTo",
+                    "command": "notificationService",
+                    "jsonData": "{ \"service\": \"whatsapp-cmb\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "SelectNotificationService",
+                    "newLine": true
+                },
+                "whatsapp_DwdEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.dwdEnabled",
+                    "default": "none",
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "label": "Activate DWD",
+                    "newLine": true
+                },
+                "whatsapp_UwzEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.uwzEnabled",
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "label": "Activate UWZ",
+                    "newLine": true
+                },
+                "whatsapp_ZamgEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.zamgEnabled",
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "label": "Activate ZAMG",
+                    "newLine": true
+                },
+                "whatsapp_TypeFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"whatsapp\" }",
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "manual": true,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "TypeFilter",
+                    "newLine": true
+                },
+                "whatsapp_LevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"whatsapp\" }",
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "levelFilter",
+                    "newLine": true
+                },
+                "whatsapp_MessageNew": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"whatsapp\" }",
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageNew",
+                    "newLine": true
+                },
+                "whatsapp_MessageRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"whatsapp\"}",
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageRemove",
+                    "newLine": true
+                },
+                "whatsapp_MessageAllRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"whatsapp\"}",
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageAllRemove",
+                    "newLine": true
+                }
+            }
+        },
+        "_pushover": {
+            "type": "panel",
+            "label": "pushover",
+            "hidden": "!data.pushover_Enabled",
+            "items": {
+                "pushover_Adapter": {
+                    "type": "selectSendTo",
+                    "command": "notificationService",
+                    "jsonData": "{ \"service\": \"pushover\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "SelectNotificationService",
+                    "newLine": true
+                },
+                "pushover_DwdEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.dwdEnabled",
+                    "default": "none",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "label": "Activate DWD",
+                    "newLine": true
+                },
+                "pushover_UwzEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.uwzEnabled",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "label": "Activate UWZ",
+                    "newLine": true
+                },
+                "pushover_ZamgEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.zamgEnabled",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "label": "Activate ZAMG",
+                    "newLine": true
+                },
+                "pushover_TypeFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"pushover\" }",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "manual": true,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "TypeFilter",
+                    "newLine": true
+                },
+                "pushover_LevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"pushover\" }",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "levelFilter",
+                    "newLine": true
+                },
+                "pushover_MessageNew": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"pushover\" }",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageNew",
+                    "newLine": true
+                },
+                "pushover_MessageRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"pushover\"}",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageRemove",
+                    "newLine": true
+                },
+                "pushover_MessageAllRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"pushover\"}",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "label": "MessageAllRemove",
+                    "newLine": true
                 }
             }
         },

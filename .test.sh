@@ -1,1 +1,1 @@
-npm run lint && npm run build:ts && rm -rf /tmp/test-iobroker.weather-warnings/*  && npm run test:integration | grep "error:\|warn:\|passing\|Test:\|User-defined\|The adapter starts"
+npm run lint && npm run build:ts && rm -rf /tmp/test-iobroker.weather-warnings/*  && npm run test:integration | grep --color=always "error:\|Error:\|warn:\|passing\|Test:\|failing\|User-defined\|The adapter starts"

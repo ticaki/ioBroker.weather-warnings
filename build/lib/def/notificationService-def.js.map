@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/lib/def/notificationService-def.ts"],
+  "sourcesContent": ["import { messageFilterType } from './provider-def';\n\nexport type notificationServiceType = 'telegram' | 'pushover' | 'whatsapp';\nexport const notificationServiceValue: notificationServiceType[] = ['telegram', 'pushover', 'whatsapp'];\n\nexport type notificationServiceOptionsType = {\n    telegram?: {\n        name: 'telegram';\n    } & notificationServiceBaseType;\n    pushover?: {\n        name: 'pushover';\n    } & notificationServiceBaseType;\n    whatsapp?: {\n        name: 'whatsapp';\n    } & notificationServiceBaseType;\n};\nexport type notificationServiceBaseType = {\n    dwdService: boolean;\n    uwzService: boolean;\n    zamgService: boolean;\n    filter: messageFilterType;\n    adapter: string;\n    name: notificationServiceType;\n};\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAGO,MAAM,2BAAsD,CAAC,YAAY,YAAY,UAAU;",
+  "names": []
+}

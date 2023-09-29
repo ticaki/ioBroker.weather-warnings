@@ -58,6 +58,47 @@ class WeatherWarnings extends utils.Adapter {
         if (!self)
           return;
         self.library.init();
+        let notificationServiceOpt = {};
+        if (self.config.telegram_Enabled) {
+          notificationServiceOpt = {
+            ...notificationServiceOpt,
+            telegram: {
+              dwdService: self.config.telegram_DwdEnabled,
+              uwzService: self.config.telegram_UwzEnabled,
+              zamgService: self.config.telegram_ZamgEnabled,
+              filter: { level: self.config.telegram_LevelFilter, type: self.config.telegram_TypeFilter },
+              adapter: self.config.telegram_Adapter,
+              name: "telegram"
+            }
+          };
+        }
+        if (self.config.whatsapp_Enabled) {
+          notificationServiceOpt = {
+            ...notificationServiceOpt,
+            whatsapp: {
+              dwdService: self.config.whatsapp_DwdEnabled,
+              uwzService: self.config.whatsapp_UwzEnabled,
+              zamgService: self.config.whatsapp_ZamgEnabled,
+              filter: { level: self.config.whatsapp_LevelFilter, type: self.config.whatsapp_TypeFilter },
+              adapter: self.config.whatsapp_Adapter,
+              name: "whatsapp"
+            }
+          };
+        }
+        if (self.config.pushover_Enabled) {
+          notificationServiceOpt = {
+            ...notificationServiceOpt,
+            pushover: {
+              dwdService: self.config.pushover_DwdEnabled,
+              uwzService: self.config.pushover_UwzEnabled,
+              zamgService: self.config.pushover_ZamgEnabled,
+              filter: { level: self.config.pushover_LevelFilter, type: self.config.pushover_TypeFilter },
+              adapter: self.config.pushover_Adapter,
+              name: "pushover"
+            }
+          };
+        }
+        self.providerController.createNotificationService(notificationServiceOpt);
         try {
           const states = await self.getStatesAsync("*");
           self.library.initStates(states);
@@ -66,7 +107,7 @@ class WeatherWarnings extends utils.Adapter {
         }
         if (self.config.dwdSelectId > 1e4 && self.config.dwdEnabled) {
           const options = {
-            filter: { type: self.config.dwdTypeFilter },
+            filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter },
             language: self.config.dwdLanguage
           };
           self.log.info("DWD activated. Retrieve data.");
@@ -104,6 +145,7 @@ class WeatherWarnings extends utils.Adapter {
           });
         }
         self.providerController.updateEndless(self.providerController);
+        self.providerController.updateAlertEndless(self.providerController);
       },
       2e3,
       this
@@ -131,19 +173,91 @@ class WeatherWarnings extends utils.Adapter {
       let connected = true;
       let state;
       switch (String(obj.command)) {
+        case "Messages":
+          {
+            if (obj.message.service) {
+              const templates = this.config.templateTable;
+              const reply = [
+                {
+                  label: `none`,
+                  value: `none`
+                }
+              ];
+              for (const a in templates) {
+                const t = templates[a];
+                if (t.templateKey !== "") {
+                  reply.push({
+                    label: `${t.templateKey}`,
+                    value: `${t.templateKey}`
+                  });
+                }
+              }
+              this.sendTo(obj.from, obj.command, reply, obj.callback);
+            }
+            this.sendTo(obj.from, obj.command, [], obj.callback);
+            this.log.warn(
+              `error(44): Retrieve message with ${obj.command}, but without obj.message.service`
+            );
+          }
+          break;
+        case "notificationService":
+          {
+            if (obj.message && obj.message.service) {
+              const states = await this.getForeignStatesAsync(`system.adapter.${obj.message.service}.*`);
+              const temp = {};
+              for (const state2 in states) {
+                const instance = Number(state2.split(".")[3]);
+                if (instance !== void 0) {
+                  temp[instance] = true;
+                }
+              }
+              const reply = [{ label: "none", value: "none" }];
+              for (const t in temp) {
+                reply.push({
+                  label: `${obj.message.service}.${t}`,
+                  value: `${obj.message.service}.${t}`
+                });
+              }
+              this.log.debug(JSON.stringify(reply));
+              this.sendTo(obj.from, obj.command, reply, obj.callback);
+            }
+          }
+          break;
+        case "filterLevel":
+          if (obj.callback) {
+            const reply = [];
+            for (const a in import_messages_def.textLevels.textGeneric) {
+              if (Number(a) == 5)
+                break;
+              reply.push({
+                label: await this.library.getTranslation(import_messages_def.textLevels.textGeneric[a]),
+                value: a
+              });
+            }
+            this.sendTo(obj.from, obj.command, reply, obj.callback);
+          }
+          break;
         case "filterType":
           if (obj.callback) {
             const reply = [];
             if (obj.message && obj.message.service && ["dwdService", "uwzService", "zamgService"].indexOf(obj.message.service) != -1) {
               const service = obj.message.service;
-              for (const a in import_messages_def.genericWarntyp) {
+              for (const b in import_messages_def.genericWarntyp) {
+                const a = Number(b);
                 if (import_messages_def.genericWarntyp[a][service].length > 0) {
-                  this.log.debug(await this.library.getTranslation(import_messages_def.genericWarntyp[a].name));
                   reply.push({
                     label: await this.library.getTranslation(import_messages_def.genericWarntyp[a].name),
                     value: a
                   });
                 }
+              }
+            } else if (obj.message && obj.message.service && ["telegram"].indexOf(obj.message.service) != -1) {
+              for (const b in import_messages_def.genericWarntyp) {
+                const a = Number(b);
+                reply.push({
+                  label: await this.library.getTranslation(import_messages_def.genericWarntyp[a].name),
+                  value: a
+                });
               }
             }
             this.sendTo(obj.from, obj.command, reply, obj.callback);
@@ -155,7 +269,6 @@ class WeatherWarnings extends utils.Adapter {
             if (this.adminTimeoutRef)
               this.clearTimeout(this.adminTimeoutRef);
             try {
-              this.log.debug(`message ${obj.command} start gathering data.`);
               const data = import_dwdWarncellIdLong.dwdWarncellIdLong;
               const text = [];
               if (text.length == 0) {
@@ -188,7 +301,6 @@ class WeatherWarnings extends utils.Adapter {
                 );
                 if (result.length == 1)
                   this.config.dwdSelectId = result[0].value;
-                this.log.debug("inside of send to " + msg.dwd + "   " + JSON.stringify(result));
                 if (obj.command == "dwd.name")
                   this.sendTo(obj.from, obj.command, result, obj.callback);
                 else if (obj.command == "dwd.name.text")
@@ -200,7 +312,6 @@ class WeatherWarnings extends utils.Adapter {
                   );
                 this.log.debug(`ID is is: ${this.config.dwdSelectId}`);
               } else {
-                this.log.debug(`else because length is: ${msg.dwd.length}`);
                 if (obj.command == "dwd.name.text")
                   this.sendTo(obj.from, obj.command, "", obj.callback);
                 else
@@ -256,8 +367,15 @@ class WeatherWarnings extends utils.Adapter {
           });
           state = this.library.getdb("provider.activWarnings");
           if (state)
-            connected = connected || state.val != 6;
-          this.sendTo(obj.from, obj.command, !connected ? "true" : "false", obj.callback);
+            connected = connected || state.val != 5;
+          else
+            connected = true;
+          this.sendTo(
+            obj.from,
+            obj.command,
+            !connected ? "ok" : `connect: ${connected} (false) activeWarnings ${state ? state.val : "undefined"} (5)`,
+            obj.callback
+          );
           this.config.useTestWarnings = false;
           break;
         default:

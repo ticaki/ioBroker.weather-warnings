@@ -327,7 +327,7 @@ export function getTestData(service: string): DataImportType {
     if (service == 'dwdService') {
         for (const i in testData.dwdService.features) {
             const f = testData.dwdService.features[i];
-            const start = Date.now() + Math.random() * 1200000 + 300000;
+            const start = Date.now() + Math.random() * 1200000 + 60000;
             if (new Date(f.properties.EXPIRES).getTime() + 3600000 < start) {
                 f.properties.ONSET = new Date(start).toJSON();
                 f.properties.EXPIRES = new Date(start + Math.random() * 2400000 + 300000).toJSON();
@@ -337,7 +337,7 @@ export function getTestData(service: string): DataImportType {
     } else if (service == 'uwzService') {
         for (const i in testData.uwzService.results) {
             const f = testData.uwzService.results[i];
-            const start = Date.now() + Math.random() * 1200000 + 300000;
+            const start = Date.now() + Math.random() * 1200000 + 60000;
             if (f.dtgEnd + 3600000 < start) {
                 f.dtgStart = new Date(start).getTime();
                 f.dtgEnd = new Date(start + Math.random() * 2400000 + 300000).getTime();
@@ -347,7 +347,7 @@ export function getTestData(service: string): DataImportType {
     } else if (service == 'zamgService') {
         for (const i in testData.zamgService.properties.warnings) {
             const f = testData.zamgService.properties.warnings[i];
-            const start = Date.now() + Math.random() * 1200000 + 300000;
+            const start = Date.now() + Math.random() * 1200000 + 60000;
             if (Number(f.properties.rawinfo.end) + 3600000 < start) {
                 f.properties.rawinfo.start = new Date(start).getTime().toString();
                 f.properties.rawinfo.start = new Date(start + Math.random() * 2400000 + 300000).getTime().toString();

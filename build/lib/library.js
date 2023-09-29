@@ -403,7 +403,8 @@ class Library extends BaseClass {
     });
   }
   updateTranslations() {
-    for (const l in import_messages_def.genericWarntyp) {
+    for (const b in import_messages_def.genericWarntyp) {
+      const l = Number(b);
       const key = "genericWarntyp." + l + ".name";
       const translation = (0, import_translations.geti18nTranslation)(key);
       if (translation != "" && typeof translation == "object" && translation.en !== "") {

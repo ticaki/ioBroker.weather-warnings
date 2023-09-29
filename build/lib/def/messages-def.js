@@ -21,6 +21,8 @@ __export(messages_def_exports, {
   color: () => color,
   dwdLevel: () => dwdLevel,
   genericWarntyp: () => genericWarntyp,
+  genericWarntypState: () => genericWarntypState,
+  isKeyOfObject: () => isKeyOfObject,
   level: () => level,
   textLevels: () => textLevels,
   warnTypeName: () => warnTypeName
@@ -205,34 +207,126 @@ const color = {
     }
   }
 };
+const genericWarntypState = {
+  level: {
+    _id: "",
+    type: "state",
+    common: {
+      name: "Level of warning as number",
+      type: "number",
+      role: "",
+      read: true,
+      write: false
+    },
+    native: {}
+  },
+  start: {
+    _id: "",
+    type: "state",
+    common: {
+      name: "Start time of warning",
+      type: "string",
+      role: "date",
+      read: true,
+      write: false
+    },
+    native: {}
+  },
+  end: {
+    _id: "",
+    type: "state",
+    common: {
+      name: "End time of warning",
+      type: "string",
+      role: "date",
+      read: true,
+      write: false
+    },
+    native: {}
+  },
+  headline: {
+    _id: "",
+    type: "state",
+    common: {
+      name: "Headline of warning.",
+      type: "string",
+      role: "",
+      read: true,
+      write: false
+    },
+    native: {}
+  },
+  type: {
+    _id: "",
+    type: "state",
+    common: {
+      name: "Warntype as number.",
+      type: "number",
+      role: "",
+      read: true,
+      write: false
+    },
+    native: {}
+  },
+  active: {
+    _id: "",
+    type: "state",
+    common: {
+      name: "Now is between start and end.",
+      type: "boolean",
+      role: "",
+      read: true,
+      write: false
+    },
+    native: {}
+  }
+};
+function isKeyOfObject(key, obj) {
+  return key in obj;
+}
 const genericWarntyp = {
-  1: { name: "unknown", dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
+  1: { name: "unknown", id: "unknown", dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
   2: {
     name: "storm",
+    id: "storm",
     dwdService: [40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 96, 79],
     uwzService: [2],
     zamgService: [1]
   },
   4: {
     name: "rain",
+    id: "rain",
     dwdService: [96, 95, 66, 65, 64, 63, 62, 61, 59, 49, 48, 46, 45, 44, 42],
     uwzService: [4],
     zamgService: [2]
   },
-  3: { name: "snowfall", dwdService: [70, 71, 72, 73, 74, 75, 76], uwzService: [3], zamgService: [3] },
-  5: { name: "cold", dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
-  6: { name: "forest fire", dwdService: [], uwzService: [6], zamgService: [] },
+  3: {
+    name: "snowfall",
+    id: "snowfall",
+    dwdService: [70, 71, 72, 73, 74, 75, 76],
+    uwzService: [3],
+    zamgService: [3]
+  },
+  5: { name: "cold", id: "cold", dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
+  6: { name: "forest fire", id: "forest_fire", dwdService: [], uwzService: [6], zamgService: [] },
   7: {
     name: "thunderstorm",
+    id: "thunderstorm",
     dwdService: [90, 91, 92, 93, 95, 96, 31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49],
     uwzService: [7],
     zamgService: [5]
   },
-  8: { name: "black ice/slippery", dwdService: [87, 85, 84, 24], uwzService: [8], zamgService: [4] },
-  9: { name: "heat", dwdService: [247, 248], uwzService: [9], zamgService: [6] },
-  10: { name: "hail", dwdService: [95, 96, 45, 46, 48, 49], uwzService: [], zamgService: [] },
-  11: { name: "fog", dwdService: [59], uwzService: [], zamgService: [] },
-  12: { name: "thaw", dwdService: [88, 89], uwzService: [], zamgService: [] }
+  8: {
+    name: "black ice/slippery",
+    id: "black_ice_slippery",
+    dwdService: [87, 85, 84, 24],
+    uwzService: [8],
+    zamgService: [4]
+  },
+  9: { name: "heat", id: "heat", dwdService: [247, 248], uwzService: [9], zamgService: [6] },
+  10: { name: "hail", id: "hail", dwdService: [95, 96, 45, 46, 48, 49], uwzService: [], zamgService: [] },
+  11: { name: "fog", id: "fog", dwdService: [59], uwzService: [], zamgService: [] },
+  12: { name: "thaw", id: "thaw", dwdService: [88, 89], uwzService: [], zamgService: [] }
 };
 const warnTypeName = {
   uwzService: {
@@ -1226,6 +1320,8 @@ const dwdLevel = { minor: 1, moderate: 2, severe: 3, extreme: 4 };
   color,
   dwdLevel,
   genericWarntyp,
+  genericWarntypState,
+  isKeyOfObject,
   level,
   textLevels,
   warnTypeName

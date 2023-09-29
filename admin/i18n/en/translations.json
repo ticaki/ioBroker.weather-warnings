@@ -1,5 +1,8 @@
 {
     "dwdFilterType":"Filter the following warning types from the result.",
+    "uwzTypeFilter":"Filter the following warning types from the result.",
+    "zamgTypeFilter":"Filter the following warning types from the result.",
+    "telegramTypeFilter":"Filter the following warning types from the result.",
     "dividerHdr": "Testing",
     "dwdEnabled": "Activate DWD",
     "dwdSelectId": "DWD District/City ID selection",

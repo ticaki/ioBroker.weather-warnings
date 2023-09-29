@@ -37,6 +37,7 @@ var import_definitionen = require("./def/definitionen");
 var import_library = require("./library");
 var import_messages = require("./messages");
 var import_test_warnings = require("./test-warnings");
+var import_messages_def = require("./def/messages-def");
 class BaseProvider extends import_library.BaseClass {
   service;
   url = "";
@@ -99,6 +100,46 @@ class BaseProvider extends import_library.BaseClass {
   }
   async update() {
   }
+  static async setAlerts(that, prefix, data) {
+    await that.library.writeFromJson(prefix + ".alerts", "allService.alerts", import_definitionen.statesObjectsWarnings, data, false);
+  }
+  async getAlertsAndWrite() {
+    const reply = {};
+    for (const t in import_messages_def.genericWarntyp) {
+      reply[import_messages_def.genericWarntyp[Number(t)].id] = {
+        level: -1,
+        start: 1,
+        end: 1,
+        headline: "",
+        active: false,
+        type: -1
+      };
+    }
+    if (!reply)
+      throw new Error("error(234) reply not definied");
+    for (const a in this.messages) {
+      const m = this.messages[a];
+      if (!m)
+        continue;
+      const name = import_messages_def.genericWarntyp[m.genericType].id;
+      if (reply[name] === void 0)
+        continue;
+      if (m.endtime < Date.now())
+        continue;
+      if (m.starttime < Date.now() && reply[name].level < m.level) {
+        reply[name] = {
+          level: m.level,
+          start: m.starttime,
+          end: m.endtime,
+          headline: m.formatedData !== void 0 ? String(m.formatedData.headline) : "",
+          active: m.starttime <= Date.now() && m.endtime >= Date.now(),
+          type: -1
+        };
+      }
+    }
+    await BaseProvider.setAlerts(this, this.name, reply);
+    return reply;
+  }
   async getDataFromProvider() {
     if (!this.url || !this.warncellId) {
       this.log.debug(
@@ -135,9 +176,7 @@ class BaseProvider extends import_library.BaseClass {
   async finishUpdateData() {
     for (let m = 0; m < this.messages.length; m++) {
       this.messages.sort((a, b) => {
-        if (a.formatedData && a.formatedData.startunixtime && b.formatedData && b.formatedData.startunixtime)
-          return a.formatedData.startunixtime - b.formatedData.startunixtime;
-        return 0;
+        return a.starttime - b.starttime;
       });
       await this.messages[m].writeFormatedKeys(m);
       await this.messages[m].formatMessages();
@@ -337,8 +376,10 @@ class ProviderController extends import_library.BaseClass {
   connection = true;
   name = "provider";
   refreshTime = 3e5;
+  library;
   constructor(adapter) {
     super(adapter, "provider");
+    this.library = this.adapter.library;
   }
   init() {
     this.refreshTime = this.adapter.config.refreshTime * 6e4;
@@ -436,6 +477,16 @@ class ProviderController extends import_library.BaseClass {
       }
     }
   }
+  updateAlertEndless(that) {
+    that.checkAlerts();
+    const timeout = 61333 - Date.now() % 6e4;
+    that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+  }
+  checkAlerts() {
+    for (const p in this.provider) {
+      this.provider[p].getAlertsAndWrite();
+    }
+  }
   async doEndOfUpdater() {
     this.setConnected();
     let activMessages = 0;
@@ -472,6 +523,8 @@ class ProviderController extends import_library.BaseClass {
   async setConnected(status = this.connection) {
     const objDef = await this.adapter.library.getObjectDefFromJson(`info.connection`, import_definitionen.genericStateObjects);
     this.adapter.library.writedp(`info.connection`, !!status, objDef);
+  }
+  createNotificationService(_options) {
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

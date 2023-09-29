@@ -337,7 +337,7 @@ function getTestData(service) {
   if (service == "dwdService") {
     for (const i in testData.dwdService.features) {
       const f = testData.dwdService.features[i];
-      const start = Date.now() + Math.random() * 12e5 + 3e5;
+      const start = Date.now() + Math.random() * 12e5 + 6e4;
       if (new Date(f.properties.EXPIRES).getTime() + 36e5 < start) {
         f.properties.ONSET = new Date(start).toJSON();
         f.properties.EXPIRES = new Date(start + Math.random() * 24e5 + 3e5).toJSON();
@@ -347,7 +347,7 @@ function getTestData(service) {
   } else if (service == "uwzService") {
     for (const i in testData.uwzService.results) {
       const f = testData.uwzService.results[i];
-      const start = Date.now() + Math.random() * 12e5 + 3e5;
+      const start = Date.now() + Math.random() * 12e5 + 6e4;
       if (f.dtgEnd + 36e5 < start) {
         f.dtgStart = new Date(start).getTime();
         f.dtgEnd = new Date(start + Math.random() * 24e5 + 3e5).getTime();
@@ -357,7 +357,7 @@ function getTestData(service) {
   } else if (service == "zamgService") {
     for (const i in testData.zamgService.properties.warnings) {
       const f = testData.zamgService.properties.warnings[i];
-      const start = Date.now() + Math.random() * 12e5 + 3e5;
+      const start = Date.now() + Math.random() * 12e5 + 6e4;
       if (Number(f.properties.rawinfo.end) + 36e5 < start) {
         f.properties.rawinfo.start = new Date(start).getTime().toString();
         f.properties.rawinfo.start = new Date(start + Math.random() * 24e5 + 3e5).getTime().toString();

@@ -146,5 +146,8 @@
     "genericWarntyp.10.name": "Hagel",
     "genericWarntyp.11.name": "Nebel",
     "genericWarntyp.12.name": "auftauen",
-    "dwdFilterType": "Filtert die folgenden Warnungsarten aus dem Ergebnis."
+    "dwdFilterType": "Filtert die folgenden Warnungsarten aus dem Ergebnis.",
+    "uwzTypeFilter":"Filtert die folgenden Warnungsarten aus dem Ergebnis.",
+    "zamgTypeFilter":"Filtert die folgenden Warnungsarten aus dem Ergebnis.",
+    "telegramTypeFilter":"Filtert die folgenden Warnungsarten aus dem Ergebnis."
 }

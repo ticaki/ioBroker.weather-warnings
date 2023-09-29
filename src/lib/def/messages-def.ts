@@ -1,3 +1,5 @@
+import { customChannelType } from './definitionen';
+
 /** Bezeichnungen die in Template verwendet werden können ohne "?:string;""
  * Erste Buchstabe großgeschrieben erzeugt auch im Ergebnis, das der erste Buchstabe großgeschrieben ist.
  * Ist der letzte Buchstabe großgeschrieben, wird die komplette Zeichenkette in Großbuchstaben umgewandelt.
@@ -21,9 +23,6 @@ export type customFormatedKeysDef = {
     warntypename?: string; // gelieferter Warntype
     location?: string; // gelieferte Location (meinst Unsinn)
     instruction?: string; // Anweisungen
-    /** unix timestamp of start time for internal use */
-    startunixtime?: string;
-    warntypenumber?: string;
 }; /**
  * Conversion jsons as a tool for formatedKeys.
  */
@@ -208,46 +207,200 @@ export const color = {
     },
 };
 
-type genericWarntypeType = {
-    [key: string]: {
-        name: ioBroker.StringOrTranslated;
-        dwdService: number[];
+type ChangeTypeOfKeys<Obj, N> = Obj extends object ? { [K in keyof Obj]-?: ChangeTypeOfKeys<Obj[K], N> } : N;
+type ChangeTypeOfKeysOptional<Obj, N> = Obj extends object ? { [K in keyof Obj]+?: ChangeTypeOfKeys<Obj[K], N> } : N;
 
-        uwzService: number[];
-
-        zamgService: number[];
-        metroService?: number[];
-        ninaService?: number[];
-    };
+export const genericWarntypState: genericWarntypeStatesType = {
+    level: {
+        _id: '',
+        type: 'state',
+        common: {
+            name: 'Level of warning as number',
+            type: 'number',
+            role: '',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    start: {
+        _id: '',
+        type: 'state',
+        common: {
+            name: 'Start time of warning',
+            type: 'string',
+            role: 'date',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    end: {
+        _id: '',
+        type: 'state',
+        common: {
+            name: 'End time of warning',
+            type: 'string',
+            role: 'date',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    headline: {
+        _id: '',
+        type: 'state',
+        common: {
+            name: 'Headline of warning.',
+            type: 'string',
+            role: '',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    type: {
+        _id: '',
+        type: 'state',
+        common: {
+            name: 'Warntype as number.',
+            type: 'number',
+            role: '',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    active: {
+        _id: '',
+        type: 'state',
+        common: {
+            name: 'Now is between start and end.',
+            type: 'boolean',
+            role: '',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
 };
+export function isKeyOfObject<T extends object>(key: string | number | symbol, obj: T): key is keyof T {
+    return key in obj;
+}
+type genericWarntypeStatesType = ChangeTypeOfKeys<genericWartypeAlertType, ioBroker.StateObject>;
+type genericWartypeAlertType = {
+    level: number;
+    start: number;
+    end: number;
+    headline: string;
+    type: number;
+    active: boolean;
+};
+export type genericWarntypeAlertJsonType = ChangeTypeOfKeysOptional<
+    genericWarnTypNameJsonType,
+    genericWartypeAlertType
+>;
+export type genericWarntypStatesTree = ChangeTypeOfKeys<
+    genericWarnTypNameJsonType,
+    genericWarntypeStatesType & customChannelType
+>;
+
+export type genericWarntypeType = {
+    1: genericWarntypeTypeSub;
+    2: genericWarntypeTypeSub;
+    3: genericWarntypeTypeSub;
+    4: genericWarntypeTypeSub;
+    5: genericWarntypeTypeSub;
+    6: genericWarntypeTypeSub;
+    7: genericWarntypeTypeSub;
+    8: genericWarntypeTypeSub;
+    9: genericWarntypeTypeSub;
+    10: genericWarntypeTypeSub;
+    11: genericWarntypeTypeSub;
+    12: genericWarntypeTypeSub;
+};
+type genericWarntypeTypeSub = {
+    name: ioBroker.StringOrTranslated;
+    dwdService: number[];
+    uwzService: number[];
+    zamgService: number[];
+    metroService?: number[];
+    ninaService?: number[];
+    id: keyof genericWarnTypNameJsonType;
+};
+//type genericWarnTypNumberType = keyof genericWarntypeType;
+
+type genericWarnTypNameJsonType = {
+    unknown: string;
+    storm: string;
+    snowfall: string;
+    rain: string;
+    cold: string;
+    forest_fire: string;
+    thunderstorm: string;
+    black_ice_slippery: string;
+    heat: string;
+    hail: string;
+    fog: string;
+    thaw: string;
+};
+
+/*type genericWarnTypNameType =
+    | 'unknown'
+    | 'storm'
+    | 'snowfall'
+    | 'rain'
+    | 'cold'
+    | 'forest fire'
+    | 'thunderstorm'
+    | 'black ice/slippery'
+    | 'heat'
+    | 'hail'
+    | 'fog'
+    | 'thaw';*/
 export const genericWarntyp: genericWarntypeType = {
-    1: { name: 'unknown', dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
+    1: { name: 'unknown', id: 'unknown', dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
     2: {
         name: 'storm',
+        id: 'storm',
         dwdService: [40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 96, 79],
         uwzService: [2],
         zamgService: [1],
     },
     4: {
         name: 'rain',
+        id: 'rain',
         dwdService: [96, 95, 66, 65, 64, 63, 62, 61, 59, 49, 48, 46, 45, 44, 42],
         uwzService: [4],
         zamgService: [2],
     },
-    3: { name: 'snowfall', dwdService: [70, 71, 72, 73, 74, 75, 76], uwzService: [3], zamgService: [3] },
-    5: { name: 'cold', dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
-    6: { name: 'forest fire', dwdService: [], uwzService: [6], zamgService: [] },
+    3: {
+        name: 'snowfall',
+        id: 'snowfall',
+        dwdService: [70, 71, 72, 73, 74, 75, 76],
+        uwzService: [3],
+        zamgService: [3],
+    },
+    5: { name: 'cold', id: 'cold', dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
+    6: { name: 'forest fire', id: 'forest_fire', dwdService: [], uwzService: [6], zamgService: [] },
     7: {
         name: 'thunderstorm',
+        id: 'thunderstorm',
         dwdService: [90, 91, 92, 93, 95, 96, 31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49],
         uwzService: [7],
         zamgService: [5],
     },
-    8: { name: 'black ice/slippery', dwdService: [87, 85, 84, 24], uwzService: [8], zamgService: [4] },
-    9: { name: 'heat', dwdService: [247, 248], uwzService: [9], zamgService: [6] },
-    10: { name: 'hail', dwdService: [95, 96, 45, 46, 48, 49], uwzService: [], zamgService: [] },
-    11: { name: 'fog', dwdService: [59], uwzService: [], zamgService: [] },
-    12: { name: 'thaw', dwdService: [88, 89], uwzService: [], zamgService: [] },
+    8: {
+        name: 'black ice/slippery',
+        id: 'black_ice_slippery',
+        dwdService: [87, 85, 84, 24],
+        uwzService: [8],
+        zamgService: [4],
+    },
+    9: { name: 'heat', id: 'heat', dwdService: [247, 248], uwzService: [9], zamgService: [6] },
+    10: { name: 'hail', id: 'hail', dwdService: [95, 96, 45, 46, 48, 49], uwzService: [], zamgService: [] },
+    11: { name: 'fog', id: 'fog', dwdService: [59], uwzService: [], zamgService: [] },
+    12: { name: 'thaw', id: 'thaw', dwdService: [88, 89], uwzService: [], zamgService: [] },
 };
 
 export const warnTypeName = {
