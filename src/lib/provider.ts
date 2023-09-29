@@ -445,6 +445,7 @@ export class METROProvider extends BaseProvider {
 export class ProviderController extends BaseClass {
     provider: ProvideClassType[] = [];
     refreshTimeRef = null;
+    alertTimeoutRef = null;
     connection = true;
     name = 'provider';
     refreshTime: number = 300000;
@@ -524,6 +525,7 @@ export class ProviderController extends BaseClass {
         }
         this.provider = [];
         if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);
+        if (this.alertTimeoutRef) this.adapter.clearTimeout(this.alertTimeoutRef);
     }
     sendNoMessages(): void {}
     updateEndless(that: ProviderController): void {
@@ -547,10 +549,12 @@ export class ProviderController extends BaseClass {
         }
     }
     updateAlertEndless(that: any): void {
+        if (this.unload) return;
+
         that.checkAlerts();
         /** update every minute after 1.333 seconds. Avoid the full minute, full second and half second :) */
         const timeout = 61333 - (Date.now() % 60000);
-        that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+        that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
     }
     checkAlerts(): void {
         for (const p in this.provider) {

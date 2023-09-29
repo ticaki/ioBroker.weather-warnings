@@ -192,13 +192,8 @@ class WeatherWarnings extends utils.Adapter {
      * Is called if a subscribed state changes
      */
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
-        if (state) {
-            // The state was changed
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-        } else {
-            // The state was deleted
-            this.log.info(`state ${id} deleted`);
-        }
+        if (!state) return;
+        if (state.ack) return;
     }
 
     /**
@@ -231,11 +226,12 @@ class WeatherWarnings extends utils.Adapter {
                                 }
                             }
                             this.sendTo(obj.from, obj.command, reply, obj.callback);
+                        } else {
+                            this.sendTo(obj.from, obj.command, [], obj.callback);
+                            this.log.warn(
+                                `warn(44): Retrieve message with ${obj.command}, but without obj.message.service`,
+                            );
                         }
-                        this.sendTo(obj.from, obj.command, [], obj.callback);
-                        this.log.warn(
-                            `error(44): Retrieve message with ${obj.command}, but without obj.message.service`,
-                        );
                     }
 
                     break;
