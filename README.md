@@ -30,6 +30,8 @@ Bis Version 0.4.x wird er weniger einen direkten Nutzen haben, sondern mehr ein 
 - Es gibt States in denen dies Nachrichten angezeigt werden, aber die zappen da durch und die letzte bleibt. Der Code dahinter versenden später die Pushnachrichten.
 - Testmodus steht zur Verfügung, beim Nutzen dieser ist der Adapter offline und gelb.
 - Abruf von Warnungen in den von den Diensten zur Verfügung gestellten Sprachen.
+- Filtern von Warnungen nach Typ und Level
+- States die es erlauben bei aktiver Warnung und innerhalb des Warnzeitraums automatisch Maßnahmen zu ergreifen (ich schließe den Balkonrollladen, bei Warnungen für Starkregen, Gewitter und Sturm wenn ich nicht da bin)
 
 #### Baustellen: 
 - Übersetzungen sind noch lange nicht fertig, an vielen Stellen ist englisch und deutsch gemischt.
@@ -38,10 +40,8 @@ Bis Version 0.4.x wird er weniger einen direkten Nutzen haben, sondern mehr ein 
 - Vereinheitlichung der Warnungen, so das sie über die Dienste vergleichbar werden.
 - Unterstützung der ioBroker Sprachen an jeder Stelle
 - Bereitstellung von Nutzer formatierbarem Text für die Gestaltung von z.B. Html Tabellen
-- Filtern von Warnungen nach Typ und Level
 - Versand der Warnungen per Mail, telegram, pushover, whatsapp 
 - Unterstützung von Sayit und Alexa
-- States die es erlauben bei aktiver Warnung und innerhalb des Warnzeitraums automatisch Maßnahmen zu ergreifen (ich schließe den Balkonrollladen, bei Warnungen für Starkregen, Gewitter und Sturm wenn ich nicht da bin)
 - manuelles Auslösen von Pushnachrichten
 - Readme schreiben
 - Unterstützung von mehr als einem Warngebiet.
@@ -110,6 +110,9 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) add alerts
+
 ### 0.2.3-alpha.0 (2023-09-28)
 * (ticaki) more translations
 * filter warn type, generic warntypes
