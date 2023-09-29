@@ -1,10 +1,9 @@
 import jsonata from 'jsonata';
 import { genericStateObjects, statesObjectsWarningsType } from './def/definitionen';
 import WeatherWarnings from '../main';
-import _fs from 'fs';
-import { exec } from 'child_process';
+
 import { genericWarntyp, genericWarntypeType, textLevels, warnTypeName } from './def/messages-def';
-import { geti18nTranslation, seti18nTranslation, showi18nTranslation } from './translations';
+import { geti18nTranslation, seti18nTranslation, writei18nTranslation } from './translations';
 
 // only change this for other adapters
 type AdapterClassDefinition = WeatherWarnings;
@@ -82,8 +81,8 @@ export class Library extends BaseClass {
      * @param expandTree expand arrays up to 99
      * @returns  void
      */
-    init(): void {
-        this.updateTranslations();
+    async init(): Promise<void> {
+        await this.updateTranslations();
     }
 
     async writeFromJson(
@@ -391,19 +390,7 @@ export class Library extends BaseClass {
             }
         }
     }
-    //helper code to translate things
-    async writeNodes(name: string, json: { [key: string]: any }): Promise<void> {
-        const source: { [key: string]: any } = {};
-        for (const key in json) {
-            const node = json[key];
-            if (typeof node !== 'object') {
-                source[key] = node;
-            } else {
-                source[key] = node['en'];
-            }
-        }
-        this.writeJsonToFile(name, source);
-    }
+
     async getTranslation(text: string | { [key: string]: string }): Promise<string> {
         if (typeof text == 'object') {
             if (!this.language) {
@@ -415,59 +402,8 @@ export class Library extends BaseClass {
             return text[this.language];
         } else return text;
     }
-    //eslint-disable-next-line
-async covertI18n(name:string, json:{[key: string]: any}):Promise<any> {
-        const language = ['en', 'de', 'ru', 'pt', 'nl', 'fr', 'it', 'es', 'pl', 'uk', 'zh-cn'];
-        const translations: { [key: string]: any } = {};
-        for (const n in language) translations[language[n]] = await this.readJsonFromFile(name, language[n]);
-        for (const key in json) {
-            json[key] = {};
-            for (const n in language) json[key][language[n]] = translations[language[n]][key];
-        }
-        await this.writeJsonToFile(name, json, true);
-    }
 
-    async writeJsonToFile(name: string, json: { [key: string]: any }, isFile = false): Promise<any> {
-        //.dataTest/admin
-        const file = isFile
-            ? './.dev-data/' + name + '.json'
-            : './.dev-data/' + name + '/admin/i18n/en/translations.json';
-
-        await _fs.writeFile(file, JSON.stringify(json), function () {});
-    }
-    async readJsonFromFile(name: string, dir: string): Promise<any> {
-        return JSON.parse(
-            (await _fs.readFileSync(`./.dev-data/${name}/admin/i18n/${dir}/translations.json`)) as unknown as string,
-        );
-    }
-    // npm run translate -- -a ./.dataTest/Nodes/admin
-    // eslint-disable-next-line
- async internalConvert():Promise<void> {
-        const json = {};
-        return;
-        if (_fs.existsSync('./.dev-data')) {
-            await this.writeNodes('translation', json);
-            await this.runShell();
-            await this.covertI18n('translation', json);
-            this.adapter.log.debug('The file was saved!');
-        }
-        return;
-    }
-    async runShell(): Promise<void> {
-        return await new Promise((resolve, reject) => {
-            exec('npm run translate -- -a ./.dev-data/translation/admin', function (error) {
-                if (error !== null) {
-                    console.log('exec error: ' + error);
-                    // Reject if there is an error:
-                    return reject(error);
-                }
-
-                // Otherwise resolve the promise:
-                resolve();
-            });
-        });
-    }
-    updateTranslations(): void {
+    async updateTranslations(): Promise<void> {
         for (const b in genericWarntyp) {
             const l = Number(b) as keyof genericWarntypeType;
             const key = 'genericWarntyp.' + l + '.name';
@@ -506,6 +442,6 @@ async covertI18n(name:string, json:{[key: string]: any}):Promise<any> {
                 }
             }
         }
-        showi18nTranslation();
+        await writei18nTranslation();
     }
 }

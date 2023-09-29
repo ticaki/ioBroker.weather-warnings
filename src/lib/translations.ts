@@ -1,4 +1,5 @@
 /* Regex to get "" around keys ([a-zA-Z_]+): "$1": */
+import _fs from 'fs';
 
 import de from '../../admin/i18n/de/translations.json';
 import en from '../../admin/i18n/en/translations.json';
@@ -77,11 +78,14 @@ export function seti18nTranslation(key: string, val: string | { [key: string]: s
     }
 }
 
-//** just for breakpoint */
-export function showi18nTranslation(): void {
-    const en = JSON.stringify(allTranslations.en);
-    const de = JSON.stringify(allTranslations.de);
-    if (en != de) {
-        // just for breakpoint and copy of json
+//** save to file deactivate for upload */
+export async function writei18nTranslation(): Promise<void> {
+    return;
+    if (await _fs.existsSync('./.dev-data')) {
+        if (!(await _fs.existsSync('./.dev-data/i18n'))) await _fs.mkdirSync('./.dev-data/i18n');
+        if (!(await _fs.existsSync('./.dev-data/i18n/en'))) await _fs.mkdirSync('./.dev-data/i18n/en');
+        if (!(await _fs.existsSync('./.dev-data/i18n/de'))) await _fs.mkdirSync('./.dev-data/i18n/de');
+        await _fs.writeFileSync('./.dev-data/i18n/en/translations.json', JSON.stringify(allTranslations.en));
+        await _fs.writeFileSync('./.dev-data/i18n/de/de_translations.json', JSON.stringify(allTranslations.de));
     }
 }

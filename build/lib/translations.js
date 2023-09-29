@@ -26,9 +26,10 @@ var translations_exports = {};
 __export(translations_exports, {
   geti18nTranslation: () => geti18nTranslation,
   seti18nTranslation: () => seti18nTranslation,
-  showi18nTranslation: () => showi18nTranslation
+  writei18nTranslation: () => writei18nTranslation
 });
 module.exports = __toCommonJS(translations_exports);
+var import_fs = __toESM(require("fs"));
 var import_translations = __toESM(require("../../admin/i18n/de/translations.json"));
 var import_translations2 = __toESM(require("../../admin/i18n/en/translations.json"));
 var import_translations3 = __toESM(require("../../admin/i18n/es/translations.json"));
@@ -80,16 +81,26 @@ function seti18nTranslation(key, val) {
     allTranslations.en[key] = val;
   }
 }
-function showi18nTranslation() {
+async function writei18nTranslation() {
   const en2 = JSON.stringify(allTranslations.en);
   const de2 = JSON.stringify(allTranslations.de);
   if (en2 != de2) {
+  }
+  if (await import_fs.default.existsSync("./.dev-data")) {
+    if (!await import_fs.default.existsSync("./.dev-data/i18n"))
+      await import_fs.default.mkdirSync("./.dev-data/i18n");
+    if (!await import_fs.default.existsSync("./.dev-data/i18n/en"))
+      await import_fs.default.mkdirSync("./.dev-data/i18n/en");
+    if (!await import_fs.default.existsSync("./.dev-data/i18n/de"))
+      await import_fs.default.mkdirSync("./.dev-data/i18n/de");
+    await import_fs.default.writeFileSync("./.dev-data/i18n/en/translations.json", JSON.stringify(allTranslations.en));
+    await import_fs.default.writeFileSync("./.dev-data/i18n/de/de_translations.json", JSON.stringify(allTranslations.de));
   }
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   geti18nTranslation,
   seti18nTranslation,
-  showi18nTranslation
+  writei18nTranslation
 });
 //# sourceMappingURL=translations.js.map

@@ -49,14 +49,13 @@ class WeatherWarnings extends utils.Adapter {
     } else {
       throw new Error("Provider controller doesnt exists.");
     }
-    this.library.internalConvert();
     setTimeout(
       async function(self) {
         if (!self.providerController)
           return;
         if (!self)
           return;
-        self.library.init();
+        await self.library.init();
         let notificationServiceOpt = {};
         if (self.config.telegram_Enabled) {
           notificationServiceOpt = {
@@ -160,11 +159,10 @@ class WeatherWarnings extends utils.Adapter {
     }
   }
   onStateChange(id, state) {
-    if (state) {
-      this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-    } else {
-      this.log.info(`state ${id} deleted`);
-    }
+    if (!state)
+      return;
+    if (state.ack)
+      return;
   }
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {
@@ -192,11 +190,12 @@ class WeatherWarnings extends utils.Adapter {
                 }
               }
               this.sendTo(obj.from, obj.command, reply, obj.callback);
+            } else {
+              this.sendTo(obj.from, obj.command, [], obj.callback);
+              this.log.warn(
+                `warn(44): Retrieve message with ${obj.command}, but without obj.message.service`
+              );
             }
-            this.sendTo(obj.from, obj.command, [], obj.callback);
-            this.log.warn(
-              `error(44): Retrieve message with ${obj.command}, but without obj.message.service`
-            );
           }
           break;
         case "notificationService":

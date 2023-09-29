@@ -549,7 +549,7 @@ export class ProviderController extends BaseClass {
         }
     }
     updateAlertEndless(that: any): void {
-        if (this.unload) return;
+        if (that.unload) return;
 
         that.checkAlerts();
         /** update every minute after 1.333 seconds. Avoid the full minute, full second and half second :) */

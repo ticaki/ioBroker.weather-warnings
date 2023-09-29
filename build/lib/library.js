@@ -48,8 +48,6 @@ __export(library_exports, {
 module.exports = __toCommonJS(library_exports);
 var import_jsonata = __toESM(require("jsonata"));
 var import_definitionen = require("./def/definitionen");
-var import_fs = __toESM(require("fs"));
-var import_child_process = require("child_process");
 var import_messages_def = require("./def/messages-def");
 var import_translations = require("./translations");
 var _adapter, _prefix;
@@ -102,8 +100,8 @@ class Library extends BaseClass {
     super(adapter, "library");
     this.stateDataBase = {};
   }
-  init() {
-    this.updateTranslations();
+  async init() {
+    await this.updateTranslations();
   }
   async writeFromJson(prefix, objNode, def, data, expandTree = false) {
     if (!def || typeof def !== "object")
@@ -333,18 +331,6 @@ class Library extends BaseClass {
       }
     }
   }
-  async writeNodes(name, json) {
-    const source = {};
-    for (const key in json) {
-      const node = json[key];
-      if (typeof node !== "object") {
-        source[key] = node;
-      } else {
-        source[key] = node["en"];
-      }
-    }
-    this.writeJsonToFile(name, source);
-  }
   async getTranslation(text) {
     if (typeof text == "object") {
       if (!this.language) {
@@ -358,51 +344,7 @@ class Library extends BaseClass {
     } else
       return text;
   }
-  async covertI18n(name, json) {
-    const language = ["en", "de", "ru", "pt", "nl", "fr", "it", "es", "pl", "uk", "zh-cn"];
-    const translations = {};
-    for (const n in language)
-      translations[language[n]] = await this.readJsonFromFile(name, language[n]);
-    for (const key in json) {
-      json[key] = {};
-      for (const n in language)
-        json[key][language[n]] = translations[language[n]][key];
-    }
-    await this.writeJsonToFile(name, json, true);
-  }
-  async writeJsonToFile(name, json, isFile = false) {
-    const file = isFile ? "./.dev-data/" + name + ".json" : "./.dev-data/" + name + "/admin/i18n/en/translations.json";
-    await import_fs.default.writeFile(file, JSON.stringify(json), function() {
-    });
-  }
-  async readJsonFromFile(name, dir) {
-    return JSON.parse(
-      await import_fs.default.readFileSync(`./.dev-data/${name}/admin/i18n/${dir}/translations.json`)
-    );
-  }
-  async internalConvert() {
-    const json = {};
-    return;
-    if (import_fs.default.existsSync("./.dev-data")) {
-      await this.writeNodes("translation", json);
-      await this.runShell();
-      await this.covertI18n("translation", json);
-      this.adapter.log.debug("The file was saved!");
-    }
-    return;
-  }
-  async runShell() {
-    return await new Promise((resolve, reject) => {
-      (0, import_child_process.exec)("npm run translate -- -a ./.dev-data/translation/admin", function(error) {
-        if (error !== null) {
-          console.log("exec error: " + error);
-          return reject(error);
-        }
-        resolve();
-      });
-    });
-  }
-  updateTranslations() {
+  async updateTranslations() {
     for (const b in import_messages_def.genericWarntyp) {
       const l = Number(b);
       const key = "genericWarntyp." + l + ".name";
@@ -435,7 +377,7 @@ class Library extends BaseClass {
         }
       }
     }
-    (0, import_translations.showi18nTranslation)();
+    await (0, import_translations.writei18nTranslation)();
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

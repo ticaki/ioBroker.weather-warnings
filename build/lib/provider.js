@@ -373,6 +373,7 @@ class METROProvider extends BaseProvider {
 class ProviderController extends import_library.BaseClass {
   provider = [];
   refreshTimeRef = null;
+  alertTimeoutRef = null;
   connection = true;
   name = "provider";
   refreshTime = 3e5;
@@ -451,6 +452,8 @@ class ProviderController extends import_library.BaseClass {
     this.provider = [];
     if (this.refreshTimeRef)
       this.adapter.clearTimeout(this.refreshTimeRef);
+    if (this.alertTimeoutRef)
+      this.adapter.clearTimeout(this.alertTimeoutRef);
   }
   sendNoMessages() {
   }
@@ -478,9 +481,11 @@ class ProviderController extends import_library.BaseClass {
     }
   }
   updateAlertEndless(that) {
+    if (that.unload)
+      return;
     that.checkAlerts();
     const timeout = 61333 - Date.now() % 6e4;
-    that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+    that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
   }
   checkAlerts() {
     for (const p in this.provider) {

@@ -47,13 +47,12 @@ class WeatherWarnings extends utils.Adapter {
         } else {
             throw new Error('Provider controller doesnt exists.');
         }
-        this.library.internalConvert();
 
         setTimeout(
             async function (self: any) {
                 if (!self.providerController) return;
                 if (!self) return;
-                self.library.init();
+                await self.library.init();
                 let notificationServiceOpt: notificationServiceOptionsType = {};
                 if (self.config.telegram_Enabled) {
                     notificationServiceOpt = {
