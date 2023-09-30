@@ -337,9 +337,11 @@ class Library extends BaseClass {
         const obj = await this.adapter.getForeignObjectAsync("system.config");
         if (obj)
           this.language = obj.common.language;
-        if (!this.language || !text[this.language])
+        if (!this.language)
           this.language = "en";
       }
+      if (!text[this.language])
+        return text["en"];
       return text[this.language];
     } else
       return text;

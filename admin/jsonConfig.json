@@ -85,7 +85,7 @@
             "label": "DWD",
             "hidden": "!data.dwdEnabled",
             "items": {
-                "_dwdSelectId": {
+                "dwdSelectId": {
                     "type": "autocompleteSendTo",
                     "command": "dwd.name",
                     "jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",

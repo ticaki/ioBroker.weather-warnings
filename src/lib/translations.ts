@@ -86,6 +86,6 @@ export async function writei18nTranslation(): Promise<void> {
         if (!(await _fs.existsSync('./.dev-data/i18n/en'))) await _fs.mkdirSync('./.dev-data/i18n/en');
         if (!(await _fs.existsSync('./.dev-data/i18n/de'))) await _fs.mkdirSync('./.dev-data/i18n/de');
         await _fs.writeFileSync('./.dev-data/i18n/en/translations.json', JSON.stringify(allTranslations.en));
-        await _fs.writeFileSync('./.dev-data/i18n/de/de_translations.json', JSON.stringify(allTranslations.de));
+        await _fs.writeFileSync('./.dev-data/i18n/de/translations.json', JSON.stringify(allTranslations.de));
     }
 }

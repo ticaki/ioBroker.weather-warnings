@@ -82,10 +82,7 @@ function seti18nTranslation(key, val) {
   }
 }
 async function writei18nTranslation() {
-  const en2 = JSON.stringify(allTranslations.en);
-  const de2 = JSON.stringify(allTranslations.de);
-  if (en2 != de2) {
-  }
+  return;
   if (await import_fs.default.existsSync("./.dev-data")) {
     if (!await import_fs.default.existsSync("./.dev-data/i18n"))
       await import_fs.default.mkdirSync("./.dev-data/i18n");
@@ -94,7 +91,7 @@ async function writei18nTranslation() {
     if (!await import_fs.default.existsSync("./.dev-data/i18n/de"))
       await import_fs.default.mkdirSync("./.dev-data/i18n/de");
     await import_fs.default.writeFileSync("./.dev-data/i18n/en/translations.json", JSON.stringify(allTranslations.en));
-    await import_fs.default.writeFileSync("./.dev-data/i18n/de/de_translations.json", JSON.stringify(allTranslations.de));
+    await import_fs.default.writeFileSync("./.dev-data/i18n/de/translations.json", JSON.stringify(allTranslations.de));
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

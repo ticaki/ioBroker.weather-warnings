@@ -590,6 +590,8 @@ export class ProviderController extends BaseClass {
             this.sendNoMessages();
         }
         this.adapter.library.writedp(`${this.name}.activWarnings`, activMessages, genericStateObjects.activWarnings);
+        // reset language
+        this.library.language = '';
         this.log.debug(`We have ${activMessages} active messages.`);
     }
     providersExist(): boolean {

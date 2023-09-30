@@ -313,63 +313,72 @@ class WeatherWarnings extends utils.Adapter {
                     if (obj.callback) {
                         if (this.adminTimeoutRef) this.clearTimeout(this.adminTimeoutRef);
                         try {
-                            const data = dwdWarncellIdLong;
-                            //if (!data) data = await axios.get(this.config.dwdWarncellTextUrl);
-                            const text: any[] = [];
-                            if (text.length == 0) {
-                                const dataArray: string[] = data.split('\n');
+                            this.adminTimeoutRef = this.setTimeout(
+                                (that: any) => {
+                                    if (!that) return;
+                                    const data = dwdWarncellIdLong;
+                                    //if (!data) data = await axios.get(that.config.dwdWarncellTextUrl);
+                                    const text: any[] = [];
+                                    if (text.length == 0) {
+                                        const dataArray: string[] = data.split('\n');
 
-                                dataArray.splice(0, 1);
-                                dataArray.forEach((element) => {
-                                    const value = element.split(';')[0];
-                                    const cityText = element.split(';')[1];
-                                    //const cityText = element.split(';')[2];
-                                    if (
-                                        value &&
-                                        (value.startsWith('10') ||
-                                            value.startsWith('9') ||
-                                            value.startsWith('8') ||
-                                            value.startsWith('7'))
-                                    ) {
-                                        //if (text) text.push(`${cityText} #${value}`);
-                                        if (text) text.push({ label: cityText, value: value.trim() });
-                                    }
-                                });
-                                text.sort((a, b) => {
-                                    const nameA = a.label.toUpperCase(); // ignore upper and lowercase
-                                    const nameB = b.label.toUpperCase(); // ignore upper and lowercase
-                                    if (nameA < nameB) {
-                                        return -1;
-                                    }
-                                    if (nameA > nameB) {
-                                        return 1;
-                                    }
+                                        dataArray.splice(0, 1);
+                                        dataArray.forEach((element) => {
+                                            const value = element.split(';')[0];
+                                            const cityText = element.split(';')[1];
+                                            //const cityText = element.split(';')[2];
+                                            if (
+                                                value &&
+                                                (value.startsWith('10') ||
+                                                    value.startsWith('9') ||
+                                                    value.startsWith('8') ||
+                                                    value.startsWith('7'))
+                                            ) {
+                                                //if (text) text.push(`${cityText} #${value}`);
+                                                if (text) text.push({ label: cityText, value: value.trim() });
+                                            }
+                                        });
+                                        text.sort((a, b) => {
+                                            const nameA = a.label.toUpperCase(); // ignore upper and lowercase
+                                            const nameB = b.label.toUpperCase(); // ignore upper and lowercase
+                                            if (nameA < nameB) {
+                                                return -1;
+                                            }
+                                            if (nameA > nameB) {
+                                                return 1;
+                                            }
 
-                                    return 0;
-                                });
-                            }
-                            const msg = obj.message;
-                            if (msg.dwd.length > 2) {
-                                const result = text.filter(
-                                    (a) =>
-                                        (a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase())) ||
-                                        (!isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)),
-                                );
-                                if (result.length == 1) this.config.dwdSelectId = result[0].value;
-                                if (obj.command == 'dwd.name') this.sendTo(obj.from, obj.command, result, obj.callback);
-                                else if (obj.command == 'dwd.name.text')
-                                    this.sendTo(
-                                        obj.from,
-                                        obj.command,
-                                        result.length == 1 ? result[0].label : '',
-                                        obj.callback,
-                                    );
-                                this.log.debug(`ID is is: ${this.config.dwdSelectId}`);
-                            } else {
-                                if (obj.command == 'dwd.name.text')
-                                    this.sendTo(obj.from, obj.command, '', obj.callback);
-                                else this.sendTo(obj.from, obj.command, text, obj.callback);
-                            }
+                                            return 0;
+                                        });
+                                    }
+                                    const msg = obj.message;
+                                    if (msg.dwd.length > 2) {
+                                        const result = text.filter(
+                                            (a) =>
+                                                (a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase())) ||
+                                                (!isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)),
+                                        );
+                                        if (result.length == 1) that.config.dwdSelectId = result[0].value;
+
+                                        if (obj.command == 'dwd.name')
+                                            that.sendTo(obj.from, obj.command, result, obj.callback);
+                                        else if (obj.command == 'dwd.name.text')
+                                            that.sendTo(
+                                                obj.from,
+                                                obj.command,
+                                                result.length == 1 ? result[0].label : '',
+                                                obj.callback,
+                                            );
+                                        that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
+                                    } else {
+                                        if (obj.command == 'dwd.name.text')
+                                            that.sendTo(obj.from, obj.command, '', obj.callback);
+                                        else that.sendTo(obj.from, obj.command, text, obj.callback);
+                                    }
+                                },
+                                1500,
+                                this,
+                            );
                         } catch (e) {
                             this.log.error(`catch (41): ${e}`);
                             if (obj.command == 'dwd.name.text') this.sendTo(obj.from, obj.command, '', obj.callback);
