@@ -111,11 +111,10 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.2.5-alpha.0 (2023-09-30)
 * (ticaki) added telegram, whatsapp, pushover
 * added remove all
 * added json/array output for all current warnings.
-
 
 ### 0.2.4-alpha.0 (2023-09-29)
 * (ticaki) add alerts
