@@ -12,8 +12,8 @@ import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 import { genericWarntyp, genericWarntypeType, textLevels } from './lib/def/messages-def';
-import { messageFilterTypeWithFilter } from './lib/def/provider-def';
-import { notificationServiceOptionsType } from './lib/def/notificationService-def';
+import { messageFilterTypeWithFilter, providerServices } from './lib/def/provider-def';
+import { notificationServiceOptionsType, notificationTemplateType } from './lib/def/notificationService-def';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -55,41 +55,66 @@ class WeatherWarnings extends utils.Adapter {
                 await self.library.init();
                 let notificationServiceOpt: notificationServiceOptionsType = {};
                 if (self.config.telegram_Enabled) {
+                    const service: providerServices[] = [];
+                    if (self.config.telegram_DwdEnabled) service.push('dwdService');
+                    if (self.config.telegram_UwzEnabled) service.push('uwzService');
+                    if (self.config.telegram_UwzEnabled) service.push('zamgService');
+                    const template: notificationTemplateType = {
+                        new: self.config.telegram_MessageNew,
+                        remove: self.config.telegram_MessageRemove,
+                        removeAll: self.config.telegram_MessageAllRemove,
+                    };
+
                     notificationServiceOpt = {
                         ...notificationServiceOpt,
                         telegram: {
-                            dwdService: self.config.telegram_DwdEnabled,
-                            uwzService: self.config.telegram_UwzEnabled,
-                            zamgService: self.config.telegram_ZamgEnabled,
+                            service: service,
                             filter: { level: self.config.telegram_LevelFilter, type: self.config.telegram_TypeFilter },
                             adapter: self.config.telegram_Adapter,
                             name: 'telegram',
+                            template: template,
                         },
                     };
                 }
                 if (self.config.whatsapp_Enabled) {
+                    const service: providerServices[] = [];
+                    if (self.config.whatsapp_DwdEnabled) service.push('dwdService');
+                    if (self.config.whatsapp_UwzEnabled) service.push('uwzService');
+                    if (self.config.whatsapp_ZamgEnabled) service.push('zamgService');
+                    const template: notificationTemplateType = {
+                        new: self.config.whatsapp_MessageNew,
+                        remove: self.config.whatsapp_MessageRemove,
+                        removeAll: self.config.whatsapp_MessageAllRemove,
+                    };
                     notificationServiceOpt = {
                         ...notificationServiceOpt,
                         whatsapp: {
-                            dwdService: self.config.whatsapp_DwdEnabled,
-                            uwzService: self.config.whatsapp_UwzEnabled,
-                            zamgService: self.config.whatsapp_ZamgEnabled,
+                            service: service,
                             filter: { level: self.config.whatsapp_LevelFilter, type: self.config.whatsapp_TypeFilter },
                             adapter: self.config.whatsapp_Adapter,
                             name: 'whatsapp',
+                            template: template,
                         },
                     };
                 }
                 if (self.config.pushover_Enabled) {
+                    const service: providerServices[] = [];
+                    if (self.config.pushover_DwdEnabled) service.push('dwdService');
+                    if (self.config.pushover_UwzEnabled) service.push('uwzService');
+                    if (self.config.pushover_ZamgEnabled) service.push('zamgService');
+                    const template: notificationTemplateType = {
+                        new: self.config.pushover_MessageNew,
+                        remove: self.config.pushover_MessageRemove,
+                        removeAll: self.config.pushover_MessageAllRemove,
+                    };
                     notificationServiceOpt = {
                         ...notificationServiceOpt,
                         pushover: {
-                            dwdService: self.config.pushover_DwdEnabled,
-                            uwzService: self.config.pushover_UwzEnabled,
-                            zamgService: self.config.pushover_ZamgEnabled,
+                            service: service,
                             filter: { level: self.config.pushover_LevelFilter, type: self.config.pushover_TypeFilter },
                             adapter: self.config.pushover_Adapter,
                             name: 'pushover',
+                            template: template,
                         },
                     };
                 }
@@ -150,7 +175,7 @@ class WeatherWarnings extends utils.Adapter {
                 self.providerController.updateEndless(self.providerController);
                 self.providerController.updateAlertEndless(self.providerController);
             },
-            2000,
+            4000,
             this,
         );
     }
@@ -237,13 +262,23 @@ class WeatherWarnings extends utils.Adapter {
                 case 'notificationService':
                     {
                         if (obj.message && obj.message.service) {
-                            const states = await this.getForeignStatesAsync(`system.adapter.${obj.message.service}.*`);
                             const temp: { [key: number]: boolean } = {};
-                            for (const state in states) {
-                                const instance = Number(state.split('.')[3]);
-                                if (instance !== undefined) {
-                                    temp[instance] = true;
+                            try {
+                                const objs = await this.getObjectViewAsync('system', 'instance', {
+                                    startkey: `system.adapter.${obj.message.service}.`,
+                                    endkey: `system.adapter.${obj.message.service}.\u9999`,
+                                });
+
+                                if (objs && objs.rows) {
+                                    for (const a in objs.rows) {
+                                        const instance = Number(objs.rows[a].id.split('.')[3]);
+                                        if (instance !== undefined) {
+                                            temp[instance] = true;
+                                        }
+                                    }
                                 }
+                            } catch (error) {
+                                this.log.error(`error(44): ${error}`);
                             }
 
                             const reply = [{ label: 'none', value: 'none' }];
@@ -310,79 +345,24 @@ class WeatherWarnings extends utils.Adapter {
                     break;
                 case 'dwd.name':
                 case 'dwd.name.text':
-                    if (obj.callback) {
-                        if (this.adminTimeoutRef) this.clearTimeout(this.adminTimeoutRef);
-                        try {
+                    {
+                        //debounce
+                        if (this.adminTimeoutRef) {
+                            this.clearTimeout(this.adminTimeoutRef);
+                            this.adminTimeoutRef = this.setTimeout(this.dwdWarncellIdLongHelper, 2000, {
+                                obj: obj,
+                                that: this,
+                            });
+                        } else {
+                            this.dwdWarncellIdLongHelper({
+                                obj: obj,
+                                that: this,
+                            });
                             this.adminTimeoutRef = this.setTimeout(
-                                (that: any) => {
-                                    if (!that) return;
-                                    const data = dwdWarncellIdLong;
-                                    //if (!data) data = await axios.get(that.config.dwdWarncellTextUrl);
-                                    const text: any[] = [];
-                                    if (text.length == 0) {
-                                        const dataArray: string[] = data.split('\n');
-
-                                        dataArray.splice(0, 1);
-                                        dataArray.forEach((element) => {
-                                            const value = element.split(';')[0];
-                                            const cityText = element.split(';')[1];
-                                            //const cityText = element.split(';')[2];
-                                            if (
-                                                value &&
-                                                (value.startsWith('10') ||
-                                                    value.startsWith('9') ||
-                                                    value.startsWith('8') ||
-                                                    value.startsWith('7'))
-                                            ) {
-                                                //if (text) text.push(`${cityText} #${value}`);
-                                                if (text) text.push({ label: cityText, value: value.trim() });
-                                            }
-                                        });
-                                        text.sort((a, b) => {
-                                            const nameA = a.label.toUpperCase(); // ignore upper and lowercase
-                                            const nameB = b.label.toUpperCase(); // ignore upper and lowercase
-                                            if (nameA < nameB) {
-                                                return -1;
-                                            }
-                                            if (nameA > nameB) {
-                                                return 1;
-                                            }
-
-                                            return 0;
-                                        });
-                                    }
-                                    const msg = obj.message;
-                                    if (msg.dwd.length > 2) {
-                                        const result = text.filter(
-                                            (a) =>
-                                                (a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase())) ||
-                                                (!isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)),
-                                        );
-                                        if (result.length == 1) that.config.dwdSelectId = result[0].value;
-
-                                        if (obj.command == 'dwd.name')
-                                            that.sendTo(obj.from, obj.command, result, obj.callback);
-                                        else if (obj.command == 'dwd.name.text')
-                                            that.sendTo(
-                                                obj.from,
-                                                obj.command,
-                                                result.length == 1 ? result[0].label : '',
-                                                obj.callback,
-                                            );
-                                        that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
-                                    } else {
-                                        if (obj.command == 'dwd.name.text')
-                                            that.sendTo(obj.from, obj.command, '', obj.callback);
-                                        else that.sendTo(obj.from, obj.command, text, obj.callback);
-                                    }
-                                },
-                                1500,
+                                (that: any) => (that.adminTimeoutRef = null),
+                                2000,
                                 this,
                             );
-                        } catch (e) {
-                            this.log.error(`catch (41): ${e}`);
-                            if (obj.command == 'dwd.name.text') this.sendTo(obj.from, obj.command, '', obj.callback);
-                            else this.sendTo(obj.from, obj.command, [{ label: 'N/A', value: '' }], obj.callback);
                         }
                     }
                     break;
@@ -427,7 +407,7 @@ class WeatherWarnings extends utils.Adapter {
                         if (state) connected = connected || !!state.val;
                     });
                     state = this.library.getdb('provider.activWarnings');
-                    if (state) connected = connected || state.val != 5;
+                    if (state) connected = !!connected || !(state.val && Number(state.val) >= 4);
                     else connected = true; //error
                     // connected === false is right
                     this.sendTo(
@@ -435,7 +415,7 @@ class WeatherWarnings extends utils.Adapter {
                         obj.command,
                         !connected
                             ? 'ok'
-                            : `connect: ${connected} (false) activeWarnings ${state ? state.val : 'undefined'} (5)`,
+                            : `connect: ${connected} (false) activeWarnings ${state ? state.val : 'undefined'} (>=4)`,
                         obj.callback,
                     );
                     this.config.useTestWarnings = false;
@@ -444,6 +424,65 @@ class WeatherWarnings extends utils.Adapter {
                     this.sendTo(obj.from, obj.command, 'unknown message', obj.callback);
                     this.log.debug(`Retrieve unknown command ${obj.command} from ${obj.from}`);
             }
+        }
+    }
+    dwdWarncellIdLongHelper(obj1: any): void {
+        const obj = obj1.obj as ioBroker.Message;
+        const that = obj1.that as WeatherWarnings;
+        if (obj.callback) {
+            const data = dwdWarncellIdLong;
+            //if (!data) data = await axios.get(that.config.dwdWarncellTextUrl);
+            const text: any[] = [];
+            if (text.length == 0) {
+                const dataArray: string[] = data.split('\n');
+
+                dataArray.splice(0, 1);
+                dataArray.forEach((element) => {
+                    const value = element.split(';')[0];
+                    const cityText = element.split(';')[1];
+                    //const cityText = element.split(';')[2];
+                    if (
+                        value &&
+                        (value.startsWith('10') ||
+                            value.startsWith('9') ||
+                            value.startsWith('8') ||
+                            value.startsWith('7'))
+                    ) {
+                        //if (text) text.push(`${cityText} #${value}`);
+                        if (text) text.push({ label: cityText, value: value.trim() });
+                    }
+                });
+                text.sort((a, b) => {
+                    const nameA = a.label.toUpperCase(); // ignore upper and lowercase
+                    const nameB = b.label.toUpperCase(); // ignore upper and lowercase
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
+
+                    return 0;
+                });
+            }
+            const msg = obj.message;
+            if (msg.dwd.length > 2) {
+                const result = text.filter(
+                    (a) =>
+                        (a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase())) ||
+                        (!isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)),
+                );
+                if (result.length == 1) that.config.dwdSelectId = result[0].value;
+
+                if (obj.command == 'dwd.name') that.sendTo(obj.from, obj.command, result, obj.callback);
+                else if (obj.command == 'dwd.name.text')
+                    that.sendTo(obj.from, obj.command, result.length == 1 ? result[0].label : '', obj.callback);
+                that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
+            } else {
+                if (obj.command == 'dwd.name.text') that.sendTo(obj.from, obj.command, '', obj.callback);
+                else that.sendTo(obj.from, obj.command, text, obj.callback);
+            }
+            that.adminTimeoutRef = null;
         }
     }
 }

@@ -9,8 +9,9 @@ import {
     customFormatedKeysDef,
     genericWarntyp,
     genericWarntypeType,
+    notificationMessageType,
 } from './def/messages-def';
-import { notificationServiceBaseType } from './def/notificationService-def';
+import { notificationServiceBaseType, notificationTemplateUnionType } from './def/notificationService-def';
 import { messageFilterType } from './def/provider-def';
 import { BaseClass, Library } from './library';
 import { ProvideClassType } from './provider';
@@ -28,7 +29,7 @@ type customFormatedKeysDefSubtype = { cmd?: 'dayoftheweek' | 'translate'; node: 
 /**
  * bla
  */
-export class Messages extends BaseClass {
+export class MessagesClass extends BaseClass {
     provider: ProvideClassType;
     library: Library;
     formatedKeysJsonataDefinition: customformatedKeysJsonataDefinition = {};
@@ -437,29 +438,27 @@ export class Messages extends BaseClass {
         this.newMessage = false;
         this.notDeleted = true;
     }
-    async sendMessage(override = false): Promise<boolean> {
+    async sendMessage(action: notificationTemplateUnionType, override = false): Promise<boolean> {
         if (this.messages.length == 0) return false;
-        if (this.notDeleted) {
-            if (this.newMessage || override) {
-                for (let a = 0; a < this.messages.length; a++) {
-                    const msg = this.messages[a];
-                    this.library.writedp(
-                        `${this.provider.name}.messages.${msg.key}`,
-                        msg.message,
-                        genericStateObjects.messageStates.message,
-                    );
-                }
+        if ((this.newMessage && action == 'new') || (!this.notDeleted && action == 'remove') || override) {
+            const msgsend: { [key: string]: string } = {};
+            for (let a = 0; a < this.messages.length; a++) {
+                const msg = this.messages[a];
+                this.library.writedp(
+                    `${this.provider.name}.messages.${msg.key}`,
+                    msg.message,
+                    genericStateObjects.messageStates.message,
+                );
+                msgsend[msg.key] = msg.message;
             }
-        } else {
-            this.sendRemoveMessage();
-            return true;
+            this.provider.providerController.sendToNotifications(
+                { msgs: msgsend, obj: this },
+                override ? 'new' : action,
+            );
         }
 
         this.newMessage = false;
         return false;
-    }
-    sendRemoveMessage(): void {
-        // Sende aufgehoben meldung wird nur aufgerufen wenn Mitteilungen vorhanden sind
     }
 
     delete(): void {
@@ -492,5 +491,44 @@ export class NotificationClass extends BaseClass {
     constructor(adapter: WeatherWarnings, notifcationOptions: notificationServiceBaseType) {
         super(adapter, notifcationOptions.name);
         this.options = notifcationOptions;
+    }
+    async sendNotifications(messages: notificationMessageType, action: notificationTemplateUnionType): Promise<void> {
+        if (
+            !messages.obj ||
+            (this.options.service.indexOf(messages.obj.provider.service) != -1 &&
+                (this.options.filter.level === undefined || this.options.filter.level <= messages.obj.level) &&
+                this.options.filter.type.indexOf(String(messages.obj.type)) == -1)
+        ) {
+            const msg = messages.msgs[this.options.template[action]];
+            switch (this.name) {
+                case 'telegram':
+                    {
+                        const opt = { text: msg, disable_notification: true };
+                        this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
+                            this.log.debug(`send a message`);
+                        });
+                    }
+                    break;
+                case 'pushover':
+                    {
+                        const opt = { text: msg, disable_notification: true };
+                        //newMsg.title = topic;newMsg.device
+                        this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
+                            this.log.debug(`send a message`);
+                        });
+                    }
+                    break;
+                case 'whatsapp':
+                    {
+                        const service = this.options.adapter.replace('whatsapp', 'whatsapp-cmb');
+                        // obj.message.phone
+                        const opt = { text: msg };
+                        this.adapter.sendTo(service, 'send', opt, () => {
+                            this.log.debug(`send a message`);
+                        });
+                    }
+                    break;
+            }
+        }
     }
 }

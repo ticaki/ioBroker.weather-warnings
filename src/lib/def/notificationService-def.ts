@@ -1,4 +1,4 @@
-import { messageFilterType } from './provider-def';
+import { messageFilterType, providerServices } from './provider-def';
 
 export type notificationServiceType = 'telegram' | 'pushover' | 'whatsapp';
 export const notificationServiceValue: notificationServiceType[] = ['telegram', 'pushover', 'whatsapp'];
@@ -15,10 +15,17 @@ export type notificationServiceOptionsType = {
     } & notificationServiceBaseType;
 };
 export type notificationServiceBaseType = {
-    dwdService: boolean;
-    uwzService: boolean;
-    zamgService: boolean;
+    service: providerServices[];
     filter: messageFilterType;
     adapter: string;
     name: notificationServiceType;
+    template: notificationTemplateType;
+};
+
+export type notificationTemplateUnionType = keyof notificationTemplateType;
+
+export type notificationTemplateType = {
+    new: string;
+    remove: string;
+    removeAll: string;
 };

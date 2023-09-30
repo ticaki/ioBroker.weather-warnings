@@ -334,16 +334,26 @@ const testData = {
   }
 };
 function getTestData(service) {
+  const result = JSON.parse(JSON.stringify(testData));
   if (service == "dwdService") {
     for (const i in testData.dwdService.features) {
       const f = testData.dwdService.features[i];
-      const start = Date.now() + Math.random() * 12e5 + 6e4;
+      const start = Date.now() + Math.random() * 3e4 + 1e4;
       if (new Date(f.properties.EXPIRES).getTime() + 36e5 < start) {
         f.properties.ONSET = new Date(start).toJSON();
-        f.properties.EXPIRES = new Date(start + Math.random() * 24e5 + 3e5).toJSON();
+        f.properties.EXPIRES = new Date(start + Math.random() * 3e4 + 6e4).toJSON();
+      }
+      if (new Date(f.properties.EXPIRES).getTime() < Date.now()) {
+        result.dwdService.features[i] = null;
+      } else {
+        result.dwdService.features[i] = testData.dwdService.features[i];
       }
     }
-    return testData.dwdService;
+    for (let i = result.dwdService.features.length - 1; i >= 0; i--) {
+      if (result.dwdService.features[i] === null)
+        result.dwdService.features.splice(i, 1);
+    }
+    return result.dwdService;
   } else if (service == "uwzService") {
     for (const i in testData.uwzService.results) {
       const f = testData.uwzService.results[i];
@@ -352,8 +362,17 @@ function getTestData(service) {
         f.dtgStart = new Date(start).getTime();
         f.dtgEnd = new Date(start + Math.random() * 24e5 + 3e5).getTime();
       }
+      if (f.dtgEnd < Date.now()) {
+        result.uwzService.results[i] = null;
+      } else {
+        result.uwzService.results[i] = testData.uwzService.results[i];
+      }
     }
-    return testData.uwzService;
+    for (let i = result.uwzService.results - 1; i >= 0; i--) {
+      if (result.uwzService.results[i] === null)
+        result.uwzService.results.splice(i, 1);
+    }
+    return result.uwzService;
   } else if (service == "zamgService") {
     for (const i in testData.zamgService.properties.warnings) {
       const f = testData.zamgService.properties.warnings[i];
@@ -362,6 +381,15 @@ function getTestData(service) {
         f.properties.rawinfo.start = new Date(start).getTime().toString();
         f.properties.rawinfo.start = new Date(start + Math.random() * 24e5 + 3e5).getTime().toString();
       }
+      if (Number(f.properties.rawinfo.end) < Date.now()) {
+        result.zamgService.properties.warnings[i] = null;
+      } else {
+        result.zamgService.properties.warnings[i] = testData.zamgService.properties.warnings[i];
+      }
+    }
+    for (let i = result.zamgService.properties.warnings - 1; i >= 0; i--) {
+      if (result.zamgService.properties.warnings[i] === null)
+        result.zamgService.properties.warnings.splice(i, 1);
     }
     return testData.zamgService;
   }

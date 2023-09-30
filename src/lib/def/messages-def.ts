@@ -1,3 +1,4 @@
+import { MessagesClass } from '../messages';
 import { customChannelType } from './definitionen';
 
 /** Bezeichnungen die in Template verwendet werden können ohne "?:string;""
@@ -344,7 +345,7 @@ type genericWarnTypNameJsonType = {
     fog: string;
     thaw: string;
 };
-
+export type notificationMessageType = { msgs: { [key: string]: string }; obj: MessagesClass };
 /*type genericWarnTypNameType =
     | 'unknown'
     | 'storm'

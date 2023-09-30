@@ -74,7 +74,7 @@
                     "type": "checkbox",
                     "sm": 12,
                     "md": 6,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "Activate Testwarnings",
                     "newLine": true
                 }
@@ -99,8 +99,7 @@
                     "lg": 4,
                     
                     "newLine": true
-                },
-                
+                },               
                 "dwdLanguage": {
                     "type": "select",
                     "label": "WarnLanguage",
@@ -227,8 +226,20 @@
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "TypeFilter",
+                    "newLine": true
+                },
+                "dwdLevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"dwdService\" }",
+                    "manual": true,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "LevelFilter",
                     "newLine": true
                 }
             }
@@ -294,8 +305,20 @@
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "TypeFilter",
+                    "newLine": true
+                },
+                "uwzLevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"uwzService\" }",
+                    "manual": true,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "LevelFilter",
                     "newLine": true
                 }
             }
@@ -349,8 +372,20 @@
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "TypeFilter",
+                    "newLine": true
+                },
+                "zamgLevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"zamgService\" }",
+                    "manual": true,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "LevelFilter",
                     "newLine": true
                 }
             }
@@ -407,7 +442,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "SelectNotificationService",
                     "newLine": true
                 },
@@ -451,8 +486,8 @@
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
-                    "label": "push_TypeFilter",
+                    "lg": 4,
+                    "label": "TypeFilter",
                     "newLine": true
                 },
                 "telegram_LevelFilter": {
@@ -464,8 +499,8 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
-                    "label": "push_LevelFilter",
+                    "lg": 4,
+                    "label": "LevelFilter",
                     "newLine": true
                 },
                 "telegram_MessageNew": {
@@ -477,7 +512,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -490,7 +525,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -503,7 +538,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 }
@@ -522,7 +557,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "SelectNotificationService",
                     "newLine": true
                 },
@@ -566,8 +601,8 @@
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
-                    "label": "push_TypeFilter",
+                    "lg": 4,
+                    "label": "TypeFilter",
                     "newLine": true
                 },
                 "whatsapp_LevelFilter": {
@@ -579,8 +614,8 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
-                    "label": "push_LevelFilter",
+                    "lg": 4,
+                    "label": "LevelFilter",
                     "newLine": true
                 },
                 "whatsapp_MessageNew": {
@@ -592,7 +627,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -605,7 +640,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -618,7 +653,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 }
@@ -637,7 +672,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "SelectNotificationService",
                     "newLine": true
                 },
@@ -681,8 +716,8 @@
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
-                    "label": "push_TypeFilter",
+                    "lg": 4,
+                    "label": "TypeFilter",
                     "newLine": true
                 },
                 "pushover_LevelFilter": {
@@ -694,8 +729,8 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
-                    "label": "push_LevelFilter",
+                    "lg": 4,
+                    "label": "LevelFilter",
                     "newLine": true
                 },
                 "pushover_MessageNew": {
@@ -707,7 +742,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -720,7 +755,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -733,7 +768,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 3,
+                    "lg": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 }

@@ -18,14 +18,14 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var messages_exports = {};
 __export(messages_exports, {
-  Messages: () => Messages,
+  MessagesClass: () => MessagesClass,
   NotificationClass: () => NotificationClass
 });
 module.exports = __toCommonJS(messages_exports);
 var import_definitionen = require("./def/definitionen");
 var import_messages_def = require("./def/messages-def");
 var import_library = require("./library");
-class Messages extends import_library.BaseClass {
+class MessagesClass extends import_library.BaseClass {
   provider;
   library;
   formatedKeysJsonataDefinition = {};
@@ -414,28 +414,27 @@ class Messages extends import_library.BaseClass {
     this.newMessage = false;
     this.notDeleted = true;
   }
-  async sendMessage(override = false) {
+  async sendMessage(action, override = false) {
     if (this.messages.length == 0)
       return false;
-    if (this.notDeleted) {
-      if (this.newMessage || override) {
-        for (let a = 0; a < this.messages.length; a++) {
-          const msg = this.messages[a];
-          this.library.writedp(
-            `${this.provider.name}.messages.${msg.key}`,
-            msg.message,
-            import_definitionen.genericStateObjects.messageStates.message
-          );
-        }
+    if (this.newMessage && action == "new" || !this.notDeleted && action == "remove" || override) {
+      const msgsend = {};
+      for (let a = 0; a < this.messages.length; a++) {
+        const msg = this.messages[a];
+        this.library.writedp(
+          `${this.provider.name}.messages.${msg.key}`,
+          msg.message,
+          import_definitionen.genericStateObjects.messageStates.message
+        );
+        msgsend[msg.key] = msg.message;
       }
-    } else {
-      this.sendRemoveMessage();
-      return true;
+      this.provider.providerController.sendToNotifications(
+        { msgs: msgsend, obj: this },
+        override ? "new" : action
+      );
     }
     this.newMessage = false;
     return false;
-  }
-  sendRemoveMessage() {
   }
   delete() {
     this.notDeleted = false;
@@ -466,10 +465,42 @@ class NotificationClass extends import_library.BaseClass {
     super(adapter, notifcationOptions.name);
     this.options = notifcationOptions;
   }
+  async sendNotifications(messages, action) {
+    if (!messages.obj || this.options.service.indexOf(messages.obj.provider.service) != -1 && (this.options.filter.level === void 0 || this.options.filter.level <= messages.obj.level) && this.options.filter.type.indexOf(String(messages.obj.type)) == -1) {
+      const msg = messages.msgs[this.options.template[action]];
+      switch (this.name) {
+        case "telegram":
+          {
+            const opt = { text: msg, disable_notification: true };
+            this.adapter.sendTo(this.options.adapter, "send", opt, () => {
+              this.log.debug(`send a message`);
+            });
+          }
+          break;
+        case "pushover":
+          {
+            const opt = { text: msg, disable_notification: true };
+            this.adapter.sendTo(this.options.adapter, "send", opt, () => {
+              this.log.debug(`send a message`);
+            });
+          }
+          break;
+        case "whatsapp":
+          {
+            const service = this.options.adapter.replace("whatsapp", "whatsapp-cmb");
+            const opt = { text: msg };
+            this.adapter.sendTo(service, "send", opt, () => {
+              this.log.debug(`send a message`);
+            });
+          }
+          break;
+      }
+    }
+  }
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  Messages,
+  MessagesClass,
   NotificationClass
 });
 //# sourceMappingURL=messages.js.map

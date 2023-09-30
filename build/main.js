@@ -58,41 +58,74 @@ class WeatherWarnings extends utils.Adapter {
         await self.library.init();
         let notificationServiceOpt = {};
         if (self.config.telegram_Enabled) {
+          const service = [];
+          if (self.config.telegram_DwdEnabled)
+            service.push("dwdService");
+          if (self.config.telegram_UwzEnabled)
+            service.push("uwzService");
+          if (self.config.telegram_UwzEnabled)
+            service.push("zamgService");
+          const template = {
+            new: self.config.telegram_MessageNew,
+            remove: self.config.telegram_MessageRemove,
+            removeAll: self.config.telegram_MessageAllRemove
+          };
           notificationServiceOpt = {
             ...notificationServiceOpt,
             telegram: {
-              dwdService: self.config.telegram_DwdEnabled,
-              uwzService: self.config.telegram_UwzEnabled,
-              zamgService: self.config.telegram_ZamgEnabled,
+              service,
               filter: { level: self.config.telegram_LevelFilter, type: self.config.telegram_TypeFilter },
               adapter: self.config.telegram_Adapter,
-              name: "telegram"
+              name: "telegram",
+              template
             }
           };
         }
         if (self.config.whatsapp_Enabled) {
+          const service = [];
+          if (self.config.whatsapp_DwdEnabled)
+            service.push("dwdService");
+          if (self.config.whatsapp_UwzEnabled)
+            service.push("uwzService");
+          if (self.config.whatsapp_ZamgEnabled)
+            service.push("zamgService");
+          const template = {
+            new: self.config.whatsapp_MessageNew,
+            remove: self.config.whatsapp_MessageRemove,
+            removeAll: self.config.whatsapp_MessageAllRemove
+          };
           notificationServiceOpt = {
             ...notificationServiceOpt,
             whatsapp: {
-              dwdService: self.config.whatsapp_DwdEnabled,
-              uwzService: self.config.whatsapp_UwzEnabled,
-              zamgService: self.config.whatsapp_ZamgEnabled,
+              service,
               filter: { level: self.config.whatsapp_LevelFilter, type: self.config.whatsapp_TypeFilter },
               adapter: self.config.whatsapp_Adapter,
-              name: "whatsapp"
+              name: "whatsapp",
+              template
             }
           };
         }
         if (self.config.pushover_Enabled) {
+          const service = [];
+          if (self.config.pushover_DwdEnabled)
+            service.push("dwdService");
+          if (self.config.pushover_UwzEnabled)
+            service.push("uwzService");
+          if (self.config.pushover_ZamgEnabled)
+            service.push("zamgService");
+          const template = {
+            new: self.config.pushover_MessageNew,
+            remove: self.config.pushover_MessageRemove,
+            removeAll: self.config.pushover_MessageAllRemove
+          };
           notificationServiceOpt = {
             ...notificationServiceOpt,
             pushover: {
-              dwdService: self.config.pushover_DwdEnabled,
-              uwzService: self.config.pushover_UwzEnabled,
-              zamgService: self.config.pushover_ZamgEnabled,
+              service,
               filter: { level: self.config.pushover_LevelFilter, type: self.config.pushover_TypeFilter },
               adapter: self.config.pushover_Adapter,
-              name: "pushover"
+              name: "pushover",
+              template
             }
           };
         }
@@ -145,7 +178,7 @@ class WeatherWarnings extends utils.Adapter {
         self.providerController.updateEndless(self.providerController);
         self.providerController.updateAlertEndless(self.providerController);
       },
-      2e3,
+      4e3,
       this
     );
   }
@@ -201,13 +234,22 @@ class WeatherWarnings extends utils.Adapter {
         case "notificationService":
           {
             if (obj.message && obj.message.service) {
-              const states = await this.getForeignStatesAsync(`system.adapter.${obj.message.service}.*`);
               const temp = {};
-              for (const state2 in states) {
-                const instance = Number(state2.split(".")[3]);
-                if (instance !== void 0) {
-                  temp[instance] = true;
+              try {
+                const objs = await this.getObjectViewAsync("system", "instance", {
+                  startkey: `system.adapter.${obj.message.service}.`,
+                  endkey: `system.adapter.${obj.message.service}.\u9999`
+                });
+                if (objs && objs.rows) {
+                  for (const a in objs.rows) {
+                    const instance = Number(objs.rows[a].id.split(".")[3]);
+                    if (instance !== void 0) {
+                      temp[instance] = true;
+                    }
+                  }
                 }
+              } catch (error) {
+                this.log.error(`error(44): ${error}`);
               }
               const reply = [{ label: "none", value: "none" }];
               for (const t in temp) {
@@ -263,72 +305,23 @@ class WeatherWarnings extends utils.Adapter {
           break;
         case "dwd.name":
         case "dwd.name.text":
-          if (obj.callback) {
-            if (this.adminTimeoutRef)
+          {
+            if (this.adminTimeoutRef) {
               this.clearTimeout(this.adminTimeoutRef);
-            try {
+              this.adminTimeoutRef = this.setTimeout(this.dwdWarncellIdLongHelper, 2e3, {
+                obj,
+                that: this
+              });
+            } else {
+              this.dwdWarncellIdLongHelper({
+                obj,
+                that: this
+              });
               this.adminTimeoutRef = this.setTimeout(
-                (that) => {
-                  if (!that)
-                    return;
-                  const data = import_dwdWarncellIdLong.dwdWarncellIdLong;
-                  const text = [];
-                  if (text.length == 0) {
-                    const dataArray = data.split("\n");
-                    dataArray.splice(0, 1);
-                    dataArray.forEach((element) => {
-                      const value = element.split(";")[0];
-                      const cityText = element.split(";")[1];
-                      if (value && (value.startsWith("10") || value.startsWith("9") || value.startsWith("8") || value.startsWith("7"))) {
-                        if (text)
-                          text.push({ label: cityText, value: value.trim() });
-                      }
-                    });
-                    text.sort((a, b) => {
-                      const nameA = a.label.toUpperCase();
-                      const nameB = b.label.toUpperCase();
-                      if (nameA < nameB) {
-                        return -1;
-                      }
-                      if (nameA > nameB) {
-                        return 1;
-                      }
-                      return 0;
-                    });
-                  }
-                  const msg = obj.message;
-                  if (msg.dwd.length > 2) {
-                    const result = text.filter(
-                      (a) => a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase()) || !isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)
-                    );
-                    if (result.length == 1)
-                      that.config.dwdSelectId = result[0].value;
-                    if (obj.command == "dwd.name")
-                      that.sendTo(obj.from, obj.command, result, obj.callback);
-                    else if (obj.command == "dwd.name.text")
-                      that.sendTo(
-                        obj.from,
-                        obj.command,
-                        result.length == 1 ? result[0].label : "",
-                        obj.callback
-                      );
-                    that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
-                  } else {
-                    if (obj.command == "dwd.name.text")
-                      that.sendTo(obj.from, obj.command, "", obj.callback);
-                    else
-                      that.sendTo(obj.from, obj.command, text, obj.callback);
-                  }
-                },
-                1500,
+                (that) => that.adminTimeoutRef = null,
+                2e3,
                 this
               );
-            } catch (e) {
-              this.log.error(`catch (41): ${e}`);
-              if (obj.command == "dwd.name.text")
-                this.sendTo(obj.from, obj.command, "", obj.callback);
-              else
-                this.sendTo(obj.from, obj.command, [{ label: "N/A", value: "" }], obj.callback);
             }
           }
           break;
@@ -373,13 +366,13 @@ class WeatherWarnings extends utils.Adapter {
           });
           state = this.library.getdb("provider.activWarnings");
           if (state)
-            connected = connected || state.val != 5;
+            connected = !!connected || !(state.val && Number(state.val) >= 4);
           else
             connected = true;
           this.sendTo(
             obj.from,
             obj.command,
-            !connected ? "ok" : `connect: ${connected} (false) activeWarnings ${state ? state.val : "undefined"} (5)`,
+            !connected ? "ok" : `connect: ${connected} (false) activeWarnings ${state ? state.val : "undefined"} (>=4)`,
             obj.callback
           );
           this.config.useTestWarnings = false;
@@ -388,6 +381,56 @@ class WeatherWarnings extends utils.Adapter {
           this.sendTo(obj.from, obj.command, "unknown message", obj.callback);
           this.log.debug(`Retrieve unknown command ${obj.command} from ${obj.from}`);
       }
+    }
+  }
+  dwdWarncellIdLongHelper(obj1) {
+    const obj = obj1.obj;
+    const that = obj1.that;
+    if (obj.callback) {
+      const data = import_dwdWarncellIdLong.dwdWarncellIdLong;
+      const text = [];
+      if (text.length == 0) {
+        const dataArray = data.split("\n");
+        dataArray.splice(0, 1);
+        dataArray.forEach((element) => {
+          const value = element.split(";")[0];
+          const cityText = element.split(";")[1];
+          if (value && (value.startsWith("10") || value.startsWith("9") || value.startsWith("8") || value.startsWith("7"))) {
+            if (text)
+              text.push({ label: cityText, value: value.trim() });
+          }
+        });
+        text.sort((a, b) => {
+          const nameA = a.label.toUpperCase();
+          const nameB = b.label.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+      const msg = obj.message;
+      if (msg.dwd.length > 2) {
+        const result = text.filter(
+          (a) => a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase()) || !isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)
+        );
+        if (result.length == 1)
+          that.config.dwdSelectId = result[0].value;
+        if (obj.command == "dwd.name")
+          that.sendTo(obj.from, obj.command, result, obj.callback);
+        else if (obj.command == "dwd.name.text")
+          that.sendTo(obj.from, obj.command, result.length == 1 ? result[0].label : "", obj.callback);
+        that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
+      } else {
+        if (obj.command == "dwd.name.text")
+          that.sendTo(obj.from, obj.command, "", obj.callback);
+        else
+          that.sendTo(obj.from, obj.command, text, obj.callback);
+      }
+      that.adminTimeoutRef = null;
     }
   }
 }
