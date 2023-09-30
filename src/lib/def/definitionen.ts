@@ -1,12 +1,14 @@
 import { customFormatedKeysDef, genericWarntypState, genericWarntypStatesTree } from './messages-def';
 import { dataImportDwdTypeProperties, dataImportUwzTypeProperties, dataImportZamgTypeProperties } from './provider-def';
 
-type ChangeTypeOfKeys<Obj> = Obj extends object
-    ? { [K in keyof Obj]-?: ChangeTypeOfKeys<Obj[K]> } & customChannelType
+type ChangeTypeToChannelAndState<Obj> = Obj extends object
+    ? { [K in keyof Obj]-?: ChangeTypeToChannelAndState<Obj[K]> } & customChannelType
     : ioBroker.StateObject;
 export type ChangeToChannel<Obj, T> = Obj extends object
     ? { [K in keyof Obj]-?: customChannelType & T }
     : ioBroker.StateObject;
+
+type ChangeTypeOfKeys<Obj, N> = Obj extends object ? { [K in keyof Obj]-?: ChangeTypeOfKeys<Obj[K], N> } : N;
 
 export type customChannelType = { _channel: ioBroker.ChannelObject | ioBroker.DeviceObject };
 /*type NestedKeyOf<ObjectType extends object> = {
@@ -33,14 +35,14 @@ export type statesObjectsWarningsType =
               | customChannelType
               | {
                     raw?:
-                        | ChangeTypeOfKeys<dataImportDwdTypeProperties>
-                        | ChangeTypeOfKeys<dataImportUwzTypeProperties>
-                        | ChangeTypeOfKeys<dataImportZamgTypeProperties>;
+                        | ChangeTypeToChannelAndState<dataImportDwdTypeProperties>
+                        | ChangeTypeToChannelAndState<dataImportUwzTypeProperties>
+                        | ChangeTypeToChannelAndState<dataImportZamgTypeProperties>;
                 };
       }
     | {
           allService: {
-              formatedkeys: customChannelType | { [Property in keyof customFormatedKeysDef]: ioBroker.StateObject };
+              formatedkeys: customChannelType & ChangeTypeOfKeys<Required<customFormatedKeysDef>, ioBroker.StateObject>;
               alerts: customChannelType & genericWarntypStatesTree;
           };
       };
@@ -58,6 +60,7 @@ export const genericStateObjects: {
         messageJson: ioBroker.StateObject;
     };
     activWarnings: ioBroker.StateObject;
+    activeWarningsJson: ioBroker.StateObject;
 } = {
     info: {
         _channel: {
@@ -165,7 +168,19 @@ export const genericStateObjects: {
         common: {
             name: 'Number of warnings.',
             type: 'number',
-            role: 'text',
+            role: 'value',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    activeWarningsJson: {
+        _id: 'activeWarningsJson',
+        type: 'state',
+        common: {
+            name: 'All active warningmessages.',
+            type: 'string',
+            role: 'json',
             read: true,
             write: false,
         },
@@ -1651,7 +1666,19 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 _id: 'begin',
                 type: 'state',
                 common: {
-                    name: 'The Type of warning',
+                    name: 'The type of warning',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            warntypegenericname: {
+                _id: 'warntypegenericname',
+                type: 'state',
+                common: {
+                    name: 'The generic type of warning',
                     type: 'string',
                     role: 'text',
                     read: true,

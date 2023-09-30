@@ -157,5 +157,7 @@
     "warntype9": "warmte",
     "weather-warnings adapter settings": "Adapterinstellingen voor weerwaarschuwingen",
     "whatsapp_Enabled": "Activeer whatsapp",
-    "zamgEnabled": "Activeer ZAMG"
+    "zamgEnabled": "Activeer ZAMG",
+    "json_Enabled": "Activeer json-array-uitvoer",
+    "json_panel": "Json"
 }

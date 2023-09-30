@@ -22,6 +22,14 @@
                     "label": "Activate Telegram",
                     "newLine": false
                 },
+                "json_Enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "Activate Json",
+                    "newLine": false
+                },
                 
                 "uwzEnabled": {
                     "type": "checkbox",
@@ -764,6 +772,108 @@
                     "command": "Messages",
                     "jsonData": "{ \"service\": \"pushover\"}",
                     "disabled": "data.pushover_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "MessageAllRemove",
+                    "newLine": true
+                }
+            }
+        },
+        "_json": {
+            "type": "panel",
+            "label": "json_panel",
+            "hidden": "!data.json_Enabled",
+            "items": {
+                "json_DwdEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.dwdEnabled",
+                    "default": "none",
+                    "label": "dwdEnabled",
+                    "newLine": true
+                },
+                "json_UwzEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.uwzEnabled",
+                    
+                    "label": "uwzEnabled",
+                    "newLine": true
+                },
+                "json_ZamgEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.zamgEnabled",
+                    
+                    "label": "zamgEnabled",
+                    "newLine": true
+                },
+                "json_TypeFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"json\" }",
+                    
+                    "manual": true,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "TypeFilter",
+                    "newLine": true
+                },
+                "json_LevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"json\" }",
+                    
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "LevelFilter",
+                    "newLine": true
+                },
+                "json_MessageNew": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"json\" }",
+                    
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "MessageNew",
+                    "newLine": true
+                },
+                "json_MessageRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"json\"}",
+                    
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "MessageRemove",
+                    "newLine": true
+                },
+                "json_MessageAllRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"json\"}",
+                    
                     "manual": false,
                     "multiple": false,
                     "sm": 12,

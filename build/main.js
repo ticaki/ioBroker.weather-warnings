@@ -68,7 +68,8 @@ class WeatherWarnings extends utils.Adapter {
           const template = {
             new: self.config.telegram_MessageNew,
             remove: self.config.telegram_MessageRemove,
-            removeAll: self.config.telegram_MessageAllRemove
+            removeAll: self.config.telegram_MessageAllRemove,
+            all: ""
           };
           notificationServiceOpt = {
             ...notificationServiceOpt,
@@ -92,7 +93,8 @@ class WeatherWarnings extends utils.Adapter {
           const template = {
             new: self.config.whatsapp_MessageNew,
             remove: self.config.whatsapp_MessageRemove,
-            removeAll: self.config.whatsapp_MessageAllRemove
+            removeAll: self.config.whatsapp_MessageAllRemove,
+            all: ""
           };
           notificationServiceOpt = {
             ...notificationServiceOpt,
@@ -116,7 +118,8 @@ class WeatherWarnings extends utils.Adapter {
           const template = {
             new: self.config.pushover_MessageNew,
             remove: self.config.pushover_MessageRemove,
-            removeAll: self.config.pushover_MessageAllRemove
+            removeAll: self.config.pushover_MessageAllRemove,
+            all: ""
           };
           notificationServiceOpt = {
             ...notificationServiceOpt,
@@ -125,6 +128,31 @@ class WeatherWarnings extends utils.Adapter {
               filter: { level: self.config.pushover_LevelFilter, type: self.config.pushover_TypeFilter },
               adapter: self.config.pushover_Adapter,
               name: "pushover",
+              template
+            }
+          };
+        }
+        if (self.config.json_Enabled) {
+          const service = [];
+          if (self.config.json_DwdEnabled)
+            service.push("dwdService");
+          if (self.config.json_UwzEnabled)
+            service.push("uwzService");
+          if (self.config.json_ZamgEnabled)
+            service.push("zamgService");
+          const template = {
+            new: self.config.json_MessageNew,
+            remove: self.config.json_MessageRemove,
+            removeAll: self.config.json_MessageAllRemove,
+            all: ""
+          };
+          notificationServiceOpt = {
+            ...notificationServiceOpt,
+            json: {
+              service,
+              filter: { level: self.config.json_LevelFilter, type: self.config.json_TypeFilter },
+              adapter: "",
+              name: "json",
               template
             }
           };

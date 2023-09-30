@@ -5,28 +5,30 @@ import { customChannelType } from './definitionen';
  * Erste Buchstabe großgeschrieben erzeugt auch im Ergebnis, das der erste Buchstabe großgeschrieben ist.
  * Ist der letzte Buchstabe großgeschrieben, wird die komplette Zeichenkette in Großbuchstaben umgewandelt.
  */
-export type customFormatedKeysDef = {
-    starttime?: string; // Start Uhrzeit HH:MM
-    startdate?: string; // Start Datum DD.MM
-    endtime?: string; // Endzeitpunkt
-    enddate?: string; // Enddatum
-    startdayofweek?: string; // Start Tag der Woche
-    enddayofweek?: string; // End Tag der Woche
-    headline?: string; // Schlagzeile
-    description?: string; // Beschreibung
-    weathertext?: string; // nur Zamg wetterbeschreibender Text
-    ceiling?: string; // max höhe
-    altitude?: string; // min höhe
-    warnlevelname?: string; // Textbezeichnung des Levels
-    warnlevelnumber?: string; // Levelhöhe
-    warnlevelcolorname?: string; // Farbbezeichnung des Levels
-    warnlevelcolorhex?: string; // RGB im Hexformat
-    warntypename?: string; // gelieferter Warntype
-    location?: string; // gelieferte Location (meinst Unsinn)
-    instruction?: string; // Anweisungen
-}; /**
- * Conversion jsons as a tool for formatedKeys.
- */
+type customFormatedTokens = {
+    starttime: string; // Start Uhrzeit HH:MM
+    startdate: string; // Start Datum DD.MM
+    endtime: string; // Endzeitpunkt
+    enddate: string; // Enddatum
+    startdayofweek: string; // Start Tag der Woche
+    enddayofweek: string; // End Tag der Woche
+    headline: string; // Schlagzeile
+    description: string; // Beschreibung
+    weathertext: string; // nur Zamg wetterbeschreibender Text
+    ceiling: string; // max höhe
+    altitude: string; // min höhe
+    warnlevelname: string; // Textbezeichnung des Levels
+    warnlevelnumber: string; // Levelhöhe
+    warnlevelcolorname: string; // Farbbezeichnung des Levels
+    warnlevelcolorhex: string; // RGB im Hexformat
+    warntypename: string; // gelieferter Warntype
+    warntypegenericname: string; // vereinheitlichter Warntyp
+    location: string; // gelieferte Location (meinst Unsinn)
+    instruction: string; // Anweisungen
+};
+
+export type customFormatedKeysDef = Partial<customFormatedTokens>;
+/* Conversion jsons as a tool for formatedKeys.*/
 
 export const textLevels = {
     textGeneric: {
@@ -305,21 +307,10 @@ export type genericWarntypStatesTree = ChangeTypeOfKeys<
     genericWarnTypNameJsonType,
     genericWarntypeStatesType & customChannelType
 >;
+export type genericWarntypeNumberType = 10 | 7 | 2 | 4 | 3 | 8 | 9 | 5 | 6 | 11 | 12 | 1;
 
-export type genericWarntypeType = {
-    1: genericWarntypeTypeSub;
-    2: genericWarntypeTypeSub;
-    3: genericWarntypeTypeSub;
-    4: genericWarntypeTypeSub;
-    5: genericWarntypeTypeSub;
-    6: genericWarntypeTypeSub;
-    7: genericWarntypeTypeSub;
-    8: genericWarntypeTypeSub;
-    9: genericWarntypeTypeSub;
-    10: genericWarntypeTypeSub;
-    11: genericWarntypeTypeSub;
-    12: genericWarntypeTypeSub;
-};
+export type genericWarntypeType = Record<Required<genericWarntypeNumberType>, genericWarntypeTypeSub>;
+
 type genericWarntypeTypeSub = {
     name: ioBroker.StringOrTranslated;
     dwdService: number[];
@@ -345,7 +336,7 @@ type genericWarnTypNameJsonType = {
     fog: string;
     thaw: string;
 };
-export type notificationMessageType = { msgs: { [key: string]: string }; obj: MessagesClass };
+export type notificationMessageType = { msgs: { [key: string]: string }; obj: MessagesClass | null };
 /*type genericWarnTypNameType =
     | 'unknown'
     | 'storm'

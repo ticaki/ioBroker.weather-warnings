@@ -10,11 +10,16 @@ import {
     genericWarntyp,
     genericWarntypeType,
     notificationMessageType,
+    genericWarntypeNumberType,
 } from './def/messages-def';
-import { notificationServiceBaseType, notificationTemplateUnionType } from './def/notificationService-def';
+import {
+    notificationServiceBaseType,
+    notificationServiceType,
+    notificationTemplateUnionType,
+} from './def/notificationService-def';
 import { messageFilterType } from './def/provider-def';
 import { BaseClass, Library } from './library';
-import { ProvideClassType } from './provider';
+import { ProvideClassType, ProviderController } from './provider';
 
 type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
     ? { [K in keyof Obj]: ChangeTypeOfKeys<Obj[K], newKey> }
@@ -30,7 +35,8 @@ type customFormatedKeysDefSubtype = { cmd?: 'dayoftheweek' | 'translate'; node: 
  * bla
  */
 export class MessagesClass extends BaseClass {
-    provider: ProvideClassType;
+    provider: ProvideClassType | null;
+    providerController: ProviderController;
     library: Library;
     formatedKeysJsonataDefinition: customformatedKeysJsonataDefinition = {};
     formatedData: customFormatedKeysInit;
@@ -51,7 +57,7 @@ export class MessagesClass extends BaseClass {
     type = 0;
     genericType: keyof genericWarntypeType = 1;
     /** jsonata/typscript cmd to gather data from warning json */
-    formatedKeyCommand: { [key: string]: customformatedKeysJsonataDefinition } = {
+    formatedKeyCommand: { [key: string]: Required<customformatedKeysJsonataDefinition> } = {
         dwdService: {
             starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
             startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
@@ -68,13 +74,13 @@ export class MessagesClass extends BaseClass {
             headline: { node: `HEADLINE` },
             description: { node: `DESCRIPTION` },
             weathertext: { node: `` },
-            ceiling: { node: `$floor(CEILING * 0.3048)` }, // max höhe
-            altitude: { node: `$floor(ALTITUDE * 0.3048)` }, // min höhe
+            ceiling: { node: `$floor(CEILING * 0.3048)` },
+            altitude: { node: `$floor(ALTITUDE * 0.3048)` },
             warnlevelcolorhex: {
                 node: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
                     color.generic,
                 )},$string($temp)))`,
-            }, // RGB im Hexformat
+            },
             warnlevelcolorname: {
                 node: `($temp := $lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
                     color.textGeneric,
@@ -94,6 +100,14 @@ export class MessagesClass extends BaseClass {
                 cmd: 'translate',
             },
             location: { node: `AREADESC` },
+            warntypegenericname: {
+                cmd: undefined,
+                node: '',
+            },
+            instruction: {
+                cmd: undefined,
+                node: 'INSTRUCTION',
+            },
         },
 
         uwzService: {
@@ -112,8 +126,8 @@ export class MessagesClass extends BaseClass {
             headline: { node: `payload.translationsShortText` },
             description: { node: `payload.translationsLongText` },
             weathertext: { node: `` },
-            ceiling: { node: `payload.altMax` }, // max höhe
-            altitude: { node: `payload.altMin` }, // min höhe
+            ceiling: { node: `payload.altMax` },
+            altitude: { node: `payload.altMin` },
             warnlevelcolorname: {
                 node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     level.uwz,
@@ -143,6 +157,14 @@ export class MessagesClass extends BaseClass {
                 cmd: 'translate',
             },
             location: { node: `areaID` },
+            warntypegenericname: {
+                cmd: undefined,
+                node: '',
+            },
+            instruction: {
+                cmd: undefined,
+                node: '',
+            },
         },
         zamgService: {
             starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -160,8 +182,8 @@ export class MessagesClass extends BaseClass {
             headline: { node: `text` },
             description: { node: `auswirkungen` },
             weathertext: { node: `meteotext` },
-            ceiling: { node: `` }, // max höhe
-            altitude: { node: `` }, // min höhe
+            ceiling: { node: `` },
+            altitude: { node: `` },
             warnlevelcolorname: {
                 node: `$lookup(${JSON.stringify(color.textGeneric)},$string(rawinfo.wlevel))`,
                 cmd: 'translate',
@@ -180,8 +202,13 @@ export class MessagesClass extends BaseClass {
                 node: `$lookup(${JSON.stringify(warnTypeName.zamgService)},$string(rawinfo.wtype))`,
                 cmd: 'translate',
             },
+
             location: { node: `location` },
             instruction: { node: `empfehlungen` },
+            warntypegenericname: {
+                cmd: undefined,
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -193,8 +220,8 @@ export class MessagesClass extends BaseClass {
             headline: { node: `` },
             description: { node: `` },
             weathertext: { node: `` },
-            ceiling: { node: `` }, // max höhe
-            altitude: { node: `` }, // min höhe
+            ceiling: { node: `` },
+            altitude: { node: `` },
             warnlevelname: { node: `` },
             warnlevelnumber: { node: `` },
             warnlevelcolorhex: { node: `` },
@@ -202,15 +229,22 @@ export class MessagesClass extends BaseClass {
             warntypename: { node: `` },
             location: { node: `` },
             instruction: { node: `` },
+            warntypegenericname: {
+                cmd: undefined,
+                node: '',
+            },
         },
     };
-    constructor(adapter: WeatherWarnings, name: string, provider: ProvideClassType, data: object) {
+    constructor(
+        adapter: WeatherWarnings,
+        name: string,
+        provider: ProvideClassType | null,
+        data: object,
+        pcontroller: ProviderController,
+    ) {
         super(adapter, name);
 
-        if (provider === null) {
-            throw new Error(`${this.log.getName()} provider is null`);
-        }
-        if (!data) {
+        if (!data && provider) {
             throw new Error(`${this.log.getName()} data is null`);
         }
 
@@ -218,16 +252,18 @@ export class MessagesClass extends BaseClass {
         this.library = this.adapter.library;
         this.rawWarning = data;
         this.templates = this.adapter.config.templateTable;
-
-        switch (provider.service) {
+        this.providerController = pcontroller;
+        switch (provider ? provider.service : 'default') {
             case `dwdService`:
             case `uwzService`:
             case `zamgService`:
-                const json = this.formatedKeyCommand[provider.service];
-                for (const k in json) {
-                    const key = k as keyof customFormatedKeysDef;
-                    const data = this.formatedKeyCommand[provider.service][key];
-                    this.addFormatedDefinition(key, data);
+                if (provider && provider.service) {
+                    const json = this.formatedKeyCommand[provider.service];
+                    for (const k in json) {
+                        const key = k as keyof customFormatedKeysDef;
+                        const data = this.formatedKeyCommand[provider.service][key];
+                        this.addFormatedDefinition(key, data);
+                    }
                 }
                 break;
             default:
@@ -253,7 +289,7 @@ export class MessagesClass extends BaseClass {
         }
     }
     async init(): Promise<customFormatedKeysResult> {
-        switch (this.provider.service) {
+        switch (this.provider ? this.provider.service : 'default') {
             case 'dwdService':
                 {
                     this.starttime = Number(await this.library.readWithJsonata(this.rawWarning, `$toMillis(ONSET)`));
@@ -313,13 +349,16 @@ export class MessagesClass extends BaseClass {
             }
         }
 
-        for (const t in genericWarntyp) {
-            const o = genericWarntyp[Number(t) as keyof genericWarntypeType];
-            const s = this.provider.service;
-            //@ts-expect-error keine ahnung o und s sind definiert
-            if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
-                this.genericType = Number(t) as keyof genericWarntypeType;
-                break;
+        const sortedWarntypes: Required<genericWarntypeNumberType>[] = [10, 7, 2, 4, 3, 8, 9, 5, 6, 11, 12, 1];
+        if (this.provider) {
+            for (const t in sortedWarntypes) {
+                const o = genericWarntyp[sortedWarntypes[t]];
+                const s = this.provider.service;
+                //@ts-expect-error keine ahnung o und s sind definiert
+                if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
+                    this.genericType = Number(t) as keyof genericWarntypeType;
+                    break;
+                }
             }
         }
 
@@ -341,40 +380,44 @@ export class MessagesClass extends BaseClass {
         return true;
     }
     async formatMessages(): Promise<void> {
-        if (!this.formatedData) return;
         const templates = this.adapter.config.templateTable;
         const messages: { message: string; key: string }[] = [];
-        for (const a in templates) {
-            const template = templates[a].template;
-            if (!template) continue;
-            const temp = template.split('${');
-            let msg: string = temp[0];
-            for (let b = 1; temp.length > b; b++) {
-                const token = temp[b];
-                const t = token.split('}');
-                const key = t[0] as keyof customFormatedKeysDef;
-                if (key && this.formatedData[key] !== undefined) msg += this.formatedData[key];
-                else if (key && this.formatedData[key.toLowerCase() as keyof customFormatedKeysDef] !== undefined) {
-                    let m = this.formatedData[key.toLowerCase() as keyof customFormatedKeysDef];
-                    if (typeof m == 'string' && m.length > 0) {
-                        m =
-                            m[0].toUpperCase() +
-                            (key[key.length - 1] == key[key.length - 1].toUpperCase()
-                                ? m.slice(1).toUpperCase()
-                                : m.slice(1));
-                    }
-                    msg += m;
-                } else msg += key;
-                if (t.length > 1) msg += t[1];
+        if (this.formatedData) {
+            for (const a in templates) {
+                const template = templates[a].template;
+                if (!template) continue;
+                const temp = template.split(/(?<!\\)\${/g);
+                let msg: string = temp[0];
+                for (let b = 1; temp.length > b; b++) {
+                    const token = temp[b];
+                    const t = token.split(/(?<!\\)}/g);
+                    const key = t[0] as keyof customFormatedKeysDef;
+                    if (key && this.formatedData[key] !== undefined) msg += this.formatedData[key];
+                    else if (key && this.formatedData[key.toLowerCase() as keyof customFormatedKeysDef] !== undefined) {
+                        let m = this.formatedData[key.toLowerCase() as keyof customFormatedKeysDef];
+                        if (typeof m == 'string' && m.length > 0) {
+                            m =
+                                m[0].toUpperCase() +
+                                (key[key.length - 1] == key[key.length - 1].toUpperCase()
+                                    ? m.slice(1).toUpperCase()
+                                    : m.slice(1));
+                        }
+                        msg += m;
+                    } else msg += key;
+                    if (t.length > 1) msg += t[1];
+                }
+                msg = msg.replace('\\', '');
+                messages.push({ key: templates[a].templateKey, message: msg });
             }
-            messages.push({ key: templates[a].templateKey, message: msg });
+        } else {
+            templates.forEach((a) => messages.push({ key: a.templateKey, message: a.template }));
         }
         this.messages = messages;
     }
 
     async updateFormatedData(update: boolean = false): Promise<customFormatedKeysResult> {
         if (!this.rawWarning && !this.formatedData) {
-            throw new Error(`${this.log.getName()} rawWarning and formatedDate empty!`);
+            throw new Error(`${this.log.getName()} error(165) rawWarning and formatedDate empty!`);
         }
         if (!this.formatedData || this.updated || update) {
             const timeOffset =
@@ -390,10 +433,13 @@ export class MessagesClass extends BaseClass {
                     // reset the offset because of daylight saving time
                     const cmd = obj.node.replace(`\${this.timeOffset}`, timeOffset);
 
-                    let result = (await this.library.readWithJsonata(
-                        this.rawWarning,
-                        cmd,
-                    )) as keyof customFormatedKeysDef;
+                    let result =
+                        cmd != ''
+                            ? ((await this.library.readWithJsonata(
+                                  this.rawWarning,
+                                  cmd,
+                              )) as keyof customFormatedKeysDef)
+                            : '';
                     if (obj.cmd !== undefined)
                         result = (await this.readWithTypescript(result, obj.cmd)) as keyof customFormatedKeysDef;
                     // Handling for uwzService translations in jsons with different Names - but onl 1 Key here.
@@ -407,6 +453,9 @@ export class MessagesClass extends BaseClass {
                 }
             }
             this.formatedData = temp as customFormatedKeysDef;
+            this.formatedData.warntypegenericname = await this.library.getTranslation(
+                genericWarntyp[this.genericType].name,
+            );
             this.updated = false;
         }
         if (!this.formatedData) {
@@ -440,22 +489,23 @@ export class MessagesClass extends BaseClass {
     }
     async sendMessage(action: notificationTemplateUnionType, override = false): Promise<boolean> {
         if (this.messages.length == 0) return false;
-        if ((this.newMessage && action == 'new') || (!this.notDeleted && action == 'remove') || override) {
-            const msgsend: { [key: string]: string } = {};
-            for (let a = 0; a < this.messages.length; a++) {
-                const msg = this.messages[a];
+        if (
+            !((this.newMessage && action == 'new') || (!this.notDeleted && action == 'remove') || action == 'removeAll')
+        ) {
+            if (!override) action = 'all';
+        }
+        const msgsend: { [key: string]: string } = {};
+        for (let a = 0; a < this.messages.length; a++) {
+            const msg = this.messages[a];
+            if (this.provider)
                 this.library.writedp(
                     `${this.provider.name}.messages.${msg.key}`,
                     msg.message,
                     genericStateObjects.messageStates.message,
                 );
-                msgsend[msg.key] = msg.message;
-            }
-            this.provider.providerController.sendToNotifications(
-                { msgs: msgsend, obj: this },
-                override ? 'new' : action,
-            );
+            msgsend[msg.key] = msg.message;
         }
+        this.providerController.sendToNotifications({ msgs: msgsend, obj: this }, override ? 'new' : action);
 
         this.newMessage = false;
         return false;
@@ -468,12 +518,13 @@ export class MessagesClass extends BaseClass {
     }
     async writeFormatedKeys(index: number): Promise<void> {
         if (this.notDeleted) {
-            this.library.writeFromJson(
-                `${this.provider.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
-                `allService.formatedkeys`,
-                statesObjectsWarnings,
-                this.formatedData,
-            );
+            if (this.provider)
+                this.library.writeFromJson(
+                    `${this.provider.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
+                    `allService.formatedkeys`,
+                    statesObjectsWarnings,
+                    this.formatedData,
+                );
         }
     }
     addFormatedDefinition(
@@ -488,19 +539,27 @@ export class MessagesClass extends BaseClass {
 }
 export class NotificationClass extends BaseClass {
     options: notificationServiceBaseType;
+    takeThemAll = false;
+    clearAll(): void {}
+    async writeNotifications(): Promise<void> {}
     constructor(adapter: WeatherWarnings, notifcationOptions: notificationServiceBaseType) {
         super(adapter, notifcationOptions.name);
         this.options = notifcationOptions;
     }
-    async sendNotifications(messages: notificationMessageType, action: notificationTemplateUnionType): Promise<void> {
+    async sendNotifications(
+        messages: notificationMessageType,
+        action: notificationTemplateUnionType,
+    ): Promise<boolean> {
         if (
             !messages.obj ||
+            !messages.obj.provider ||
             (this.options.service.indexOf(messages.obj.provider.service) != -1 &&
                 (this.options.filter.level === undefined || this.options.filter.level <= messages.obj.level) &&
                 this.options.filter.type.indexOf(String(messages.obj.type)) == -1)
         ) {
             const msg = messages.msgs[this.options.template[action]];
-            switch (this.name) {
+
+            switch (this.name as notificationServiceType) {
                 case 'telegram':
                     {
                         const opt = { text: msg, disable_notification: true };
@@ -528,7 +587,84 @@ export class NotificationClass extends BaseClass {
                         });
                     }
                     break;
+                case 'json':
+                    break;
             }
+            return true;
+        }
+        return false;
+    }
+}
+export class AllNotificationClass extends NotificationClass {
+    providerDB: { [key: string]: { starttime: number; msg: string }[] };
+    constructor(adapter: WeatherWarnings, options: notificationServiceBaseType) {
+        super(adapter, options);
+        this.providerDB = {};
+        this.takeThemAll = true;
+        this.adapter.providerController &&
+            this.adapter.providerController.provider.forEach((a) => (this.providerDB[a.name] = []));
+    }
+    clearAll(): void {
+        for (const l in this.providerDB) {
+            this.providerDB[l] = [];
+        }
+    }
+
+    async sendNotifications(
+        messages: notificationMessageType,
+        action: notificationTemplateUnionType,
+    ): Promise<boolean> {
+        if (await super.sendNotifications(messages, action)) {
+            const msg = messages.msgs[this.options.template[action]];
+            switch (this.name as notificationServiceType) {
+                case 'json':
+                    {
+                        if (messages.obj && messages.obj.provider) {
+                            if (
+                                this.providerDB[messages.obj.provider.name] === undefined ||
+                                !Array.isArray(this.providerDB[messages.obj.provider.name])
+                            ) {
+                                this.providerDB[messages.obj.provider.name] = [];
+                            }
+                            this.providerDB[messages.obj.provider.name].push({
+                                starttime: messages.obj.starttime,
+                                msg: msg,
+                            });
+                        } else {
+                            if (action == 'removeAll') {
+                                for (const p in this.providerDB) {
+                                    this.providerDB[p] = [{ starttime: 1, msg: msg }];
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+            return true;
+        }
+        return false;
+    }
+    async writeNotifications(msg: string = ''): Promise<void> {
+        let all: { starttime: number; msg: string }[] = [];
+        for (const name in this.providerDB) {
+            all = all.concat(this.providerDB[name]);
+            const prefix = name + '.activeWarnings_json';
+            this.adapter.library.writedp(
+                prefix,
+                JSON.stringify(this.providerDB[name].length > 0 ? this.providerDB[name].map((a) => a.msg) : [msg]),
+                genericStateObjects.activeWarningsJson,
+            );
+        }
+        all = all.filter((item, pos) => {
+            return all.indexOf(item) == pos;
+        });
+        all.sort((a, b) => a.starttime - b.starttime);
+        if (this.adapter.providerController) {
+            this.adapter.library.writedp(
+                this.adapter.providerController.name + '.activeWarnings_json',
+                JSON.stringify(all.length > 0 ? all.map((a) => a.msg) : [msg]),
+                genericStateObjects.activeWarningsJson,
+            );
         }
     }
 }

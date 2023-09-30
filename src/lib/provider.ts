@@ -12,7 +12,7 @@ import {
     messageFilterType,
     providerServices,
 } from './def/provider-def';
-import { MessagesClass, NotificationClass } from './messages';
+import { AllNotificationClass, MessagesClass, NotificationClass } from './messages';
 import { getTestData } from './test-warnings';
 import { notificationServiceOptionsType, notificationTemplateUnionType } from './def/notificationService-def';
 import {
@@ -250,7 +250,7 @@ class BaseProvider extends BaseClass {
         );
     }
     /** Call on every message sendMessage() and removed notDelete == false messages. */
-    async sendMessages(override = false): Promise<void> {
+    async sendMessages(moreWarnings: boolean, override = false): Promise<void> {
         /**
          * send Messages, remove old one
          */
@@ -258,7 +258,7 @@ class BaseProvider extends BaseClass {
         const jsonMessage: { [key: string]: string[] } = {};
         for (let m = 0; m < this.messages.length; m++) {
             if (this.messages[m].notDeleted == false) {
-                removeMessages.push(this.messages[Number(m)]);
+                if (moreWarnings) removeMessages.push(this.messages[Number(m)]);
                 this.messages.splice(Number(m--), 1);
             } else {
                 await this.messages[m].sendMessage('new');
@@ -332,7 +332,13 @@ export class DWDProvider extends BaseProvider {
             const index = this.messages.findIndex((m) => m.rawWarning.IDENTIFIER == w.properties.IDENTIFIER);
 
             if (index == -1) {
-                const nmessage = new MessagesClass(this.adapter, 'dwd-msg', this, w.properties);
+                const nmessage = new MessagesClass(
+                    this.adapter,
+                    'dwd-msg',
+                    this,
+                    w.properties,
+                    this.providerController,
+                );
                 await nmessage.init();
 
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
@@ -409,6 +415,7 @@ export class ZAMGProvider extends BaseProvider {
                     'zamg-msg',
                     this,
                     result.properties.warnings[a].properties,
+                    this.providerController,
                 );
                 await nmessage.init();
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
@@ -429,17 +436,25 @@ export class UWZProvider extends BaseProvider {
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as dataImportUWZType;
-        if (!result || !result.results) return;
+        if (!result || !result.results || result.results == null) return;
         result.results.sort((a, b) => {
-            return a.dtgStart - b.dtgStart;
+            if (a && b && a.dtgStart && b.dtgStart) return a.dtgStart - b.dtgStart;
+            return 0;
         });
         this.messages.forEach((a) => (a.notDeleted = false));
         for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
+            if (result.results[a] == null) continue;
             await super.updateData(result.results[a], a);
 
             const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
             if (index == -1) {
-                const nmessage = new MessagesClass(this.adapter, 'uwz-msg', this, result.results[a]);
+                const nmessage = new MessagesClass(
+                    this.adapter,
+                    'uwz-msg',
+                    this,
+                    result.results[a],
+                    this.providerController,
+                );
                 await nmessage.init();
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
             } else {
@@ -472,25 +487,40 @@ export class ProviderController extends BaseClass {
     name = 'provider';
     refreshTime: number = 300000;
     library: Library;
-    notificationServices: NotificationClass[] = [];
+    notificationServices: (NotificationClass | AllNotificationClass)[] = [];
+    noWarningMessage: MessagesClass;
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
         this.library = this.adapter.library;
+        this.noWarningMessage = new MessagesClass(this.adapter, 'default', null, {}, this);
     }
-    init(): void {
+    async init(): Promise<void> {
         this.refreshTime = this.adapter.config.refreshTime * 60000;
+        await this.noWarningMessage.init();
+        await this.noWarningMessage.formatMessages();
     }
+    /**
+     * Create a notificationService
+     * @param optionList specialcase: adapter == '' then it is createn anyway
+     * @returns
+     */
     async createNotificationService(optionList: notificationServiceOptionsType): Promise<void> {
         for (const a in optionList) {
             const options = optionList[a as keyof notificationServiceOptionsType];
             if (options === undefined) return;
-            const objs = await this.adapter.getObjectViewAsync('system', 'instance', {
-                startkey: `system.adapter.${options.adapter}`,
-                endkey: `system.adapter.${options.adapter}`,
-            });
-            if (objs && objs.rows && objs.rows.length > 0) {
-                const noti = new NotificationClass(this.adapter, options);
+            const objs =
+                options.adapter != ''
+                    ? await this.adapter.getObjectViewAsync('system', 'instance', {
+                          startkey: `system.adapter.${options.adapter}`,
+                          endkey: `system.adapter.${options.adapter}`,
+                      })
+                    : null;
+            if (options.adapter == '' || (objs && objs.rows && objs.rows.length > 0)) {
+                const noti =
+                    a == 'json'
+                        ? new AllNotificationClass(this.adapter, options)
+                        : new NotificationClass(this.adapter, options);
                 this.notificationServices.push(noti);
             } else {
                 this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
@@ -577,6 +607,10 @@ export class ProviderController extends BaseClass {
     async sendToNotifications(msg: notificationMessageType, action: notificationTemplateUnionType): Promise<void> {
         for (const a in this.notificationServices) {
             const n = this.notificationServices[a];
+            if (action == 'all') {
+                if (!n.takeThemAll) continue;
+                action = 'new';
+            }
             n.sendNotifications(msg, action);
         }
     }
@@ -618,9 +652,11 @@ export class ProviderController extends BaseClass {
     async doEndOfUpdater(): Promise<void> {
         this.setConnected();
         let activMessages = 0;
+        let totalMessages = 0;
         for (const a in this.provider) {
             let am = 0;
             for (const b in this.provider[a].messages) {
+                totalMessages++;
                 if (this.provider[a].messages[b].notDeleted) am++;
             }
             this.adapter.library.writedp(
@@ -630,18 +666,19 @@ export class ProviderController extends BaseClass {
             );
             activMessages += am;
         }
+        this.notificationServices.forEach((a) => a.clearAll());
 
-        if (activMessages > 0) {
-            for (const a in this.provider) {
-                try {
-                    await this.provider[a].sendMessages();
-                } catch (error) {
-                    this.log.error(('error(44) ' + error) as string);
-                }
+        for (const a in this.provider) {
+            try {
+                await this.provider[a].sendMessages(activMessages > 0);
+            } catch (error) {
+                this.log.error(('error(44) ' + error) as string);
             }
-        } else {
-            this.sendNoMessages();
         }
+
+        if (activMessages == 0 && totalMessages > 0) await this.noWarningMessage.sendMessage('removeAll');
+
+        this.notificationServices.forEach((a) => a.writeNotifications());
         this.adapter.library.writedp(`${this.name}.activWarnings`, activMessages, genericStateObjects.activWarnings);
         // reset language
         this.library.language = '';

@@ -1,6 +1,6 @@
 import { messageFilterType, providerServices } from './provider-def';
 
-export type notificationServiceType = 'telegram' | 'pushover' | 'whatsapp';
+export type notificationServiceType = 'telegram' | 'pushover' | 'whatsapp' | 'json';
 export const notificationServiceValue: notificationServiceType[] = ['telegram', 'pushover', 'whatsapp'];
 
 export type notificationServiceOptionsType = {
@@ -12,6 +12,9 @@ export type notificationServiceOptionsType = {
     } & notificationServiceBaseType;
     whatsapp?: {
         name: 'whatsapp';
+    } & notificationServiceBaseType;
+    json?: {
+        name: 'json';
     } & notificationServiceBaseType;
 };
 export type notificationServiceBaseType = {
@@ -28,4 +31,5 @@ export type notificationTemplateType = {
     new: string;
     remove: string;
     removeAll: string;
+    all: string;
 };

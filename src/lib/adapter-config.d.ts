@@ -57,6 +57,16 @@ declare global {
             pushover_MessageNew: string;
             pushover_MessageRemove: string;
             pushover_MessageAllRemove: string;
+
+            json_DwdEnabled: boolean;
+            json_UwzEnabled: boolean;
+            json_ZamgEnabled: boolean;
+            json_TypeFilter: number[];
+            json_LevelFilter: number;
+            json_Enabled: boolean;
+            json_MessageNew: string;
+            json_MessageRemove: string;
+            json_MessageAllRemove: string;
         }
     }
 }

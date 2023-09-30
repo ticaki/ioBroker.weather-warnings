@@ -328,10 +328,10 @@ export function getTestData(service: string): DataImportType {
     if (service == 'dwdService') {
         for (const i in testData.dwdService.features) {
             const f = testData.dwdService.features[i];
-            const start = Date.now() + Math.random() * 30000 + 10000;
+            const start = Date.now() + Math.random() * 1200000 + 60000;
             if (new Date(f.properties.EXPIRES).getTime() + 3600000 < start) {
                 f.properties.ONSET = new Date(start).toJSON();
-                f.properties.EXPIRES = new Date(start + Math.random() * 30000 + 60000).toJSON();
+                f.properties.EXPIRES = new Date(start + Math.random() * 2400000 + 300000).toJSON();
             }
             if (new Date(f.properties.EXPIRES).getTime() < Date.now()) {
                 result.dwdService.features[i] = null;
@@ -340,7 +340,7 @@ export function getTestData(service: string): DataImportType {
             }
         }
         for (let i = result.dwdService.features.length - 1; i >= 0; i--) {
-            if (result.dwdService.features[i] === null) result.dwdService.features.splice(i, 1);
+            if (result.dwdService.features[i] == null) result.dwdService.features.splice(i, 1);
         }
         return result.dwdService as unknown as DataImportType;
     } else if (service == 'uwzService') {
@@ -358,7 +358,7 @@ export function getTestData(service: string): DataImportType {
             }
         }
         for (let i = result.uwzService.results - 1; i >= 0; i--) {
-            if (result.uwzService.results[i] === null) result.uwzService.results.splice(i, 1);
+            if (result.uwzService.results[i] == null) result.uwzService.results.splice(i, 1);
         }
         return result.uwzService as unknown as DataImportType;
     } else if (service == 'zamgService') {

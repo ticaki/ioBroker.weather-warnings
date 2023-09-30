@@ -157,5 +157,7 @@
     "warntype9": "chaleur",
     "weather-warnings adapter settings": "Paramètres de l'adaptateur pour les avertissements météorologiques",
     "whatsapp_Enabled": "Activer WhatsApp",
-    "zamgEnabled": "Activer ZAMG"
+    "zamgEnabled": "Activer ZAMG",
+    "json_Enabled": "Activer la sortie json-array",
+    "json_panel": "Json"
 }

@@ -157,5 +157,7 @@
     "warntype9": "нагревать",
     "weather-warnings adapter settings": "Настройки адаптера для предупреждений о погоде",
     "whatsapp_Enabled": "Активировать WhatsApp",
-    "zamgEnabled": "Активировать ЗАМГ"
+    "zamgEnabled": "Активировать ЗАМГ",
+    "json_Enabled": "Активировать вывод json-массива",
+    "json_panel": "Json"
 }

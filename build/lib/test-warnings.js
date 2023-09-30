@@ -338,10 +338,10 @@ function getTestData(service) {
   if (service == "dwdService") {
     for (const i in testData.dwdService.features) {
       const f = testData.dwdService.features[i];
-      const start = Date.now() + Math.random() * 3e4 + 1e4;
+      const start = Date.now() + Math.random() * 12e5 + 6e4;
       if (new Date(f.properties.EXPIRES).getTime() + 36e5 < start) {
         f.properties.ONSET = new Date(start).toJSON();
-        f.properties.EXPIRES = new Date(start + Math.random() * 3e4 + 6e4).toJSON();
+        f.properties.EXPIRES = new Date(start + Math.random() * 24e5 + 3e5).toJSON();
       }
       if (new Date(f.properties.EXPIRES).getTime() < Date.now()) {
         result.dwdService.features[i] = null;
@@ -350,7 +350,7 @@ function getTestData(service) {
       }
     }
     for (let i = result.dwdService.features.length - 1; i >= 0; i--) {
-      if (result.dwdService.features[i] === null)
+      if (result.dwdService.features[i] == null)
         result.dwdService.features.splice(i, 1);
     }
     return result.dwdService;
@@ -369,7 +369,7 @@ function getTestData(service) {
       }
     }
     for (let i = result.uwzService.results - 1; i >= 0; i--) {
-      if (result.uwzService.results[i] === null)
+      if (result.uwzService.results[i] == null)
         result.uwzService.results.splice(i, 1);
     }
     return result.uwzService;

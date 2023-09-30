@@ -157,5 +157,7 @@
     "warntype9": "热",
     "weather-warnings adapter settings": "天气警报的适配器设置",
     "whatsapp_Enabled": "激活 Whatsapp",
-    "zamgEnabled": "激活ZAMG"
+    "zamgEnabled": "激活ZAMG",
+    "json_Enabled": "激活 json-array-output",
+    "json_panel": "杰森"
 }

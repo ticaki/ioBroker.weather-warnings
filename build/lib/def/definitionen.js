@@ -142,7 +142,19 @@ const genericStateObjects = {
     common: {
       name: "Number of warnings.",
       type: "number",
-      role: "text",
+      role: "value",
+      read: true,
+      write: false
+    },
+    native: {}
+  },
+  activeWarningsJson: {
+    _id: "activeWarningsJson",
+    type: "state",
+    common: {
+      name: "All active warningmessages.",
+      type: "string",
+      role: "json",
       read: true,
       write: false
     },
@@ -1589,7 +1601,19 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "The Type of warning",
+          name: "The type of warning",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      warntypegenericname: {
+        _id: "warntypegenericname",
+        type: "state",
+        common: {
+          name: "The generic type of warning",
           type: "string",
           role: "text",
           read: true,

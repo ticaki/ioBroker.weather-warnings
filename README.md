@@ -32,6 +32,8 @@ Bis Version 0.4.x wird er weniger einen direkten Nutzen haben, sondern mehr ein 
 - Abruf von Warnungen in den von den Diensten zur Verfügung gestellten Sprachen.
 - Filtern von Warnungen nach Typ und Level
 - States die es erlauben bei aktiver Warnung und innerhalb des Warnzeitraums automatisch Maßnahmen zu ergreifen (ich schließe den Balkonrollladen, bei Warnungen für Starkregen, Gewitter und Sturm wenn ich nicht da bin)
+- Bereitstellung von Nutzer formatierbarem Text für die Gestaltung von z.B. Html Tabellen
+- Ausgabe über telegram, whatsapp, pushover
 
 #### Baustellen: 
 - Übersetzungen sind noch lange nicht fertig, an vielen Stellen ist englisch und deutsch gemischt.
@@ -39,8 +41,7 @@ Bis Version 0.4.x wird er weniger einen direkten Nutzen haben, sondern mehr ein 
 #### Todo:
 - Vereinheitlichung der Warnungen, so das sie über die Dienste vergleichbar werden.
 - Unterstützung der ioBroker Sprachen an jeder Stelle
-- Bereitstellung von Nutzer formatierbarem Text für die Gestaltung von z.B. Html Tabellen
-- Versand der Warnungen per Mail, telegram, pushover, whatsapp 
+- Versand der Warnungen per Mail
 - Unterstützung von Sayit und Alexa
 - manuelles Auslösen von Pushnachrichten
 - Readme schreiben
@@ -110,6 +111,12 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) added telegram, whatsapp, pushover
+* added remove all
+* added json/array output for all current warnings.
+
+
 ### 0.2.4-alpha.0 (2023-09-29)
 * (ticaki) add alerts
 

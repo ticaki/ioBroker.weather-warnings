@@ -157,5 +157,7 @@
     "warntype9": "Hitze",
     "weather-warnings adapter settings": "Adaptereinstellungen für weather-warnings",
     "whatsapp_Enabled": "WhatsApp aktivieren",
-    "zamgEnabled": "ZAMG aktivieren"
+    "zamgEnabled": "ZAMG aktivieren",
+    "json_Enabled": "Aktivieren Sie die JSON-Array-Ausgabe",
+    "json_panel": "Json"
 }

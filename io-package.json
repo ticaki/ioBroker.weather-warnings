@@ -184,7 +184,16 @@
         "pushover_Adapter": "none",
         "pushover_MessageNew": "addedPush",
         "pushover_MessageRemove": "removePush",
-        "pushover_MessageAllRemove": "removeAllPush"
+        "pushover_MessageAllRemove": "removeAllPush",
+        "json_DwdEnabled": false,
+        "json_UwzEnabled": true,
+        "json_ZamgEnabled": true,
+        "json_TypeFilter": [],
+        "json_LevelFilter": 0,
+        "json_Enabled": false,
+        "json_MessageNew": "addedPush",
+        "json_MessageRemove": "removePush",
+        "json_MessageAllRemove": "removeAllPush"
     },
     "objects": [],
     "instanceObjects": []

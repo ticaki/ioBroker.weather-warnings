@@ -57,6 +57,7 @@
     "swedish": "swedish",
     "swiss german": "swiss german",
     "telegram_Enabled": "Activate telegram",
+    "json_Enabled": "Activate json-array-output",
     "templateKey": "Unique Identifier",
     "textLevels.textGeneric.0": "none",
     "textLevels.textGeneric.1": "minor",
@@ -157,5 +158,6 @@
     "warntype9": "heat",
     "weather-warnings adapter settings": "Adapter settings for weather-warnings",
     "whatsapp_Enabled": "Activate whatsapp",
-    "zamgEnabled": "Activate ZAMG"
+    "zamgEnabled": "Activate ZAMG",
+    "json_panel": "Json"
 }
