@@ -159,6 +159,18 @@ const genericStateObjects = {
       write: false
     },
     native: {}
+  },
+  history: {
+    _id: "activeWarningsJson",
+    type: "state",
+    common: {
+      name: "History of warnings.",
+      type: "string",
+      role: "json",
+      read: true,
+      write: false
+    },
+    native: {}
   }
 };
 const statesObjectsWarnings = {

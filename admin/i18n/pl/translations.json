@@ -161,5 +161,7 @@
     "json_Enabled": "Aktywuj wyjście tablicy json",
     "json_panel": "Jsona",
     "json_parse": "Przekonwertowano szablon na Json.",
-    "MessageAll": "Wybierz szablon, który ma być używany z istniejącymi ostrzeżeniami."
+    "MessageAll": "Wybierz szablon, który ma być używany z istniejącymi ostrzeżeniami.",
+    "history_Enabled": "Aktywuj historię",
+    "history_panel": "Historia"
 }

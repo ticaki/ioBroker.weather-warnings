@@ -1,7 +1,13 @@
 import { messageFilterType, providerServices } from './provider-def';
 
-export type notificationServiceType = 'telegram' | 'pushover' | 'whatsapp' | 'json';
-export const notificationServiceValue: notificationServiceType[] = ['telegram', 'pushover', 'whatsapp'];
+export type notificationServiceType = 'telegram' | 'pushover' | 'whatsapp' | 'json' | 'history';
+export const notificationServiceArray: notificationServiceType[] = [
+    'telegram',
+    'pushover',
+    'whatsapp',
+    'json',
+    'history',
+];
 
 export type notificationServiceOptionsType = {
     telegram?: {
@@ -15,6 +21,9 @@ export type notificationServiceOptionsType = {
     } & notificationServiceBaseType;
     json?: {
         name: 'json';
+    } & notificationServiceBaseType;
+    history?: {
+        name: 'history';
     } & notificationServiceBaseType;
 };
 export type notificationServiceBaseType = {

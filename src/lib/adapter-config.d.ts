@@ -7,6 +7,7 @@ declare global {
             expandArray: boolean;
 
             dwdSelectId: number;
+            uwzSelectID: string;
             zamgSelectID: string;
             useTestWarnings: boolean;
             dwdEnabled: boolean;
@@ -24,6 +25,10 @@ declare global {
             dwdTypeFilter: string[];
             zamgTypeFilter: string[];
             uwzTypeFilter: string[];
+
+            dwdLevelFilter: number;
+            uwzLevelFilter: number;
+            zamgLevelFilter: number;
 
             telegram_DwdEnabled: boolean;
             telegram_UwzEnabled: boolean;
@@ -65,9 +70,17 @@ declare global {
             json_LevelFilter: number;
             json_Enabled: boolean;
             json_MessageNew: string;
-            json_MessageRemove: string;
             json_MessageAllRemove: string;
             json_parse: boolean;
+
+            history_DwdEnabled: boolean;
+            history_UwzEnabled: boolean;
+            history_ZamgEnabled: boolean;
+            history_TypeFilter: number[];
+            history_LevelFilter: number;
+            history_Enabled: boolean;
+            history_MessageNew: string;
+            history_MessageRemove: string;
         }
     }
 }

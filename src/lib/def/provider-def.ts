@@ -1,5 +1,6 @@
 /**Available provider identifier strings */
 export type providerServices = 'dwdService' | 'zamgService' | 'ninaService' | 'uwzService' | 'metroService';
+export const providerServicesArray = ['dwdService', 'zamgService', 'ninaService', 'uwzService', 'metroService'];
 
 type nullType = null | undefined | void;
 export type messageFilterTypeWithFilter = { filter: messageFilterType };

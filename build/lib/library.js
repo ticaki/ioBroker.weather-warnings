@@ -177,14 +177,14 @@ class Library extends BaseClass {
     }
     if (obj && obj.type !== "state")
       return;
+    if (node)
+      this.setdb(dp, node.type, val, node.stateTyp, true);
     if (node && node.val != val) {
       const typ = obj && obj.common && obj.common.type || node.stateTyp;
       if (typ && typ != typeof val && val !== void 0)
         val = this.convertToType(val, typ);
       await this.adapter.setStateAsync(dp, { val, ts: Date.now(), ack: true });
     }
-    if (node)
-      this.setdb(dp, node.type, val, node.stateTyp, true);
   }
   cleandp(string, lowerCase = false) {
     if (!string && typeof string != "string")

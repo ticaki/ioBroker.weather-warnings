@@ -59,6 +59,7 @@
     "swiss german": "swiss german",
     "telegram_Enabled": "Activate telegram",
     "json_Enabled": "Activate json-array-output",
+    "history_Enabled": "Activate history",
     "templateKey": "Unique Identifier",
     "textLevels.textGeneric.0": "none",
     "textLevels.textGeneric.1": "minor",
@@ -161,5 +162,6 @@
     "whatsapp_Enabled": "Activate whatsapp",
     "zamgEnabled": "Activate ZAMG",
     "json_panel": "Json",
-    "json_parse": "Converted the template to a Json."
+    "json_parse": "Converted the template to a Json.",
+    "history_panel": "History"
 }

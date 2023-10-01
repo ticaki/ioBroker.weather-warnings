@@ -2,7 +2,7 @@
     "i18n": true,
     "type": "tabs",
     "items": {
-        "_options": {
+        "_basicconfig": {
             "type": "panel",
             "label": "basicconfig",
             "items": {
@@ -30,7 +30,14 @@
                     "label": "Activate Json",
                     "newLine": false
                 },
-                
+                "history_Enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "Activate History.",
+                    "newLine": false
+                },
                 "uwzEnabled": {
                     "type": "checkbox",
                     "sm": 6,
@@ -70,7 +77,8 @@
                     "step": 1,
                     "sm": 8,
                     "md": 4,
-                    "lg": 2
+                    "lg": 2,
+                    "newLine": true
                 },
                 "dividerHdr": {
                     "newLine": true,
@@ -105,9 +113,8 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
-                    
                     "newLine": true
-                },               
+                },
                 "dwdLanguage": {
                     "type": "select",
                     "label": "WarnLanguage",
@@ -230,7 +237,7 @@
                     "type": "selectSendTo",
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"dwdService\" }",
-                    "manual": true,
+                    "manual": false,
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
@@ -242,8 +249,6 @@
                     "type": "selectSendTo",
                     "command": "filterLevel",
                     "jsonData": "{ \"service\": \"dwdService\" }",
-                    "manual": true,
-                    "multiple": true,
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
@@ -269,7 +274,7 @@
                 },
                 "uwzLanguage": {
                     "type": "select",
-                    "label":"WarnLanguage",
+                    "label": "WarnLanguage",
                     "options": [
                         {
                             "label": "german",
@@ -309,7 +314,7 @@
                     "type": "selectSendTo",
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"uwzService\" }",
-                    "manual": true,
+                    "manual": false,
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
@@ -321,14 +326,13 @@
                     "type": "selectSendTo",
                     "command": "filterLevel",
                     "jsonData": "{ \"service\": \"uwzService\" }",
-                    "manual": true,
-                    "multiple": true,
+                    "manual": false,
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
                     "label": "LevelFilter",
                     "newLine": true
-                }
+                },
             }
         },
         "_zamgpanel": {
@@ -376,7 +380,7 @@
                     "type": "selectSendTo",
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"zamgService\" }",
-                    "manual": true,
+                    "manual": false,
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
@@ -388,8 +392,7 @@
                     "type": "selectSendTo",
                     "command": "filterLevel",
                     "jsonData": "{ \"service\": \"zamgService\" }",
-                    "manual": true,
-                    "multiple": true,
+                    "manual": false,
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
@@ -490,7 +493,7 @@
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"telegram\" }",
                     "disabled": "data.telegram_Adapter == 'none'",
-                    "manual": true,
+                    "manual": false,
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
@@ -605,7 +608,7 @@
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"whatsapp\" }",
                     "disabled": "data.whatsapp_Adapter == 'none'",
-                    "manual": true,
+                    "manual": false,
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
@@ -720,7 +723,7 @@
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"pushover\" }",
                     "disabled": "data.pushover_Adapter == 'none'",
-                    "manual": true,
+                    "manual": false,
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
@@ -812,7 +815,6 @@
                     "md": 4,
                     "lg": 2,
                     "hidden": "!data.uwzEnabled",
-                    
                     "label": "uwzEnabled",
                     "newLine": true
                 },
@@ -822,7 +824,6 @@
                     "md": 4,
                     "lg": 2,
                     "hidden": "!data.zamgEnabled",
-                    
                     "label": "zamgEnabled",
                     "newLine": true
                 },
@@ -830,8 +831,7 @@
                     "type": "selectSendTo",
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"json\" }",
-                    
-                    "manual": true,
+                    "manual": false,
                     "multiple": true,
                     "sm": 12,
                     "md": 5,
@@ -843,7 +843,6 @@
                     "type": "selectSendTo",
                     "command": "filterLevel",
                     "jsonData": "{ \"service\": \"json\" }",
-                    
                     "manual": false,
                     "multiple": false,
                     "sm": 12,
@@ -856,7 +855,6 @@
                     "type": "selectSendTo",
                     "command": "Messages",
                     "jsonData": "{ \"service\": \"json\" }",
-                    
                     "manual": false,
                     "multiple": false,
                     "sm": 12,
@@ -865,30 +863,99 @@
                     "label": "MessageAll",
                     "newLine": true
                 },
-                /*"json_MessageRemove": {
-                    "type": "selectSendTo",
-                    "command": "Messages",
-                    "jsonData": "{ \"service\": \"json\"}",
-                    
-                    "manual": false,
-                    "multiple": false,
-                    "sm": 12,
-                    "md": 5,
-                    "lg": 4,
-                    "label": "MessageRemove",
-                    "newLine": true
-                },*/
                 "json_MessageAllRemove": {
                     "type": "selectSendTo",
                     "command": "Messages",
                     "jsonData": "{ \"service\": \"json\"}",
-                    
                     "manual": false,
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
                     "label": "MessageAllRemove",
+                    "newLine": true
+                }
+            }
+        },
+        "_history": {
+            "type": "panel",
+            "label": "history_panel",
+            "hidden": "!data.history_Enabled",
+            "items": {
+                "history_DwdEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.dwdEnabled",
+                    "default": "none",
+                    "label": "dwdEnabled",
+                    "newLine": true
+                },
+                "history_UwzEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.uwzEnabled",
+                    "label": "uwzEnabled",
+                    "newLine": true
+                },
+                "history_ZamgEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.zamgEnabled",
+                    "label": "zamgEnabled",
+                    "newLine": true
+                },
+                "history_TypeFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"history\" }",
+                    "manual": false,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "TypeFilter",
+                    "newLine": true
+                },
+                "history_LevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"history\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "LevelFilter",
+                    "newLine": true
+                },
+                "history_MessageNew": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"history\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "MessageAll",
+                    "newLine": true
+                },
+                "history_MessageRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"history\"}",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "MessageRemove",
                     "newLine": true
                 }
             }

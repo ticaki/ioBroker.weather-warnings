@@ -208,12 +208,11 @@ class BaseProvider extends import_library.BaseClass {
     const jsonMessage = {};
     for (let m = 0; m < this.messages.length; m++) {
       if (this.messages[m].notDeleted == false) {
-        if (moreWarnings)
-          removeMessages.push(this.messages[Number(m)]);
+        removeMessages.push(this.messages[Number(m)]);
         this.log.debug("Remove a warning from db.");
         this.messages.splice(Number(m--), 1);
       } else {
-        await this.messages[m].sendMessage("new");
+        await this.messages[m].sendMessage("new", true);
         for (const k in this.messages[m].messages) {
           const key = this.messages[m].messages[k].key;
           const msg = this.messages[m].messages[k].message;
@@ -224,7 +223,7 @@ class BaseProvider extends import_library.BaseClass {
     }
     if (this.messages.length == 0 && !override) {
       for (const m in removeMessages) {
-        await removeMessages[m].sendMessage("remove");
+        await removeMessages[m].sendMessage("remove", moreWarnings);
         for (const k in removeMessages[m].messages) {
           const key = removeMessages[m].messages[k].key;
           const msg = removeMessages[m].messages[k].message;
@@ -519,15 +518,16 @@ class ProviderController extends import_library.BaseClass {
   }
   sendNoMessages() {
   }
-  async sendToNotifications(msg, action) {
+  async sendToNotifications(msg, action, moreWarnings) {
     for (const a in this.notificationServices) {
       const n = this.notificationServices[a];
+      let newAction = action;
       if (action == "all") {
         if (!n.takeThemAll)
           continue;
-        action = "new";
+        newAction = "new";
       }
-      n.sendNotifications(msg, action);
+      await n.sendNotifications(msg, newAction, moreWarnings);
     }
   }
   updateEndless(that) {
@@ -592,7 +592,7 @@ class ProviderController extends import_library.BaseClass {
       }
     }
     if (activMessages == 0 && totalMessages > 0)
-      await this.noWarningMessage.sendMessage("removeAll");
+      await this.noWarningMessage.sendMessage("removeAll", false);
     this.notificationServices.forEach((a) => a.writeNotifications());
     this.adapter.library.writedp(`${this.name}.activWarnings`, activMessages, import_definitionen.genericStateObjects.activWarnings);
     this.library.language = "";

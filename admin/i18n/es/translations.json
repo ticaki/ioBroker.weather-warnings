@@ -161,5 +161,7 @@
     "json_Enabled": "Activar json-array-output",
     "json_panel": "json",
     "json_parse": "Convirtió la plantilla a un Json.",
-    "MessageAll": "Seleccione la plantilla para usar con las advertencias existentes."
+    "MessageAll": "Seleccione la plantilla para usar con las advertencias existentes.",
+    "history_Enabled": "Activar historial",
+    "history_panel": "Historia"
 }

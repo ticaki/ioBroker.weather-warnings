@@ -61,6 +61,7 @@ export const genericStateObjects: {
     };
     activWarnings: ioBroker.StateObject;
     activeWarningsJson: ioBroker.StateObject;
+    history: ioBroker.StateObject;
 } = {
     info: {
         _channel: {
@@ -186,8 +187,19 @@ export const genericStateObjects: {
         },
         native: {},
     },
+    history: {
+        _id: 'activeWarningsJson',
+        type: 'state',
+        common: {
+            name: 'History of warnings.',
+            type: 'string',
+            role: 'json',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
 };
-
 export const statesObjectsWarnings: statesObjectsWarningsType = {
     dwdService: {
         _channel: {

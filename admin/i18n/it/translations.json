@@ -161,5 +161,7 @@
     "json_Enabled": "Attiva json-array-output",
     "json_panel": "Json",
     "json_parse": "Convertito il modello in un Json.",
-    "MessageAll": "Seleziona il modello da utilizzare con gli avvisi esistenti."
+    "MessageAll": "Seleziona il modello da utilizzare con gli avvisi esistenti.",
+    "history_Enabled": "Attiva la cronologia",
+    "history_panel": "Storia"
 }
