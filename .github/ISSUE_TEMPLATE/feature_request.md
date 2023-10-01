@@ -2,8 +2,8 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: ''
-assignees: ''
+labels: 'enhancement'
+assignees: 'ticaki'
 
 ---
 Deutsch ist ebenfalls erwünscht. Bitte löscht den Vorlagen Text.
