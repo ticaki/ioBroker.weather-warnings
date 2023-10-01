@@ -6,6 +6,8 @@ labels: ''
 assignees: ''
 
 ---
+Deutsch ist ebenfalls erwünscht. Bitte löscht den Vorlagen Text.
+English is ok. Please remove the template text.
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
