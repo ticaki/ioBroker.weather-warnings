@@ -8,7 +8,7 @@ export type ChangeToChannel<Obj, T> = Obj extends object
     ? { [K in keyof Obj]-?: customChannelType & T }
     : ioBroker.StateObject;
 
-type ChangeTypeOfKeys<Obj, N> = Obj extends object ? { [K in keyof Obj]-?: ChangeTypeOfKeys<Obj[K], N> } : N;
+export type ChangeTypeOfKeys<Obj, N> = Obj extends object ? { [K in keyof Obj]-?: ChangeTypeOfKeys<Obj[K], N> } : N;
 
 export type customChannelType = { _channel: ioBroker.ChannelObject | ioBroker.DeviceObject };
 /*type NestedKeyOf<ObjectType extends object> = {
@@ -1703,6 +1703,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Location',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            provider: {
+                _id: 'provider',
+                type: 'state',
+                common: {
+                    name: 'Data provider',
                     type: 'string',
                     role: 'text',
                     read: true,

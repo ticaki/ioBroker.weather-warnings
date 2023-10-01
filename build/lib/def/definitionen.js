@@ -1644,6 +1644,18 @@ const statesObjectsWarnings = {
           write: false
         },
         native: {}
+      },
+      provider: {
+        _id: "provider",
+        type: "state",
+        common: {
+          name: "Data provider",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
       }
     },
     alerts: {

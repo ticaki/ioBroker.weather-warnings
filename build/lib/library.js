@@ -346,6 +346,11 @@ class Library extends BaseClass {
     } else
       return text;
   }
+  getLocalLanguage() {
+    if (this.language)
+      return this.language;
+    return "en-En";
+  }
   async updateTranslations() {
     for (const b in import_messages_def.genericWarntyp) {
       const l = Number(b);

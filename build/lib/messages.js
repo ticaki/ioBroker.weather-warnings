@@ -25,6 +25,7 @@ __export(messages_exports, {
 module.exports = __toCommonJS(messages_exports);
 var import_definitionen = require("./def/definitionen");
 var import_messages_def = require("./def/messages-def");
+var import_notificationService_def = require("./def/notificationService-def");
 var import_library = require("./library");
 class MessagesClass extends import_library.BaseClass {
   provider;
@@ -94,6 +95,10 @@ class MessagesClass extends import_library.BaseClass {
       instruction: {
         cmd: void 0,
         node: "INSTRUCTION"
+      },
+      provider: {
+        cmd: void 0,
+        node: ""
       }
     },
     uwzService: {
@@ -150,6 +155,10 @@ class MessagesClass extends import_library.BaseClass {
       instruction: {
         cmd: void 0,
         node: ""
+      },
+      provider: {
+        cmd: void 0,
+        node: ""
       }
     },
     zamgService: {
@@ -193,6 +202,10 @@ class MessagesClass extends import_library.BaseClass {
       warntypegenericname: {
         cmd: void 0,
         node: ""
+      },
+      provider: {
+        cmd: void 0,
+        node: ""
       }
     },
     default: {
@@ -215,6 +228,10 @@ class MessagesClass extends import_library.BaseClass {
       location: { node: `` },
       instruction: { node: `` },
       warntypegenericname: {
+        cmd: void 0,
+        node: ""
+      },
+      provider: {
         cmd: void 0,
         node: ""
       }
@@ -420,6 +437,7 @@ class MessagesClass extends import_library.BaseClass {
       this.formatedData.warntypegenericname = await this.library.getTranslation(
         import_messages_def.genericWarntyp[this.genericType].name
       );
+      this.formatedData.provider = this.provider ? this.provider.service.replace("Service", "").toUpperCase() : "unknown";
       this.updated = false;
     }
     if (!this.formatedData) {
@@ -433,7 +451,9 @@ class MessagesClass extends import_library.BaseClass {
     }
     switch (cmd) {
       case "dayoftheweek": {
-        return new Date(data).toLocaleDateString("de-DE", { weekday: "long" });
+        return new Date(data).toLocaleDateString(this.library.getLocalLanguage(), {
+          weekday: "long"
+        });
       }
       case "translate": {
         return this.library.getTranslation(data);
@@ -502,6 +522,7 @@ class MessagesClass extends import_library.BaseClass {
 class NotificationClass extends import_library.BaseClass {
   options;
   takeThemAll = false;
+  config;
   clearAll() {
   }
   async writeNotifications() {
@@ -509,6 +530,7 @@ class NotificationClass extends import_library.BaseClass {
   constructor(adapter, notifcationOptions) {
     super(adapter, notifcationOptions.name);
     this.options = notifcationOptions;
+    this.config = import_notificationService_def.serciceCapabilities[notifcationOptions.name];
   }
   async sendNotifications(messages, action, activeWarnings) {
     if (!messages.obj || !messages.obj.provider || this.options.service.indexOf(messages.obj.provider.service) != -1 && (this.options.filter.level === void 0 || this.options.filter.level <= messages.obj.level) && this.options.filter.type.indexOf(String(messages.obj.type)) == -1) {
@@ -576,6 +598,10 @@ class NotificationClass extends import_library.BaseClass {
           }
           break;
         case "json":
+          {
+          }
+          break;
+        case "email":
           {
           }
           break;

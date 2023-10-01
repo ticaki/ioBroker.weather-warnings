@@ -14,8 +14,10 @@ import {
 } from './def/messages-def';
 import {
     notificationServiceBaseType,
+    notificationServiceConfigType,
     notificationServiceType,
     notificationTemplateUnionType,
+    serciceCapabilities,
 } from './def/notificationService-def';
 import { messageFilterType } from './def/provider-def';
 import { BaseClass, Library } from './library';
@@ -108,6 +110,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: 'INSTRUCTION',
             },
+            provider: {
+                cmd: undefined,
+                node: '',
+            },
         },
 
         uwzService: {
@@ -165,6 +171,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            provider: {
+                cmd: undefined,
+                node: '',
+            },
         },
         zamgService: {
             starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -209,6 +219,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            provider: {
+                cmd: undefined,
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -230,6 +244,10 @@ export class MessagesClass extends BaseClass {
             location: { node: `` },
             instruction: { node: `` },
             warntypegenericname: {
+                cmd: undefined,
+                node: '',
+            },
+            provider: {
                 cmd: undefined,
                 node: '',
             },
@@ -456,6 +474,9 @@ export class MessagesClass extends BaseClass {
             this.formatedData.warntypegenericname = await this.library.getTranslation(
                 genericWarntyp[this.genericType].name,
             );
+            this.formatedData.provider = this.provider
+                ? this.provider.service.replace('Service', '').toUpperCase()
+                : 'unknown';
             this.updated = false;
         }
         if (!this.formatedData) {
@@ -469,7 +490,9 @@ export class MessagesClass extends BaseClass {
         }
         switch (cmd) {
             case 'dayoftheweek': {
-                return new Date(data as string | number | Date).toLocaleDateString('de-DE', { weekday: 'long' });
+                return new Date(data as string | number | Date).toLocaleDateString(this.library.getLocalLanguage(), {
+                    weekday: 'long',
+                });
             }
             case 'translate': {
                 return this.library.getTranslation(data);
@@ -548,11 +571,15 @@ export class MessagesClass extends BaseClass {
 export class NotificationClass extends BaseClass {
     options: notificationServiceBaseType;
     takeThemAll = false;
+    config: notificationServiceConfigType;
+
     clearAll(): void {}
     async writeNotifications(): Promise<void> {}
+
     constructor(adapter: WeatherWarnings, notifcationOptions: notificationServiceBaseType) {
         super(adapter, notifcationOptions.name);
         this.options = notifcationOptions;
+        this.config = serciceCapabilities[notifcationOptions.name];
     }
     /**
      *  Send this message after filtering to services
@@ -644,6 +671,10 @@ export class NotificationClass extends BaseClass {
                     }
                     break;
                 case 'json':
+                    {
+                    }
+                    break;
+                case 'email':
                     {
                     }
                     break;

@@ -404,6 +404,10 @@ export class Library extends BaseClass {
             return text[this.language];
         } else return text;
     }
+    getLocalLanguage(): string {
+        if (this.language) return this.language;
+        return 'en-En';
+    }
 
     async updateTranslations(): Promise<void> {
         for (const b in genericWarntyp) {

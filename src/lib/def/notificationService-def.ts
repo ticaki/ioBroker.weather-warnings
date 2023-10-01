@@ -1,12 +1,13 @@
 import { messageFilterType, providerServices } from './provider-def';
 
-export type notificationServiceType = 'telegram' | 'pushover' | 'whatsapp' | 'json' | 'history';
+export type notificationServiceType = Required<keyof notificationServiceOptionsType>;
 export const notificationServiceArray: notificationServiceType[] = [
     'telegram',
     'pushover',
     'whatsapp',
     'json',
     'history',
+    'email',
 ];
 
 export type notificationServiceOptionsType = {
@@ -25,6 +26,9 @@ export type notificationServiceOptionsType = {
     history?: {
         name: 'history';
     } & notificationServiceBaseType;
+    email?: {
+        name: 'history';
+    } & notificationServiceBaseType;
 };
 export type notificationServiceBaseType = {
     service: providerServices[];
@@ -41,4 +45,22 @@ export type notificationTemplateType = {
     remove: string;
     removeAll: string;
     all: string;
+};
+
+export type notificationServiceConfigType = {
+    notifications: notificationTemplateUnionType[];
+};
+const push: notificationTemplateUnionType[] = ['new', 'remove', 'removeAll'];
+const history: notificationTemplateUnionType[] = ['new', 'remove'];
+const json: notificationTemplateUnionType[] = ['new', 'all', 'removeAll'];
+const email: notificationTemplateUnionType[] = ['new', 'all', 'removeAll', 'remove'];
+
+//const speak: notificationTemplateUnionType[] = ['new', 'remove', 'removeAll'];
+export const serciceCapabilities: Record<notificationServiceType, notificationServiceConfigType> = {
+    telegram: { notifications: push },
+    email: { notifications: email },
+    json: { notifications: json },
+    whatsapp: { notifications: push },
+    pushover: { notifications: push },
+    history: { notifications: history },
 };
