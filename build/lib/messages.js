@@ -449,7 +449,7 @@ class MessagesClass extends import_library.BaseClass {
     this.newMessage = false;
     this.notDeleted = true;
   }
-  async sendMessage(action, override = false) {
+  async sendMessage(action, activeWarnings, override = false) {
     if (this.messages.length == 0)
       return false;
     if (!(this.newMessage && action == "new" || !this.notDeleted && action == "remove" || action == "removeAll")) {
@@ -467,7 +467,11 @@ class MessagesClass extends import_library.BaseClass {
         );
       msgsend[msg.key] = msg.message;
     }
-    this.providerController.sendToNotifications({ msgs: msgsend, obj: this }, override ? "new" : action);
+    await this.providerController.sendToNotifications(
+      { msgs: msgsend, obj: this },
+      override ? "new" : action,
+      activeWarnings
+    );
     this.newMessage = false;
     return false;
   }
@@ -506,7 +510,7 @@ class NotificationClass extends import_library.BaseClass {
     super(adapter, notifcationOptions.name);
     this.options = notifcationOptions;
   }
-  async sendNotifications(messages, action) {
+  async sendNotifications(messages, action, activeWarnings) {
     if (!messages.obj || !messages.obj.provider || this.options.service.indexOf(messages.obj.provider.service) != -1 && (this.options.filter.level === void 0 || this.options.filter.level <= messages.obj.level) && this.options.filter.type.indexOf(String(messages.obj.type)) == -1) {
       if (this.options.template[action] == "none" || this.options.template[action] == "")
         return false;
@@ -517,29 +521,63 @@ class NotificationClass extends import_library.BaseClass {
         case "telegram":
           {
             const opt = { text: msg, disable_notification: true };
-            this.adapter.sendTo(this.options.adapter, "send", opt, () => {
-              this.log.debug(`Send the message: ${msg}`);
-            });
+            if (action !== "remove" || activeWarnings)
+              this.adapter.sendTo(this.options.adapter, "send", opt, () => {
+                this.log.debug(`Send the message: ${msg}`);
+              });
           }
           break;
         case "pushover":
           {
             const opt = { text: msg, disable_notification: true };
-            this.adapter.sendTo(this.options.adapter, "send", opt, () => {
-              this.log.debug(`Send the message: ${msg}`);
-            });
+            if (action !== "remove" || activeWarnings)
+              this.adapter.sendTo(this.options.adapter, "send", opt, () => {
+                this.log.debug(`Send the message: ${msg}`);
+              });
           }
           break;
         case "whatsapp":
           {
             const service = this.options.adapter.replace("whatsapp", "whatsapp-cmb");
             const opt = { text: msg };
-            this.adapter.sendTo(service, "send", opt, () => {
-              this.log.debug(`Send the message: ${msg}`);
-            });
+            if (action !== "remove" || activeWarnings)
+              this.adapter.sendTo(service, "send", opt, () => {
+                this.log.debug(`Send the message: ${msg}`);
+              });
+          }
+          break;
+        case "history":
+          {
+            if (action == "removeAll" || !messages.obj || !messages.obj.provider || !this.adapter.config.history_Enabled)
+              return false;
+            const targets = [messages.obj.provider.name, messages.obj.provider.providerController.name];
+            for (const a in targets) {
+              try {
+                const dp = `${targets[a]}.history`;
+                const state = this.adapter.library.getdb(dp);
+                let json = [];
+                if (state && state.val && typeof state.val == "string" && state.val != "")
+                  json = JSON.parse(state.val);
+                json.unshift(JSON.parse(msg));
+                json.splice(500);
+                await this.adapter.library.writedp(
+                  dp,
+                  JSON.stringify(json),
+                  import_definitionen.genericStateObjects.history
+                );
+              } catch (error) {
+                this.log.error(
+                  `${this.name} template has wrong formate. ${this.name} deactivated! template: ${this.options.template[action]}, message: ${msg}`
+                );
+                this.adapter.config.history_Enabled = false;
+                return false;
+              }
+            }
           }
           break;
         case "json":
+          {
+          }
           break;
       }
       return true;
@@ -560,13 +598,15 @@ class AllNotificationClass extends NotificationClass {
       this.providerDB[l] = [];
     }
   }
-  async sendNotifications(messages, action) {
-    if (await super.sendNotifications(messages, action)) {
+  async sendNotifications(messages, action, activeWarnings) {
+    if (await super.sendNotifications(messages, action, activeWarnings)) {
       const msg = messages.msgs[this.options.template[action]];
       switch (this.name) {
         case "json":
           {
             try {
+              if (action == "remove" && !activeWarnings)
+                return false;
               const json = this.adapter.config.json_parse ? JSON.parse(msg) : msg;
               if (messages.obj && messages.obj.provider) {
                 if (this.providerDB[messages.obj.provider.name] === void 0 || !Array.isArray(this.providerDB[messages.obj.provider.name])) {
@@ -602,26 +642,34 @@ class AllNotificationClass extends NotificationClass {
     return false;
   }
   async writeNotifications(msg = "") {
-    let all = [];
-    for (const name in this.providerDB) {
-      all = all.concat(this.providerDB[name]);
-      const prefix = name + ".activeWarnings_json";
-      this.adapter.library.writedp(
-        prefix,
-        JSON.stringify(this.providerDB[name].length > 0 ? this.providerDB[name].map((a) => a.msg) : [msg]),
-        import_definitionen.genericStateObjects.activeWarningsJson
-      );
-    }
-    all = all.filter((item, pos) => {
-      return all.indexOf(item) == pos;
-    });
-    all.sort((a, b) => a.starttime - b.starttime);
-    if (this.adapter.providerController) {
-      this.adapter.library.writedp(
-        this.adapter.providerController.name + ".activeWarnings_json",
-        JSON.stringify(all.length > 0 ? all.map((a) => a.msg) : [msg]),
-        import_definitionen.genericStateObjects.activeWarningsJson
-      );
+    switch (this.name) {
+      case "json":
+        {
+          let all = [];
+          for (const name in this.providerDB) {
+            all = all.concat(this.providerDB[name]);
+            const prefix = name + ".activeWarnings_json";
+            this.adapter.library.writedp(
+              prefix,
+              JSON.stringify(
+                this.providerDB[name].length > 0 ? this.providerDB[name].map((a) => a.msg) : [msg]
+              ),
+              import_definitionen.genericStateObjects.activeWarningsJson
+            );
+          }
+          all = all.filter((item, pos) => {
+            return all.indexOf(item) == pos;
+          });
+          all.sort((a, b) => a.starttime - b.starttime);
+          if (this.adapter.providerController) {
+            this.adapter.library.writedp(
+              this.adapter.providerController.name + ".activeWarnings_json",
+              JSON.stringify(all.length > 0 ? all.map((a) => a.msg) : [msg]),
+              import_definitionen.genericStateObjects.activeWarningsJson
+            );
+          }
+        }
+        break;
     }
   }
 }

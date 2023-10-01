@@ -487,7 +487,11 @@ export class MessagesClass extends BaseClass {
         this.newMessage = false;
         this.notDeleted = true;
     }
-    async sendMessage(action: notificationTemplateUnionType, override = false): Promise<boolean> {
+    async sendMessage(
+        action: notificationTemplateUnionType,
+        activeWarnings: boolean,
+        override = false,
+    ): Promise<boolean> {
         if (this.messages.length == 0) return false;
         if (
             !((this.newMessage && action == 'new') || (!this.notDeleted && action == 'remove') || action == 'removeAll')
@@ -505,7 +509,11 @@ export class MessagesClass extends BaseClass {
                 );
             msgsend[msg.key] = msg.message;
         }
-        this.providerController.sendToNotifications({ msgs: msgsend, obj: this }, override ? 'new' : action);
+        await this.providerController.sendToNotifications(
+            { msgs: msgsend, obj: this },
+            override ? 'new' : action,
+            activeWarnings,
+        );
 
         this.newMessage = false;
         return false;
@@ -546,9 +554,17 @@ export class NotificationClass extends BaseClass {
         super(adapter, notifcationOptions.name);
         this.options = notifcationOptions;
     }
+    /**
+     *  Send this message after filtering to services
+     * @param messages the message with MessageClassRef Ref can be null
+     * @param action <string>
+     * @param activeWarnings <boolean> if there are more active messages
+     * @returns
+     */
     async sendNotifications(
         messages: notificationMessageType,
         action: notificationTemplateUnionType,
+        activeWarnings: boolean,
     ): Promise<boolean> {
         if (
             !messages.obj ||
@@ -566,18 +582,20 @@ export class NotificationClass extends BaseClass {
                 case 'telegram':
                     {
                         const opt = { text: msg, disable_notification: true };
-                        this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
-                            this.log.debug(`Send the message: ${msg}`);
-                        });
+                        if (action !== 'remove' || activeWarnings)
+                            this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
+                                this.log.debug(`Send the message: ${msg}`);
+                            });
                     }
                     break;
                 case 'pushover':
                     {
                         const opt = { text: msg, disable_notification: true };
                         //newMsg.title = topic;newMsg.device
-                        this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
-                            this.log.debug(`Send the message: ${msg}`);
-                        });
+                        if (action !== 'remove' || activeWarnings)
+                            this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
+                                this.log.debug(`Send the message: ${msg}`);
+                            });
                     }
                     break;
                 case 'whatsapp':
@@ -585,12 +603,49 @@ export class NotificationClass extends BaseClass {
                         const service = this.options.adapter.replace('whatsapp', 'whatsapp-cmb');
                         // obj.message.phone
                         const opt = { text: msg };
-                        this.adapter.sendTo(service, 'send', opt, () => {
-                            this.log.debug(`Send the message: ${msg}`);
-                        });
+                        if (action !== 'remove' || activeWarnings)
+                            this.adapter.sendTo(service, 'send', opt, () => {
+                                this.log.debug(`Send the message: ${msg}`);
+                            });
+                    }
+                    break;
+                case 'history':
+                    {
+                        if (
+                            action == 'removeAll' ||
+                            !messages.obj ||
+                            !messages.obj.provider ||
+                            !this.adapter.config.history_Enabled
+                        )
+                            return false;
+                        const targets = [messages.obj.provider.name, messages.obj.provider.providerController.name];
+                        for (const a in targets) {
+                            try {
+                                const dp = `${targets[a]}.history`;
+                                const state = this.adapter.library.getdb(dp);
+                                let json: object[] = [];
+                                if (state && state.val && typeof state.val == 'string' && state.val != '')
+                                    json = JSON.parse(state.val);
+                                json.unshift(JSON.parse(msg));
+                                json.splice(500);
+                                await this.adapter.library.writedp(
+                                    dp,
+                                    JSON.stringify(json),
+                                    genericStateObjects.history,
+                                );
+                            } catch (error) {
+                                this.log.error(
+                                    `${this.name} template has wrong formate. ${this.name} deactivated! template: ${this.options.template[action]}, message: ${msg}`,
+                                );
+                                this.adapter.config.history_Enabled = false;
+                                return false;
+                            }
+                        }
                     }
                     break;
                 case 'json':
+                    {
+                    }
                     break;
             }
             return true;
@@ -616,14 +671,16 @@ export class AllNotificationClass extends NotificationClass {
     async sendNotifications(
         messages: notificationMessageType,
         action: notificationTemplateUnionType,
+        activeWarnings: boolean,
     ): Promise<boolean> {
-        if (await super.sendNotifications(messages, action)) {
+        if (await super.sendNotifications(messages, action, activeWarnings)) {
             const msg = messages.msgs[this.options.template[action]];
 
             switch (this.name as notificationServiceType) {
                 case 'json':
                     {
                         try {
+                            if (action == 'remove' && !activeWarnings) return false;
                             const json = this.adapter.config.json_parse ? JSON.parse(msg) : msg;
                             if (messages.obj && messages.obj.provider) {
                                 if (
@@ -663,26 +720,34 @@ export class AllNotificationClass extends NotificationClass {
         return false;
     }
     async writeNotifications(msg: string = ''): Promise<void> {
-        let all: { starttime: number; msg: string | object }[] = [];
-        for (const name in this.providerDB) {
-            all = all.concat(this.providerDB[name]);
-            const prefix = name + '.activeWarnings_json';
-            this.adapter.library.writedp(
-                prefix,
-                JSON.stringify(this.providerDB[name].length > 0 ? this.providerDB[name].map((a) => a.msg) : [msg]),
-                genericStateObjects.activeWarningsJson,
-            );
-        }
-        all = all.filter((item, pos) => {
-            return all.indexOf(item) == pos;
-        });
-        all.sort((a, b) => a.starttime - b.starttime);
-        if (this.adapter.providerController) {
-            this.adapter.library.writedp(
-                this.adapter.providerController.name + '.activeWarnings_json',
-                JSON.stringify(all.length > 0 ? all.map((a) => a.msg) : [msg]),
-                genericStateObjects.activeWarningsJson,
-            );
+        switch (this.name as notificationServiceType) {
+            case 'json':
+                {
+                    let all: { starttime: number; msg: string | object }[] = [];
+                    for (const name in this.providerDB) {
+                        all = all.concat(this.providerDB[name]);
+                        const prefix = name + '.activeWarnings_json';
+                        this.adapter.library.writedp(
+                            prefix,
+                            JSON.stringify(
+                                this.providerDB[name].length > 0 ? this.providerDB[name].map((a) => a.msg) : [msg],
+                            ),
+                            genericStateObjects.activeWarningsJson,
+                        );
+                    }
+                    all = all.filter((item, pos) => {
+                        return all.indexOf(item) == pos;
+                    });
+                    all.sort((a, b) => a.starttime - b.starttime);
+                    if (this.adapter.providerController) {
+                        this.adapter.library.writedp(
+                            this.adapter.providerController.name + '.activeWarnings_json',
+                            JSON.stringify(all.length > 0 ? all.map((a) => a.msg) : [msg]),
+                            genericStateObjects.activeWarningsJson,
+                        );
+                    }
+                }
+                break;
         }
     }
 }

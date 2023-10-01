@@ -24,6 +24,8 @@ var import_dwdWarncellIdLong = require("./lib/def/dwdWarncellIdLong");
 var import_provider = require("./lib/provider.js");
 var import_library = require("./lib/library.js");
 var import_messages_def = require("./lib/def/messages-def");
+var import_provider_def = require("./lib/def/provider-def");
+var import_notificationService_def = require("./lib/def/notificationService-def");
 import_axios.default.defaults.timeout = 8e3;
 class WeatherWarnings extends utils.Adapter {
   library;
@@ -50,7 +52,8 @@ class WeatherWarnings extends utils.Adapter {
       throw new Error("Provider controller doesnt exists.");
     }
     setTimeout(
-      async function(self) {
+      async function(that) {
+        const self = that;
         if (!self.providerController)
           return;
         if (!self)
@@ -75,7 +78,10 @@ class WeatherWarnings extends utils.Adapter {
             ...notificationServiceOpt,
             telegram: {
               service,
-              filter: { level: self.config.telegram_LevelFilter, type: self.config.telegram_TypeFilter },
+              filter: {
+                level: self.config.telegram_LevelFilter,
+                type: self.config.telegram_TypeFilter.map((a) => String(a))
+              },
               adapter: self.config.telegram_Adapter,
               name: "telegram",
               template
@@ -100,7 +106,10 @@ class WeatherWarnings extends utils.Adapter {
             ...notificationServiceOpt,
             whatsapp: {
               service,
-              filter: { level: self.config.whatsapp_LevelFilter, type: self.config.whatsapp_TypeFilter },
+              filter: {
+                level: self.config.whatsapp_LevelFilter,
+                type: self.config.whatsapp_TypeFilter.map((a) => String(a))
+              },
               adapter: self.config.whatsapp_Adapter,
               name: "whatsapp",
               template
@@ -125,7 +134,10 @@ class WeatherWarnings extends utils.Adapter {
             ...notificationServiceOpt,
             pushover: {
               service,
-              filter: { level: self.config.pushover_LevelFilter, type: self.config.pushover_TypeFilter },
+              filter: {
+                level: self.config.pushover_LevelFilter,
+                type: self.config.pushover_TypeFilter.map((a) => String(a))
+              },
               adapter: self.config.pushover_Adapter,
               name: "pushover",
               template
@@ -142,7 +154,7 @@ class WeatherWarnings extends utils.Adapter {
             service.push("zamgService");
           const template = {
             new: self.config.json_MessageNew,
-            remove: self.config.json_MessageRemove,
+            remove: "none",
             removeAll: self.config.json_MessageAllRemove,
             all: ""
           };
@@ -150,9 +162,40 @@ class WeatherWarnings extends utils.Adapter {
             ...notificationServiceOpt,
             json: {
               service,
-              filter: { level: self.config.json_LevelFilter, type: self.config.json_TypeFilter },
+              filter: {
+                level: self.config.json_LevelFilter,
+                type: self.config.json_TypeFilter.map((a) => String(a))
+              },
               adapter: "",
               name: "json",
+              template
+            }
+          };
+        }
+        if (self.config.history_Enabled) {
+          const service = [];
+          if (self.config.history_DwdEnabled)
+            service.push("dwdService");
+          if (self.config.history_UwzEnabled)
+            service.push("uwzService");
+          if (self.config.history_ZamgEnabled)
+            service.push("zamgService");
+          const template = {
+            new: self.config.history_MessageNew,
+            remove: self.config.history_MessageRemove,
+            removeAll: "none",
+            all: ""
+          };
+          notificationServiceOpt = {
+            ...notificationServiceOpt,
+            history: {
+              service,
+              filter: {
+                level: self.config.history_LevelFilter,
+                type: self.config.history_TypeFilter.map((a) => String(a))
+              },
+              adapter: "",
+              name: "history",
               template
             }
           };
@@ -166,41 +209,44 @@ class WeatherWarnings extends utils.Adapter {
         }
         if (self.config.dwdSelectId > 1e4 && self.config.dwdEnabled) {
           const options = {
-            filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter },
-            language: self.config.dwdLanguage
+            filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter }
           };
           self.log.info("DWD activated. Retrieve data.");
           self.providerController.createProviderIfNotExist({
             ...options,
             service: "dwdService",
-            warncellId: self.config.dwdSelectId
+            warncellId: String(self.config.dwdSelectId),
+            providerController: self.providerController,
+            language: self.config.dwdLanguage
           });
         }
         if (self.config.zamgEnabled && self.config.zamgSelectID && typeof self.config.zamgSelectID == "string") {
           self.log.info("ZAMG activated. Retrieve data.");
           const options = {
-            filter: { type: self.config.zamgTypeFilter },
-            language: self.config.zamgLanguage
+            filter: { type: self.config.zamgTypeFilter }
           };
           const zamgArr = self.config.zamgSelectID.split("#");
           if (zamgArr.length == 2) {
             self.providerController.createProviderIfNotExist({
               ...options,
               service: "zamgService",
-              warncellId: zamgArr
+              warncellId: zamgArr,
+              language: self.config.zamgLanguage,
+              providerController: self.providerController
             });
           }
         }
-        if (self.config.uwzEnabled && self.config.uwzSelectID) {
+        if (self.config.uwzEnabled && !!self.config.uwzSelectID) {
           const options = {
-            filter: { type: self.config.uwzTypeFilter },
-            language: self.config.uwzLanguage
+            filter: { type: self.config.uwzTypeFilter }
           };
           self.log.info("UWZ activated. Retrieve data.");
           self.providerController.createProviderIfNotExist({
             ...options,
             service: "uwzService",
-            warncellId: "UWZ" + self.config.uwzSelectID.toUpperCase()
+            warncellId: "UWZ" + self.config.uwzSelectID.toUpperCase(),
+            providerController: self.providerController,
+            language: self.config.uwzLanguage
           });
         }
         self.providerController.updateEndless(self.providerController);
@@ -250,6 +296,7 @@ class WeatherWarnings extends utils.Adapter {
                   });
                 }
               }
+              this.log.debug(obj.command + ": " + JSON.stringify(reply));
               this.sendTo(obj.from, obj.command, reply, obj.callback);
             } else {
               this.sendTo(obj.from, obj.command, [], obj.callback);
@@ -286,7 +333,7 @@ class WeatherWarnings extends utils.Adapter {
                   value: `${obj.message.service}.${t}`
                 });
               }
-              this.log.debug(JSON.stringify(reply));
+              this.log.debug(obj.command + ": " + JSON.stringify(reply));
               this.sendTo(obj.from, obj.command, reply, obj.callback);
             }
           }
@@ -294,32 +341,36 @@ class WeatherWarnings extends utils.Adapter {
         case "filterLevel":
           if (obj.callback) {
             const reply = [];
-            for (const a in import_messages_def.textLevels.textGeneric) {
+            const text = import_messages_def.textLevels.textGeneric;
+            for (const a in text) {
               if (Number(a) == 5)
                 break;
               reply.push({
-                label: await this.library.getTranslation(import_messages_def.textLevels.textGeneric[a]),
-                value: a
+                label: await this.library.getTranslation(
+                  import_messages_def.textLevels.textGeneric[a]
+                ),
+                value: Number(a)
               });
             }
+            this.log.debug(obj.command + ": " + JSON.stringify(reply));
             this.sendTo(obj.from, obj.command, reply, obj.callback);
           }
           break;
         case "filterType":
           if (obj.callback) {
             const reply = [];
-            if (obj.message && obj.message.service && ["dwdService", "uwzService", "zamgService"].indexOf(obj.message.service) != -1) {
+            if (obj.message && obj.message.service && import_provider_def.providerServicesArray.indexOf(obj.message.service) != -1) {
               const service = obj.message.service;
               for (const b in import_messages_def.genericWarntyp) {
                 const a = Number(b);
-                if (import_messages_def.genericWarntyp[a][service].length > 0) {
+                if (import_messages_def.genericWarntyp[a][service] !== void 0 && import_messages_def.genericWarntyp[a][service].length > 0) {
                   reply.push({
                     label: await this.library.getTranslation(import_messages_def.genericWarntyp[a].name),
                     value: a
                   });
                 }
               }
-            } else if (obj.message && obj.message.service && ["telegram"].indexOf(obj.message.service) != -1) {
+            } else if (obj.message && obj.message.service && import_notificationService_def.notificationServiceArray.indexOf(obj.message.service) != -1) {
               for (const b in import_messages_def.genericWarntyp) {
                 const a = Number(b);
                 reply.push({
@@ -328,6 +379,7 @@ class WeatherWarnings extends utils.Adapter {
                 });
               }
             }
+            this.log.debug(obj.command + ": " + JSON.stringify(reply));
             this.sendTo(obj.from, obj.command, reply, obj.callback);
           }
           break;

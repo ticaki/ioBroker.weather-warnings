@@ -12,8 +12,12 @@ import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 import { genericWarntyp, genericWarntypeType, textLevels } from './lib/def/messages-def';
-import { messageFilterTypeWithFilter, providerServices } from './lib/def/provider-def';
-import { notificationServiceOptionsType, notificationTemplateType } from './lib/def/notificationService-def';
+import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
+import {
+    notificationServiceArray,
+    notificationServiceOptionsType,
+    notificationTemplateType,
+} from './lib/def/notificationService-def';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -49,7 +53,8 @@ class WeatherWarnings extends utils.Adapter {
         }
 
         setTimeout(
-            async function (self: any) {
+            async function (that: any) {
+                const self = that as WeatherWarnings;
                 if (!self.providerController) return;
                 if (!self) return;
                 await self.library.init();
@@ -70,7 +75,10 @@ class WeatherWarnings extends utils.Adapter {
                         ...notificationServiceOpt,
                         telegram: {
                             service: service,
-                            filter: { level: self.config.telegram_LevelFilter, type: self.config.telegram_TypeFilter },
+                            filter: {
+                                level: self.config.telegram_LevelFilter,
+                                type: self.config.telegram_TypeFilter.map((a) => String(a)),
+                            },
                             adapter: self.config.telegram_Adapter,
                             name: 'telegram',
                             template: template,
@@ -92,7 +100,10 @@ class WeatherWarnings extends utils.Adapter {
                         ...notificationServiceOpt,
                         whatsapp: {
                             service: service,
-                            filter: { level: self.config.whatsapp_LevelFilter, type: self.config.whatsapp_TypeFilter },
+                            filter: {
+                                level: self.config.whatsapp_LevelFilter,
+                                type: self.config.whatsapp_TypeFilter.map((a) => String(a)),
+                            },
                             adapter: self.config.whatsapp_Adapter,
                             name: 'whatsapp',
                             template: template,
@@ -114,7 +125,10 @@ class WeatherWarnings extends utils.Adapter {
                         ...notificationServiceOpt,
                         pushover: {
                             service: service,
-                            filter: { level: self.config.pushover_LevelFilter, type: self.config.pushover_TypeFilter },
+                            filter: {
+                                level: self.config.pushover_LevelFilter,
+                                type: self.config.pushover_TypeFilter.map((a) => String(a)),
+                            },
                             adapter: self.config.pushover_Adapter,
                             name: 'pushover',
                             template: template,
@@ -128,7 +142,7 @@ class WeatherWarnings extends utils.Adapter {
                     if (self.config.json_ZamgEnabled) service.push('zamgService');
                     const template: notificationTemplateType = {
                         new: self.config.json_MessageNew,
-                        remove: self.config.json_MessageRemove,
+                        remove: 'none',
                         removeAll: self.config.json_MessageAllRemove,
                         all: '',
                     };
@@ -136,9 +150,37 @@ class WeatherWarnings extends utils.Adapter {
                         ...notificationServiceOpt,
                         json: {
                             service: service,
-                            filter: { level: self.config.json_LevelFilter, type: self.config.json_TypeFilter },
+                            filter: {
+                                level: self.config.json_LevelFilter,
+                                type: self.config.json_TypeFilter.map((a) => String(a)),
+                            },
                             adapter: '',
                             name: 'json',
+                            template: template,
+                        },
+                    };
+                }
+                if (self.config.history_Enabled) {
+                    const service: providerServices[] = [];
+                    if (self.config.history_DwdEnabled) service.push('dwdService');
+                    if (self.config.history_UwzEnabled) service.push('uwzService');
+                    if (self.config.history_ZamgEnabled) service.push('zamgService');
+                    const template: notificationTemplateType = {
+                        new: self.config.history_MessageNew,
+                        remove: self.config.history_MessageRemove,
+                        removeAll: 'none',
+                        all: '',
+                    };
+                    notificationServiceOpt = {
+                        ...notificationServiceOpt,
+                        history: {
+                            service: service,
+                            filter: {
+                                level: self.config.history_LevelFilter,
+                                type: self.config.history_TypeFilter.map((a) => String(a)),
+                            },
+                            adapter: '',
+                            name: 'history',
                             template: template,
                         },
                     };
@@ -156,13 +198,14 @@ class WeatherWarnings extends utils.Adapter {
                 if (self.config.dwdSelectId > 10000 && self.config.dwdEnabled) {
                     const options: messageFilterTypeWithFilter & { [key: string]: any } = {
                         filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter },
-                        language: self.config.dwdLanguage,
                     };
                     self.log.info('DWD activated. Retrieve data.');
                     self.providerController.createProviderIfNotExist({
                         ...options,
                         service: 'dwdService',
-                        warncellId: self.config.dwdSelectId, //805111000 Düssel - kirn 807133052
+                        warncellId: String(self.config.dwdSelectId), //805111000 Düssel - kirn 807133052
+                        providerController: self.providerController,
+                        language: self.config.dwdLanguage,
                     });
                 }
                 if (
@@ -173,27 +216,29 @@ class WeatherWarnings extends utils.Adapter {
                     self.log.info('ZAMG activated. Retrieve data.');
                     const options: messageFilterTypeWithFilter & { [key: string]: any } = {
                         filter: { type: self.config.zamgTypeFilter },
-                        language: self.config.zamgLanguage,
                     };
-                    const zamgArr = self.config.zamgSelectID.split('#');
+                    const zamgArr = self.config.zamgSelectID.split('#') as [string, string];
                     if (zamgArr.length == 2) {
                         self.providerController.createProviderIfNotExist({
                             ...options,
                             service: 'zamgService',
-                            warncellId: zamgArr, //
+                            warncellId: zamgArr,
+                            language: self.config.zamgLanguage,
+                            providerController: self.providerController,
                         });
                     }
                 }
-                if (self.config.uwzEnabled && self.config.uwzSelectID) {
-                    const options: messageFilterTypeWithFilter & { [key: string]: any } = {
+                if (self.config.uwzEnabled && !!self.config.uwzSelectID) {
+                    const options: messageFilterTypeWithFilter = {
                         filter: { type: self.config.uwzTypeFilter },
-                        language: self.config.uwzLanguage,
                     };
                     self.log.info('UWZ activated. Retrieve data.');
                     self.providerController.createProviderIfNotExist({
                         ...options,
                         service: 'uwzService',
                         warncellId: 'UWZ' + self.config.uwzSelectID.toUpperCase(), //UWZ + Land + PLZ
+                        providerController: self.providerController,
+                        language: self.config.uwzLanguage,
                     });
                 }
 
@@ -274,6 +319,7 @@ class WeatherWarnings extends utils.Adapter {
                                     });
                                 }
                             }
+                            this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                             this.sendTo(obj.from, obj.command, reply, obj.callback);
                         } else {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
@@ -314,8 +360,7 @@ class WeatherWarnings extends utils.Adapter {
                                     value: `${obj.message.service}.${t}`,
                                 });
                             }
-                            this.log.debug(JSON.stringify(reply));
-
+                            this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                             this.sendTo(obj.from, obj.command, reply, obj.callback);
                         }
                     }
@@ -323,14 +368,17 @@ class WeatherWarnings extends utils.Adapter {
                 case 'filterLevel':
                     if (obj.callback) {
                         const reply = [];
-                        for (const a in textLevels.textGeneric) {
+                        const text = textLevels.textGeneric;
+                        for (const a in text) {
                             if (Number(a) == 5) break;
                             reply.push({
-                                //@ts-expect-error ...
-                                label: await this.library.getTranslation(textLevels.textGeneric[a]),
-                                value: a,
+                                label: await this.library.getTranslation(
+                                    textLevels.textGeneric[a as keyof typeof text],
+                                ),
+                                value: Number(a),
                             });
                         }
+                        this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                         this.sendTo(obj.from, obj.command, reply, obj.callback);
                     }
                     break;
@@ -340,12 +388,12 @@ class WeatherWarnings extends utils.Adapter {
                         if (
                             obj.message &&
                             obj.message.service &&
-                            ['dwdService', 'uwzService', 'zamgService'].indexOf(obj.message.service) != -1
+                            providerServicesArray.indexOf(obj.message.service) != -1
                         ) {
                             const service = obj.message.service as 'dwdService' | 'uwzService' | 'zamgService';
                             for (const b in genericWarntyp) {
                                 const a = Number(b) as keyof genericWarntypeType;
-                                if (genericWarntyp[a][service].length > 0) {
+                                if (genericWarntyp[a][service] !== undefined && genericWarntyp[a][service].length > 0) {
                                     reply.push({
                                         label: await this.library.getTranslation(genericWarntyp[a].name),
                                         value: a,
@@ -355,7 +403,7 @@ class WeatherWarnings extends utils.Adapter {
                         } else if (
                             obj.message &&
                             obj.message.service &&
-                            ['telegram'].indexOf(obj.message.service) != -1
+                            notificationServiceArray.indexOf(obj.message.service) != -1
                         ) {
                             for (const b in genericWarntyp) {
                                 const a = Number(b) as keyof genericWarntypeType;
@@ -365,6 +413,7 @@ class WeatherWarnings extends utils.Adapter {
                                 });
                             }
                         }
+                        this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                         this.sendTo(obj.from, obj.command, reply, obj.callback);
                     }
                     break;

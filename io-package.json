@@ -160,6 +160,18 @@
             {
                 "templateKey": "removeAllPush",
                 "template": "No warning - dont use ${} here, this may change later."
+            },
+            {
+                "templateKey": "tableNew",
+                "template": "{ \"action\":\"new\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\" \\}"
+            },
+            {
+                "templateKey": "tableRemove",
+                "template": "{ \"action\":\"remove\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\" \\}"
+            },
+            {
+                "templateKey": "historyRemove",
+                "template": "{ \"action\":\"remove\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\" \\}"
             }
         ],
         "dwdLanguage": "ger",
@@ -168,7 +180,10 @@
         "dwdTypeFilter": [],
         "zamgTypeFilter": [],
         "uwzTypeFilter": [],
-        "telegram_DwdEnabled": false,
+        "dwdLevelFilter": 0,
+        "uwzLevelFilter": 0,
+        "zamgLevelFilter": 0,
+        "telegram_DwdEnabled": true,
         "telegram_UwzEnabled": true,
         "telegram_ZamgEnabled": true,
         "telegram_TypeFilter": [],
@@ -178,7 +193,7 @@
         "telegram_MessageNew": "addedPush",
         "telegram_MessageRemove": "removePush",
         "telegram_MessageAllRemove": "removeAllPush",
-        "whatsapp_DwdEnabled": false,
+        "whatsapp_DwdEnabled": true,
         "whatsapp_UwzEnabled": true,
         "whatsapp_ZamgEnabled": true,
         "whatsapp_TypeFilter": [],
@@ -188,7 +203,7 @@
         "whatsapp_MessageNew": "addedPush",
         "whatsapp_MessageRemove": "removePush",
         "whatsapp_MessageAllRemove": "removeAllPush",
-        "pushover_DwdEnabled": false,
+        "pushover_DwdEnabled": true,
         "pushover_UwzEnabled": true,
         "pushover_ZamgEnabled": true,
         "pushover_TypeFilter": [],
@@ -198,16 +213,23 @@
         "pushover_MessageNew": "addedPush",
         "pushover_MessageRemove": "removePush",
         "pushover_MessageAllRemove": "removeAllPush",
-        "json_DwdEnabled": false,
+        "json_DwdEnabled": true,
         "json_UwzEnabled": true,
         "json_ZamgEnabled": true,
         "json_TypeFilter": [],
         "json_LevelFilter": 0,
         "json_Enabled": false,
         "json_MessageNew": "addedPush",
-        "json_MessageRemove": "removePush",
         "json_MessageAllRemove": "removeAllPush",
-        "json_parse": false
+        "json_parse": false,
+        "history_DwdEnabled": true,
+        "history_UwzEnabled": true,
+        "history_ZamgEnabled": true,
+        "history_TypeFilter": [],
+        "history_LevelFilter": 0,
+        "history_Enabled": false,
+        "history_MessageNew": "addedPush",
+        "history_MessageRemove": "removePush"
     },
     "objects": [],
     "instanceObjects": []

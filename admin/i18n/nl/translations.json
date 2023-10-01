@@ -161,5 +161,7 @@
     "json_Enabled": "Activeer json-array-uitvoer",
     "json_panel": "Json",
     "json_parse": "De sjabloon geconverteerd naar een Json.",
-    "MessageAll": "Selecteer de sjabloon die u wilt gebruiken met bestaande waarschuwingen."
+    "MessageAll": "Selecteer de sjabloon die u wilt gebruiken met bestaande waarschuwingen.",
+    "history_Enabled": "Activeer geschiedenis",
+    "history_panel": "Geschiedenis"
 }

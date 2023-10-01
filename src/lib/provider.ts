@@ -25,8 +25,6 @@ import {
 type ProvideOptionsTypeInternal = {
     service: providerServices;
     warncellId: string | [string, string];
-    providerController: ProviderController;
-    language: string;
 } & (StringProvideOptionsType | CoordinateProvideOptionsType);
 
 type ProvideOptionsType = ProvideOptionsTypeInternal;
@@ -260,11 +258,11 @@ class BaseProvider extends BaseClass {
         const jsonMessage: { [key: string]: string[] } = {};
         for (let m = 0; m < this.messages.length; m++) {
             if (this.messages[m].notDeleted == false) {
-                if (moreWarnings) removeMessages.push(this.messages[Number(m)]);
+                removeMessages.push(this.messages[Number(m)]);
                 this.log.debug('Remove a warning from db.');
                 this.messages.splice(Number(m--), 1);
             } else {
-                await this.messages[m].sendMessage('new');
+                await this.messages[m].sendMessage('new', true);
                 for (const k in this.messages[m].messages) {
                     const key = this.messages[m].messages[k].key;
                     const msg = this.messages[m].messages[k].message;
@@ -279,7 +277,7 @@ class BaseProvider extends BaseClass {
              * Handle removed msg
              */
             for (const m in removeMessages) {
-                await removeMessages[m].sendMessage('remove');
+                await removeMessages[m].sendMessage('remove', moreWarnings);
                 for (const k in removeMessages[m].messages) {
                     const key = removeMessages[m].messages[k].key;
                     const msg = removeMessages[m].messages[k].message;
@@ -288,7 +286,7 @@ class BaseProvider extends BaseClass {
                 }
             }
             /**
-             * send all messages
+             * write messages_json to states
              */
             for (const key in jsonMessage) {
                 this.library.writedp(
@@ -608,14 +606,19 @@ export class ProviderController extends BaseClass {
     }
 
     sendNoMessages(): void {}
-    async sendToNotifications(msg: notificationMessageType, action: notificationTemplateUnionType): Promise<void> {
+    async sendToNotifications(
+        msg: notificationMessageType,
+        action: notificationTemplateUnionType,
+        moreWarnings: boolean,
+    ): Promise<void> {
         for (const a in this.notificationServices) {
             const n = this.notificationServices[a];
+            let newAction = action;
             if (action == 'all') {
                 if (!n.takeThemAll) continue;
-                action = 'new';
+                newAction = 'new';
             }
-            n.sendNotifications(msg, action);
+            await n.sendNotifications(msg, newAction, moreWarnings);
         }
     }
     updateEndless(that: ProviderController): void {
@@ -680,7 +683,7 @@ export class ProviderController extends BaseClass {
             }
         }
 
-        if (activMessages == 0 && totalMessages > 0) await this.noWarningMessage.sendMessage('removeAll');
+        if (activMessages == 0 && totalMessages > 0) await this.noWarningMessage.sendMessage('removeAll', false);
 
         this.notificationServices.forEach((a) => a.writeNotifications());
         this.adapter.library.writedp(`${this.name}.activWarnings`, activMessages, genericStateObjects.activWarnings);
