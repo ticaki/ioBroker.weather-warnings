@@ -164,5 +164,8 @@
     "json_panel": "Json",
     "json_parse": "Converted the template to a Json.",
     "history_panel": "History",
-    "history_allinOne": "Each formatted data point is written to the history."
+    "history_allinOne": "Each formatted data point is written to the history.",
+    "email_line_break":"Line break at the end of each warning message.",
+    "email_panel":"e-Mail",
+    "test_diver": "Testing"
 }

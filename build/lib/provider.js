@@ -432,7 +432,7 @@ class ProviderController extends import_library.BaseClass {
         endkey: `system.adapter.${options.adapter}`
       }) : null;
       if (options.adapter == "" || objs && objs.rows && objs.rows.length > 0) {
-        const noti = a == "json" ? new import_messages.AllNotificationClass(this.adapter, options) : new import_messages.NotificationClass(this.adapter, options);
+        const noti = new options.class(this.adapter, options);
         this.notificationServices.push(noti);
       } else {
         this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
@@ -521,13 +521,9 @@ class ProviderController extends import_library.BaseClass {
   async sendToNotifications(msg, action, moreWarnings) {
     for (const a in this.notificationServices) {
       const n = this.notificationServices[a];
-      let newAction = action;
-      if (action == "all") {
-        if (!n.takeThemAll)
-          continue;
-        newAction = "new";
-      }
-      await n.sendNotifications(msg, newAction, moreWarnings);
+      if (n.config.notifications.indexOf(action) == -1)
+        continue;
+      await n.sendNotifications(msg, action, moreWarnings);
     }
   }
   updateEndless(that) {

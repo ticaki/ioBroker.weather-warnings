@@ -164,5 +164,8 @@
     "MessageAll": "Selecione o modelo a ser usado com avisos existentes.",
     "history_Enabled": "Ativar histórico",
     "history_panel": "História",
-    "history_allinOne": "Escreva cada ponto de dados formatado no histórico."
+    "history_allinOne": "Escreva cada ponto de dados formatado no histórico.",
+    "email_line_break": "Quebra de linha no final de cada mensagem de aviso.",
+    "email_panel": "e-mail",
+    "test_diver": "Teste"
 }

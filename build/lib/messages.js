@@ -533,6 +533,8 @@ class NotificationClass extends import_library.BaseClass {
     this.config = import_notificationService_def.serciceCapabilities[notifcationOptions.name];
   }
   async sendNotifications(messages, action, activeWarnings) {
+    if (this.config.notifications.indexOf(action) == -1)
+      return false;
     if (!messages.obj || !messages.obj.provider || this.options.service.indexOf(messages.obj.provider.service) != -1 && (this.options.filter.level === void 0 || this.options.filter.level <= messages.obj.level) && this.options.filter.type.indexOf(String(messages.obj.type)) == -1) {
       if (this.options.template[action] == "none" || this.options.template[action] == "")
         return false;
@@ -570,7 +572,7 @@ class NotificationClass extends import_library.BaseClass {
           break;
         case "history":
           {
-            if (action == "removeAll" || !messages.obj || !messages.obj.provider || !this.adapter.config.history_Enabled)
+            if (!messages.obj || !messages.obj.provider || !this.adapter.config.history_Enabled)
               return false;
             let newMsg = msg;
             if (this.adapter.config.history_allinOne) {
@@ -633,11 +635,12 @@ class AllNotificationClass extends NotificationClass {
       const msg = messages.msgs[this.options.template[action]];
       switch (this.name) {
         case "json":
+        case "email":
           {
             try {
               if (action == "remove" && !activeWarnings)
                 return false;
-              const json = this.adapter.config.json_parse ? JSON.parse(msg) : msg;
+              const json = this.name == "json" && this.adapter.config.json_parse ? JSON.parse(msg) : msg;
               if (messages.obj && messages.obj.provider) {
                 if (this.providerDB[messages.obj.provider.name] === void 0 || !Array.isArray(this.providerDB[messages.obj.provider.name])) {
                   this.providerDB[messages.obj.provider.name] = [];
@@ -652,7 +655,7 @@ class AllNotificationClass extends NotificationClass {
               } else {
                 if (action == "removeAll") {
                   for (const p in this.providerDB) {
-                    this.providerDB[p] = [{ starttime: 1, msg: json }];
+                    this.providerDB[p] = [{ starttime: Date.now(), msg: json }];
                   }
                 }
                 this.log.debug("sendNotifications(2): removeAll: " + msg);
@@ -698,6 +701,23 @@ class AllNotificationClass extends NotificationClass {
               import_definitionen.genericStateObjects.activeWarningsJson
             );
           }
+        }
+        break;
+      case "email":
+        {
+          let all = [];
+          for (const name in this.providerDB) {
+            all = all.concat(this.providerDB[name]);
+          }
+          all.sort((a, b) => a.starttime - b.starttime);
+          let flat = all.map((a) => a.msg);
+          flat = flat.filter((a, pos) => {
+            return flat.indexOf(a) == pos;
+          });
+          const message = flat.join(this.adapter.config.email_line_break);
+          this.adapter.sendTo(this.options.adapter, "send", message, () => {
+            this.log.debug(`Send the message: ${msg}`);
+          });
         }
         break;
     }

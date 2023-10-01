@@ -82,6 +82,17 @@ declare global {
             history_MessageNew: string;
             history_MessageRemove: string;
             history_allinOne: boolean;
+
+            email_Adapter: string;
+            email_line_break: string;
+            email_DwdEnabled: boolean;
+            email_UwzEnabled: boolean;
+            email_ZamgEnabled: boolean;
+            email_TypeFilter: number[];
+            email_LevelFilter: number;
+            email_Enabled: boolean;
+            email_MessageNew: string;
+            email_MessageRemove: string;
         }
     }
 }

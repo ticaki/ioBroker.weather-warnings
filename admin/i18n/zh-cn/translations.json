@@ -164,5 +164,8 @@
     "MessageAll": "选择与现有警告一起使用的模板。",
     "history_Enabled": "激活历史记录",
     "history_panel": "历史",
-    "history_allinOne": "将每个格式化数据点写入历史记录中。"
+    "history_allinOne": "将每个格式化数据点写入历史记录中。",
+    "email_line_break": "每条警告消息末尾换行。",
+    "email_panel": "电子邮件",
+    "test_diver": "测试"
 }

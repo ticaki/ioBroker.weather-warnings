@@ -164,5 +164,8 @@
     "MessageAll": "Selecteer de sjabloon die u wilt gebruiken met bestaande waarschuwingen.",
     "history_Enabled": "Activeer geschiedenis",
     "history_panel": "Geschiedenis",
-    "history_allinOne": "Schrijf elk opgemaakt gegevenspunt in de geschiedenis."
+    "history_allinOne": "Schrijf elk opgemaakt gegevenspunt in de geschiedenis.",
+    "email_line_break": "Regeleinde aan het einde van elk waarschuwingsbericht.",
+    "email_panel": "e-mail",
+    "test_diver": "Testen"
 }

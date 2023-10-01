@@ -519,10 +519,7 @@ export class ProviderController extends BaseClass {
                       })
                     : null;
             if (options.adapter == '' || (objs && objs.rows && objs.rows.length > 0)) {
-                const noti =
-                    a == 'json'
-                        ? new AllNotificationClass(this.adapter, options)
-                        : new NotificationClass(this.adapter, options);
+                const noti = new options.class(this.adapter, options);
                 this.notificationServices.push(noti);
             } else {
                 this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
@@ -613,12 +610,8 @@ export class ProviderController extends BaseClass {
     ): Promise<void> {
         for (const a in this.notificationServices) {
             const n = this.notificationServices[a];
-            let newAction = action;
-            if (action == 'all') {
-                if (!n.takeThemAll) continue;
-                newAction = 'new';
-            }
-            await n.sendNotifications(msg, newAction, moreWarnings);
+            if (n.config.notifications.indexOf(action) == -1) continue;
+            await n.sendNotifications(msg, action, moreWarnings);
         }
     }
     updateEndless(that: ProviderController): void {

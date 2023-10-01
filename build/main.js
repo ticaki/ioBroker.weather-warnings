@@ -26,6 +26,7 @@ var import_library = require("./lib/library.js");
 var import_messages_def = require("./lib/def/messages-def");
 var import_provider_def = require("./lib/def/provider-def");
 var import_notificationService_def = require("./lib/def/notificationService-def");
+var import_messages = require("./lib/messages");
 import_axios.default.defaults.timeout = 8e3;
 class WeatherWarnings extends utils.Adapter {
   library;
@@ -84,7 +85,8 @@ class WeatherWarnings extends utils.Adapter {
               },
               adapter: self.config.telegram_Adapter,
               name: "telegram",
-              template
+              template,
+              class: import_messages.NotificationClass
             }
           };
         }
@@ -112,7 +114,8 @@ class WeatherWarnings extends utils.Adapter {
               },
               adapter: self.config.whatsapp_Adapter,
               name: "whatsapp",
-              template
+              template,
+              class: import_messages.NotificationClass
             }
           };
         }
@@ -140,7 +143,8 @@ class WeatherWarnings extends utils.Adapter {
               },
               adapter: self.config.pushover_Adapter,
               name: "pushover",
-              template
+              template,
+              class: import_messages.NotificationClass
             }
           };
         }
@@ -168,7 +172,8 @@ class WeatherWarnings extends utils.Adapter {
               },
               adapter: "",
               name: "json",
-              template
+              template,
+              class: import_messages.AllNotificationClass
             }
           };
         }
@@ -196,7 +201,37 @@ class WeatherWarnings extends utils.Adapter {
               },
               adapter: "",
               name: "history",
-              template
+              template,
+              class: import_messages.AllNotificationClass
+            }
+          };
+        }
+        if (self.config.email_Enabled) {
+          const service = [];
+          if (self.config.email_DwdEnabled)
+            service.push("dwdService");
+          if (self.config.email_UwzEnabled)
+            service.push("uwzService");
+          if (self.config.email_ZamgEnabled)
+            service.push("zamgService");
+          const template = {
+            new: self.config.email_MessageNew,
+            remove: self.config.email_MessageRemove,
+            removeAll: "none",
+            all: ""
+          };
+          notificationServiceOpt = {
+            ...notificationServiceOpt,
+            email: {
+              service,
+              filter: {
+                level: self.config.email_LevelFilter,
+                type: self.config.email_TypeFilter.map((a) => String(a))
+              },
+              adapter: "",
+              name: "email",
+              template,
+              class: import_messages.AllNotificationClass
             }
           };
         }

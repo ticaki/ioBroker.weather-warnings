@@ -27,7 +27,7 @@ export type notificationServiceOptionsType = {
         name: 'history';
     } & notificationServiceBaseType;
     email?: {
-        name: 'history';
+        name: 'email';
     } & notificationServiceBaseType;
 };
 export type notificationServiceBaseType = {
@@ -36,6 +36,7 @@ export type notificationServiceBaseType = {
     adapter: string;
     name: notificationServiceType;
     template: notificationTemplateType;
+    class: any;
 };
 
 export type notificationTemplateUnionType = keyof notificationTemplateType;

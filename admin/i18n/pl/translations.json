@@ -164,5 +164,8 @@
     "MessageAll": "Wybierz szablon, który ma być używany z istniejącymi ostrzeżeniami.",
     "history_Enabled": "Aktywuj historię",
     "history_panel": "Historia",
-    "history_allinOne": "Zapisz każdy sformatowany punkt danych w historii."
+    "history_allinOne": "Zapisz każdy sformatowany punkt danych w historii.",
+    "email_line_break": "Podział wiersza na końcu każdego komunikatu ostrzegawczego.",
+    "email_panel": "e-mail",
+    "test_diver": "Testowanie"
 }

@@ -18,6 +18,7 @@ import {
     notificationServiceOptionsType,
     notificationTemplateType,
 } from './lib/def/notificationService-def';
+import { AllNotificationClass, NotificationClass } from './lib/messages';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -82,6 +83,7 @@ class WeatherWarnings extends utils.Adapter {
                             adapter: self.config.telegram_Adapter,
                             name: 'telegram',
                             template: template,
+                            class: NotificationClass,
                         },
                     };
                 }
@@ -107,6 +109,7 @@ class WeatherWarnings extends utils.Adapter {
                             adapter: self.config.whatsapp_Adapter,
                             name: 'whatsapp',
                             template: template,
+                            class: NotificationClass,
                         },
                     };
                 }
@@ -132,6 +135,7 @@ class WeatherWarnings extends utils.Adapter {
                             adapter: self.config.pushover_Adapter,
                             name: 'pushover',
                             template: template,
+                            class: NotificationClass,
                         },
                     };
                 }
@@ -157,6 +161,7 @@ class WeatherWarnings extends utils.Adapter {
                             adapter: '',
                             name: 'json',
                             template: template,
+                            class: AllNotificationClass,
                         },
                     };
                 }
@@ -182,6 +187,33 @@ class WeatherWarnings extends utils.Adapter {
                             adapter: '',
                             name: 'history',
                             template: template,
+                            class: AllNotificationClass,
+                        },
+                    };
+                }
+                if (self.config.email_Enabled) {
+                    const service: providerServices[] = [];
+                    if (self.config.email_DwdEnabled) service.push('dwdService');
+                    if (self.config.email_UwzEnabled) service.push('uwzService');
+                    if (self.config.email_ZamgEnabled) service.push('zamgService');
+                    const template: notificationTemplateType = {
+                        new: self.config.email_MessageNew,
+                        remove: self.config.email_MessageRemove,
+                        removeAll: 'none',
+                        all: '',
+                    };
+                    notificationServiceOpt = {
+                        ...notificationServiceOpt,
+                        email: {
+                            service: service,
+                            filter: {
+                                level: self.config.email_LevelFilter,
+                                type: self.config.email_TypeFilter.map((a) => String(a)),
+                            },
+                            adapter: '',
+                            name: 'email',
+                            template: template,
+                            class: AllNotificationClass,
                         },
                     };
                 }

@@ -19,7 +19,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "label": "Activate Telegram",
+                    "label": "telegram_Enabled",
                     "newLine": false
                 },
                 "json_Enabled": {
@@ -27,7 +27,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "label": "Activate Json",
+                    "label": "json_Enabled",
                     "newLine": false
                 },
                 "history_Enabled": {
@@ -35,7 +35,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "label": "Activate History.",
+                    "label": "history_Enabled",
                     "newLine": false
                 },
                 "uwzEnabled": {
@@ -67,12 +67,20 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "label": "Activate Pushover",
+                    "label": "pushover_Enabled",
+                    "newLine": false
+                },
+                "email_Enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "email_Enabled",
                     "newLine": false
                 },
                 "refreshTime": {
                     "type": "number",
-                    "label": "Update interval for all providers. (in minutes)",
+                    "label": "refreshTime",
                     "min": 5,
                     "step": 1,
                     "sm": 8,
@@ -83,7 +91,7 @@
                 "dividerHdr": {
                     "newLine": true,
                     "type": "header",
-                    "text": "Testing",
+                    "text": "test_diver",
                     "size": 2
                 },
                 "useTestWarnings": {
@@ -91,7 +99,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
-                    "label": "Activate Testwarnings",
+                    "label": "useTestWarnings",
                     "newLine": true
                 }
             }
@@ -243,6 +251,7 @@
                     "md": 5,
                     "lg": 4,
                     "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
                     "newLine": true
                 },
                 "dwdLevelFilter": {
@@ -320,6 +329,7 @@
                     "md": 5,
                     "lg": 4,
                     "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
                     "newLine": true
                 },
                 "uwzLevelFilter": {
@@ -332,7 +342,7 @@
                     "lg": 4,
                     "label": "LevelFilter",
                     "newLine": true
-                },
+                }
             }
         },
         "_zamgpanel": {
@@ -386,6 +396,7 @@
                     "md": 5,
                     "lg": 4,
                     "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
                     "newLine": true
                 },
                 "zamgLevelFilter": {
@@ -499,6 +510,7 @@
                     "md": 5,
                     "lg": 4,
                     "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
                     "newLine": true
                 },
                 "telegram_LevelFilter": {
@@ -614,6 +626,7 @@
                     "md": 5,
                     "lg": 4,
                     "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
                     "newLine": true
                 },
                 "whatsapp_LevelFilter": {
@@ -729,6 +742,7 @@
                     "md": 5,
                     "lg": 4,
                     "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
                     "newLine": true
                 },
                 "pushover_LevelFilter": {
@@ -802,9 +816,9 @@
                 },
                 "json_parse": {
                     "type": "checkbox",
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
                     "default": "none",
                     "label": "json_parse",
                     "newLine": false
@@ -837,6 +851,7 @@
                     "md": 5,
                     "lg": 4,
                     "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
                     "newLine": true
                 },
                 "json_LevelFilter": {
@@ -892,6 +907,14 @@
                     "label": "dwdEnabled",
                     "newLine": true
                 },
+                "history_allinOne": {
+                    "type": "checkbox",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "label": "history_allinOne",
+                    "newLine": false
+                },
                 "history_UwzEnabled": {
                     "type": "checkbox",
                     "sm": 6,
@@ -917,18 +940,11 @@
                     "manual": false,
                     "multiple": true,
                     "sm": 12,
-                    "md": 5,
-                    "lg": 4,
-                    "label": "TypeFilter",
-                    "newLine": true
-                },
-                "history_allinOne": {
-                    "type": "checkbox",
-                    "sm": 6,
                     "md": 4,
-                    "lg": 2,
-                    "label": "history_allinOne",
-                    "newLine": false
+                    "lg": 3,
+                    "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
+                    "newLine": true
                 },
                 "history_LevelFilter": {
                     "type": "selectSendTo",
@@ -937,8 +953,8 @@
                     "manual": false,
                     "multiple": false,
                     "sm": 12,
-                    "md": 5,
-                    "lg": 4,
+                    "md": 4,
+                    "lg": 3,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -950,7 +966,7 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 4,
+                    "lg": 3,
                     "disabled": "$data.history_allinOne",
                     "label": "MessageAll",
                     "newLine": true
@@ -963,8 +979,114 @@
                     "multiple": false,
                     "sm": 12,
                     "md": 5,
-                    "lg": 4,
+                    "lg": 3,
                     "disabled": "$data.history_allinOne",
+                    "label": "MessageRemove",
+                    "newLine": true
+                }
+            }
+        },
+        "_email": {
+            "type": "panel",
+            "label": "email_panel",
+            "hidden": "!data.email_Enabled",
+            "items": {
+                "email_Adapter": {
+                    "type": "selectSendTo",
+                    "command": "notificationService",
+                    "jsonData": "{ \"service\": \"email\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "SelectNotificationService",
+                    "newLine": true
+                },
+                "email_DwdEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.dwdEnabled",
+                    "default": "none",
+                    "label": "dwdEnabled",
+                    "newLine": true
+                },
+                "email_UwzEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.uwzEnabled",
+                    "label": "uwzEnabled",
+                    "newLine": true
+                },
+                "email_ZamgEnabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!data.zamgEnabled",
+                    "label": "zamgEnabled",
+                    "newLine": true
+                },
+                "email_TypeFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"email\" }",
+                    "manual": false,
+                    "multiple": true,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
+                    "newLine": true
+                },
+                "email_LevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"email\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "LevelFilter",
+                    "newLine": true
+                },
+                "email_MessageNew": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"email\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "disabled": "$data.email_allinOne",
+                    "label": "MessageAll",
+                    "newLine": true
+                },
+                "email_line_break": {
+                    "type": "text",
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "email_line_break",
+                    "newLine": false
+                },
+                "email_MessageRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"email\"}",
+                    "manual": false,
+                    "multiple": false,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "disabled": "$data.email_allinOne",
                     "label": "MessageRemove",
                     "newLine": true
                 }

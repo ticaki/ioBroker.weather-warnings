@@ -230,7 +230,18 @@
         "history_Enabled": false,
         "history_MessageNew": "addedPush",
         "history_MessageRemove": "removePush",
-        "history_allinOne": false
+        "history_allinOne": false,
+        "email_Adapter": "none",
+        "email_line_break": "\n",
+        "email_DwdEnabled": true,
+        "email_UwzEnabled": true,
+        "email_ZamgEnabled": true,
+        "email_TypeFilter": [],
+        "email_LevelFilter": 0,
+        "email_Enabled": false,
+        "email_MessageNew": "addedPush",
+        "email_MessageRemove": "removePush",
+        "email_allinOne": false
     },
     "objects": [],
     "instanceObjects": []

@@ -164,5 +164,8 @@
     "MessageAll": "Seleccione la plantilla para usar con las advertencias existentes.",
     "history_Enabled": "Activar historial",
     "history_panel": "Historia",
-    "history_allinOne": "Escriba cada punto de datos formateado en el historial."
+    "history_allinOne": "Escriba cada punto de datos formateado en el historial.",
+    "email_line_break": "Salto de línea al final de cada mensaje de advertencia.",
+    "email_panel": "correo electrónico",
+    "test_diver": "Pruebas"
 }

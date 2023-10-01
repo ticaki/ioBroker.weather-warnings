@@ -164,5 +164,8 @@
     "MessageAll": "Seleziona il modello da utilizzare con gli avvisi esistenti.",
     "history_Enabled": "Attiva la cronologia",
     "history_panel": "Storia",
-    "history_allinOne": "Scrivi ogni punto dati formattato nella cronologia."
+    "history_allinOne": "Scrivi ogni punto dati formattato nella cronologia.",
+    "email_line_break": "Interruzione di riga alla fine di ogni messaggio di avviso.",
+    "email_panel": "e-mail",
+    "test_diver": "Test"
 }

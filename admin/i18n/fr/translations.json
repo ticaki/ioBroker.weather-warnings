@@ -164,5 +164,8 @@
     "MessageAll": "Sélectionnez le modèle à utiliser avec les avertissements existants.",
     "history_Enabled": "Activer l'historique",
     "history_panel": "Histoire",
-    "history_allinOne": "Écrivez chaque point de données formaté dans l'historique."
+    "history_allinOne": "Écrivez chaque point de données formaté dans l'historique.",
+    "email_line_break": "Saut de ligne à la fin de chaque message d’avertissement.",
+    "email_panel": "e-mail",
+    "test_diver": "Essai"
 }
