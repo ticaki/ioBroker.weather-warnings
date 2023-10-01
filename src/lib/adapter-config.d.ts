@@ -81,6 +81,7 @@ declare global {
             history_Enabled: boolean;
             history_MessageNew: string;
             history_MessageRemove: string;
+            history_allinOne: boolean;
         }
     }
 }

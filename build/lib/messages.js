@@ -347,7 +347,7 @@ class MessagesClass extends import_library.BaseClass {
         const o = import_messages_def.genericWarntyp[sortedWarntypes[t]];
         const s = this.provider.service;
         if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
-          this.genericType = Number(t);
+          this.genericType = sortedWarntypes[t];
           break;
         }
       }
@@ -572,6 +572,10 @@ class NotificationClass extends import_library.BaseClass {
           {
             if (action == "removeAll" || !messages.obj || !messages.obj.provider || !this.adapter.config.history_Enabled)
               return false;
+            let newMsg = msg;
+            if (this.adapter.config.history_allinOne) {
+              newMsg = JSON.stringify(messages.obj.formatedData);
+            }
             const targets = [messages.obj.provider.name, messages.obj.provider.providerController.name];
             for (const a in targets) {
               try {
@@ -580,7 +584,7 @@ class NotificationClass extends import_library.BaseClass {
                 let json = [];
                 if (state && state.val && typeof state.val == "string" && state.val != "")
                   json = JSON.parse(state.val);
-                json.unshift(JSON.parse(msg));
+                json.unshift(JSON.parse(newMsg));
                 json.splice(500);
                 await this.adapter.library.writedp(
                   dp,

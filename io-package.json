@@ -229,7 +229,8 @@
         "history_LevelFilter": 0,
         "history_Enabled": false,
         "history_MessageNew": "addedPush",
-        "history_MessageRemove": "removePush"
+        "history_MessageRemove": "removePush",
+        "history_allinOne": false
     },
     "objects": [],
     "instanceObjects": []

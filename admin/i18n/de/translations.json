@@ -163,5 +163,6 @@
     "json_parse": "Die Vorlage wurde in ein JSON-Format konvertiert.",
     "MessageAll": "Wählen Sie die Vorlage aus, die mit vorhandenen Warnungen verwendet werden soll.",
     "history_Enabled": "Verlauf aktivieren",
-    "history_panel": "Verlauf"
+    "history_panel": "Verlauf",
+    "history_allinOne": "Jeder formatierte Datenpunkt wird in den Verlauf geschrieben."
 }

@@ -163,5 +163,6 @@
     "zamgEnabled": "Activate ZAMG",
     "json_panel": "Json",
     "json_parse": "Converted the template to a Json.",
-    "history_panel": "History"
+    "history_panel": "History",
+    "history_allinOne": "Each formatted data point is written to the history."
 }

@@ -163,5 +163,6 @@
     "json_parse": "Convirtió la plantilla a un Json.",
     "MessageAll": "Seleccione la plantilla para usar con las advertencias existentes.",
     "history_Enabled": "Activar historial",
-    "history_panel": "Historia"
+    "history_panel": "Historia",
+    "history_allinOne": "Escriba cada punto de datos formateado en el historial."
 }

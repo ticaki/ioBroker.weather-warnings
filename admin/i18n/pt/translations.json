@@ -163,5 +163,6 @@
     "json_parse": "Converti o modelo em Json.",
     "MessageAll": "Selecione o modelo a ser usado com avisos existentes.",
     "history_Enabled": "Ativar histórico",
-    "history_panel": "História"
+    "history_panel": "História",
+    "history_allinOne": "Escreva cada ponto de dados formatado no histórico."
 }

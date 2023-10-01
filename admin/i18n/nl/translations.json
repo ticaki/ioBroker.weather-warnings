@@ -163,5 +163,6 @@
     "json_parse": "De sjabloon geconverteerd naar een Json.",
     "MessageAll": "Selecteer de sjabloon die u wilt gebruiken met bestaande waarschuwingen.",
     "history_Enabled": "Activeer geschiedenis",
-    "history_panel": "Geschiedenis"
+    "history_panel": "Geschiedenis",
+    "history_allinOne": "Schrijf elk opgemaakt gegevenspunt in de geschiedenis."
 }

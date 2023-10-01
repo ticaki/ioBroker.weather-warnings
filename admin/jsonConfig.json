@@ -922,6 +922,14 @@
                     "label": "TypeFilter",
                     "newLine": true
                 },
+                "history_allinOne": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "history_allinOne",
+                    "newLine": false
+                },
                 "history_LevelFilter": {
                     "type": "selectSendTo",
                     "command": "filterLevel",
@@ -943,6 +951,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "disabled": "$data.history_allinOne",
                     "label": "MessageAll",
                     "newLine": true
                 },
@@ -955,6 +964,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "disabled": "$data.history_allinOne",
                     "label": "MessageRemove",
                     "newLine": true
                 }

@@ -374,7 +374,7 @@ export class MessagesClass extends BaseClass {
                 const s = this.provider.service;
                 //@ts-expect-error keine ahnung o und s sind definiert
                 if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
-                    this.genericType = Number(t) as keyof genericWarntypeType;
+                    this.genericType = sortedWarntypes[t];
                     break;
                 }
             }
@@ -645,6 +645,10 @@ export class NotificationClass extends BaseClass {
                             !this.adapter.config.history_Enabled
                         )
                             return false;
+                        let newMsg = msg;
+                        if (this.adapter.config.history_allinOne) {
+                            newMsg = JSON.stringify(messages.obj.formatedData);
+                        }
                         const targets = [messages.obj.provider.name, messages.obj.provider.providerController.name];
                         for (const a in targets) {
                             try {
@@ -653,7 +657,7 @@ export class NotificationClass extends BaseClass {
                                 let json: object[] = [];
                                 if (state && state.val && typeof state.val == 'string' && state.val != '')
                                     json = JSON.parse(state.val);
-                                json.unshift(JSON.parse(msg));
+                                json.unshift(JSON.parse(newMsg));
                                 json.splice(500);
                                 await this.adapter.library.writedp(
                                     dp,

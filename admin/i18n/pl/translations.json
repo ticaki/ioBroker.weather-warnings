@@ -163,5 +163,6 @@
     "json_parse": "Przekonwertowano szablon na Json.",
     "MessageAll": "Wybierz szablon, który ma być używany z istniejącymi ostrzeżeniami.",
     "history_Enabled": "Aktywuj historię",
-    "history_panel": "Historia"
+    "history_panel": "Historia",
+    "history_allinOne": "Zapisz każdy sformatowany punkt danych w historii."
 }

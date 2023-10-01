@@ -163,5 +163,6 @@
     "json_parse": "将模板转换为 Json。",
     "MessageAll": "选择与现有警告一起使用的模板。",
     "history_Enabled": "激活历史记录",
-    "history_panel": "历史"
+    "history_panel": "历史",
+    "history_allinOne": "将每个格式化数据点写入历史记录中。"
 }
