@@ -557,14 +557,17 @@ export class NotificationClass extends BaseClass {
                 (this.options.filter.level === undefined || this.options.filter.level <= messages.obj.level) &&
                 this.options.filter.type.indexOf(String(messages.obj.type)) == -1)
         ) {
+            if (this.options.template[action] == 'none' || this.options.template[action] == '') return false;
             const msg = messages.msgs[this.options.template[action]];
+
+            if (msg == '') return false;
 
             switch (this.name as notificationServiceType) {
                 case 'telegram':
                     {
                         const opt = { text: msg, disable_notification: true };
                         this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
-                            this.log.debug(`send a message`);
+                            this.log.debug(`Send the message: ${msg}`);
                         });
                     }
                     break;
@@ -573,7 +576,7 @@ export class NotificationClass extends BaseClass {
                         const opt = { text: msg, disable_notification: true };
                         //newMsg.title = topic;newMsg.device
                         this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
-                            this.log.debug(`send a message`);
+                            this.log.debug(`Send the message: ${msg}`);
                         });
                     }
                     break;
@@ -583,7 +586,7 @@ export class NotificationClass extends BaseClass {
                         // obj.message.phone
                         const opt = { text: msg };
                         this.adapter.sendTo(service, 'send', opt, () => {
-                            this.log.debug(`send a message`);
+                            this.log.debug(`Send the message: ${msg}`);
                         });
                     }
                     break;
@@ -596,7 +599,7 @@ export class NotificationClass extends BaseClass {
     }
 }
 export class AllNotificationClass extends NotificationClass {
-    providerDB: { [key: string]: { starttime: number; msg: string }[] };
+    providerDB: { [key: string]: { starttime: number; msg: string | object }[] };
     constructor(adapter: WeatherWarnings, options: notificationServiceBaseType) {
         super(adapter, options);
         this.providerDB = {};
@@ -616,26 +619,41 @@ export class AllNotificationClass extends NotificationClass {
     ): Promise<boolean> {
         if (await super.sendNotifications(messages, action)) {
             const msg = messages.msgs[this.options.template[action]];
+
             switch (this.name as notificationServiceType) {
                 case 'json':
                     {
-                        if (messages.obj && messages.obj.provider) {
-                            if (
-                                this.providerDB[messages.obj.provider.name] === undefined ||
-                                !Array.isArray(this.providerDB[messages.obj.provider.name])
-                            ) {
-                                this.providerDB[messages.obj.provider.name] = [];
-                            }
-                            this.providerDB[messages.obj.provider.name].push({
-                                starttime: messages.obj.starttime,
-                                msg: msg,
-                            });
-                        } else {
-                            if (action == 'removeAll') {
-                                for (const p in this.providerDB) {
-                                    this.providerDB[p] = [{ starttime: 1, msg: msg }];
+                        try {
+                            const json = this.adapter.config.json_parse ? JSON.parse(msg) : msg;
+                            if (messages.obj && messages.obj.provider) {
+                                if (
+                                    this.providerDB[messages.obj.provider.name] === undefined ||
+                                    !Array.isArray(this.providerDB[messages.obj.provider.name])
+                                ) {
+                                    this.providerDB[messages.obj.provider.name] = [];
                                 }
+                                this.log.debug(
+                                    `sendNotifications(1): from: ${messages.obj.provider.name}, message:${msg}`,
+                                );
+
+                                this.providerDB[messages.obj.provider.name].push({
+                                    starttime: messages.obj.starttime,
+                                    msg: json,
+                                });
+                            } else {
+                                if (action == 'removeAll') {
+                                    for (const p in this.providerDB) {
+                                        this.providerDB[p] = [{ starttime: 1, msg: json }];
+                                    }
+                                }
+                                this.log.debug('sendNotifications(2): removeAll: ' + msg);
                             }
+                        } catch (error) {
+                            this.log.error(
+                                `Json template has wrong formate. Conversion deactivated! template: ${this.options.template[action]}, message: ${msg}`,
+                            );
+                            this.adapter.config.json_parse = false;
+                            return false;
                         }
                     }
                     break;
@@ -645,7 +663,7 @@ export class AllNotificationClass extends NotificationClass {
         return false;
     }
     async writeNotifications(msg: string = ''): Promise<void> {
-        let all: { starttime: number; msg: string }[] = [];
+        let all: { starttime: number; msg: string | object }[] = [];
         for (const name in this.providerDB) {
             all = all.concat(this.providerDB[name]);
             const prefix = name + '.activeWarnings_json';

@@ -159,5 +159,7 @@
     "whatsapp_Enabled": "Activer WhatsApp",
     "zamgEnabled": "Activer ZAMG",
     "json_Enabled": "Activer la sortie json-array",
-    "json_panel": "Json"
+    "json_panel": "Json",
+    "json_parse": "Conversion du modèle en Json.",
+    "MessageAll": "Sélectionnez le modèle à utiliser avec les avertissements existants."
 }

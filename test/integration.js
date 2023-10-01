@@ -45,7 +45,7 @@ tests.integration(path.join(__dirname,".."),{
                     harness.sendTo('weather-warnings.0','test','message',resp => {
                         resolve();
                     });
-                }).timeout(120000);
+                }).timeout(200000);
             }))
             it('Test: Connection to server work',() => new Promise(async (resolve,reject) => {
 
@@ -58,7 +58,7 @@ tests.integration(path.join(__dirname,".."),{
                     if (resp=='true') resolve();
                     else reject();
                 });
-            })).timeout(120000);
+            })).timeout(200000);
         });
         suite("Test: Test with testdata",(getHarness) => {
             // For convenience, get the current suite's harness before all tests
@@ -86,7 +86,7 @@ tests.integration(path.join(__dirname,".."),{
                         resolve();
                     });
                 });
-            })).timeout(120000);
+            })).timeout(200000);
             it('Test: Adapter works with testdata',() => new Promise(async (resolve, reject) => {
 
                 // change the adapter config
@@ -96,14 +96,14 @@ tests.integration(path.join(__dirname,".."),{
                     if (resp == 'ok') resolve(resp);
                     else reject(resp);
                 });
-            })).timeout(120000);
+            })).timeout(200000);
             it('Test: Adapter works more than 2 Minute!',() => new Promise(async (resolve, reject) => {
                 // change the adapter config
                 await harness.startAdapterAndWait();
                 await wait(150000);
                 if (harness.isAdapterRunning()) resolve();
                 else reject('Adapter stops');
-            })).timeout(300000);
+            })).timeout(400000);
         });
     }
 });

@@ -2,6 +2,7 @@
     "LevelFilter": "Warnings with lower levels are filtered out of the notifications.",
     "MessageAllRemove": "Select the template to use with no warnings.",
     "MessageNew": "Select the template to use with new warnings.",
+    "MessageAll": "Select the template to use with exist warnings.",
     "MessageRemove": "Select the template to use with removed warnings.",
     "SelectNotificationService": "Select adapter instance.",
     "TypeFilter": "The following warning types are filtered out of the notifications.",
@@ -159,5 +160,6 @@
     "weather-warnings adapter settings": "Adapter settings for weather-warnings",
     "whatsapp_Enabled": "Activate whatsapp",
     "zamgEnabled": "Activate ZAMG",
-    "json_panel": "Json"
+    "json_panel": "Json",
+    "json_parse": "Converted the template to a Json."
 }

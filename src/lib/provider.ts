@@ -194,7 +194,9 @@ class BaseProvider extends BaseClass {
             const objDef = await this.library.getObjectDefFromJson(`info.testMode`, genericStateObjects);
             this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
             if (this.adapter.config.useTestWarnings) {
-                return this.library.cloneGenericObject(getTestData(this.service) as object) as DataImportType;
+                return this.library.cloneGenericObject(
+                    getTestData(this.service, this.adapter) as object,
+                ) as DataImportType;
             } else {
                 const result = await axios.get(this.url);
                 if (result.status == 200) {
@@ -259,6 +261,7 @@ class BaseProvider extends BaseClass {
         for (let m = 0; m < this.messages.length; m++) {
             if (this.messages[m].notDeleted == false) {
                 if (moreWarnings) removeMessages.push(this.messages[Number(m)]);
+                this.log.debug('Remove a warning from db.');
                 this.messages.splice(Number(m--), 1);
             } else {
                 await this.messages[m].sendMessage('new');
@@ -316,7 +319,7 @@ export class DWDProvider extends BaseProvider {
         const result = (await this.getDataFromProvider()) as dataImportDwdType;
         if (!result) return;
         //this.log.debug(JSON.stringify(result));
-        this.log.debug(`Got ${result.totalFeatures} warnings from server`);
+        this.log.debug(`Got ${result.features.length} warnings from server`);
         result.features.sort((a, b) => {
             return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
         });
@@ -365,6 +368,7 @@ export class DWDProvider extends BaseProvider {
                         ) {
                             msg.silentUpdate();
                         }
+                        this.log.debug('Remove a warning from db.(Update)');
                         this.messages[m2].delete();
                         this.messages.splice(Number(m2--), 1);
                         m--;

@@ -159,5 +159,7 @@
     "whatsapp_Enabled": "激活 Whatsapp",
     "zamgEnabled": "激活ZAMG",
     "json_Enabled": "激活 json-array-output",
-    "json_panel": "杰森"
+    "json_panel": "杰森",
+    "json_parse": "将模板转换为 Json。",
+    "MessageAll": "选择与现有警告一起使用的模板。"
 }

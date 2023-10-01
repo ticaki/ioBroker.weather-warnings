@@ -153,7 +153,9 @@ class BaseProvider extends import_library.BaseClass {
       const objDef = await this.library.getObjectDefFromJson(`info.testMode`, import_definitionen.genericStateObjects);
       this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
       if (this.adapter.config.useTestWarnings) {
-        return this.library.cloneGenericObject((0, import_test_warnings.getTestData)(this.service));
+        return this.library.cloneGenericObject(
+          (0, import_test_warnings.getTestData)(this.service, this.adapter)
+        );
       } else {
         const result = await import_axios.default.get(this.url);
         if (result.status == 200) {
@@ -208,6 +210,7 @@ class BaseProvider extends import_library.BaseClass {
       if (this.messages[m].notDeleted == false) {
         if (moreWarnings)
           removeMessages.push(this.messages[Number(m)]);
+        this.log.debug("Remove a warning from db.");
         this.messages.splice(Number(m--), 1);
       } else {
         await this.messages[m].sendMessage("new");
@@ -251,7 +254,7 @@ class DWDProvider extends BaseProvider {
     const result = await this.getDataFromProvider();
     if (!result)
       return;
-    this.log.debug(`Got ${result.totalFeatures} warnings from server`);
+    this.log.debug(`Got ${result.features.length} warnings from server`);
     result.features.sort((a, b) => {
       return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
     });
@@ -292,6 +295,7 @@ class DWDProvider extends BaseProvider {
             if (delMsg.formatedData.warnlevelnumber !== void 0 && formatedData.warnlevelnumber !== void 0 && delMsg.formatedData.warnlevelnumber <= formatedData.warnlevelnumber) {
               msg.silentUpdate();
             }
+            this.log.debug("Remove a warning from db.(Update)");
             this.messages[m2].delete();
             this.messages.splice(Number(m2--), 1);
             m--;

@@ -333,7 +333,7 @@ const testData = {
     type: "Feature"
   }
 };
-function getTestData(service) {
+function getTestData(service, _that) {
   const result = JSON.parse(JSON.stringify(testData));
   if (service == "dwdService") {
     for (const i in testData.dwdService.features) {

@@ -797,6 +797,15 @@
                     "label": "dwdEnabled",
                     "newLine": true
                 },
+                "json_parse": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "default": "none",
+                    "label": "json_parse",
+                    "newLine": false
+                },
                 "json_UwzEnabled": {
                     "type": "checkbox",
                     "sm": 6,
@@ -853,10 +862,10 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
-                    "label": "MessageNew",
+                    "label": "MessageAll",
                     "newLine": true
                 },
-                "json_MessageRemove": {
+                /*"json_MessageRemove": {
                     "type": "selectSendTo",
                     "command": "Messages",
                     "jsonData": "{ \"service\": \"json\"}",
@@ -868,7 +877,7 @@
                     "lg": 4,
                     "label": "MessageRemove",
                     "newLine": true
-                },
+                },*/
                 "json_MessageAllRemove": {
                     "type": "selectSendTo",
                     "command": "Messages",

@@ -67,6 +67,7 @@ declare global {
             json_MessageNew: string;
             json_MessageRemove: string;
             json_MessageAllRemove: string;
+            json_parse: boolean;
         }
     }
 }

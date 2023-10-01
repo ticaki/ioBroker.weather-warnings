@@ -508,13 +508,17 @@ class NotificationClass extends import_library.BaseClass {
   }
   async sendNotifications(messages, action) {
     if (!messages.obj || !messages.obj.provider || this.options.service.indexOf(messages.obj.provider.service) != -1 && (this.options.filter.level === void 0 || this.options.filter.level <= messages.obj.level) && this.options.filter.type.indexOf(String(messages.obj.type)) == -1) {
+      if (this.options.template[action] == "none" || this.options.template[action] == "")
+        return false;
       const msg = messages.msgs[this.options.template[action]];
+      if (msg == "")
+        return false;
       switch (this.name) {
         case "telegram":
           {
             const opt = { text: msg, disable_notification: true };
             this.adapter.sendTo(this.options.adapter, "send", opt, () => {
-              this.log.debug(`send a message`);
+              this.log.debug(`Send the message: ${msg}`);
             });
           }
           break;
@@ -522,7 +526,7 @@ class NotificationClass extends import_library.BaseClass {
           {
             const opt = { text: msg, disable_notification: true };
             this.adapter.sendTo(this.options.adapter, "send", opt, () => {
-              this.log.debug(`send a message`);
+              this.log.debug(`Send the message: ${msg}`);
             });
           }
           break;
@@ -531,7 +535,7 @@ class NotificationClass extends import_library.BaseClass {
             const service = this.options.adapter.replace("whatsapp", "whatsapp-cmb");
             const opt = { text: msg };
             this.adapter.sendTo(service, "send", opt, () => {
-              this.log.debug(`send a message`);
+              this.log.debug(`Send the message: ${msg}`);
             });
           }
           break;
@@ -562,20 +566,33 @@ class AllNotificationClass extends NotificationClass {
       switch (this.name) {
         case "json":
           {
-            if (messages.obj && messages.obj.provider) {
-              if (this.providerDB[messages.obj.provider.name] === void 0 || !Array.isArray(this.providerDB[messages.obj.provider.name])) {
-                this.providerDB[messages.obj.provider.name] = [];
-              }
-              this.providerDB[messages.obj.provider.name].push({
-                starttime: messages.obj.starttime,
-                msg
-              });
-            } else {
-              if (action == "removeAll") {
-                for (const p in this.providerDB) {
-                  this.providerDB[p] = [{ starttime: 1, msg }];
+            try {
+              const json = this.adapter.config.json_parse ? JSON.parse(msg) : msg;
+              if (messages.obj && messages.obj.provider) {
+                if (this.providerDB[messages.obj.provider.name] === void 0 || !Array.isArray(this.providerDB[messages.obj.provider.name])) {
+                  this.providerDB[messages.obj.provider.name] = [];
                 }
+                this.log.debug(
+                  `sendNotifications(1): from: ${messages.obj.provider.name}, message:${msg}`
+                );
+                this.providerDB[messages.obj.provider.name].push({
+                  starttime: messages.obj.starttime,
+                  msg: json
+                });
+              } else {
+                if (action == "removeAll") {
+                  for (const p in this.providerDB) {
+                    this.providerDB[p] = [{ starttime: 1, msg: json }];
+                  }
+                }
+                this.log.debug("sendNotifications(2): removeAll: " + msg);
               }
+            } catch (error) {
+              this.log.error(
+                `Json template has wrong formate. Conversion deactivated! template: ${this.options.template[action]}, message: ${msg}`
+              );
+              this.adapter.config.json_parse = false;
+              return false;
             }
           }
           break;

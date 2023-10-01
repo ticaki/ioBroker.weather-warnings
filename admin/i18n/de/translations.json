@@ -159,5 +159,7 @@
     "whatsapp_Enabled": "WhatsApp aktivieren",
     "zamgEnabled": "ZAMG aktivieren",
     "json_Enabled": "Aktivieren Sie die JSON-Array-Ausgabe",
-    "json_panel": "Json"
+    "json_panel": "Json",
+    "json_parse": "Die Vorlage wurde in ein JSON-Format konvertiert.",
+    "MessageAll": "Wählen Sie die Vorlage aus, die mit vorhandenen Warnungen verwendet werden soll."
 }

@@ -159,5 +159,7 @@
     "whatsapp_Enabled": "Активуйте WhatsApp",
     "zamgEnabled": "Активуйте ZAMG",
     "json_Enabled": "Активуйте json-array-output",
-    "json_panel": "Json"
+    "json_panel": "Json",
+    "json_parse": "Перетворив шаблон на Json.",
+    "MessageAll": "Виберіть шаблон для використання з існуючими попередженнями."
 }

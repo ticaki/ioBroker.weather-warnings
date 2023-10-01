@@ -159,5 +159,7 @@
     "whatsapp_Enabled": "activar whatsapp",
     "zamgEnabled": "Activar ZAMG",
     "json_Enabled": "Activar json-array-output",
-    "json_panel": "json"
+    "json_panel": "json",
+    "json_parse": "Convirtió la plantilla a un Json.",
+    "MessageAll": "Seleccione la plantilla para usar con las advertencias existentes."
 }

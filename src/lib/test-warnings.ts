@@ -1,3 +1,4 @@
+import WeatherWarnings from '../main';
 import { DataImportType } from './def/provider-def';
 
 export function useTestData(): boolean {
@@ -323,7 +324,7 @@ const testData = {
         type: 'Feature',
     },
 };
-export function getTestData(service: string): DataImportType {
+export function getTestData(service: string, _that: WeatherWarnings): DataImportType {
     const result = JSON.parse(JSON.stringify(testData));
     if (service == 'dwdService') {
         for (const i in testData.dwdService.features) {
