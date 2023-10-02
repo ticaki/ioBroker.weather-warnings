@@ -111,6 +111,12 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.2.6-alpha.0 (2023-10-02)
+* (ticaki) added email, json, history
+* add more template key
+* add mulitple dwd warncells
+* fixed alot bugs
+
 ### 0.2.5-alpha.0 (2023-09-30)
 * (ticaki) added telegram, whatsapp, pushover
 * added remove all
