@@ -72,6 +72,7 @@ class BaseProvider extends import_library.BaseClass {
     const temp = this.library.cloneGenericObject(import_definitionen.genericStateObjects.channel);
     temp.common.name = this.customName;
     await this.library.writedp(`${this.name}`, void 0, temp);
+    await this.adapter.extendObjectAsync(`${this.name}`, { common: { name: this.customName } });
     await this.library.writedp(`${this.name}.info`, void 0, import_definitionen.genericStateObjects.info._channel);
     await this.library.writedp(`${this.name}.messages`, void 0, import_definitionen.genericStateObjects.messageStates._channel);
     await this.library.writedp(`${this.name}.formatedKeys`, void 0, import_definitionen.genericStateObjects.formatedKeysDevice);

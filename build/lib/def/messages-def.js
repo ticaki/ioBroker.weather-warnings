@@ -19,6 +19,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var messages_def_exports = {};
 __export(messages_def_exports, {
   color: () => color,
+  customFormatedTokensJson: () => customFormatedTokensJson,
   dwdLevel: () => dwdLevel,
   genericWarntyp: () => genericWarntyp,
   genericWarntypState: () => genericWarntypState,
@@ -28,6 +29,29 @@ __export(messages_def_exports, {
   warnTypeName: () => warnTypeName
 });
 module.exports = __toCommonJS(messages_def_exports);
+const customFormatedTokensJson = {
+  starttime: "",
+  startdate: "",
+  endtime: "",
+  enddate: "",
+  startdayofweek: "",
+  enddayofweek: "",
+  headline: "",
+  description: "",
+  weathertext: "",
+  ceiling: "",
+  altitude: "",
+  warnlevelname: "",
+  warnlevelnumber: "",
+  warnlevelcolorname: "",
+  warnlevelcolorhex: "",
+  warntypename: "",
+  warntypegenericname: "",
+  location: "",
+  instruction: "",
+  provider: "",
+  locationcustom: ""
+};
 const textLevels = {
   textGeneric: {
     "0": {
@@ -1318,6 +1342,7 @@ const dwdLevel = { minor: 1, moderate: 2, severe: 3, extreme: 4 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   color,
+  customFormatedTokensJson,
   dwdLevel,
   genericWarntyp,
   genericWarntypState,

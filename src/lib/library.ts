@@ -2,7 +2,13 @@ import jsonata from 'jsonata';
 import { genericStateObjects, statesObjectsWarningsType } from './def/definitionen';
 import WeatherWarnings from '../main';
 
-import { genericWarntyp, genericWarntypeType, textLevels, warnTypeName } from './def/messages-def';
+import {
+    customFormatedTokensJson,
+    genericWarntyp,
+    genericWarntypeType,
+    textLevels,
+    warnTypeName,
+} from './def/messages-def';
 import { geti18nTranslation, seti18nTranslation, writei18nTranslation } from './translations';
 
 // only change this for other adapters
@@ -445,6 +451,20 @@ export class Library extends BaseClass {
                 } else {
                     //@ts-expect-error faulheit
                     seti18nTranslation(key, textLevels[l][l2]);
+                }
+            }
+        }
+        for (const l in customFormatedTokensJson) {
+            const key = 'customFormatedTokensJson.' + l;
+            const translation = geti18nTranslation(key);
+            //@ts-expect-error faulheit
+            if (customFormatedTokensJson[l] !== '') {
+                if (translation != '' && typeof translation == 'object' && translation.en !== '') {
+                    //@ts-expect-error faulheit
+                    customFormatedTokensJson[l] = translation as ioBroker.StringOrTranslated;
+                } else {
+                    //@ts-expect-error faulheit
+                    seti18nTranslation(key, customFormatedTokensJson[l]);
                 }
             }
         }

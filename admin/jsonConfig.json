@@ -470,6 +470,18 @@
                             "default": ""
                         }
                     ]
+                },
+                "templateHelp": {
+                    "type": "textSendTo",
+                    "command": "templateHelp",
+                    "minRows": 2,
+                    "maxRows": 30,
+                    "text": "",
+                    "jsonData": "{ \"service\": \"${data.templateHelp}\" }",
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "newLine": true
                 }
             }
         },

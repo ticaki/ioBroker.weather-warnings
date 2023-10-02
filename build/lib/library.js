@@ -384,6 +384,17 @@ class Library extends BaseClass {
         }
       }
     }
+    for (const l in import_messages_def.customFormatedTokensJson) {
+      const key = "customFormatedTokensJson." + l;
+      const translation = (0, import_translations.geti18nTranslation)(key);
+      if (import_messages_def.customFormatedTokensJson[l] !== "") {
+        if (translation != "" && typeof translation == "object" && translation.en !== "") {
+          import_messages_def.customFormatedTokensJson[l] = translation;
+        } else {
+          (0, import_translations.seti18nTranslation)(key, import_messages_def.customFormatedTokensJson[l]);
+        }
+      }
+    }
     await (0, import_translations.writei18nTranslation)();
   }
 }

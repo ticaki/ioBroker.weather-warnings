@@ -76,6 +76,7 @@ class BaseProvider extends BaseClass {
         const temp = this.library.cloneGenericObject(genericStateObjects.channel) as ioBroker.ChannelObject;
         temp.common.name = this.customName;
         await this.library.writedp(`${this.name}`, undefined, temp);
+        await this.adapter.extendObjectAsync(`${this.name}`, { common: { name: this.customName } });
 
         await this.library.writedp(`${this.name}.info`, undefined, genericStateObjects.info._channel);
         await this.library.writedp(`${this.name}.messages`, undefined, genericStateObjects.messageStates._channel);

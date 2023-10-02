@@ -84,14 +84,11 @@ function seti18nTranslation(key, val) {
 async function writei18nTranslation() {
   return;
   if (await import_fs.default.existsSync("./.dev-data")) {
-    if (!await import_fs.default.existsSync("./.dev-data/i18n"))
-      await import_fs.default.mkdirSync("./.dev-data/i18n");
-    if (!await import_fs.default.existsSync("./.dev-data/i18n/en"))
-      await import_fs.default.mkdirSync("./.dev-data/i18n/en");
-    if (!await import_fs.default.existsSync("./.dev-data/i18n/de"))
-      await import_fs.default.mkdirSync("./.dev-data/i18n/de");
-    await import_fs.default.writeFileSync("./.dev-data/i18n/en/translations.json", JSON.stringify(allTranslations.en));
-    await import_fs.default.writeFileSync("./.dev-data/i18n/de/translations.json", JSON.stringify(allTranslations.de));
+    if (!await import_fs.default.existsSync("./admin/i18n"))
+      await import_fs.default.mkdirSync("./admin/i18n");
+    if (!await import_fs.default.existsSync("./admin/i18n/en"))
+      await import_fs.default.mkdirSync("./admin/i18n/en");
+    await import_fs.default.writeFileSync("./admin/i18n/en/translations.json", JSON.stringify(allTranslations.en));
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

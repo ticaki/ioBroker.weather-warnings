@@ -25,6 +25,7 @@ type allTranslationsType = {
     uk: { [key: string]: string };
     'zh-cn': { [key: string]: string };
 };
+
 type translationsType = {
     de?: string;
     en?: string;
@@ -82,10 +83,11 @@ export function seti18nTranslation(key: string, val: string | { [key: string]: s
 export async function writei18nTranslation(): Promise<void> {
     return;
     if (await _fs.existsSync('./.dev-data')) {
-        if (!(await _fs.existsSync('./.dev-data/i18n'))) await _fs.mkdirSync('./.dev-data/i18n');
-        if (!(await _fs.existsSync('./.dev-data/i18n/en'))) await _fs.mkdirSync('./.dev-data/i18n/en');
-        if (!(await _fs.existsSync('./.dev-data/i18n/de'))) await _fs.mkdirSync('./.dev-data/i18n/de');
-        await _fs.writeFileSync('./.dev-data/i18n/en/translations.json', JSON.stringify(allTranslations.en));
-        await _fs.writeFileSync('./.dev-data/i18n/de/translations.json', JSON.stringify(allTranslations.de));
+        // only use it on my iobroker dev-server
+        if (!(await _fs.existsSync('./admin/i18n'))) await _fs.mkdirSync('./admin/i18n');
+        if (!(await _fs.existsSync('./admin/i18n/en'))) await _fs.mkdirSync('./admin/i18n/en');
+        //if (!(await _fs.existsSync('./admin/i18n/de'))) await _fs.mkdirSync('./admin/i18n/de');
+        await _fs.writeFileSync('./admin/i18n/en/translations.json', JSON.stringify(allTranslations.en));
+        //await _fs.writeFileSync('./admin/i18n/de/translations.json', JSON.stringify(allTranslations.de));
     }
 }

@@ -381,6 +381,18 @@ class WeatherWarnings extends utils.Adapter {
             }
           }
           break;
+        case "templateHelp":
+          if (obj.callback) {
+            let reply = "Tokens: ";
+            for (const a in import_messages_def.customFormatedTokensJson) {
+              reply += "${" + a + "}: " + (await this.library.getTranslation(
+                import_messages_def.customFormatedTokensJson[a]
+              ) + " - / - ");
+            }
+            reply = reply.slice(0, -7);
+            this.sendTo(obj.from, obj.command, reply, obj.callback);
+          }
+          break;
         case "filterLevel":
           if (obj.callback) {
             const reply = [];

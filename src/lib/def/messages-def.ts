@@ -5,7 +5,7 @@ import { customChannelType } from './definitionen';
  * Erste Buchstabe großgeschrieben erzeugt auch im Ergebnis, das der erste Buchstabe großgeschrieben ist.
  * Ist der letzte Buchstabe großgeschrieben, wird die komplette Zeichenkette in Großbuchstaben umgewandelt.
  */
-type customFormatedTokens = {
+export type customFormatedTokens = {
     starttime: string; // Start Uhrzeit HH:MM
     startdate: string; // Start Datum DD.MM
     endtime: string; // Endzeitpunkt
@@ -27,6 +27,30 @@ type customFormatedTokens = {
     instruction: string; // Anweisungen
     provider: string;
     locationcustom: string;
+};
+
+export const customFormatedTokensJson: customFormatedTokens = {
+    starttime: '', // Start Uhrzeit HH:MM
+    startdate: '', // Start Datum DD.MM
+    endtime: '', // Endzeitpunkt
+    enddate: '', // Enddatum
+    startdayofweek: '', // Start Tag der Woche
+    enddayofweek: '', // End Tag der Woche
+    headline: '', // Schlagzeile
+    description: '', // Beschreibung
+    weathertext: '', // nur Zamg wetterbeschreibender Text
+    ceiling: '', // max höhe
+    altitude: '', // min höhe
+    warnlevelname: '', // Textbezeichnung des Levels
+    warnlevelnumber: '', // Levelhöhe
+    warnlevelcolorname: '', // Farbbezeichnung des Levels
+    warnlevelcolorhex: '', // RGB im Hexformat
+    warntypename: '', // gelieferter Warntype
+    warntypegenericname: '', // vereinheitlichter Warntyp
+    location: '', // gelieferte Location (meinst Unsinn)
+    instruction: '', // Anweisungen
+    provider: '',
+    locationcustom: '',
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;

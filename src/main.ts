@@ -11,7 +11,13 @@ import 'source-map-support/register';
 import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { DIV, ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
-import { genericWarntyp, genericWarntypeType, textLevels } from './lib/def/messages-def';
+import {
+    customFormatedTokens,
+    customFormatedTokensJson,
+    genericWarntyp,
+    genericWarntypeType,
+    textLevels,
+} from './lib/def/messages-def';
 import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
 import {
     notificationServiceArray,
@@ -403,6 +409,25 @@ class WeatherWarnings extends utils.Adapter {
                             this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                             this.sendTo(obj.from, obj.command, reply, obj.callback);
                         }
+                    }
+                    break;
+                case 'templateHelp':
+                    if (obj.callback) {
+                        let reply = 'Tokens: ';
+
+                        for (const a in customFormatedTokensJson) {
+                            reply +=
+                                '${' +
+                                a +
+                                '}: ' +
+                                ((await this.library.getTranslation(
+                                    customFormatedTokensJson[a as keyof customFormatedTokens],
+                                )) +
+                                    ' - / - ');
+                        }
+                        reply = reply.slice(0, -7);
+                        //this.log.debug(obj.command + ': ' + JSON.stringify(reply));
+                        this.sendTo(obj.from, obj.command, reply, obj.callback);
                     }
                     break;
                 case 'filterLevel':
