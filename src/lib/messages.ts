@@ -634,7 +634,7 @@ export class NotificationClass extends BaseClass {
                     break;
                 case 'pushover':
                     {
-                        const opt = { text: msg, disable_notification: true };
+                        const opt = { message: msg, disable_notification: true };
                         //newMsg.title = topic;newMsg.device
                         if (action !== 'remove' || activeWarnings)
                             this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
