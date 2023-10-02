@@ -167,5 +167,7 @@
     "history_allinOne": "Écrivez chaque point de données formaté dans l'historique.",
     "email_line_break": "Saut de ligne à la fin de chaque message d’avertissement.",
     "email_panel": "e-mail",
-    "test_diver": "Essai"
+    "test_diver": "Essai",
+    "dwdCityname": "Nom du lieu",
+    "dwdCitynameTip": "Ce nom de lieu est disponible dans le modèle."
 }

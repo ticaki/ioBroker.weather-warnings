@@ -139,7 +139,7 @@
         ]
     },
     "native": {
-        "dwdSelectId": "",
+        "dwdwarncellTable": [],
         "zamgSelectID": "",
         "uwzSelectID": "",
         "useTestWarnings": false,

@@ -167,5 +167,7 @@
     "history_allinOne": "Scrivi ogni punto dati formattato nella cronologia.",
     "email_line_break": "Interruzione di riga alla fine di ogni messaggio di avviso.",
     "email_panel": "e-mail",
-    "test_diver": "Test"
+    "test_diver": "Test",
+    "dwdCityname": "Nome del luogo",
+    "dwdCitynameTip": "Questo nome di luogo è disponibile nel modello."
 }

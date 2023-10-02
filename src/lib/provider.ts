@@ -39,6 +39,7 @@ type BaseProviderOptionsType = {
     providerController: ProviderController;
     language: string;
     filter: messageFilterType;
+    customName: string;
 };
 
 /** Base class for every provider */
@@ -51,21 +52,29 @@ class BaseProvider extends BaseClass {
     messages: MessagesClass[] = [];
     providerController: ProviderController;
     filter: messageFilterType;
-
+    customName: string = '';
     constructor(adapter: WeatherWarnings, options: ProvideOptionsTypeInternal, name: string) {
-        super(adapter, 'provider.' + name);
+        super(adapter, 'provider.' + `${name}.${options.warncellId}`);
         this.service = options.service;
         this.library = this.adapter.library;
         this.providerController = options.providerController;
         this.setService(options.service);
-        this.log.setLogPrefix(`${name}-${options.warncellId}`);
+        this.log.setLogPrefix(`${name}.${options.warncellId}`);
         this.filter = options.filter;
+        this.customName = options.customName;
+        const temp = this.library.cloneGenericObject(genericStateObjects.channel) as ioBroker.ChannelObject;
+        temp.common.name = name.toUpperCase();
+        this.library.writedp('provider.' + name, undefined, temp);
         this.init();
     }
     async init(): Promise<void> {
-        this.library.writedp(`${this.name}.info`, undefined, genericStateObjects.info._channel);
-        this.library.writedp(`${this.name}.messages`, undefined, genericStateObjects.messageStates._channel);
-        this.library.writedp(`${this.name}.formatedKeys`, undefined, genericStateObjects.formatedKeysDevice);
+        const temp = this.library.cloneGenericObject(genericStateObjects.channel) as ioBroker.ChannelObject;
+        temp.common.name = this.customName;
+        await this.library.writedp(`${this.name}`, undefined, temp);
+
+        await this.library.writedp(`${this.name}.info`, undefined, genericStateObjects.info._channel);
+        await this.library.writedp(`${this.name}.messages`, undefined, genericStateObjects.messageStates._channel);
+        await this.library.writedp(`${this.name}.formatedKeys`, undefined, genericStateObjects.formatedKeysDevice);
 
         this.setConnected(false);
     }

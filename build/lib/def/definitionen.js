@@ -171,6 +171,14 @@ const genericStateObjects = {
       write: false
     },
     native: {}
+  },
+  channel: {
+    _id: "info",
+    type: "channel",
+    common: {
+      name: ""
+    },
+    native: {}
   }
 };
 const statesObjectsWarnings = {
@@ -1650,6 +1658,18 @@ const statesObjectsWarnings = {
         type: "state",
         common: {
           name: "Data provider",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      locationcustom: {
+        _id: "locationcustom",
+        type: "state",
+        common: {
+          name: "User location from configuration.",
           type: "string",
           role: "text",
           read: true,

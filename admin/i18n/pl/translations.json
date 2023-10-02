@@ -167,5 +167,7 @@
     "history_allinOne": "Zapisz każdy sformatowany punkt danych w historii.",
     "email_line_break": "Podział wiersza na końcu każdego komunikatu ostrzegawczego.",
     "email_panel": "e-mail",
-    "test_diver": "Testowanie"
+    "test_diver": "Testowanie",
+    "dwdCityname": "Nazwa miejsca",
+    "dwdCitynameTip": "Ta nazwa miejsca jest dostępna w szablonie."
 }

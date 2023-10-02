@@ -47,20 +47,28 @@ class BaseProvider extends import_library.BaseClass {
   messages = [];
   providerController;
   filter;
+  customName = "";
   constructor(adapter, options, name) {
-    super(adapter, "provider." + name);
+    super(adapter, `provider.${name}.${options.warncellId}`);
     this.service = options.service;
     this.library = this.adapter.library;
     this.providerController = options.providerController;
     this.setService(options.service);
-    this.log.setLogPrefix(`${name}-${options.warncellId}`);
+    this.log.setLogPrefix(`${name}.${options.warncellId}`);
     this.filter = options.filter;
+    this.customName = options.customName;
+    const temp = this.library.cloneGenericObject(import_definitionen.genericStateObjects.channel);
+    temp.common.name = name.toUpperCase();
+    this.library.writedp("provider." + name, void 0, temp);
     this.init();
   }
   async init() {
-    this.library.writedp(`${this.name}.info`, void 0, import_definitionen.genericStateObjects.info._channel);
-    this.library.writedp(`${this.name}.messages`, void 0, import_definitionen.genericStateObjects.messageStates._channel);
-    this.library.writedp(`${this.name}.formatedKeys`, void 0, import_definitionen.genericStateObjects.formatedKeysDevice);
+    const temp = this.library.cloneGenericObject(import_definitionen.genericStateObjects.channel);
+    temp.common.name = this.customName;
+    await this.library.writedp(`${this.name}`, void 0, temp);
+    await this.library.writedp(`${this.name}.info`, void 0, import_definitionen.genericStateObjects.info._channel);
+    await this.library.writedp(`${this.name}.messages`, void 0, import_definitionen.genericStateObjects.messageStates._channel);
+    await this.library.writedp(`${this.name}.formatedKeys`, void 0, import_definitionen.genericStateObjects.formatedKeysDevice);
     this.setConnected(false);
   }
   delete() {

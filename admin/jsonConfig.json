@@ -109,22 +109,44 @@
             "label": "DWD",
             "hidden": "!data.dwdEnabled",
             "items": {
-                "dwdSelectId": {
-                    "type": "autocompleteSendTo",
-                    "command": "dwd.name",
-                    "jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
-                    "freeSolo": false,
-                    "alsoDependsOn": [
-                        "dwdSelectId"
-                    ],
-                    "label": "dwdSelectId",
+                "dwdwarncellTable": {
+                    "type": "table",
+                    "newLine": true,
                     "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "newLine": true
+                    "md": 8,
+                    "lg": 6,
+                    "label": "dwdSelectId",
+                    "uniqueColumns": ["dwdSelectId"],                 
+                    "items": [
+                        {
+                            "attr": "dwdSelectId",
+                            "type": "autocompleteSendTo",
+                            "command": "dwd.name",
+                            "jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
+                            "alsoDependsOn": [
+                                "dwdSelectId"
+                            ],
+                            "freeSolo": false,
+                            "default": "",
+                            "width": "50% ",
+                            "title": "dwdSelectId"
+                            
+                        },
+                        {
+                            "type": "text",
+                            "attr": "dwdCityname",
+                            "width": "50% ",
+                            "title": "dwdCityname",
+                            "tooltip": "dwdCitynameTip",
+                            "filter": false,
+                            "sort": false,
+                            "default": ""
+                        }
+                    ]
                 },
                 "dwdLanguage": {
                     "type": "select",
+                    "disabled": "data.test == '' ",
                     "label": "WarnLanguage",
                     "options": [
                         {

@@ -167,5 +167,7 @@
     "history_allinOne": "Jeder formatierte Datenpunkt wird in den Verlauf geschrieben.",
     "email_line_break": "Zeilenumbruch am Ende jeder Warnmeldung.",
     "email_panel": "Email",
-    "test_diver": "Testen"
+    "test_diver": "Testen",
+    "dwdCityname": "Ortsname",
+    "dwdCitynameTip": "Dieser Ortsname ist in der Vorlage verfügbar."
 }

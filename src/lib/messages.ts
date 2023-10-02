@@ -114,6 +114,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            locationcustom: {
+                cmd: undefined,
+                node: '',
+            },
         },
 
         uwzService: {
@@ -175,6 +179,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            locationcustom: {
+                cmd: undefined,
+                node: '',
+            },
         },
         zamgService: {
             starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
@@ -223,6 +231,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            locationcustom: {
+                cmd: undefined,
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -248,6 +260,10 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             provider: {
+                cmd: undefined,
+                node: '',
+            },
+            locationcustom: {
                 cmd: undefined,
                 node: '',
             },
@@ -474,6 +490,7 @@ export class MessagesClass extends BaseClass {
             this.formatedData.warntypegenericname = await this.library.getTranslation(
                 genericWarntyp[this.genericType].name,
             );
+            this.formatedData.locationcustom = this.provider ? this.provider.customName : '';
             this.formatedData.provider = this.provider
                 ? this.provider.service.replace('Service', '').toUpperCase()
                 : 'unknown';

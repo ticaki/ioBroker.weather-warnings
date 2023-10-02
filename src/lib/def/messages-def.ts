@@ -26,6 +26,7 @@ type customFormatedTokens = {
     location: string; // gelieferte Location (meinst Unsinn)
     instruction: string; // Anweisungen
     provider: string;
+    locationcustom: string;
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;

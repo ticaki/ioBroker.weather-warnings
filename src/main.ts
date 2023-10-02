@@ -227,18 +227,24 @@ class WeatherWarnings extends utils.Adapter {
                 }
 
                 // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
-                if (self.config.dwdSelectId > 10000 && self.config.dwdEnabled) {
-                    const options: messageFilterTypeWithFilter & { [key: string]: any } = {
-                        filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter },
-                    };
-                    self.log.info('DWD activated. Retrieve data.');
-                    self.providerController.createProviderIfNotExist({
-                        ...options,
-                        service: 'dwdService',
-                        warncellId: String(self.config.dwdSelectId), //805111000 Düssel - kirn 807133052
-                        providerController: self.providerController,
-                        language: self.config.dwdLanguage,
-                    });
+                for (const a in self.config.dwdwarncellTable) {
+                    const id = self.config.dwdwarncellTable[a];
+                    if (id.dwdSelectId > 10000 && !isNaN(id.dwdSelectId) && self.config.dwdEnabled) {
+                        const options: messageFilterTypeWithFilter & { [key: string]: any } = {
+                            filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter },
+                        };
+                        self.log.info('DWD activated. Retrieve data.');
+                        self.providerController.createProviderIfNotExist({
+                            ...options,
+                            service: 'dwdService',
+                            customName: id.dwdCityname,
+                            warncellId: String(id.dwdSelectId), //805111000 Düssel - kirn 807133052
+                            providerController: self.providerController,
+                            language: self.config.dwdLanguage,
+                        });
+                    } else {
+                        self.log.warn(`dont create dwd provider ${JSON.stringify(self.config.dwdwarncellTable)}`);
+                    }
                 }
                 if (
                     self.config.zamgEnabled &&
@@ -257,6 +263,7 @@ class WeatherWarnings extends utils.Adapter {
                             warncellId: zamgArr,
                             language: self.config.zamgLanguage,
                             providerController: self.providerController,
+                            customName: '',
                         });
                     }
                 }
@@ -271,6 +278,7 @@ class WeatherWarnings extends utils.Adapter {
                         warncellId: 'UWZ' + self.config.uwzSelectID.toUpperCase(), //UWZ + Land + PLZ
                         providerController: self.providerController,
                         language: self.config.uwzLanguage,
+                        customName: '',
                     });
                 }
 
@@ -450,6 +458,7 @@ class WeatherWarnings extends utils.Adapter {
                     }
                     break;
                 case 'dwd.name':
+                case 'dwd.check':
                 case 'dwd.name.text':
                     {
                         //debounce
@@ -528,7 +537,11 @@ class WeatherWarnings extends utils.Adapter {
                     break;
                 default:
                     this.sendTo(obj.from, obj.command, 'unknown message', obj.callback);
-                    this.log.debug(`Retrieve unknown command ${obj.command} from ${obj.from}`);
+                    this.log.debug(
+                        `Retrieve unknown command ${obj.command} messsage: ${JSON.stringify(obj.message)} from ${
+                            obj.from
+                        }`,
+                    );
             }
         }
     }
@@ -578,14 +591,15 @@ class WeatherWarnings extends utils.Adapter {
                         (a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase())) ||
                         (!isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)),
                 );
-                if (result.length == 1) that.config.dwdSelectId = result[0].value;
+                //if (result.length == 1) that.config.dwdSelectId = result[0].value;
 
                 if (obj.command == 'dwd.name') that.sendTo(obj.from, obj.command, result, obj.callback);
-                else if (obj.command == 'dwd.name.text')
+                else if (obj.command == 'dwd.name.text' || obj.command == 'dwd.check')
                     that.sendTo(obj.from, obj.command, result.length == 1 ? result[0].label : '', obj.callback);
-                that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
+                //that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
             } else {
-                if (obj.command == 'dwd.name.text') that.sendTo(obj.from, obj.command, '', obj.callback);
+                if (obj.command == 'dwd.name.text' || obj.command == 'dwd.check')
+                    that.sendTo(obj.from, obj.command, '', obj.callback);
                 else that.sendTo(obj.from, obj.command, text, obj.callback);
             }
             that.adminTimeoutRef = null;

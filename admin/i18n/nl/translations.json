@@ -167,5 +167,7 @@
     "history_allinOne": "Schrijf elk opgemaakt gegevenspunt in de geschiedenis.",
     "email_line_break": "Regeleinde aan het einde van elk waarschuwingsbericht.",
     "email_panel": "e-mail",
-    "test_diver": "Testen"
+    "test_diver": "Testen",
+    "dwdCityname": "Plaatsnaam",
+    "dwdCitynameTip": "Deze plaatsnaam is beschikbaar in de sjabloon."
 }

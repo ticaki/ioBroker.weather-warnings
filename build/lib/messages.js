@@ -99,6 +99,10 @@ class MessagesClass extends import_library.BaseClass {
       provider: {
         cmd: void 0,
         node: ""
+      },
+      locationcustom: {
+        cmd: void 0,
+        node: ""
       }
     },
     uwzService: {
@@ -159,6 +163,10 @@ class MessagesClass extends import_library.BaseClass {
       provider: {
         cmd: void 0,
         node: ""
+      },
+      locationcustom: {
+        cmd: void 0,
+        node: ""
       }
     },
     zamgService: {
@@ -206,6 +214,10 @@ class MessagesClass extends import_library.BaseClass {
       provider: {
         cmd: void 0,
         node: ""
+      },
+      locationcustom: {
+        cmd: void 0,
+        node: ""
       }
     },
     default: {
@@ -232,6 +244,10 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       provider: {
+        cmd: void 0,
+        node: ""
+      },
+      locationcustom: {
         cmd: void 0,
         node: ""
       }
@@ -437,6 +453,7 @@ class MessagesClass extends import_library.BaseClass {
       this.formatedData.warntypegenericname = await this.library.getTranslation(
         import_messages_def.genericWarntyp[this.genericType].name
       );
+      this.formatedData.locationcustom = this.provider ? this.provider.customName : "";
       this.formatedData.provider = this.provider ? this.provider.service.replace("Service", "").toUpperCase() : "unknown";
       this.updated = false;
     }

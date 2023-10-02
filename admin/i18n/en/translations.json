@@ -18,6 +18,8 @@
     "dwdEnabled": "Activate DWD",
     "dwdSelectId": "DWD District/City ID selection",
     "dwdSelectShowName": "DWD District/City ID Name",
+    "dwdCityname": "Place name",
+    "dwdCitynameTip": "This place name is available in the template.",
     "email_Enabled": "Activate email",
     "english": "english",
     "estonian": "estonian",

@@ -62,6 +62,7 @@ export const genericStateObjects: {
     activWarnings: ioBroker.StateObject;
     activeWarningsJson: ioBroker.StateObject;
     history: ioBroker.StateObject;
+    channel: ioBroker.ChannelObject;
 } = {
     info: {
         _channel: {
@@ -196,6 +197,14 @@ export const genericStateObjects: {
             role: 'json',
             read: true,
             write: false,
+        },
+        native: {},
+    },
+    channel: {
+        _id: 'info',
+        type: 'channel',
+        common: {
+            name: '',
         },
         native: {},
     },
@@ -1715,6 +1724,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Data provider',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            locationcustom: {
+                _id: 'locationcustom',
+                type: 'state',
+                common: {
+                    name: 'User location from configuration.',
                     type: 'string',
                     role: 'text',
                     read: true,

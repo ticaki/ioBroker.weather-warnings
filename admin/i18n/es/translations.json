@@ -167,5 +167,7 @@
     "history_allinOne": "Escriba cada punto de datos formateado en el historial.",
     "email_line_break": "Salto de línea al final de cada mensaje de advertencia.",
     "email_panel": "correo electrónico",
-    "test_diver": "Pruebas"
+    "test_diver": "Pruebas",
+    "dwdCityname": "Ponga su nombre",
+    "dwdCitynameTip": "El nombre de este lugar está disponible en la plantilla."
 }

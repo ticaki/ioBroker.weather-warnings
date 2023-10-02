@@ -167,5 +167,7 @@
     "history_allinOne": "将每个格式化数据点写入历史记录中。",
     "email_line_break": "每条警告消息末尾换行。",
     "email_panel": "电子邮件",
-    "test_diver": "测试"
+    "test_diver": "测试",
+    "dwdCityname": "地名",
+    "dwdCitynameTip": "该地名在模板中可用。"
 }

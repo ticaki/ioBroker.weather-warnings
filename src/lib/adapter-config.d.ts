@@ -6,7 +6,7 @@ declare global {
         interface AdapterConfig {
             expandArray: boolean;
 
-            dwdSelectId: number;
+            dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
             uwzSelectID: string;
             zamgSelectID: string;
             useTestWarnings: boolean;

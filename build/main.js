@@ -242,18 +242,24 @@ class WeatherWarnings extends utils.Adapter {
         } catch (error) {
           self.log.error(`catch (1): init error while reading states! ${error}`);
         }
-        if (self.config.dwdSelectId > 1e4 && self.config.dwdEnabled) {
-          const options = {
-            filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter }
-          };
-          self.log.info("DWD activated. Retrieve data.");
-          self.providerController.createProviderIfNotExist({
-            ...options,
-            service: "dwdService",
-            warncellId: String(self.config.dwdSelectId),
-            providerController: self.providerController,
-            language: self.config.dwdLanguage
-          });
+        for (const a in self.config.dwdwarncellTable) {
+          const id = self.config.dwdwarncellTable[a];
+          if (id.dwdSelectId > 1e4 && !isNaN(id.dwdSelectId) && self.config.dwdEnabled) {
+            const options = {
+              filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter }
+            };
+            self.log.info("DWD activated. Retrieve data.");
+            self.providerController.createProviderIfNotExist({
+              ...options,
+              service: "dwdService",
+              customName: id.dwdCityname,
+              warncellId: String(id.dwdSelectId),
+              providerController: self.providerController,
+              language: self.config.dwdLanguage
+            });
+          } else {
+            self.log.warn(`dont create dwd provider ${JSON.stringify(self.config.dwdwarncellTable)}`);
+          }
         }
         if (self.config.zamgEnabled && self.config.zamgSelectID && typeof self.config.zamgSelectID == "string") {
           self.log.info("ZAMG activated. Retrieve data.");
@@ -267,7 +273,8 @@ class WeatherWarnings extends utils.Adapter {
               service: "zamgService",
               warncellId: zamgArr,
               language: self.config.zamgLanguage,
-              providerController: self.providerController
+              providerController: self.providerController,
+              customName: ""
             });
           }
         }
@@ -281,7 +288,8 @@ class WeatherWarnings extends utils.Adapter {
             service: "uwzService",
             warncellId: "UWZ" + self.config.uwzSelectID.toUpperCase(),
             providerController: self.providerController,
-            language: self.config.uwzLanguage
+            language: self.config.uwzLanguage,
+            customName: ""
           });
         }
         self.providerController.updateEndless(self.providerController);
@@ -419,6 +427,7 @@ class WeatherWarnings extends utils.Adapter {
           }
           break;
         case "dwd.name":
+        case "dwd.check":
         case "dwd.name.text":
           {
             if (this.adminTimeoutRef) {
@@ -494,7 +503,9 @@ class WeatherWarnings extends utils.Adapter {
           break;
         default:
           this.sendTo(obj.from, obj.command, "unknown message", obj.callback);
-          this.log.debug(`Retrieve unknown command ${obj.command} from ${obj.from}`);
+          this.log.debug(
+            `Retrieve unknown command ${obj.command} messsage: ${JSON.stringify(obj.message)} from ${obj.from}`
+          );
       }
     }
   }
@@ -532,15 +543,12 @@ class WeatherWarnings extends utils.Adapter {
         const result = text.filter(
           (a) => a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase()) || !isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)
         );
-        if (result.length == 1)
-          that.config.dwdSelectId = result[0].value;
         if (obj.command == "dwd.name")
           that.sendTo(obj.from, obj.command, result, obj.callback);
-        else if (obj.command == "dwd.name.text")
+        else if (obj.command == "dwd.name.text" || obj.command == "dwd.check")
           that.sendTo(obj.from, obj.command, result.length == 1 ? result[0].label : "", obj.callback);
-        that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
       } else {
-        if (obj.command == "dwd.name.text")
+        if (obj.command == "dwd.name.text" || obj.command == "dwd.check")
           that.sendTo(obj.from, obj.command, "", obj.callback);
         else
           that.sendTo(obj.from, obj.command, text, obj.callback);
