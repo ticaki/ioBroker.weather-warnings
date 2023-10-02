@@ -9,7 +9,7 @@ import * as utils from '@iobroker/adapter-core';
 import axios from 'axios';
 import 'source-map-support/register';
 import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
-import { ProviderController } from './lib/provider.js';
+import { DIV, ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 import { genericWarntyp, genericWarntypeType, textLevels } from './lib/def/messages-def';
 import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
@@ -255,7 +255,7 @@ class WeatherWarnings extends utils.Adapter {
                     const options: messageFilterTypeWithFilter & { [key: string]: any } = {
                         filter: { type: self.config.zamgTypeFilter },
                     };
-                    const zamgArr = self.config.zamgSelectID.split('#') as [string, string];
+                    const zamgArr = self.config.zamgSelectID.split(DIV) as [string, string];
                     if (zamgArr.length == 2) {
                         self.providerController.createProviderIfNotExist({
                             ...options,

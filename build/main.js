@@ -266,7 +266,7 @@ class WeatherWarnings extends utils.Adapter {
           const options = {
             filter: { type: self.config.zamgTypeFilter }
           };
-          const zamgArr = self.config.zamgSelectID.split("#");
+          const zamgArr = self.config.zamgSelectID.split(import_provider.DIV);
           if (zamgArr.length == 2) {
             self.providerController.createProviderIfNotExist({
               ...options,

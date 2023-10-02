@@ -32,7 +32,7 @@ tests.integration(path.join(__dirname,".."),{
                 harness.objects.getObject('system.adapter.weather-warnings.0',async (err,obj) => {
                     obj.native.useTestWarnings=false;
                     obj.native.dwdEnabled=true;
-                    obj.native.dwdwarncellTable=[{ dwdSelectId: 80511100, dwdCityname: 'test' }];
+                    obj.native.dwdwarncellTable=[{ dwdSelectId: 80511100, dwdCityname: 'test' },{ dwdSelectId: 80511100, dwdCityname: 'test' }];
                     obj.native.uwzEnabled=true;
                     obj.native.uwzSelectID='DE55606';
                     obj.native.zamgEnabled=true;

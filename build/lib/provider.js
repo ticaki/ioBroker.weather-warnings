@@ -24,6 +24,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var provider_exports = {};
 __export(provider_exports, {
+  DIV: () => DIV,
   DWDProvider: () => DWDProvider,
   METROProvider: () => METROProvider,
   NINAProvider: () => NINAProvider,
@@ -38,6 +39,7 @@ var import_library = require("./library");
 var import_messages = require("./messages");
 var import_test_warnings = require("./test-warnings");
 var import_messages_def = require("./def/messages-def");
+const DIV = "#";
 class BaseProvider extends import_library.BaseClass {
   service;
   url = "";
@@ -48,13 +50,17 @@ class BaseProvider extends import_library.BaseClass {
   providerController;
   filter;
   customName = "";
+  warncellIdString;
   constructor(adapter, options, name) {
-    super(adapter, `provider.${name}.${options.warncellId}`);
+    let warncell = typeof options.warncellId == "string" ? options.warncellId : options.warncellId.join(DIV);
+    warncell = warncell.replaceAll(".", "_");
+    super(adapter, `provider.${name}.${warncell}`);
+    this.warncellIdString = warncell;
     this.service = options.service;
     this.library = this.adapter.library;
     this.providerController = options.providerController;
     this.setService(options.service);
-    this.log.setLogPrefix(`${name}.${options.warncellId}`);
+    this.log.setLogPrefix(`${name}-${options.warncellId}`);
     this.filter = options.filter;
     this.customName = options.customName;
     const temp = this.library.cloneGenericObject(import_definitionen.genericStateObjects.channel);
@@ -456,7 +462,7 @@ class ProviderController extends import_library.BaseClass {
   }
   createProviderIfNotExist(options) {
     const index = this.provider.findIndex(
-      (p) => p && p.warncellId == options.warncellId && p.getService() == options.service
+      (p) => p && (typeof p.warncellId == "string" && p.warncellIdString == options.warncellId || typeof options.warncellId == "object" && options.warncellId.join(DIV) == p.warncellIdString) && p.getService() == options.service
     );
     if (index == -1) {
       let p;
@@ -509,6 +515,7 @@ class ProviderController extends import_library.BaseClass {
         this.provider.push(p);
       return p;
     } else {
+      this.log.error("Try to create a exist provider.");
       return this.provider[index];
     }
   }
@@ -612,6 +619,7 @@ class ProviderController extends import_library.BaseClass {
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  DIV,
   DWDProvider,
   METROProvider,
   NINAProvider,

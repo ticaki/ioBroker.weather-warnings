@@ -21,7 +21,7 @@ import {
     genericWarntypeType,
     notificationMessageType,
 } from './def/messages-def';
-
+export const DIV = '#';
 type ProvideOptionsTypeInternal = {
     service: providerServices;
     warncellId: string | [string, string];
@@ -53,13 +53,18 @@ class BaseProvider extends BaseClass {
     providerController: ProviderController;
     filter: messageFilterType;
     customName: string = '';
+    warncellIdString: string;
     constructor(adapter: WeatherWarnings, options: ProvideOptionsTypeInternal, name: string) {
-        super(adapter, 'provider.' + `${name}.${options.warncellId}`);
+        let warncell = typeof options.warncellId == 'string' ? options.warncellId : options.warncellId.join(DIV);
+        warncell = warncell.replaceAll('.', '_');
+        super(adapter, 'provider.' + `${name}.${warncell}`);
+
+        this.warncellIdString = warncell;
         this.service = options.service;
         this.library = this.adapter.library;
         this.providerController = options.providerController;
         this.setService(options.service);
-        this.log.setLogPrefix(`${name}.${options.warncellId}`);
+        this.log.setLogPrefix(`${name}-${options.warncellId}`);
         this.filter = options.filter;
         this.customName = options.customName;
         const temp = this.library.cloneGenericObject(genericStateObjects.channel) as ioBroker.ChannelObject;
@@ -544,7 +549,11 @@ export class ProviderController extends BaseClass {
 
     createProviderIfNotExist(options: ProvideOptionsType): ProvideClassType {
         const index = this.provider.findIndex(
-            (p) => p && p.warncellId == options.warncellId && p.getService() == options.service,
+            (p) =>
+                p &&
+                ((typeof p.warncellId == 'string' && p.warncellIdString == options.warncellId) ||
+                    (typeof options.warncellId == 'object' && options.warncellId.join(DIV) == p.warncellIdString)) &&
+                p.getService() == options.service,
         );
         if (index == -1) {
             let p: ProvideClassType;
@@ -597,6 +606,7 @@ export class ProviderController extends BaseClass {
             if (p) this.provider.push(p);
             return p;
         } else {
+            this.log.error('Try to create a exist provider.');
             return this.provider[index];
         }
     }
