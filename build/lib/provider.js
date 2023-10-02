@@ -589,9 +589,9 @@ class ProviderController extends import_library.BaseClass {
           am++;
       }
       this.adapter.library.writedp(
-        `${this.provider[a].name}.activWarnings`,
+        `${this.provider[a].name}.activeWarnings`,
         am,
-        import_definitionen.genericStateObjects.activWarnings
+        import_definitionen.genericStateObjects.activeWarnings
       );
       activMessages += am;
     }
@@ -606,7 +606,7 @@ class ProviderController extends import_library.BaseClass {
     if (activMessages == 0 && totalMessages > 0)
       await this.noWarningMessage.sendMessage("removeAll", false);
     this.notificationServices.forEach((a) => a.writeNotifications());
-    this.adapter.library.writedp(`${this.name}.activWarnings`, activMessages, import_definitionen.genericStateObjects.activWarnings);
+    this.adapter.library.writedp(`${this.name}.activeWarnings`, activMessages, import_definitionen.genericStateObjects.activeWarnings);
     this.library.language = "";
     this.log.debug(`We have ${activMessages} active messages.`);
   }

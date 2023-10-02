@@ -26,7 +26,6 @@ var import_library = require("./lib/library.js");
 var import_messages_def = require("./lib/def/messages-def");
 var import_provider_def = require("./lib/def/provider-def");
 var import_notificationService_def = require("./lib/def/notificationService-def");
-var import_messages = require("./lib/messages");
 import_axios.default.defaults.timeout = 8e3;
 class WeatherWarnings extends utils.Adapter {
   library;
@@ -60,180 +59,53 @@ class WeatherWarnings extends utils.Adapter {
         if (!self)
           return;
         await self.library.init();
-        let notificationServiceOpt = {};
-        if (self.config.telegram_Enabled) {
-          const service = [];
-          if (self.config.telegram_DwdEnabled)
-            service.push("dwdService");
-          if (self.config.telegram_UwzEnabled)
-            service.push("uwzService");
-          if (self.config.telegram_UwzEnabled)
-            service.push("zamgService");
-          const template = {
-            new: self.config.telegram_MessageNew,
-            remove: self.config.telegram_MessageRemove,
-            removeAll: self.config.telegram_MessageAllRemove,
-            all: ""
-          };
-          notificationServiceOpt = {
-            ...notificationServiceOpt,
-            telegram: {
+        const notificationServiceOpt = {};
+        for (const a in import_notificationService_def.notificationServiceArray) {
+          const notificationService = import_notificationService_def.notificationServiceArray[a];
+          if (notificationService === void 0)
+            continue;
+          if (self.config[notificationService + "_Enabled"]) {
+            const service = [];
+            if (self.config[notificationService + "_DwdEnabled"])
+              service.push("dwdService");
+            if (self.config[notificationService + "_UwzEnabled"])
+              service.push("uwzService");
+            if (self.config[notificationService + "_UwzEnabled"])
+              service.push("zamgService");
+            const template = {
+              new: self.config[notificationService + "_MessageNew"],
+              remove: self.config[notificationService + "_MessageRemove"],
+              removeAll: self.config[notificationService + "_MessageAllRemove"],
+              all: ""
+            };
+            template.new = template.new ? template.new : "none";
+            template.remove = template.remove ? template.remove : "none";
+            template.removeAll = template.removeAll ? template.removeAll : "none";
+            template.all = template.all ? template.all : "none";
+            notificationServiceOpt[notificationService] = {
+              ...import_notificationService_def.notificationServiceDefaults[notificationService],
               service,
               filter: {
-                level: self.config.telegram_LevelFilter,
-                type: self.config.telegram_TypeFilter.map((a) => String(a))
+                level: self.config[notificationService + "_LevelFilter"],
+                type: self.config[notificationService + "_TypeFilter"].map((a2) => String(a2))
               },
-              adapter: self.config.telegram_Adapter,
-              name: "telegram",
-              template,
-              class: import_messages.NotificationClass
-            }
-          };
+              adapter: self.config[notificationService + "_Adapter"],
+              name: notificationService,
+              template
+            };
+          }
+        }
+        if (self.config.telegram_Enabled) {
         }
         if (self.config.whatsapp_Enabled) {
-          const service = [];
-          if (self.config.whatsapp_DwdEnabled)
-            service.push("dwdService");
-          if (self.config.whatsapp_UwzEnabled)
-            service.push("uwzService");
-          if (self.config.whatsapp_ZamgEnabled)
-            service.push("zamgService");
-          const template = {
-            new: self.config.whatsapp_MessageNew,
-            remove: self.config.whatsapp_MessageRemove,
-            removeAll: self.config.whatsapp_MessageAllRemove,
-            all: ""
-          };
-          notificationServiceOpt = {
-            ...notificationServiceOpt,
-            whatsapp: {
-              service,
-              filter: {
-                level: self.config.whatsapp_LevelFilter,
-                type: self.config.whatsapp_TypeFilter.map((a) => String(a))
-              },
-              adapter: self.config.whatsapp_Adapter,
-              name: "whatsapp",
-              template,
-              class: import_messages.NotificationClass
-            }
-          };
         }
         if (self.config.pushover_Enabled) {
-          const service = [];
-          if (self.config.pushover_DwdEnabled)
-            service.push("dwdService");
-          if (self.config.pushover_UwzEnabled)
-            service.push("uwzService");
-          if (self.config.pushover_ZamgEnabled)
-            service.push("zamgService");
-          const template = {
-            new: self.config.pushover_MessageNew,
-            remove: self.config.pushover_MessageRemove,
-            removeAll: self.config.pushover_MessageAllRemove,
-            all: ""
-          };
-          notificationServiceOpt = {
-            ...notificationServiceOpt,
-            pushover: {
-              service,
-              filter: {
-                level: self.config.pushover_LevelFilter,
-                type: self.config.pushover_TypeFilter.map((a) => String(a))
-              },
-              adapter: self.config.pushover_Adapter,
-              name: "pushover",
-              template,
-              class: import_messages.NotificationClass
-            }
-          };
         }
         if (self.config.json_Enabled) {
-          const service = [];
-          if (self.config.json_DwdEnabled)
-            service.push("dwdService");
-          if (self.config.json_UwzEnabled)
-            service.push("uwzService");
-          if (self.config.json_ZamgEnabled)
-            service.push("zamgService");
-          const template = {
-            new: self.config.json_MessageNew,
-            remove: "none",
-            removeAll: self.config.json_MessageAllRemove,
-            all: ""
-          };
-          notificationServiceOpt = {
-            ...notificationServiceOpt,
-            json: {
-              service,
-              filter: {
-                level: self.config.json_LevelFilter,
-                type: self.config.json_TypeFilter.map((a) => String(a))
-              },
-              adapter: "",
-              name: "json",
-              template,
-              class: import_messages.AllNotificationClass
-            }
-          };
         }
         if (self.config.history_Enabled) {
-          const service = [];
-          if (self.config.history_DwdEnabled)
-            service.push("dwdService");
-          if (self.config.history_UwzEnabled)
-            service.push("uwzService");
-          if (self.config.history_ZamgEnabled)
-            service.push("zamgService");
-          const template = {
-            new: self.config.history_MessageNew,
-            remove: self.config.history_MessageRemove,
-            removeAll: "none",
-            all: ""
-          };
-          notificationServiceOpt = {
-            ...notificationServiceOpt,
-            history: {
-              service,
-              filter: {
-                level: self.config.history_LevelFilter,
-                type: self.config.history_TypeFilter.map((a) => String(a))
-              },
-              adapter: "",
-              name: "history",
-              template,
-              class: import_messages.AllNotificationClass
-            }
-          };
         }
         if (self.config.email_Enabled) {
-          const service = [];
-          if (self.config.email_DwdEnabled)
-            service.push("dwdService");
-          if (self.config.email_UwzEnabled)
-            service.push("uwzService");
-          if (self.config.email_ZamgEnabled)
-            service.push("zamgService");
-          const template = {
-            new: self.config.email_MessageNew,
-            remove: self.config.email_MessageRemove,
-            removeAll: "none",
-            all: ""
-          };
-          notificationServiceOpt = {
-            ...notificationServiceOpt,
-            email: {
-              service,
-              filter: {
-                level: self.config.email_LevelFilter,
-                type: self.config.email_TypeFilter.map((a) => String(a))
-              },
-              adapter: "",
-              name: "email",
-              template,
-              class: import_messages.AllNotificationClass
-            }
-          };
         }
         self.providerController.createNotificationService(notificationServiceOpt);
         try {

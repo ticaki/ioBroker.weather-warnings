@@ -680,9 +680,9 @@ export class ProviderController extends BaseClass {
                 if (this.provider[a].messages[b].notDeleted) am++;
             }
             this.adapter.library.writedp(
-                `${this.provider[a].name}.activWarnings`,
+                `${this.provider[a].name}.activeWarnings`,
                 am,
-                genericStateObjects.activWarnings,
+                genericStateObjects.activeWarnings,
             );
             activMessages += am;
         }
@@ -699,7 +699,7 @@ export class ProviderController extends BaseClass {
         if (activMessages == 0 && totalMessages > 0) await this.noWarningMessage.sendMessage('removeAll', false);
 
         this.notificationServices.forEach((a) => a.writeNotifications());
-        this.adapter.library.writedp(`${this.name}.activWarnings`, activMessages, genericStateObjects.activWarnings);
+        this.adapter.library.writedp(`${this.name}.activeWarnings`, activMessages, genericStateObjects.activeWarnings);
         // reset language
         this.library.language = '';
         this.log.debug(`We have ${activMessages} active messages.`);

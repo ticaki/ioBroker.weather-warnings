@@ -570,7 +570,7 @@ class NotificationClass extends import_library.BaseClass {
           break;
         case "pushover":
           {
-            const opt = { text: msg, disable_notification: true };
+            const opt = { message: msg, disable_notification: true };
             if (action !== "remove" || activeWarnings)
               this.adapter.sendTo(this.options.adapter, "send", opt, () => {
                 this.log.debug(`Send the message: ${msg}`);

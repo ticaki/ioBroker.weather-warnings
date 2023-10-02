@@ -59,7 +59,7 @@ export const genericStateObjects: {
         message: ioBroker.StateObject;
         messageJson: ioBroker.StateObject;
     };
-    activWarnings: ioBroker.StateObject;
+    activeWarnings: ioBroker.StateObject;
     activeWarningsJson: ioBroker.StateObject;
     history: ioBroker.StateObject;
     channel: ioBroker.ChannelObject;
@@ -164,7 +164,7 @@ export const genericStateObjects: {
             native: {},
         },
     },
-    activWarnings: {
+    activeWarnings: {
         _id: 'activWarnings',
         type: 'state',
         common: {

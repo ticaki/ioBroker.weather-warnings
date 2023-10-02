@@ -136,7 +136,7 @@ const genericStateObjects = {
       native: {}
     }
   },
-  activWarnings: {
+  activeWarnings: {
     _id: "activWarnings",
     type: "state",
     common: {

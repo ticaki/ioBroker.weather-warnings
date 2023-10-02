@@ -1,14 +1,7 @@
+import { AllNotificationClass, NotificationClass } from '../messages';
 import { messageFilterType, providerServices } from './provider-def';
 
 export type notificationServiceType = Required<keyof notificationServiceOptionsType>;
-export const notificationServiceArray: notificationServiceType[] = [
-    'telegram',
-    'pushover',
-    'whatsapp',
-    'json',
-    'history',
-    'email',
-];
 
 export type notificationServiceOptionsType = {
     telegram?: {
@@ -65,3 +58,32 @@ export const serciceCapabilities: Record<notificationServiceType, notificationSe
     pushover: { notifications: push },
     history: { notifications: history },
 };
+export const notificationServiceDefaults: Record<notificationServiceType, Partial<notificationServiceBaseType>> = {
+    telegram: {
+        class: NotificationClass,
+    },
+    pushover: {
+        class: NotificationClass,
+    },
+    whatsapp: {
+        class: NotificationClass,
+    },
+    json: {
+        class: AllNotificationClass,
+    },
+    history: {
+        class: AllNotificationClass,
+    },
+    email: {
+        class: AllNotificationClass,
+    },
+};
+
+export const notificationServiceArray: notificationServiceType[] = [
+    'telegram',
+    'pushover',
+    'whatsapp',
+    'json',
+    'history',
+    'email',
+];
