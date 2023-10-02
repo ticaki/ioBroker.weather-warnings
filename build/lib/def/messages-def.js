@@ -30,27 +30,27 @@ __export(messages_def_exports, {
 });
 module.exports = __toCommonJS(messages_def_exports);
 const customFormatedTokensJson = {
-  starttime: "",
-  startdate: "",
-  endtime: "",
-  enddate: "",
-  startdayofweek: "",
-  enddayofweek: "",
-  headline: "",
-  description: "",
-  weathertext: "",
-  ceiling: "",
-  altitude: "",
-  warnlevelname: "",
-  warnlevelnumber: "",
-  warnlevelcolorname: "",
-  warnlevelcolorhex: "",
-  warntypename: "",
-  warntypegenericname: "",
-  location: "",
-  instruction: "",
-  provider: "",
-  locationcustom: ""
+  starttime: "Start time",
+  startdate: "Start date",
+  endtime: "End time",
+  enddate: "End Date",
+  startdayofweek: "Start day of the week",
+  enddayofweek: "End day of the week",
+  headline: "Headline",
+  description: "Description",
+  weathertext: "Weathertext",
+  ceiling: "Maximum validity height",
+  altitude: "Minimum validity height",
+  warnlevelname: "Textname of level",
+  warnlevelnumber: "Number of level",
+  warnlevelcolorname: "Textname of level color",
+  warnlevelcolorhex: "Hexnumber of level color",
+  warntypename: "Warning type retrieved from the provider",
+  warntypegenericname: "Warntype generic",
+  location: "Location retrieved from the provider",
+  instruction: "Instructions",
+  provider: "Provider",
+  locationcustom: "Location from admin configuration"
 };
 const textLevels = {
   textGeneric: {

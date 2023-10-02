@@ -30,27 +30,27 @@ export type customFormatedTokens = {
 };
 
 export const customFormatedTokensJson: customFormatedTokens = {
-    starttime: '', // Start Uhrzeit HH:MM
-    startdate: '', // Start Datum DD.MM
-    endtime: '', // Endzeitpunkt
-    enddate: '', // Enddatum
-    startdayofweek: '', // Start Tag der Woche
-    enddayofweek: '', // End Tag der Woche
-    headline: '', // Schlagzeile
-    description: '', // Beschreibung
-    weathertext: '', // nur Zamg wetterbeschreibender Text
-    ceiling: '', // max höhe
-    altitude: '', // min höhe
-    warnlevelname: '', // Textbezeichnung des Levels
-    warnlevelnumber: '', // Levelhöhe
-    warnlevelcolorname: '', // Farbbezeichnung des Levels
-    warnlevelcolorhex: '', // RGB im Hexformat
-    warntypename: '', // gelieferter Warntype
-    warntypegenericname: '', // vereinheitlichter Warntyp
-    location: '', // gelieferte Location (meinst Unsinn)
-    instruction: '', // Anweisungen
-    provider: '',
-    locationcustom: '',
+    starttime: 'Start time', // Start Uhrzeit HH:MM
+    startdate: 'Start date', // Start Datum DD.MM
+    endtime: 'End time', // Endzeitpunkt
+    enddate: 'End Date', // Enddatum
+    startdayofweek: 'Start day of the week', // Start Tag der Woche
+    enddayofweek: 'End day of the week', // End Tag der Woche
+    headline: 'Headline', // Schlagzeile
+    description: 'Description', // Beschreibung
+    weathertext: 'Weathertext', // nur Zamg wetterbeschreibender Text
+    ceiling: 'Maximum validity height', // max höhe
+    altitude: 'Minimum validity height', // min höhe
+    warnlevelname: 'Textname of level', // Textbezeichnung des Levels
+    warnlevelnumber: 'Number of level', // Levelhöhe
+    warnlevelcolorname: 'Textname of level color', // Farbbezeichnung des Levels
+    warnlevelcolorhex: 'Hexnumber of level color', // RGB im Hexformat
+    warntypename: 'Warning type retrieved from the provider', // gelieferter Warntype
+    warntypegenericname: 'Warntype generic', // vereinheitlichter Warntyp
+    location: 'Location retrieved from the provider', // gelieferte Location (meinst Unsinn)
+    instruction: 'Instructions', // Anweisungen
+    provider: 'Provider',
+    locationcustom: 'Location from admin configuration',
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;
