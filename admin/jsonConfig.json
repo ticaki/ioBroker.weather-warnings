@@ -1087,7 +1087,6 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
-                    "disabled": "$data.email_allinOne",
                     "label": "MessageAll",
                     "newLine": true
                 },
@@ -1108,7 +1107,6 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
-                    "disabled": "$data.email_allinOne",
                     "label": "MessageRemove",
                     "newLine": true
                 }
