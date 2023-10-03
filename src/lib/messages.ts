@@ -253,17 +253,17 @@ export class MessagesClass extends BaseClass {
             ceiling: { node: `` },
             altitude: { node: `` },
             warnlevelcolorname: {
-                node: `$lookup(${JSON.stringify(color.textGeneric)},$string(rawinfo.wlevel))`,
+                node: `$lookup(${JSON.stringify(color.textGeneric)},$string(rawinfo.wlevel + 1))`,
                 cmd: 'translate',
             },
             warnlevelnumber: {
-                node: `$string(rawinfo.wlevel)`,
+                node: `$string(rawinfo.wlevel + 1)`,
             },
             warnlevelcolorhex: {
-                node: `$lookup(${JSON.stringify(color.zamgColor)},$string(rawinfo.wlevel))`,
+                node: `$lookup(${JSON.stringify(color.zamgColor)},$string(rawinfo.wlevel + 1))`,
             },
             warnlevelname: {
-                node: `$lookup(${JSON.stringify(textLevels.textGeneric)},$string(rawinfo.wlevel))`,
+                node: `$lookup(${JSON.stringify(textLevels.textGeneric)},$string(rawinfo.wlevel + 1))`,
                 cmd: 'translate',
             },
             warntypename: {
@@ -725,11 +725,9 @@ export class NotificationClass extends BaseClass {
                     break;
                 case 'pushover':
                     {
-                        const opt = {
-                            message: msg,
-                            disable_notification: true,
-                        };
-                        //newMsg.title = topic;newMsg.device
+
+                        const opt = { message: msg };
+                        //newMsg.title = topic;newMsg.device sound = `none`
                         if (action !== 'remove' || activeWarnings)
                             this.adapter.sendTo(this.options.adapter, 'send', opt, () => {
                                 this.log.debug(`Send the message: ${msg}`);
