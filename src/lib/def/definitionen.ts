@@ -61,6 +61,8 @@ export const genericStateObjects: {
     activeWarnings: ioBroker.StateObject;
     activeWarningsJson: ioBroker.StateObject;
     history: ioBroker.StateObject;
+    warnings_json: ioBroker.StateObject;
+    lastUpdate: ioBroker.StateObject;
 } = {
     info: {
         _channel: {
@@ -193,6 +195,30 @@ export const genericStateObjects: {
             name: 'History of warnings.',
             type: 'string',
             role: 'json',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    warnings_json: {
+        _id: 'activeWarningsJson',
+        type: 'state',
+        common: {
+            name: 'History of warnings.',
+            type: 'string',
+            role: 'json',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    lastUpdate: {
+        _id: 'lastUpdate',
+        type: 'state',
+        common: {
+            name: 'Time stamp of the last data retrieval.',
+            type: 'number',
+            role: 'value.time',
             read: true,
             write: false,
         },
@@ -1875,7 +1901,7 @@ export const PROVIDER_OPTIONS = {
     },
 
     zamgService: {
-        url: 'https://warnungen.zamg.at/wsapp/api/getWarningsForCoords?lat=#  #&lon=#+  +#1&lang=de', //&lang=#++  ++#
+        url: 'https://warnungen.zamg.at/wsapp/api/getWarningsForCoords?lat=#  #&lon=#+  +#1&lang=#++  ++#',
     },
     uwzService: {
         url: `http://feed.alertspro.meteogroup.com/AlertsPro/AlertsProPollService.php?method=getWarning&language=de&areaID=#  #`,

@@ -144,23 +144,23 @@ export class MessagesClass extends BaseClass {
 
         uwzService: {
             starttime: {
-                node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")`,
+                node: `$fromMillis(dtgStart*1000,"[H#1]:[m01]","\${this.timeOffset}")`,
             },
             startdate: {
-                node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")`,
+                node: `$fromMillis(dtgStart*1000,"[D01].[M01]","\${this.timeOffset}")`,
             },
             endtime: {
-                node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")`,
+                node: `$fromMillis(dtgEnd*1000,"[H#1]:[m01]","\${this.timeOffset}")`,
             },
             enddate: {
-                node: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")`,
+                node: `$fromMillis(dtgEnd*1000,"[D01].[M01]","\${this.timeOffset}")`,
             },
             startdayofweek: {
-                node: `dtgStart`,
+                node: `dtgStart*1000`,
                 cmd: 'dayoftheweek',
             },
             enddayofweek: {
-                node: `dtgEnd`,
+                node: `dtgEnd*1000`,
                 cmd: 'dayoftheweek',
             },
             headline: { node: `payload.translationsShortText` },
@@ -214,11 +214,11 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             startdayofweekshort: {
-                node: `dtgStart`,
+                node: `dtgStart*1000`,
                 cmd: 'dayoftheweekshort',
             },
             enddayofweekshort: {
-                node: `dtgEnd`,
+                node: `dtgEnd*1000`,
                 cmd: 'dayoftheweekshort',
             },
             countdown: {
@@ -228,23 +228,23 @@ export class MessagesClass extends BaseClass {
         },
         zamgService: {
             starttime: {
-                node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")`,
+                node: `$fromMillis($number(rawinfo.start)*1000,"[H#1]:[m01]","\${this.timeOffset}")`,
             },
             startdate: {
-                node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")`,
+                node: `$fromMillis($number(rawinfo.start)*1000,"[D01].[M01]","\${this.timeOffset}")`,
             },
             endtime: {
-                node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")`,
+                node: `$fromMillis($number(rawinfo.end)*1000,"[H#1]:[m01]","\${this.timeOffset}")`,
             },
             enddate: {
-                node: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")`,
+                node: `$fromMillis($number(rawinfo.end)*1000,"[D01].[M01]","\${this.timeOffset}")`,
             },
             startdayofweek: {
-                node: `$number(rawinfo.start)`,
+                node: `$number(rawinfo.start)*1000`,
                 cmd: 'dayoftheweek',
             },
             enddayofweek: {
-                node: `$number(rawinfo.end)`,
+                node: `$number(rawinfo.end)*1000`,
                 cmd: 'dayoftheweek',
             },
             headline: { node: `text` },
@@ -286,11 +286,11 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             startdayofweekshort: {
-                node: `$number(rawinfo.start)`,
+                node: `$number(rawinfo.start)*1000`,
                 cmd: 'dayoftheweekshort',
             },
             enddayofweekshort: {
-                node: `$number(rawinfo.end)`,
+                node: `$number(rawinfo.end)*1000`,
                 cmd: 'dayoftheweekshort',
             },
             countdown: {

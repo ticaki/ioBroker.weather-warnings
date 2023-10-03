@@ -174,12 +174,19 @@ class BaseProvider extends import_library.BaseClass {
           (0, import_test_warnings.getTestData)(this.service, this.adapter)
         );
       } else {
-        const result = await import_axios.default.get(this.url);
-        if (result.status == 200) {
+        const data = await import_axios.default.get(this.url);
+        if (data.status == 200) {
           await this.setConnected(true);
-          return typeof result.data == "object" ? result.data : JSON.parse(result.data);
+          const result = typeof data.data == "object" ? data.data : JSON.parse(data.data);
+          this.library.writedp(
+            `${this.name}.warning.warning_json`,
+            JSON.stringify(result),
+            import_definitionen.genericStateObjects.warnings_json
+          );
+          this.library.writedp(`${this.name}.lastUpdate`, Date.now(), import_definitionen.genericStateObjects.lastUpdate);
+          return result;
         } else {
-          this.log.warn("Warn(23) " + result.statusText);
+          this.log.warn("Warn(23) " + data.statusText);
         }
       }
     } catch (error) {
@@ -299,18 +306,17 @@ class DWDProvider extends BaseProvider {
     this.library.garbageColleting(`${this.name}.warning`);
     for (let m = 0; m < this.messages.length; m++) {
       const msg = this.messages[m];
-      const formatedData = await msg.updateFormatedData();
       if (msg.rawWarning.MSGTYPE == "Update") {
         for (let m2 = 0; m2 < this.messages.length; m2++) {
-          const delMsg = this.messages[m2];
-          if (msg === delMsg)
+          const oldmsg = this.messages[m2];
+          if (msg === oldmsg)
             continue;
-          if (delMsg.formatedData === void 0)
+          if (oldmsg.newMessage)
             continue;
-          if (delMsg.rawWarning.EC_II == msg.rawWarning.EC_II) {
-            if (delMsg.formatedData.warnlevelnumber !== void 0 && formatedData.warnlevelnumber !== void 0 && delMsg.formatedData.warnlevelnumber <= formatedData.warnlevelnumber) {
-              msg.silentUpdate();
-            }
+          if (oldmsg.formatedData === void 0)
+            continue;
+          if (oldmsg.rawWarning.EC_II == msg.rawWarning.EC_II) {
+            msg.silentUpdate();
             this.log.debug("Remove a warning from db.(Update)");
             this.messages[m2].delete();
             this.messages.splice(Number(m2--), 1);
