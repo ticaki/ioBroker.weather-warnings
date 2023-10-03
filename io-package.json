@@ -152,6 +152,7 @@
         ]
     },
     "native": {
+        "useJsonHistory": false,
         "dwdwarncellTable": [],
         "zamgSelectID": "",
         "uwzSelectID": "",

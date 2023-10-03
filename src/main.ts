@@ -52,6 +52,13 @@ class WeatherWarnings extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     private async onReady(): Promise<void> {
+        try {
+            const states = await this.getStatesAsync('*');
+            await this.library.initStates(states);
+        } catch (error) {
+            this.log.error(`catch (1): init error while reading states! ${error}`);
+        }
+
         if (this.providerController) {
             this.providerController.init();
             this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 60000} minutes`);
@@ -65,6 +72,7 @@ class WeatherWarnings extends utils.Adapter {
                 if (!self.providerController) return;
                 if (!self) return;
                 await self.library.init();
+
                 const notificationServiceOpt: notificationServiceOptionsType = {};
                 for (const a in notificationServiceArray) {
                     const notificationService = notificationServiceArray[a] as keyof notificationServiceOptionsType;
@@ -136,12 +144,6 @@ class WeatherWarnings extends utils.Adapter {
                 }
 
                 self.providerController.createNotificationService(notificationServiceOpt);
-                try {
-                    const states = await self.getStatesAsync('*');
-                    self.library.initStates(states);
-                } catch (error) {
-                    self.log.error(`catch (1): init error while reading states! ${error}`);
-                }
 
                 // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
                 for (const a in self.config.dwdwarncellTable) {

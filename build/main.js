@@ -46,6 +46,12 @@ class WeatherWarnings extends utils.Adapter {
     this.providerController = new import_provider.ProviderController(this);
   }
   async onReady() {
+    try {
+      const states = await this.getStatesAsync("*");
+      await this.library.initStates(states);
+    } catch (error) {
+      this.log.error(`catch (1): init error while reading states! ${error}`);
+    }
     if (this.providerController) {
       this.providerController.init();
       this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 6e4} minutes`);
@@ -114,12 +120,6 @@ class WeatherWarnings extends utils.Adapter {
         if (self.config.email_Enabled) {
         }
         self.providerController.createNotificationService(notificationServiceOpt);
-        try {
-          const states = await self.getStatesAsync("*");
-          self.library.initStates(states);
-        } catch (error) {
-          self.log.error(`catch (1): init error while reading states! ${error}`);
-        }
         for (const a in self.config.dwdwarncellTable) {
           const id = self.config.dwdwarncellTable[a];
           if (self.config.dwdEnabled) {

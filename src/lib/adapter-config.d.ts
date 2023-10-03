@@ -6,10 +6,12 @@ declare global {
         interface AdapterConfig {
             expandArray: boolean;
 
+            useJsonHistory: boolean;
+            useTestWarnings: boolean;
+
             dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
             uwzSelectID: string;
             zamgSelectID: string;
-            useTestWarnings: boolean;
             dwdEnabled: boolean;
             zamgEnabled: boolean;
             uwzEnabled: boolean;

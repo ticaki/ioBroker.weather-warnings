@@ -190,5 +190,6 @@
     "customFormatedTokensJson.location": "Местоположение получено от провайдера",
     "customFormatedTokensJson.instruction": "инструкции",
     "customFormatedTokensJson.provider": "Поставщик",
-    "customFormatedTokensJson.locationcustom": "Местоположение из конфигурации администратора"
+    "customFormatedTokensJson.locationcustom": "Местоположение из конфигурации администратора",
+    "useJsonHistory": "Хранение истории необработанных данных активируется или деактивируется и удаляется (высокое потребление памяти)."
 }

@@ -101,6 +101,15 @@
                     "lg": 4,
                     "label": "useTestWarnings",
                     "newLine": true
+                },
+                "useJsonHistory": {
+                    "type": "checkbox",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "disabled": "data.useTestWarnings",
+                    "label": "useJsonHistory",
+                    "newLine": false
                 }
             }
         },
@@ -114,7 +123,7 @@
                     "newLine": true,
                     "sm": 12,
                     "md": 8,
-                    "lg": 6,
+                    "lg": 8,
                     "label": "dwdSelectId",
                     "uniqueColumns": ["dwdSelectId"],                 
                     "items": [
@@ -135,7 +144,7 @@
                         {
                             "type": "text",
                             "attr": "dwdCityname",
-                            "width": "50% ",
+                            "width": "40% ",
                             "title": "dwdCityname",
                             "tooltip": "dwdCitynameTip",
                             "filter": false,

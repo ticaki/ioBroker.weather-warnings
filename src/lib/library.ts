@@ -352,7 +352,10 @@ export class Library extends BaseClass {
         for (const state in states) {
             const dp = state.replace(`${this.adapter.name}.${this.adapter.instance}.`, '');
             const obj = await this.adapter.getObjectAsync(dp);
-
+            if (!this.adapter.config.useJsonHistory && dp.endsWith('.warning.jsonHistory')) {
+                await this.adapter.delStateAsync(dp);
+                continue;
+            }
             this.setdb(
                 dp,
                 'state',

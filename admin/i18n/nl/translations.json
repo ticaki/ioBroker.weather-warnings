@@ -190,5 +190,6 @@
     "customFormatedTokensJson.location": "Locatie opgehaald bij de provider",
     "customFormatedTokensJson.instruction": "Instructies",
     "customFormatedTokensJson.provider": "Aanbieder",
-    "customFormatedTokensJson.locationcustom": "Locatie uit beheerdersconfiguratie"
+    "customFormatedTokensJson.locationcustom": "Locatie uit beheerdersconfiguratie",
+    "useJsonHistory": "De opslag van onbewerkte gegevensgeschiedenis wordt geactiveerd of gedeactiveerd en verwijderd (hoog geheugengebruik)."
 }

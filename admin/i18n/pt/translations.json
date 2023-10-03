@@ -190,5 +190,6 @@
     "customFormatedTokensJson.location": "Localização recuperada do provedor",
     "customFormatedTokensJson.instruction": "Instruções",
     "customFormatedTokensJson.provider": "Fornecedor",
-    "customFormatedTokensJson.locationcustom": "Localização da configuração do administrador"
+    "customFormatedTokensJson.locationcustom": "Localização da configuração do administrador",
+    "useJsonHistory": "O armazenamento do histórico de dados brutos é ativado ou desativado e excluído (alto consumo de memória)."
 }

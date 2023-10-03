@@ -196,6 +196,18 @@ const genericStateObjects = {
       write: false
     },
     native: {}
+  },
+  jsonHistory: {
+    _id: "jsonHistory",
+    type: "state",
+    common: {
+      name: "Big and useless field with a lot raw data from provider.",
+      type: "string",
+      role: "json",
+      read: true,
+      write: false
+    },
+    native: {}
   }
 };
 const statesObjectsWarnings = {

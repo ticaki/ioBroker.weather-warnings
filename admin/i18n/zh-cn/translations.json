@@ -190,5 +190,6 @@
     "customFormatedTokensJson.location": "从提供商处检索的位置",
     "customFormatedTokensJson.instruction": "指示",
     "customFormatedTokensJson.provider": "提供者",
-    "customFormatedTokensJson.locationcustom": "管理配置中的位置"
+    "customFormatedTokensJson.locationcustom": "管理配置中的位置",
+    "useJsonHistory": "原始数据历史存储被激活或停用和删除（高内存消耗）。"
 }

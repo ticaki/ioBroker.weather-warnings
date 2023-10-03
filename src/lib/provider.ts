@@ -206,12 +206,22 @@ class BaseProvider extends BaseClass {
                 const data = await axios.get(this.url);
                 if (data.status == 200) {
                     await this.setConnected(true);
+
                     const result = typeof data.data == 'object' ? data.data : JSON.parse(data.data);
+
                     this.library.writedp(
                         `${this.name}.warning.warning_json`,
                         JSON.stringify(result),
                         genericStateObjects.warnings_json,
                     );
+                    if (this.adapter.config.useJsonHistory) {
+                        const dp = `${this.name}.warning.jsonHistory`;
+                        const state = this.library.readdp(dp);
+                        let history: object[] = [];
+                        if (state && state.val && typeof state.val == 'string') history = JSON.parse(state.val);
+                        history.unshift(result);
+                        this.library.writedp(dp, JSON.stringify(history), genericStateObjects.jsonHistory);
+                    }
                     this.library.writedp(`${this.name}.lastUpdate`, Date.now(), genericStateObjects.lastUpdate);
                     return result;
                 } else {

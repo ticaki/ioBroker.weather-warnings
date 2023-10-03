@@ -190,5 +190,6 @@
     "customFormatedTokensJson.location": "Location retrieved from the provider",
     "customFormatedTokensJson.instruction": "Instructions",
     "customFormatedTokensJson.provider": "Provider",
-    "customFormatedTokensJson.locationcustom": "Location from admin configuration"
+    "customFormatedTokensJson.locationcustom": "Location from admin configuration",
+    "useJsonHistory": "Raw data history storage is activated or deactivated and deleted (high memory consumption)."
 }

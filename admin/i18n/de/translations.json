@@ -168,8 +168,8 @@
     "email_line_break": "Zeilenumbruch am Ende jeder Warnmeldung.",
     "email_panel": "Email",
     "test_diver": "Testen",
-    "dwdCityname": "Ortsname",
-    "dwdCitynameTip": "Dieser Ortsname ist in der Vorlage verfügbar.",
+    "dwdCityname": "Ortsname (benutzerdefiniert)",
+    "dwdCitynameTip": "Dieser benutzerdefinierte Ortsname ist in der Vorlage verfügbar.",
     "customFormatedTokensJson.starttime": "Startzeit",
     "customFormatedTokensJson.startdate": "Startdatum",
     "customFormatedTokensJson.endtime": "Endzeit",
@@ -190,5 +190,6 @@
     "customFormatedTokensJson.location": "Vom Anbieter abgerufener Standort",
     "customFormatedTokensJson.instruction": "Anweisungen",
     "customFormatedTokensJson.provider": "Anbieter",
-    "customFormatedTokensJson.locationcustom": "Standort aus der Administratorkonfiguration"
+    "customFormatedTokensJson.locationcustom": "Standort aus der Administratorkonfiguration",
+    "useJsonHistory": "Die Speicherung der Rohdatenhistorie wird aktiviert bzw. deaktiviert und gelöscht (hoher Speicherverbrauch)."
 }

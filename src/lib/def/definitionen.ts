@@ -63,6 +63,7 @@ export const genericStateObjects: {
     history: ioBroker.StateObject;
     warnings_json: ioBroker.StateObject;
     lastUpdate: ioBroker.StateObject;
+    jsonHistory: ioBroker.StateObject;
 } = {
     info: {
         _channel: {
@@ -219,6 +220,18 @@ export const genericStateObjects: {
             name: 'Time stamp of the last data retrieval.',
             type: 'number',
             role: 'value.time',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    jsonHistory: {
+        _id: 'jsonHistory',
+        type: 'state',
+        common: {
+            name: 'Big and useless field with a lot raw data from provider.',
+            type: 'string',
+            role: 'json',
             read: true,
             write: false,
         },

@@ -183,6 +183,15 @@ class BaseProvider extends import_library.BaseClass {
             JSON.stringify(result),
             import_definitionen.genericStateObjects.warnings_json
           );
+          if (this.adapter.config.useJsonHistory) {
+            const dp = `${this.name}.warning.jsonHistory`;
+            const state = this.library.readdp(dp);
+            let history = [];
+            if (state && state.val && typeof state.val == "string")
+              history = JSON.parse(state.val);
+            history.unshift(result);
+            this.library.writedp(dp, JSON.stringify(history), import_definitionen.genericStateObjects.jsonHistory);
+          }
           this.library.writedp(`${this.name}.lastUpdate`, Date.now(), import_definitionen.genericStateObjects.lastUpdate);
           return result;
         } else {
