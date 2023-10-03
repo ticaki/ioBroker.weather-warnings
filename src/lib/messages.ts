@@ -725,7 +725,6 @@ export class NotificationClass extends BaseClass {
                     break;
                 case 'pushover':
                     {
-
                         const opt = { message: msg };
                         //newMsg.title = topic;newMsg.device sound = `none`
                         if (action !== 'remove' || activeWarnings)
