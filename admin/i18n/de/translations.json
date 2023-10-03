@@ -193,10 +193,10 @@
     "customFormatedTokensJson.locationcustom": "Standort aus der Administratorkonfiguration",
     "useJsonHistory": "Die Speicherung der Rohdatenhistorie wird aktiviert bzw. deaktiviert und gelöscht (hoher Speicherverbrauch).",
     "uwzSelectId": "UWZ Warncell-Identifikator",
-    "zamgSelectId": "ZAMG Koordinaten zum Standort.",
     "dpWarning": ".Warnung.",
     "dpMessage": ".Nachricht.",
     "dpFormated": ".formatedKeys",
     "dpAlerts": ".alerts.",
-    "allowedDirs": "Verzeichnisse des Anbieters zulassen oder entfernen! Andere Einstellungen werden überschrieben!"
+    "allowedDirs": "Verzeichnisse des Anbieters zulassen oder entfernen! Andere Einstellungen werden überschrieben!",
+    "zamgSelectId": "ZAMG Koordinaten zum Standort. Taucher '#'"
 }

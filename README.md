@@ -111,6 +111,11 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.3.0 (2023-10-03)
+* (ticaki) added multiple warncell
+* added option to remove channels
+* fixed alot bugs
+
 ### 0.2.6-alpha.0 (2023-10-02)
 * (ticaki) added email, json, history
 * add more template key

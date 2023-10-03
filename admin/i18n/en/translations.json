@@ -73,7 +73,7 @@
     "uwzEnabled": "Activate UWZ",
     "uwzSelectDescription": "UWZ ID this consists of country code and postcode (DE12345, AT54321)",
     "uwzSelectId": "UWZ Warncell Identifier",
-    "zamgSelectId": "ZAMG Coordinates to location.",
+    "zamgSelectId": "ZAMG Coordinates to location. diver '#'",
     "uwzTypeFilter": "Filter the following warning types from the result.",
     "warnTypeName.dwdService.22": "frost",
     "warnTypeName.dwdService.24": "Slightly slippery",
