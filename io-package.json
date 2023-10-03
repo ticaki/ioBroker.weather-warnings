@@ -152,10 +152,11 @@
         ]
     },
     "native": {
+        "allowedDirs": [],
         "useJsonHistory": false,
         "dwdwarncellTable": [],
-        "zamgSelectID": "",
-        "uwzSelectID": "",
+        "uwzwarncellTable": [],
+        "zamgwarncellTable": [],
         "useTestWarnings": false,
         "dwdEnabled": false,
         "uwzEnabled": false,

@@ -191,5 +191,12 @@
     "customFormatedTokensJson.instruction": "Instrucciones",
     "customFormatedTokensJson.provider": "Proveedor",
     "customFormatedTokensJson.locationcustom": "Ubicación desde la configuración del administrador",
-    "useJsonHistory": "El almacenamiento del historial de datos sin procesar se activa o desactiva y se elimina (alto consumo de memoria)."
+    "useJsonHistory": "El almacenamiento del historial de datos sin procesar se activa o desactiva y se elimina (alto consumo de memoria).",
+    "uwzSelectId": "Identificador de Warncell UWZ",
+    "zamgSelectId": "ZAMG Coordenadas de la ubicación.",
+    "dpWarning": ".advertencia.",
+    "dpMessage": ".Mensaje.",
+    "dpFormated": ".claves formateadas",
+    "dpAlerts": ".alertas.",
+    "allowedDirs": "¡Permitir o eliminar directorios del proveedor! ¡Se sobrescribirán otras configuraciones!"
 }

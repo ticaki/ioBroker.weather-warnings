@@ -52,26 +52,75 @@ class WeatherWarnings extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     private async onReady(): Promise<void> {
-        try {
-            const states = await this.getStatesAsync('*');
-            await this.library.initStates(states);
-        } catch (error) {
-            this.log.error(`catch (1): init error while reading states! ${error}`);
-        }
-
-        if (this.providerController) {
-            this.providerController.init();
-            this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 60000} minutes`);
-        } else {
+        if (!this.providerController) {
             throw new Error('Provider controller doesnt exists.');
         }
+
+        // dynamic create of configuration datapoint.
+        if (!Array.isArray(this.config.allowedDirs)) this.config.allowedDirs = [];
+        let i = 0;
+        let change = false;
+        let allowedDirsConfig = {};
+        while (i++ < 2) {
+            const allowedDirs = this.config.allowedDirs;
+
+            for (const a in providerServicesArray) {
+                let hit = -1;
+                for (const b in allowedDirs) {
+                    if (
+                        allowedDirs[b].providerService == providerServicesArray[a].replace('Service', '').toUpperCase()
+                    ) {
+                        hit = Number(b);
+                        break;
+                    }
+                }
+                if (hit == -1) {
+                    change = true;
+                    this.config.allowedDirs.push({
+                        providerService: providerServicesArray[a].replace('Service', '').toUpperCase(),
+                        dpWarning: true,
+                        dpMessage: true,
+                        dpFormated: true,
+                        dpAlerts: true,
+                    });
+                }
+                //@ts-expect-error dann so
+                allowedDirsConfig[providerServicesArray[a]] =
+                    this.config.allowedDirs[hit == -1 ? this.config.allowedDirs.length - 1 : hit];
+            }
+            if (providerServicesArray.length != this.config.allowedDirs.length) {
+                this.config.allowedDirs = [];
+                allowedDirsConfig = {};
+                change = false;
+                continue;
+            }
+            break;
+        }
+        if (change) {
+            const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+            if (obj && obj.native) {
+                obj.native.allowedDirs = this.config.allowedDirs;
+                await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
+                this.log.warn('Fixed configuration for allowed datapoints! ');
+            }
+        }
+        this.providerController.setAllowedDirs(allowedDirsConfig);
 
         setTimeout(
             async function (that: any) {
                 const self = that as WeatherWarnings;
                 if (!self.providerController) return;
                 if (!self) return;
-                await self.library.init();
+                try {
+                    //const states = await self.getStatesAsync('*');
+                    await self.library.initStates(await self.getStatesAsync('*'));
+                    await self.library.initStates((await self.getChannelsAsync()) as any);
+                } catch (error) {
+                    self.log.error(`catch (1): init error while reading states! ${error}`);
+                }
+
+                self.providerController.init();
+                self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 60000} minutes`);
 
                 const notificationServiceOpt: notificationServiceOptionsType = {};
                 for (const a in notificationServiceArray) {
@@ -170,46 +219,47 @@ class WeatherWarnings extends utils.Adapter {
                             providerController: self.providerController,
                             language: self.config.dwdLanguage,
                         });
-                    } else {
-                        self.log.warn(`dont create dwd provider ${JSON.stringify(self.config.dwdwarncellTable)}`);
                     }
                 }
-                if (
-                    self.config.zamgEnabled &&
-                    self.config.zamgSelectID &&
-                    typeof self.config.zamgSelectID == 'string'
-                ) {
-                    self.log.info('ZAMG activated. Retrieve data.');
-                    const options: messageFilterTypeWithFilter & {
-                        [key: string]: any;
-                    } = {
-                        filter: { type: self.config.zamgTypeFilter },
-                    };
-                    const zamgArr = self.config.zamgSelectID.split(DIV) as [string, string];
-                    if (zamgArr.length == 2) {
+
+                for (const a in self.config.zamgwarncellTable) {
+                    const id = self.config.zamgwarncellTable[a];
+                    if (self.config.zamgEnabled && id && typeof id.zamgSelectId == 'string') {
+                        self.log.info('ZAMG activated. Retrieve data.');
+                        const options: messageFilterTypeWithFilter & {
+                            [key: string]: any;
+                        } = {
+                            filter: { type: self.config.zamgTypeFilter },
+                        };
+                        const zamgArr = id.zamgSelectId.split(DIV) as [string, string];
+                        if (zamgArr.length == 2) {
+                            self.providerController.createProviderIfNotExist({
+                                ...options,
+                                service: 'zamgService',
+                                warncellId: zamgArr,
+                                language: self.config.zamgLanguage,
+                                providerController: self.providerController,
+                                customName: id.zamgCityname,
+                            });
+                        }
+                    }
+                }
+                for (const a in self.config.uwzwarncellTable) {
+                    const id = self.config.uwzwarncellTable[a];
+                    if (self.config.uwzEnabled && !!id.uwzSelectId) {
+                        const options: messageFilterTypeWithFilter = {
+                            filter: { type: self.config.uwzTypeFilter },
+                        };
+                        self.log.info('UWZ activated. Retrieve data.');
                         self.providerController.createProviderIfNotExist({
                             ...options,
-                            service: 'zamgService',
-                            warncellId: zamgArr,
-                            language: self.config.zamgLanguage,
+                            service: 'uwzService',
+                            warncellId: 'UWZ' + id.uwzSelectId.toUpperCase(), //UWZ + Land + PLZ
                             providerController: self.providerController,
-                            customName: '',
+                            language: self.config.uwzLanguage,
+                            customName: id.uwzCityname,
                         });
                     }
-                }
-                if (self.config.uwzEnabled && !!self.config.uwzSelectID) {
-                    const options: messageFilterTypeWithFilter = {
-                        filter: { type: self.config.uwzTypeFilter },
-                    };
-                    self.log.info('UWZ activated. Retrieve data.');
-                    self.providerController.createProviderIfNotExist({
-                        ...options,
-                        service: 'uwzService',
-                        warncellId: 'UWZ' + self.config.uwzSelectID.toUpperCase(), //UWZ + Land + PLZ
-                        providerController: self.providerController,
-                        language: self.config.uwzLanguage,
-                        customName: '',
-                    });
                 }
 
                 self.providerController.updateEndless(self.providerController);

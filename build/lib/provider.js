@@ -391,8 +391,10 @@ class UWZProvider extends BaseProvider {
   }
   async updateData() {
     const result = await this.getDataFromProvider();
-    if (!result || !result.results || result.results == null)
+    if (!result || !result.results || result.results == null) {
+      this.log.warn("Invalid result from uwz server!");
       return;
+    }
     result.results.sort((a, b) => {
       if (a && b && a.dtgStart && b.dtgStart)
         return a.dtgStart - b.dtgStart;
@@ -633,6 +635,20 @@ class ProviderController extends import_library.BaseClass {
   async setConnected(status = this.connection) {
     const objDef = await this.adapter.library.getObjectDefFromJson(`info.connection`, import_definitionen.genericStateObjects);
     this.adapter.library.writedp(`info.connection`, !!status, objDef);
+  }
+  setAllowedDirs(allowedDirs) {
+    const dirs = [];
+    for (const a in allowedDirs) {
+      if (!allowedDirs[a].dpWarning)
+        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.warning`);
+      if (!allowedDirs[a].dpMessage)
+        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.alerts`);
+      if (!allowedDirs[a].dpFormated)
+        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.messages`);
+      if (!allowedDirs[a].dpAlerts)
+        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.formatedKeys`);
+      this.library.setAllowedDirs(dirs);
+    }
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

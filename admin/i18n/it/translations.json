@@ -191,5 +191,12 @@
     "customFormatedTokensJson.instruction": "Istruzioni",
     "customFormatedTokensJson.provider": "Fornitore",
     "customFormatedTokensJson.locationcustom": "Posizione dalla configurazione dell'amministratore",
-    "useJsonHistory": "La memorizzazione della cronologia dei dati grezzi viene attivata o disattivata ed eliminata (elevato consumo di memoria)."
+    "useJsonHistory": "La memorizzazione della cronologia dei dati grezzi viene attivata o disattivata ed eliminata (elevato consumo di memoria).",
+    "uwzSelectId": "Identificatore Warncell UWZ",
+    "zamgSelectId": "ZAMG Coordinate per la posizione.",
+    "dpWarning": ".avvertimento.",
+    "dpMessage": ".Messaggio.",
+    "dpFormated": ".formatedKeys",
+    "dpAlerts": ".avvisi.",
+    "allowedDirs": "Consenti o rimuovi le directory del provider! Le altre impostazioni verranno sovrascritte!"
 }

@@ -21,7 +21,7 @@ __export(provider_def_exports, {
   providerServicesArray: () => providerServicesArray
 });
 module.exports = __toCommonJS(provider_def_exports);
-const providerServicesArray = ["dwdService", "zamgService", "ninaService", "uwzService", "metroService"];
+const providerServicesArray = ["dwdService", "zamgService", "uwzService"];
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   providerServicesArray

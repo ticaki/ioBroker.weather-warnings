@@ -191,5 +191,12 @@
     "customFormatedTokensJson.instruction": "Instrukcje",
     "customFormatedTokensJson.provider": "Dostawca",
     "customFormatedTokensJson.locationcustom": "Lokalizacja z konfiguracji administratora",
-    "useJsonHistory": "Przechowywanie historii surowych danych jest aktywowane lub dezaktywowane i usuwane (duże zużycie pamięci)."
+    "useJsonHistory": "Przechowywanie historii surowych danych jest aktywowane lub dezaktywowane i usuwane (duże zużycie pamięci).",
+    "uwzSelectId": "Identyfikator UWZ Warncell",
+    "zamgSelectId": "ZAMG współrzędne do lokalizacji.",
+    "dpWarning": ".ostrzeżenie.",
+    "dpMessage": ".Wiadomość.",
+    "dpFormated": ".formatedKeys",
+    "dpAlerts": ".alerty.",
+    "allowedDirs": "Zezwól lub usuń katalogi dostawcy! Inne ustawienia zostaną nadpisane!"
 }

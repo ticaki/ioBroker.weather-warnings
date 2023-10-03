@@ -191,5 +191,12 @@
     "customFormatedTokensJson.instruction": "инструкции",
     "customFormatedTokensJson.provider": "Поставщик",
     "customFormatedTokensJson.locationcustom": "Местоположение из конфигурации администратора",
-    "useJsonHistory": "Хранение истории необработанных данных активируется или деактивируется и удаляется (высокое потребление памяти)."
+    "useJsonHistory": "Хранение истории необработанных данных активируется или деактивируется и удаляется (высокое потребление памяти).",
+    "uwzSelectId": "Идентификатор UWZ Warncell",
+    "zamgSelectId": "ZAMG Координаты местоположения.",
+    "dpWarning": ".предупреждение.",
+    "dpMessage": ".Сообщение.",
+    "dpFormated": ".formatedKeys",
+    "dpAlerts": ".оповещения.",
+    "allowedDirs": "Разрешите или удалите каталоги провайдера! Остальные настройки будут перезаписаны!"
 }

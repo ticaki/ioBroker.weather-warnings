@@ -5,13 +5,20 @@ declare global {
     namespace ioBroker {
         interface AdapterConfig {
             expandArray: boolean;
-
+            allowedDirs: Array<{
+                providerService: string;
+                dpWarning: boolean;
+                dpMessage: boolean;
+                dpFormated: boolean;
+                dpAlerts: boolean;
+            }>;
             useJsonHistory: boolean;
             useTestWarnings: boolean;
 
             dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
-            uwzSelectID: string;
-            zamgSelectID: string;
+            uwzwarncellTable: { uwzSelectId: string; uwzCityname: string }[];
+            zamgwarncellTable: { zamgSelectId: string; zamgCityname: string }[];
+
             dwdEnabled: boolean;
             zamgEnabled: boolean;
             uwzEnabled: boolean;

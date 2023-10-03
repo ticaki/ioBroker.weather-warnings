@@ -73,6 +73,7 @@ class CustomLog {
 export class Library extends BaseClass {
     stateDataBase: { [key: string]: LibraryStateVal } = {};
     language: string | undefined;
+    allowedDirs: string[] = [];
     constructor(adapter: AdapterClassDefinition, _options: any = null) {
         super(adapter, 'library');
         this.stateDataBase = {};
@@ -204,12 +205,14 @@ export class Library extends BaseClass {
     async writedp(dp: string, val: ioBroker.StateValue | undefined, obj: ioBroker.Object | null = null): Promise<void> {
         dp = this.cleandp(dp);
         let node = this.readdp(dp);
+        const del = !this.isDirAllowed(dp);
+
         if (node === undefined) {
             if (!obj) {
                 throw new Error('writedp try to create a state without object informations.');
             }
             obj._id = `${this.adapter.name}.${this.adapter.instance}.${dp}`;
-            await this.adapter.setObjectNotExistsAsync(dp, obj);
+            if (!del) await this.adapter.setObjectNotExistsAsync(dp, obj);
             const stateType = obj && obj.common && obj.common.type;
             node = this.setdb(dp, obj.type, undefined, stateType, true);
         }
@@ -221,14 +224,23 @@ export class Library extends BaseClass {
         if (node && node.val != val) {
             const typ = (obj && obj.common && obj.common.type) || node.stateTyp;
             if (typ && typ != typeof val && val !== undefined) val = this.convertToType(val, typ);
-            await this.adapter.setStateAsync(dp, {
-                val: val,
-                ts: Date.now(),
-                ack: true,
-            });
+            if (!del)
+                await this.adapter.setStateAsync(dp, {
+                    val: val,
+                    ts: Date.now(),
+                    ack: true,
+                });
         }
     }
-
+    isDirAllowed(dp: string): boolean {
+        for (const a in this.allowedDirs) {
+            if (dp.search(new RegExp(this.allowedDirs[a], 'g')) != -1) {
+                if (dp.search('uwz') != -1) this.log.debug(dp + ' ' + this.allowedDirs[a]);
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * Remove forbidden chars from datapoint string.
      * @param string Datapoint string to clean
@@ -351,19 +363,25 @@ export class Library extends BaseClass {
         if (!states) return;
         for (const state in states) {
             const dp = state.replace(`${this.adapter.name}.${this.adapter.instance}.`, '');
-            const obj = await this.adapter.getObjectAsync(dp);
-            if (!this.adapter.config.useJsonHistory && dp.endsWith('.warning.jsonHistory')) {
+            const del = !this.isDirAllowed(dp);
+            if (!del) {
+                const obj = await this.adapter.getObjectAsync(dp);
+                if (!this.adapter.config.useJsonHistory && dp.endsWith('.warning.jsonHistory')) {
+                    await this.adapter.delStateAsync(dp);
+                    continue;
+                }
+                this.setdb(
+                    dp,
+                    'state',
+                    states[state] && states[state].val ? states[state].val : undefined,
+                    obj && obj.common && obj.common.type ? obj.common.type : undefined,
+                    states[state] && states[state].ack,
+                    states[state] && states[state].ts ? states[state].ts : Date.now(),
+                );
+            } else {
+                this.adapter.log.debug('Delete State: ' + dp);
                 await this.adapter.delStateAsync(dp);
-                continue;
             }
-            this.setdb(
-                dp,
-                'state',
-                states[state] && states[state].val ? states[state].val : undefined,
-                obj && obj.common && obj.common.type ? obj.common.type : undefined,
-                states[state] && states[state].ack,
-                states[state] && states[state].ts ? states[state].ts : Date.now(),
-            );
         }
     }
 
@@ -485,5 +503,8 @@ export class Library extends BaseClass {
             }
         }
         await writei18nTranslation();
+    }
+    setAllowedDirs(dirs: any[]): void {
+        this.allowedDirs = this.allowedDirs.concat(dirs);
     }
 }

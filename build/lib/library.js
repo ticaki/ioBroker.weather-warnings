@@ -96,6 +96,7 @@ _prefix = new WeakMap();
 class Library extends BaseClass {
   stateDataBase = {};
   language;
+  allowedDirs = [];
   constructor(adapter, _options = null) {
     super(adapter, "library");
     this.stateDataBase = {};
@@ -169,12 +170,14 @@ class Library extends BaseClass {
   async writedp(dp, val, obj = null) {
     dp = this.cleandp(dp);
     let node = this.readdp(dp);
+    const del = !this.isDirAllowed(dp);
     if (node === void 0) {
       if (!obj) {
         throw new Error("writedp try to create a state without object informations.");
       }
       obj._id = `${this.adapter.name}.${this.adapter.instance}.${dp}`;
-      await this.adapter.setObjectNotExistsAsync(dp, obj);
+      if (!del)
+        await this.adapter.setObjectNotExistsAsync(dp, obj);
       const stateType = obj && obj.common && obj.common.type;
       node = this.setdb(dp, obj.type, void 0, stateType, true);
     }
@@ -186,12 +189,23 @@ class Library extends BaseClass {
       const typ = obj && obj.common && obj.common.type || node.stateTyp;
       if (typ && typ != typeof val && val !== void 0)
         val = this.convertToType(val, typ);
-      await this.adapter.setStateAsync(dp, {
-        val,
-        ts: Date.now(),
-        ack: true
-      });
+      if (!del)
+        await this.adapter.setStateAsync(dp, {
+          val,
+          ts: Date.now(),
+          ack: true
+        });
     }
+  }
+  isDirAllowed(dp) {
+    for (const a in this.allowedDirs) {
+      if (dp.search(new RegExp(this.allowedDirs[a], "g")) != -1) {
+        if (dp.search("uwz") != -1)
+          this.log.debug(dp + " " + this.allowedDirs[a]);
+        return false;
+      }
+    }
+    return true;
   }
   cleandp(string, lowerCase = false) {
     if (!string && typeof string != "string")
@@ -288,19 +302,25 @@ class Library extends BaseClass {
       return;
     for (const state in states) {
       const dp = state.replace(`${this.adapter.name}.${this.adapter.instance}.`, "");
-      const obj = await this.adapter.getObjectAsync(dp);
-      if (!this.adapter.config.useJsonHistory && dp.endsWith(".warning.jsonHistory")) {
+      const del = !this.isDirAllowed(dp);
+      if (!del) {
+        const obj = await this.adapter.getObjectAsync(dp);
+        if (!this.adapter.config.useJsonHistory && dp.endsWith(".warning.jsonHistory")) {
+          await this.adapter.delStateAsync(dp);
+          continue;
+        }
+        this.setdb(
+          dp,
+          "state",
+          states[state] && states[state].val ? states[state].val : void 0,
+          obj && obj.common && obj.common.type ? obj.common.type : void 0,
+          states[state] && states[state].ack,
+          states[state] && states[state].ts ? states[state].ts : Date.now()
+        );
+      } else {
+        this.adapter.log.debug("Delete State: " + dp);
         await this.adapter.delStateAsync(dp);
-        continue;
       }
-      this.setdb(
-        dp,
-        "state",
-        states[state] && states[state].val ? states[state].val : void 0,
-        obj && obj.common && obj.common.type ? obj.common.type : void 0,
-        states[state] && states[state].ack,
-        states[state] && states[state].ts ? states[state].ts : Date.now()
-      );
     }
   }
   async garbageColleting(prefix, offset = 2e3) {
@@ -413,6 +433,9 @@ class Library extends BaseClass {
       }
     }
     await (0, import_translations.writei18nTranslation)();
+  }
+  setAllowedDirs(dirs) {
+    this.allowedDirs = this.allowedDirs.concat(dirs);
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

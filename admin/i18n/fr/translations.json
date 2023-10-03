@@ -191,5 +191,12 @@
     "customFormatedTokensJson.instruction": "Instructions",
     "customFormatedTokensJson.provider": "Fournisseur",
     "customFormatedTokensJson.locationcustom": "Emplacement à partir de la configuration de l'administrateur",
-    "useJsonHistory": "Le stockage de l'historique des données brutes est activé ou désactivé et supprimé (consommation mémoire élevée)."
+    "useJsonHistory": "Le stockage de l'historique des données brutes est activé ou désactivé et supprimé (consommation mémoire élevée).",
+    "uwzSelectId": "Identifiant UWZ Warncell",
+    "zamgSelectId": "ZAMG Coordonnées de l'emplacement.",
+    "dpWarning": ".avertissement.",
+    "dpMessage": ".Message.",
+    "dpFormated": ".formatedKeys",
+    "dpAlerts": ".alertes.",
+    "allowedDirs": "Autorisez ou supprimez les répertoires du fournisseur ! Les autres paramètres seront écrasés !"
 }

@@ -191,5 +191,12 @@
     "customFormatedTokensJson.instruction": "Інструкції",
     "customFormatedTokensJson.provider": "Провайдер",
     "customFormatedTokensJson.locationcustom": "Розташування з конфігурації адміністратора",
-    "useJsonHistory": "Зберігання історії необроблених даних активовано або дезактивовано та видалено (велике споживання пам’яті)."
+    "useJsonHistory": "Зберігання історії необроблених даних активовано або дезактивовано та видалено (велике споживання пам’яті).",
+    "uwzSelectId": "Ідентифікатор UWZ Warncell",
+    "zamgSelectId": "ZAMG Координати розташування.",
+    "dpWarning": ".УВАГА.",
+    "dpMessage": ".Повідомлення.",
+    "dpFormated": ".formatedKeys",
+    "dpAlerts": ".alerts.",
+    "allowedDirs": "Дозволити або видалити каталоги провайдера! Інші налаштування будуть перезаписані!"
 }

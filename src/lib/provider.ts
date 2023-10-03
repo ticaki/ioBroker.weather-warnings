@@ -340,7 +340,7 @@ export class DWDProvider extends BaseProvider {
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as dataImportDwdType;
         if (!result) return;
-        //this.log.debug(JSON.stringify(result));
+
         this.log.debug(`Got ${result.features.length} warnings from server`);
         result.features.sort((a, b) => {
             return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
@@ -412,7 +412,7 @@ export class ZAMGProvider extends BaseProvider {
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as dataImportZamgType;
         if (!result) return;
-        //this.log.debug(JSON.stringify(result));
+
         if (!result.properties || !result.properties.warnings) {
             this.log.debug(`Got 0 warnings from server`);
             return;
@@ -457,7 +457,10 @@ export class UWZProvider extends BaseProvider {
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as dataImportUWZType;
-        if (!result || !result.results || result.results == null) return;
+        if (!result || !result.results || result.results == null) {
+            this.log.warn('Invalid result from uwz server!');
+            return;
+        }
         result.results.sort((a, b) => {
             if (a && b && a.dtgStart && b.dtgStart) return a.dtgStart - b.dtgStart;
             return 0;
@@ -482,7 +485,7 @@ export class UWZProvider extends BaseProvider {
                 this.messages[index].updateData(result.results[a]);
             }
         }
-        //this.log.debug(JSON.stringify(result));
+
         this.log.debug(`Got ${result.results.length} warnings from server`);
 
         this.library.garbageColleting(`${this.name}.warning`);
@@ -714,6 +717,21 @@ export class ProviderController extends BaseClass {
     async setConnected(status: boolean = this.connection): Promise<void> {
         const objDef = await this.adapter.library.getObjectDefFromJson(`info.connection`, genericStateObjects);
         this.adapter.library.writedp(`info.connection`, !!status, objDef);
+    }
+    setAllowedDirs(allowedDirs: any): void {
+        const dirs = [];
+        for (const a in allowedDirs) {
+            if (!allowedDirs[a].dpWarning)
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.warning`);
+            if (!allowedDirs[a].dpMessage)
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.alerts`);
+            if (!allowedDirs[a].dpFormated)
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.messages`);
+            if (!allowedDirs[a].dpAlerts)
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.formatedKeys`);
+
+            this.library.setAllowedDirs(dirs);
+        }
     }
 }
 export type ProvideClassType = DWDProvider | ZAMGProvider | UWZProvider | NINAProvider | METROProvider;

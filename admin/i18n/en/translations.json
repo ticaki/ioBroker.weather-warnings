@@ -72,7 +72,8 @@
     "useTestWarnings": "Activate Testwarnings! Adapter goes offline ",
     "uwzEnabled": "Activate UWZ",
     "uwzSelectDescription": "UWZ ID this consists of country code and postcode (DE12345, AT54321)",
-    "uwzSelectID": "Write the UWZ ID.",
+    "uwzSelectId": "UWZ Warncell Identifier",
+    "zamgSelectId": "ZAMG Coordinates to location.",
     "uwzTypeFilter": "Filter the following warning types from the result.",
     "warnTypeName.dwdService.22": "frost",
     "warnTypeName.dwdService.24": "Slightly slippery",
@@ -191,5 +192,10 @@
     "customFormatedTokensJson.instruction": "Instructions",
     "customFormatedTokensJson.provider": "Provider",
     "customFormatedTokensJson.locationcustom": "Location from admin configuration",
-    "useJsonHistory": "Raw data history storage is activated or deactivated and deleted (high memory consumption)."
+    "useJsonHistory": "Raw data history storage is activated or deactivated and deleted (high memory consumption).",
+    "dpWarning":".warning.",
+    "dpMessage":".Message.",
+    "dpFormated":".formatedKeys",
+    "dpAlerts":".alerts.",
+    "allowedDirs":"Allow or remove directories of the provider! Other settings will be overwritten!"
 }

@@ -191,5 +191,12 @@
     "customFormatedTokensJson.instruction": "Instruções",
     "customFormatedTokensJson.provider": "Fornecedor",
     "customFormatedTokensJson.locationcustom": "Localização da configuração do administrador",
-    "useJsonHistory": "O armazenamento do histórico de dados brutos é ativado ou desativado e excluído (alto consumo de memória)."
+    "useJsonHistory": "O armazenamento do histórico de dados brutos é ativado ou desativado e excluído (alto consumo de memória).",
+    "uwzSelectId": "Identificador Warncell UWZ",
+    "zamgSelectId": "ZAMG Coordenadas para localização.",
+    "dpWarning": ".aviso.",
+    "dpMessage": ".Mensagem.",
+    "dpFormated": ".formatedKeys",
+    "dpAlerts": ".alertas.",
+    "allowedDirs": "Permitir ou remover diretórios do provedor! Outras configurações serão substituídas!"
 }

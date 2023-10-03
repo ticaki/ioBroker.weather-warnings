@@ -34,16 +34,16 @@ tests.integration(path.join(__dirname,".."),{
                     obj.native.dwdEnabled=true;
                     obj.native.dwdwarncellTable=[{ dwdSelectId: 80511100, dwdCityname: 'test' },{ dwdSelectId: 80511100, dwdCityname: 'test' }];
                     obj.native.uwzEnabled=true;
-                    obj.native.uwzSelectID='DE55606';
+                    obj.native.uwzSelectId=[{ uwzSelectId: 'DE55606', uwzCityname: 'test' }];
                     obj.native.zamgEnabled=true;
-                    obj.native.zamgSelectID='48.333444483766975#14.6258983209036';
+                    obj.native.zamgSelectId=[{ zamgSelectId: '48.333444483766975#14.6258983209036', zamgCityname: 'test' }];
                     obj.native.zamgTypeFilter=[5,1];
                     obj.native.uwzTypeFilter=[5,1];
                     harness.objects.setObject(obj._id,obj)
                     // Start the adapter and wait until it has started
                     await harness.startAdapterAndWait();
                     harness.sendTo('weather-warnings.0','test','message',resp => {
-                        resolve();
+                        resolve('ok');
                     });
                 }).timeout(200000);
             }))
@@ -55,7 +55,7 @@ tests.integration(path.join(__dirname,".."),{
                 harness.sendTo('weather-warnings.0','test-connection','message',resp => {
 
                     console.log(resp);
-                    if (resp=='true') resolve();
+                    if (resp=='true') resolve('ok');
                     else reject();
                 });
             })).timeout(200000);
@@ -67,15 +67,15 @@ tests.integration(path.join(__dirname,".."),{
                 harness=getHarness();
             });
             // eslint-disable-next-line no-undef
-            it('Start with testdata',() => new Promise(async (resolve) => {
+            it('Test: Start with testdata',() => new Promise(async (resolve) => {
                 harness.objects.getObject('system.adapter.weather-warnings.0',async (err,obj) => {
                     obj.native.useTestWarnings=true;
                     obj.native.dwdEnabled=true;
-                    obj.native.dwdwarncellTable=[{ dwdSelectId: 805111000, dwdCityname: 'test' }];
+                    obj.native.dwdwarncellTable=[{ dwdSelectId: 80511100, dwdCityname: 'test' },{ dwdSelectId: 80511100, dwdCityname: 'test' }];
                     obj.native.uwzEnabled=true;
-                    obj.native.uwzSelectID='DE55606';
+                    obj.native.uwzwarncellTable=[{ uwzSelectId: 'DE55606', uwzCityname: 'test' }];
                     obj.native.zamgEnabled=true;
-                    obj.native.zamgSelectID='48.333444483766975#14.6258983209036';
+                    obj.native.zamgwarncellTable=[{ zamgSelectId: '48.333444483766975#14.6258983209036', zamgCityname: 'test' }];
                     obj.native.refreshTime=1;
                     obj.native.zamgTypeFilter=[7];
                     obj.native.uwzTypeFilter=[];
@@ -83,7 +83,7 @@ tests.integration(path.join(__dirname,".."),{
                     // Start the adapter and wait until it has started
                     await harness.startAdapterAndWait();
                     harness.sendTo('weather-warnings.0','test','message',resp => {
-                        resolve();
+                        resolve('ok');
                     });
                 });
             })).timeout(200000);
@@ -95,13 +95,14 @@ tests.integration(path.join(__dirname,".."),{
                 harness.sendTo('weather-warnings.0','test-data','message',resp => {
                     if (resp == 'ok') resolve(resp);
                     else reject(resp);
+                    
                 });
             })).timeout(200000);
             it('Test: Adapter works more than 2 Minute!',() => new Promise(async (resolve, reject) => {
                 // change the adapter config
                 await harness.startAdapterAndWait();
                 await wait(150000);
-                if (harness.isAdapterRunning()) resolve();
+                if (harness.isAdapterRunning()) resolve('ok');
                 else reject('Adapter stops');
             })).timeout(400000);
         });
