@@ -48,10 +48,18 @@ class MessagesClass extends import_library.BaseClass {
   genericType = 1;
   formatedKeyCommand = {
     dwdService: {
-      starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
-      startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
-      endtime: { node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
-      enddate: { node: `$fromMillis($toMillis(EXPIRES),"[D01].[M01]","\${this.timeOffset}")` },
+      starttime: {
+        node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")`
+      },
+      startdate: {
+        node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")`
+      },
+      endtime: {
+        node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")`
+      },
+      enddate: {
+        node: `$fromMillis($toMillis(EXPIRES),"[D01].[M01]","\${this.timeOffset}")`
+      },
       startdayofweek: {
         node: `ONSET`,
         cmd: "dayoftheweek"
@@ -82,7 +90,9 @@ class MessagesClass extends import_library.BaseClass {
         )},$string($temp)))`,
         cmd: "translate"
       },
-      warnlevelnumber: { node: `$lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY))` },
+      warnlevelnumber: {
+        node: `$lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY))`
+      },
       warntypename: {
         node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.dwdService)}, $string(EC_II))`,
         cmd: "translate"
@@ -103,13 +113,33 @@ class MessagesClass extends import_library.BaseClass {
       locationcustom: {
         cmd: void 0,
         node: ""
+      },
+      startdayofweekshort: {
+        node: `ONSET`,
+        cmd: "dayoftheweekshort"
+      },
+      enddayofweekshort: {
+        node: `EXPIRES`,
+        cmd: "dayoftheweekshort"
+      },
+      countdown: {
+        cmd: void 0,
+        node: ""
       }
     },
     uwzService: {
-      starttime: { node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
-      startdate: { node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
-      endtime: { node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
-      enddate: { node: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")` },
+      starttime: {
+        node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")`
+      },
+      startdate: {
+        node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")`
+      },
+      endtime: {
+        node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")`
+      },
+      enddate: {
+        node: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")`
+      },
       startdayofweek: {
         node: `dtgStart`,
         cmd: "dayoftheweek"
@@ -167,13 +197,33 @@ class MessagesClass extends import_library.BaseClass {
       locationcustom: {
         cmd: void 0,
         node: ""
+      },
+      startdayofweekshort: {
+        node: `dtgStart`,
+        cmd: "dayoftheweekshort"
+      },
+      enddayofweekshort: {
+        node: `dtgEnd`,
+        cmd: "dayoftheweekshort"
+      },
+      countdown: {
+        cmd: void 0,
+        node: ""
       }
     },
     zamgService: {
-      starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
-      startdate: { node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
-      endtime: { node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
-      enddate: { node: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")` },
+      starttime: {
+        node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")`
+      },
+      startdate: {
+        node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")`
+      },
+      endtime: {
+        node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")`
+      },
+      enddate: {
+        node: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")`
+      },
       startdayofweek: {
         node: `$number(rawinfo.start)`,
         cmd: "dayoftheweek"
@@ -218,6 +268,18 @@ class MessagesClass extends import_library.BaseClass {
       locationcustom: {
         cmd: void 0,
         node: ""
+      },
+      startdayofweekshort: {
+        node: `$number(rawinfo.start)`,
+        cmd: "dayoftheweekshort"
+      },
+      enddayofweekshort: {
+        node: `$number(rawinfo.end)`,
+        cmd: "dayoftheweekshort"
+      },
+      countdown: {
+        cmd: void 0,
+        node: ""
       }
     },
     default: {
@@ -248,6 +310,18 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       locationcustom: {
+        cmd: void 0,
+        node: ""
+      },
+      startdayofweekshort: {
+        cmd: void 0,
+        node: ""
+      },
+      enddayofweekshort: {
+        cmd: void 0,
+        node: ""
+      },
+      countdown: {
         cmd: void 0,
         node: ""
       }
@@ -472,6 +546,11 @@ class MessagesClass extends import_library.BaseClass {
           weekday: "long"
         });
       }
+      case "dayoftheweekshort": {
+        return new Date(data).toLocaleDateString(this.library.getLocalLanguage(), {
+          weekday: "short"
+        });
+      }
       case "translate": {
         return this.library.getTranslation(data);
       }
@@ -492,6 +571,15 @@ class MessagesClass extends import_library.BaseClass {
     if (!(this.newMessage && action == "new" || !this.notDeleted && action == "remove" || action == "removeAll")) {
       if (!override)
         action = "all";
+    }
+    if (this.formatedData) {
+      const negativ = this.starttime - Date.now() < 0;
+      const remain = new Date(Math.abs(this.starttime - Date.now()));
+      const d = remain.getDate() - 1;
+      const h = d > 0 ? ("00" + String(remain.getHours())).slice(2) : String(remain.getHours());
+      this.formatedData.countdown = `${negativ ? "-" : ""}${d > 0 ? `${String(d)}:` : ""}${h}:${String(
+        remain.getMinutes()
+      )}`;
     }
     const msgsend = {};
     for (let a = 0; a < this.messages.length; a++) {
@@ -570,7 +658,10 @@ class NotificationClass extends import_library.BaseClass {
           break;
         case "pushover":
           {
-            const opt = { message: msg, disable_notification: true };
+            const opt = {
+              message: msg,
+              disable_notification: true
+            };
             if (action !== "remove" || activeWarnings)
               this.adapter.sendTo(this.options.adapter, "send", opt, () => {
                 this.log.debug(`Send the message: ${msg}`);
@@ -672,7 +763,12 @@ class AllNotificationClass extends NotificationClass {
               } else {
                 if (action == "removeAll") {
                   for (const p in this.providerDB) {
-                    this.providerDB[p] = [{ starttime: Date.now(), msg: json }];
+                    this.providerDB[p] = [
+                      {
+                        starttime: Date.now(),
+                        msg: json
+                      }
+                    ];
                   }
                 }
                 this.log.debug("sendNotifications(2): removeAll: " + msg);

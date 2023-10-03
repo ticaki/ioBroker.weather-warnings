@@ -26,6 +26,7 @@ var import_library = require("./lib/library.js");
 var import_messages_def = require("./lib/def/messages-def");
 var import_provider_def = require("./lib/def/provider-def");
 var import_notificationService_def = require("./lib/def/notificationService-def");
+var import_notificationConfig_d = require("./lib/def/notificationConfig-d");
 import_axios.default.defaults.timeout = 8e3;
 class WeatherWarnings extends utils.Adapter {
   library;
@@ -83,7 +84,7 @@ class WeatherWarnings extends utils.Adapter {
             template.removeAll = template.removeAll ? template.removeAll : "none";
             template.all = template.all ? template.all : "none";
             notificationServiceOpt[notificationService] = {
-              ...import_notificationService_def.notificationServiceDefaults[notificationService],
+              ...import_notificationConfig_d.notificationServiceDefaults[notificationService],
               service,
               filter: {
                 level: self.config[notificationService + "_LevelFilter"],
@@ -91,8 +92,13 @@ class WeatherWarnings extends utils.Adapter {
               },
               adapter: self.config[notificationService + "_Adapter"],
               name: notificationService,
-              template
+              template,
+              useadapter: true
             };
+            Object.assign(
+              notificationServiceOpt[notificationService],
+              import_notificationConfig_d.notificationServiceDefaults[notificationService]
+            );
           }
         }
         if (self.config.telegram_Enabled) {
@@ -116,9 +122,16 @@ class WeatherWarnings extends utils.Adapter {
         }
         for (const a in self.config.dwdwarncellTable) {
           const id = self.config.dwdwarncellTable[a];
-          if (id.dwdSelectId > 1e4 && !isNaN(id.dwdSelectId) && self.config.dwdEnabled) {
+          if (self.config.dwdEnabled) {
+            if (id.dwdSelectId < 1e4 && isNaN(id.dwdSelectId)) {
+              self.log.warn(`DWD is activated, but no valid warning cell is configured.`);
+              continue;
+            }
             const options = {
-              filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter }
+              filter: {
+                type: self.config.dwdTypeFilter,
+                level: self.config.dwdLevelFilter
+              }
             };
             self.log.info("DWD activated. Retrieve data.");
             self.providerController.createProviderIfNotExist({
@@ -372,7 +385,7 @@ class WeatherWarnings extends utils.Adapter {
             if (state)
               connected = connected || !!state.val;
           });
-          state = this.library.getdb("provider.activWarnings");
+          state = this.library.getdb("provider.activeWarnings");
           if (state)
             connected = !!connected || !(state.val && Number(state.val) >= 4);
           else

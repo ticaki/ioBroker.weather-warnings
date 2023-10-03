@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import WeatherWarnings from '../main';
-import { PROVIDER_OPTIONS, genericStateObjects, statesObjectsWarnings } from './def/definitionen';
+import { PROVIDER_OPTIONS, defaultChannel, genericStateObjects, statesObjectsWarnings } from './def/definitionen';
 import { BaseClass, Library } from './library';
 import {
     DataImportType,
@@ -67,16 +67,20 @@ class BaseProvider extends BaseClass {
         this.log.setLogPrefix(`${name}-${options.warncellId}`);
         this.filter = options.filter;
         this.customName = options.customName;
-        const temp = this.library.cloneGenericObject(genericStateObjects.channel) as ioBroker.ChannelObject;
+
+        const temp = this.library.cloneGenericObject(defaultChannel) as ioBroker.ChannelObject;
         temp.common.name = name.toUpperCase();
         this.library.writedp('provider.' + name, undefined, temp);
+
         this.init();
     }
     async init(): Promise<void> {
-        const temp = this.library.cloneGenericObject(genericStateObjects.channel) as ioBroker.ChannelObject;
+        const temp = this.library.cloneGenericObject(defaultChannel) as ioBroker.ChannelObject;
         temp.common.name = this.customName;
         await this.library.writedp(`${this.name}`, undefined, temp);
-        await this.adapter.extendObjectAsync(`${this.name}`, { common: { name: this.customName } });
+        await this.adapter.extendObjectAsync(`${this.name}`, {
+            common: { name: this.customName },
+        });
 
         await this.library.writedp(`${this.name}.info`, undefined, genericStateObjects.info._channel);
         await this.library.writedp(`${this.name}.messages`, undefined, genericStateObjects.messageStates._channel);
@@ -190,18 +194,6 @@ class BaseProvider extends BaseClass {
             if (this.unload) {
                 return;
             }
-
-            /*let result = await axios.get(
-                'https://feeds.meteoalarm.org/api/v1/warnings/feeds-italy/12f80051-b8f8-4c13-b31d-f960796e73a2?index_info=0&amp;index_area=0&amp;index_geocode=0',
-                //'https://feeds.meteoalarm.org/feeds/meteoalarm-legacy-atom-italy',
-            );
-            this.log.debug(result.data);
-            result = await axios.get(
-                //'https://feeds.meteoalarm.org/api/v1/warnings/feeds-italy/12f80051-b8f8-4c13-b31d-f960796e73a2?index_info=0&amp;index_area=0&amp;index_geocode=0',
-                'https://feeds.meteoalarm.org/feeds/meteoalarm-legacy-atom-italy',
-            );
-            this.log.debug('22    ' + result.data);
-            return;*/
 
             // show text mode in Info states
             const objDef = await this.library.getObjectDefFromJson(`info.testMode`, genericStateObjects);
@@ -533,7 +525,7 @@ export class ProviderController extends BaseClass {
                           endkey: `system.adapter.${options.adapter}`,
                       })
                     : null;
-            if (options.adapter == '' || (objs && objs.rows && objs.rows.length > 0)) {
+            if (!options.useadapter || (objs && objs.rows && objs.rows.length > 0)) {
                 const noti = new options.class(this.adapter, options);
                 this.notificationServices.push(noti);
             } else {

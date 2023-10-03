@@ -1,4 +1,3 @@
-import { AllNotificationClass, NotificationClass } from '../messages';
 import { messageFilterType, providerServices } from './provider-def';
 
 export type notificationServiceType = Required<keyof notificationServiceOptionsType>;
@@ -30,6 +29,7 @@ export type notificationServiceBaseType = {
     name: notificationServiceType;
     template: notificationTemplateType;
     class: any;
+    useadapter: boolean;
 };
 
 export type notificationTemplateUnionType = keyof notificationTemplateType;
@@ -57,26 +57,6 @@ export const serciceCapabilities: Record<notificationServiceType, notificationSe
     whatsapp: { notifications: push },
     pushover: { notifications: push },
     history: { notifications: history },
-};
-export const notificationServiceDefaults: Record<notificationServiceType, Partial<notificationServiceBaseType>> = {
-    telegram: {
-        class: NotificationClass,
-    },
-    pushover: {
-        class: NotificationClass,
-    },
-    whatsapp: {
-        class: NotificationClass,
-    },
-    json: {
-        class: AllNotificationClass,
-    },
-    history: {
-        class: AllNotificationClass,
-    },
-    email: {
-        class: AllNotificationClass,
-    },
 };
 
 export const notificationServiceArray: notificationServiceType[] = [

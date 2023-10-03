@@ -21,10 +21,10 @@ import {
 import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
 import {
     notificationServiceArray,
-    notificationServiceDefaults,
     notificationServiceOptionsType,
     notificationTemplateType,
 } from './lib/def/notificationService-def';
+import { notificationServiceDefaults } from './lib/def/notificationConfig-d';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -112,7 +112,13 @@ class WeatherWarnings extends utils.Adapter {
                             ] as string,
                             name: notificationService,
                             template: template,
+                            useadapter: true,
                         };
+                        Object.assign(
+                            //@ts-expect-error verstehe ich nicht
+                            notificationServiceOpt[notificationService],
+                            notificationServiceDefaults[notificationService],
+                        );
                     }
                 }
                 // hold this for some specialcases
@@ -140,16 +146,25 @@ class WeatherWarnings extends utils.Adapter {
                 // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
                 for (const a in self.config.dwdwarncellTable) {
                     const id = self.config.dwdwarncellTable[a];
-                    if (id.dwdSelectId > 10000 && !isNaN(id.dwdSelectId) && self.config.dwdEnabled) {
-                        const options: messageFilterTypeWithFilter & { [key: string]: any } = {
-                            filter: { type: self.config.dwdTypeFilter, level: self.config.dwdLevelFilter },
+                    if (self.config.dwdEnabled) {
+                        if (id.dwdSelectId < 10000 && isNaN(id.dwdSelectId)) {
+                            self.log.warn(`DWD is activated, but no valid warning cell is configured.`);
+                            continue;
+                        }
+                        const options: messageFilterTypeWithFilter & {
+                            [key: string]: any;
+                        } = {
+                            filter: {
+                                type: self.config.dwdTypeFilter,
+                                level: self.config.dwdLevelFilter,
+                            },
                         };
                         self.log.info('DWD activated. Retrieve data.');
                         self.providerController.createProviderIfNotExist({
                             ...options,
                             service: 'dwdService',
                             customName: id.dwdCityname,
-                            warncellId: String(id.dwdSelectId), //805111000 Düssel - kirn 807133052
+                            warncellId: String(id.dwdSelectId),
                             providerController: self.providerController,
                             language: self.config.dwdLanguage,
                         });
@@ -163,7 +178,9 @@ class WeatherWarnings extends utils.Adapter {
                     typeof self.config.zamgSelectID == 'string'
                 ) {
                     self.log.info('ZAMG activated. Retrieve data.');
-                    const options: messageFilterTypeWithFilter & { [key: string]: any } = {
+                    const options: messageFilterTypeWithFilter & {
+                        [key: string]: any;
+                    } = {
                         filter: { type: self.config.zamgTypeFilter },
                     };
                     const zamgArr = self.config.zamgSelectID.split(DIV) as [string, string];
@@ -206,11 +223,6 @@ class WeatherWarnings extends utils.Adapter {
      */
     private onUnload(callback: () => void): void {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
             if (this.providerController) this.providerController.delete();
             callback();
         } catch (e) {
@@ -218,6 +230,9 @@ class WeatherWarnings extends utils.Adapter {
         }
     }
 
+    /**
+     *  We need this later, dont remove
+     */
     // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
     // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
     // /**
@@ -435,7 +450,7 @@ class WeatherWarnings extends utils.Adapter {
                     // connected === true is right
                     this.sendTo(obj.from, obj.command, connected ? 'true' : 'false', obj.callback);
                     break;
-                /**testing with testdata and switch then to online */
+                /** testing with testdata and switch then to online */
                 case 'test-data':
                     if (obj.from !== 'system.adapter.test.0') {
                         this.sendTo(obj.from, obj.command, 'Dont use this command!', obj.callback);
@@ -451,7 +466,7 @@ class WeatherWarnings extends utils.Adapter {
                         state = this.library.getdb(a);
                         if (state) connected = connected || !!state.val;
                     });
-                    state = this.library.getdb('provider.activWarnings');
+                    state = this.library.getdb('provider.activeWarnings');
                     if (state) connected = !!connected || !(state.val && Number(state.val) >= 4);
                     else connected = true; //error
                     // connected === false is right
@@ -538,8 +553,10 @@ class WeatherWarnings extends utils.Adapter {
 }
 if (require.main !== module) {
     // Export the constructor in compact mode
-    //@ts-expect-error no idea why options need log
-    module.exports = (options: WeatherWarnings | undefined) => new WeatherWarnings(options);
+
+    module.exports = (options: WeatherWarnings | undefined) =>
+        //@ts-expect-error no idea why options need log
+        new WeatherWarnings(options);
 } else {
     // otherwise start the instance directly
     (() => new WeatherWarnings())();

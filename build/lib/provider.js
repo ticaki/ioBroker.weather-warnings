@@ -63,16 +63,18 @@ class BaseProvider extends import_library.BaseClass {
     this.log.setLogPrefix(`${name}-${options.warncellId}`);
     this.filter = options.filter;
     this.customName = options.customName;
-    const temp = this.library.cloneGenericObject(import_definitionen.genericStateObjects.channel);
+    const temp = this.library.cloneGenericObject(import_definitionen.defaultChannel);
     temp.common.name = name.toUpperCase();
     this.library.writedp("provider." + name, void 0, temp);
     this.init();
   }
   async init() {
-    const temp = this.library.cloneGenericObject(import_definitionen.genericStateObjects.channel);
+    const temp = this.library.cloneGenericObject(import_definitionen.defaultChannel);
     temp.common.name = this.customName;
     await this.library.writedp(`${this.name}`, void 0, temp);
-    await this.adapter.extendObjectAsync(`${this.name}`, { common: { name: this.customName } });
+    await this.adapter.extendObjectAsync(`${this.name}`, {
+      common: { name: this.customName }
+    });
     await this.library.writedp(`${this.name}.info`, void 0, import_definitionen.genericStateObjects.info._channel);
     await this.library.writedp(`${this.name}.messages`, void 0, import_definitionen.genericStateObjects.messageStates._channel);
     await this.library.writedp(`${this.name}.formatedKeys`, void 0, import_definitionen.genericStateObjects.formatedKeysDevice);
@@ -446,7 +448,7 @@ class ProviderController extends import_library.BaseClass {
         startkey: `system.adapter.${options.adapter}`,
         endkey: `system.adapter.${options.adapter}`
       }) : null;
-      if (options.adapter == "" || objs && objs.rows && objs.rows.length > 0) {
+      if (!options.useadapter || objs && objs.rows && objs.rows.length > 0) {
         const noti = new options.class(this.adapter, options);
         this.notificationServices.push(noti);
       } else {

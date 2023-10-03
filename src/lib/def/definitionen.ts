@@ -2,7 +2,9 @@ import { customFormatedKeysDef, genericWarntypState, genericWarntypStatesTree } 
 import { dataImportDwdTypeProperties, dataImportUwzTypeProperties, dataImportZamgTypeProperties } from './provider-def';
 
 type ChangeTypeToChannelAndState<Obj> = Obj extends object
-    ? { [K in keyof Obj]-?: ChangeTypeToChannelAndState<Obj[K]> } & customChannelType
+    ? {
+          [K in keyof Obj]-?: ChangeTypeToChannelAndState<Obj[K]>;
+      } & customChannelType
     : ioBroker.StateObject;
 export type ChangeToChannel<Obj, T> = Obj extends object
     ? { [K in keyof Obj]-?: customChannelType & T }
@@ -10,17 +12,14 @@ export type ChangeToChannel<Obj, T> = Obj extends object
 
 export type ChangeTypeOfKeys<Obj, N> = Obj extends object ? { [K in keyof Obj]-?: ChangeTypeOfKeys<Obj[K], N> } : N;
 
-export type customChannelType = { _channel: ioBroker.ChannelObject | ioBroker.DeviceObject };
-/*type NestedKeyOf<ObjectType extends object> = {
-    [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
-        ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
-        : `${Key}`;
-}[keyof ObjectType & (string | number)];*/
+export type customChannelType = {
+    _channel: ioBroker.ChannelObject | ioBroker.DeviceObject;
+};
 
 function cloneObj(data: any): any {
     return JSON.parse(JSON.stringify(data));
 }
-const defaultChannel: ioBroker.ChannelObject = {
+export const defaultChannel: ioBroker.ChannelObject = {
     _id: '',
     type: 'channel',
     common: {
@@ -62,7 +61,6 @@ export const genericStateObjects: {
     activeWarnings: ioBroker.StateObject;
     activeWarningsJson: ioBroker.StateObject;
     history: ioBroker.StateObject;
-    channel: ioBroker.ChannelObject;
 } = {
     info: {
         _channel: {
@@ -197,14 +195,6 @@ export const genericStateObjects: {
             role: 'json',
             read: true,
             write: false,
-        },
-        native: {},
-    },
-    channel: {
-        _id: 'info',
-        type: 'channel',
-        common: {
-            name: '',
         },
         native: {},
     },
@@ -1490,7 +1480,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
-
+            countdown: {
+                _id: 'starttime',
+                type: 'state',
+                common: {
+                    name: 'countdown',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
             starttime: {
                 _id: 'starttime',
                 type: 'state',
@@ -1556,6 +1557,30 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'End day of the week of Warning',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            startdayofweekshort: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'Start day of the week short',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            enddayofweekshort: {
+                _id: 'begin',
+                type: 'state',
+                common: {
+                    name: 'End day of the week short',
                     type: 'string',
                     role: 'text',
                     read: true,
@@ -1763,7 +1788,10 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             },
             thunderstorm: {
                 ...cloneObj(genericWarntypState),
-                _channel: { ...defaultChannel, common: { name: 'thunderstorm' } },
+                _channel: {
+                    ...defaultChannel,
+                    common: { name: 'thunderstorm' },
+                },
             },
             rain: {
                 ...cloneObj(genericWarntypState),
@@ -1771,7 +1799,10 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             },
             black_ice_slippery: {
                 ...cloneObj(genericWarntypState),
-                _channel: { ...defaultChannel, common: { name: 'black ice/slippery' } },
+                _channel: {
+                    ...defaultChannel,
+                    common: { name: 'black ice/slippery' },
+                },
             },
             snowfall: {
                 ...cloneObj(genericWarntypState),
@@ -1791,7 +1822,10 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             },
             forest_fire: {
                 ...cloneObj(genericWarntypState),
-                _channel: { ...defaultChannel, common: { name: 'forest fire' } },
+                _channel: {
+                    ...defaultChannel,
+                    common: { name: 'forest fire' },
+                },
             },
             heat: {
                 ...cloneObj(genericWarntypState),
