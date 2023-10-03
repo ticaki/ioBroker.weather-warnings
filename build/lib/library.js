@@ -110,7 +110,10 @@ class Library extends BaseClass {
       return;
     const objectDefinition = objNode ? await this.getObjectDefFromJson(`${objNode}`, def) : null;
     if (objectDefinition)
-      objectDefinition.native = { ...objectDefinition.native || {}, objectDefinitionReference: objNode };
+      objectDefinition.native = {
+        ...objectDefinition.native || {},
+        objectDefinitionReference: objNode
+      };
     if (typeof data === "object" && data !== null) {
       if (Array.isArray(data)) {
         if (!objectDefinition)
@@ -183,7 +186,11 @@ class Library extends BaseClass {
       const typ = obj && obj.common && obj.common.type || node.stateTyp;
       if (typ && typ != typeof val && val !== void 0)
         val = this.convertToType(val, typ);
-      await this.adapter.setStateAsync(dp, { val, ts: Date.now(), ack: true });
+      await this.adapter.setStateAsync(dp, {
+        val,
+        ts: Date.now(),
+        ack: true
+      });
     }
   }
   cleandp(string, lowerCase = false) {
@@ -221,7 +228,13 @@ class Library extends BaseClass {
     return newValue;
   }
   setdb(dp, type, val, stateType, ack = true, ts = Date.now()) {
-    this.stateDataBase[dp] = { type, stateTyp: stateType, val, ack, ts: ts ? ts : Date.now() };
+    this.stateDataBase[dp] = {
+      type,
+      stateTyp: stateType,
+      val,
+      ack,
+      ts: ts ? ts : Date.now()
+    };
     return this.stateDataBase[dp];
   }
   getdb(dp) {

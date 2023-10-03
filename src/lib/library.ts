@@ -105,7 +105,10 @@ export class Library extends BaseClass {
         const objectDefinition = objNode ? await this.getObjectDefFromJson(`${objNode}`, def) : null;
 
         if (objectDefinition)
-            objectDefinition.native = { ...(objectDefinition.native || {}), objectDefinitionReference: objNode };
+            objectDefinition.native = {
+                ...(objectDefinition.native || {}),
+                objectDefinitionReference: objNode,
+            };
 
         if (typeof data === 'object' && data !== null) {
             // handle array
@@ -218,7 +221,11 @@ export class Library extends BaseClass {
         if (node && node.val != val) {
             const typ = (obj && obj.common && obj.common.type) || node.stateTyp;
             if (typ && typ != typeof val && val !== undefined) val = this.convertToType(val, typ);
-            await this.adapter.setStateAsync(dp, { val: val, ts: Date.now(), ack: true });
+            await this.adapter.setStateAsync(dp, {
+                val: val,
+                ts: Date.now(),
+                ack: true,
+            });
         }
     }
 
@@ -278,7 +285,13 @@ export class Library extends BaseClass {
         ack: boolean = true,
         ts: number = Date.now(),
     ): LibraryStateVal {
-        this.stateDataBase[dp] = { type: type, stateTyp: stateType, val: val, ack: ack, ts: ts ? ts : Date.now() };
+        this.stateDataBase[dp] = {
+            type: type,
+            stateTyp: stateType,
+            val: val,
+            ack: ack,
+            ts: ts ? ts : Date.now(),
+        };
         return this.stateDataBase[dp];
     }
     getdb(dp: string): LibraryStateVal | undefined {

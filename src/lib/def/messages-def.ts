@@ -12,6 +12,8 @@ export type customFormatedTokens = {
     enddate: string; // Enddatum
     startdayofweek: string; // Start Tag der Woche
     enddayofweek: string; // End Tag der Woche
+    startdayofweekshort: string; // Start Tag der Woche (kurz)
+    enddayofweekshort: string; // End Tag der Woche (kurz)
     headline: string; // Schlagzeile
     description: string; // Beschreibung
     weathertext: string; // nur Zamg wetterbeschreibender Text
@@ -27,6 +29,7 @@ export type customFormatedTokens = {
     instruction: string; // Anweisungen
     provider: string;
     locationcustom: string;
+    countdown: string;
 };
 
 export const customFormatedTokensJson: customFormatedTokens = {
@@ -36,6 +39,8 @@ export const customFormatedTokensJson: customFormatedTokens = {
     enddate: 'End Date', // Enddatum
     startdayofweek: 'Start day of the week', // Start Tag der Woche
     enddayofweek: 'End day of the week', // End Tag der Woche
+    startdayofweekshort: 'Start day of the week short', // Start Tag der Woche (kurz)
+    enddayofweekshort: 'End day of the week short', // End Tag der Woche (kurz)
     headline: 'Headline', // Schlagzeile
     description: 'Description', // Beschreibung
     weathertext: 'Weathertext', // nur Zamg wetterbeschreibender Text
@@ -51,6 +56,7 @@ export const customFormatedTokensJson: customFormatedTokens = {
     instruction: 'Instructions', // Anweisungen
     provider: 'Provider',
     locationcustom: 'Location from admin configuration',
+    countdown: 'Remaining time until the start of the warning.',
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;
@@ -362,7 +368,10 @@ type genericWarnTypNameJsonType = {
     fog: string;
     thaw: string;
 };
-export type notificationMessageType = { msgs: { [key: string]: string }; obj: MessagesClass | null };
+export type notificationMessageType = {
+    msgs: { [key: string]: string };
+    obj: MessagesClass | null;
+};
 /*type genericWarnTypNameType =
     | 'unknown'
     | 'storm'
@@ -377,7 +386,13 @@ export type notificationMessageType = { msgs: { [key: string]: string }; obj: Me
     | 'fog'
     | 'thaw';*/
 export const genericWarntyp: genericWarntypeType = {
-    1: { name: 'unknown', id: 'unknown', dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
+    1: {
+        name: 'unknown',
+        id: 'unknown',
+        dwdService: [],
+        uwzService: [0, 1],
+        zamgService: [0, 8],
+    },
     2: {
         name: 'storm',
         id: 'storm',
@@ -399,8 +414,20 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [3],
         zamgService: [3],
     },
-    5: { name: 'cold', id: 'cold', dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
-    6: { name: 'forest fire', id: 'forest_fire', dwdService: [], uwzService: [6], zamgService: [] },
+    5: {
+        name: 'cold',
+        id: 'cold',
+        dwdService: [82, 22],
+        uwzService: [10, 11, 5],
+        zamgService: [7],
+    },
+    6: {
+        name: 'forest fire',
+        id: 'forest_fire',
+        dwdService: [],
+        uwzService: [6],
+        zamgService: [],
+    },
     7: {
         name: 'thunderstorm',
         id: 'thunderstorm',
@@ -415,10 +442,34 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [8],
         zamgService: [4],
     },
-    9: { name: 'heat', id: 'heat', dwdService: [247, 248], uwzService: [9], zamgService: [6] },
-    10: { name: 'hail', id: 'hail', dwdService: [95, 96, 45, 46, 48, 49], uwzService: [], zamgService: [] },
-    11: { name: 'fog', id: 'fog', dwdService: [59], uwzService: [], zamgService: [] },
-    12: { name: 'thaw', id: 'thaw', dwdService: [88, 89], uwzService: [], zamgService: [] },
+    9: {
+        name: 'heat',
+        id: 'heat',
+        dwdService: [247, 248],
+        uwzService: [9],
+        zamgService: [6],
+    },
+    10: {
+        name: 'hail',
+        id: 'hail',
+        dwdService: [95, 96, 45, 46, 48, 49],
+        uwzService: [],
+        zamgService: [],
+    },
+    11: {
+        name: 'fog',
+        id: 'fog',
+        dwdService: [59],
+        uwzService: [],
+        zamgService: [],
+    },
+    12: {
+        name: 'thaw',
+        id: 'thaw',
+        dwdService: [88, 89],
+        uwzService: [],
+        zamgService: [],
+    },
 };
 
 export const warnTypeName = {

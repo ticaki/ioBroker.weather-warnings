@@ -16,35 +16,40 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var notificationService_def_exports = {};
-__export(notificationService_def_exports, {
-  notificationServiceArray: () => notificationServiceArray,
-  serciceCapabilities: () => serciceCapabilities
+var notificationConfig_d_exports = {};
+__export(notificationConfig_d_exports, {
+  notificationServiceDefaults: () => notificationServiceDefaults
 });
-module.exports = __toCommonJS(notificationService_def_exports);
-const push = ["new", "remove", "removeAll"];
-const history = ["new", "remove"];
-const json = ["new", "all", "removeAll"];
-const email = ["new", "all", "removeAll", "remove"];
-const serciceCapabilities = {
-  telegram: { notifications: push },
-  email: { notifications: email },
-  json: { notifications: json },
-  whatsapp: { notifications: push },
-  pushover: { notifications: push },
-  history: { notifications: history }
+module.exports = __toCommonJS(notificationConfig_d_exports);
+var import_messages = require("../messages");
+const notificationServiceDefaults = {
+  telegram: {
+    class: import_messages.NotificationClass,
+    useadapter: true
+  },
+  pushover: {
+    class: import_messages.NotificationClass,
+    useadapter: true
+  },
+  whatsapp: {
+    class: import_messages.NotificationClass,
+    useadapter: true
+  },
+  json: {
+    class: import_messages.AllNotificationClass,
+    useadapter: false
+  },
+  history: {
+    class: import_messages.AllNotificationClass,
+    useadapter: false
+  },
+  email: {
+    class: import_messages.AllNotificationClass,
+    useadapter: true
+  }
 };
-const notificationServiceArray = [
-  "telegram",
-  "pushover",
-  "whatsapp",
-  "json",
-  "history",
-  "email"
-];
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  notificationServiceArray,
-  serciceCapabilities
+  notificationServiceDefaults
 });
-//# sourceMappingURL=notificationService-def.js.map
+//# sourceMappingURL=notificationConfig-d.js.map

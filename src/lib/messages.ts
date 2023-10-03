@@ -27,12 +27,12 @@ type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
     ? { [K in keyof Obj]: ChangeTypeOfKeys<Obj[K], newKey> }
     : newKey;
 
-export type customformatedKeysJsonataDefinition = ChangeTypeOfKeys<customFormatedKeysDef, customFormatedKeysDefSubtype>;
-export type customFormatedKeysInit = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined> | undefined;
-export type customFormatedKeysResult = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined>;
+export type customformatedKJDef = ChangeTypeOfKeys<customFormatedKeysDef, customFormatedKDefSub>;
+export type customFormatedKInit = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined> | undefined;
+export type customFormatedKR = ChangeTypeOfKeys<customFormatedKeysDef, string | number | undefined>;
 
-type customFormatedKeysDefSubtype = { cmd?: 'dayoftheweek' | 'translate'; node: string };
-
+type customFormatedKDefSub = { cmd?: messageCmdType; node: string };
+type messageCmdType = 'dayoftheweek' | 'translate' | 'dayoftheweekshort';
 /**
  * bla
  */
@@ -40,8 +40,8 @@ export class MessagesClass extends BaseClass {
     provider: ProvideClassType | null;
     providerController: ProviderController;
     library: Library;
-    formatedKeysJsonataDefinition: customformatedKeysJsonataDefinition = {};
-    formatedData: customFormatedKeysInit;
+    formatedKeysJsonataDefinition: customformatedKJDef = {};
+    formatedData: customFormatedKInit;
     rawWarning: any;
     /** message is a new message */
     newMessage: boolean = true;
@@ -59,12 +59,20 @@ export class MessagesClass extends BaseClass {
     type = 0;
     genericType: keyof genericWarntypeType = 1;
     /** jsonata/typscript cmd to gather data from warning json */
-    formatedKeyCommand: { [key: string]: Required<customformatedKeysJsonataDefinition> } = {
+    formatedKeyCommand: { [key: string]: Required<customformatedKJDef> } = {
         dwdService: {
-            starttime: { node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")` },
-            startdate: { node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")` },
-            endtime: { node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")` },
-            enddate: { node: `$fromMillis($toMillis(EXPIRES),"[D01].[M01]","\${this.timeOffset}")` },
+            starttime: {
+                node: `$fromMillis($toMillis(ONSET),"[H#1]:[m01]","\${this.timeOffset}")`,
+            },
+            startdate: {
+                node: `$fromMillis($toMillis(ONSET),"[D01].[M01]","\${this.timeOffset}")`,
+            },
+            endtime: {
+                node: `$fromMillis($toMillis(EXPIRES),"[H#1]:[m01]","\${this.timeOffset}")`,
+            },
+            enddate: {
+                node: `$fromMillis($toMillis(EXPIRES),"[D01].[M01]","\${this.timeOffset}")`,
+            },
             startdayofweek: {
                 node: `ONSET`,
                 cmd: 'dayoftheweek',
@@ -95,7 +103,9 @@ export class MessagesClass extends BaseClass {
                 )},$string($temp)))`,
                 cmd: 'translate',
             },
-            warnlevelnumber: { node: `$lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY))` },
+            warnlevelnumber: {
+                node: `$lookup(${JSON.stringify(dwdLevel)},$lowercase(SEVERITY))`,
+            },
 
             warntypename: {
                 node: `$lookup(${JSON.stringify(warnTypeName.dwdService)}, $string(EC_II))`,
@@ -118,13 +128,33 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            startdayofweekshort: {
+                node: `ONSET`,
+                cmd: 'dayoftheweekshort',
+            },
+            enddayofweekshort: {
+                node: `EXPIRES`,
+                cmd: 'dayoftheweekshort',
+            },
+            countdown: {
+                cmd: undefined,
+                node: '',
+            },
         },
 
         uwzService: {
-            starttime: { node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")` },
-            startdate: { node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")` },
-            endtime: { node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")` },
-            enddate: { node: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")` },
+            starttime: {
+                node: `$fromMillis(dtgStart,"[H#1]:[m01]","\${this.timeOffset}")`,
+            },
+            startdate: {
+                node: `$fromMillis(dtgStart,"[D01].[M01]","\${this.timeOffset}")`,
+            },
+            endtime: {
+                node: `$fromMillis(dtgEnd,"[H#1]:[m01]","\${this.timeOffset}")`,
+            },
+            enddate: {
+                node: `$fromMillis(dtgEnd,"[D01].[M01]","\${this.timeOffset}")`,
+            },
             startdayofweek: {
                 node: `dtgStart`,
                 cmd: 'dayoftheweek',
@@ -183,12 +213,32 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            startdayofweekshort: {
+                node: `dtgStart`,
+                cmd: 'dayoftheweekshort',
+            },
+            enddayofweekshort: {
+                node: `dtgEnd`,
+                cmd: 'dayoftheweekshort',
+            },
+            countdown: {
+                cmd: undefined,
+                node: '',
+            },
         },
         zamgService: {
-            starttime: { node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")` },
-            startdate: { node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")` },
-            endtime: { node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")` },
-            enddate: { node: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")` },
+            starttime: {
+                node: `$fromMillis($number(rawinfo.start),"[H#1]:[m01]","\${this.timeOffset}")`,
+            },
+            startdate: {
+                node: `$fromMillis($number(rawinfo.start),"[D01].[M01]","\${this.timeOffset}")`,
+            },
+            endtime: {
+                node: `$fromMillis($number(rawinfo.end),"[H#1]:[m01]","\${this.timeOffset}")`,
+            },
+            enddate: {
+                node: `$fromMillis($number(rawinfo.end),"[D01].[M01]","\${this.timeOffset}")`,
+            },
             startdayofweek: {
                 node: `$number(rawinfo.start)`,
                 cmd: 'dayoftheweek',
@@ -235,6 +285,18 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            startdayofweekshort: {
+                node: `$number(rawinfo.start)`,
+                cmd: 'dayoftheweekshort',
+            },
+            enddayofweekshort: {
+                node: `$number(rawinfo.end)`,
+                cmd: 'dayoftheweekshort',
+            },
+            countdown: {
+                cmd: undefined,
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -264,6 +326,18 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             locationcustom: {
+                cmd: undefined,
+                node: '',
+            },
+            startdayofweekshort: {
+                cmd: undefined,
+                node: '',
+            },
+            enddayofweekshort: {
+                cmd: undefined,
+                node: '',
+            },
+            countdown: {
                 cmd: undefined,
                 node: '',
             },
@@ -322,7 +396,7 @@ export class MessagesClass extends BaseClass {
                 };
         }
     }
-    async init(): Promise<customFormatedKeysResult> {
+    async init(): Promise<customFormatedKR> {
         switch (this.provider ? this.provider.service : 'default') {
             case 'dwdService':
                 {
@@ -403,9 +477,10 @@ export class MessagesClass extends BaseClass {
         let hit = false;
         if (filter.level && filter.level > this.level) return false;
         for (const f in filter.type) {
-            //if (this.provider.service || genericWarntyp[typ][this.provider.service] == undefined) continue;
-            //@ts-expect-error dann ebenso
-            if (genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1) {
+            if (
+                //@ts-expect-error dann ebenso
+                genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1
+            ) {
                 hit = true;
                 break;
             }
@@ -449,10 +524,11 @@ export class MessagesClass extends BaseClass {
         this.messages = messages;
     }
 
-    async updateFormatedData(update: boolean = false): Promise<customFormatedKeysResult> {
+    async updateFormatedData(update: boolean = false): Promise<customFormatedKR> {
         if (!this.rawWarning && !this.formatedData) {
             throw new Error(`${this.log.getName()} error(165) rawWarning and formatedDate empty!`);
         }
+
         if (!this.formatedData || this.updated || update) {
             const timeOffset =
                 (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0
@@ -501,7 +577,8 @@ export class MessagesClass extends BaseClass {
         }
         return this.formatedData;
     }
-    async readWithTypescript(data: any, cmd: string): Promise<string | number> {
+
+    async readWithTypescript(data: any, cmd: messageCmdType): Promise<string | number> {
         if (!this.rawWarning && !cmd) {
             throw new Error('readWithTypescript called without rawWarning or val!');
         }
@@ -511,17 +588,24 @@ export class MessagesClass extends BaseClass {
                     weekday: 'long',
                 });
             }
+            case 'dayoftheweekshort': {
+                return new Date(data as string | number | Date).toLocaleDateString(this.library.getLocalLanguage(), {
+                    weekday: 'short',
+                });
+            }
             case 'translate': {
                 return this.library.getTranslation(data);
             }
         }
         return '';
     }
+
     //** Update rawWanrings and dont delete message */
     updateData(data: object): void {
         this.rawWarning = data;
         this.notDeleted = true;
     }
+
     //** dont send a message and dont delete this*/
     silentUpdate(): void {
         this.newMessage = false;
@@ -537,6 +621,15 @@ export class MessagesClass extends BaseClass {
             !((this.newMessage && action == 'new') || (!this.notDeleted && action == 'remove') || action == 'removeAll')
         ) {
             if (!override) action = 'all';
+        }
+        if (this.formatedData) {
+            const negativ = this.starttime - Date.now() < 0;
+            const remain = new Date(Math.abs(this.starttime - Date.now()));
+            const d = remain.getDate() - 1;
+            const h = d > 0 ? ('00' + String(remain.getHours())).slice(2) : String(remain.getHours());
+            this.formatedData.countdown = `${negativ ? '-' : ''}${d > 0 ? `${String(d)}:` : ''}${h}:${String(
+                remain.getMinutes(),
+            )}`;
         }
         const msgsend: { [key: string]: string } = {};
         for (let a = 0; a < this.messages.length; a++) {
@@ -575,16 +668,14 @@ export class MessagesClass extends BaseClass {
                 );
         }
     }
-    addFormatedDefinition(
-        key: keyof customformatedKeysJsonataDefinition,
-        arg: customFormatedKeysDefSubtype | undefined,
-    ): void {
+    addFormatedDefinition(key: keyof customformatedKJDef, arg: customFormatedKDefSub | undefined): void {
         if (arg === undefined) return;
         if (!this.formatedKeysJsonataDefinition) this.formatedKeysJsonataDefinition = {};
         this.formatedKeysJsonataDefinition[key] = arg;
     }
     //async init(msg: any): Promise<void> {}
 }
+
 export class NotificationClass extends BaseClass {
     options: notificationServiceBaseType;
     takeThemAll = false;
@@ -634,6 +725,7 @@ export class NotificationClass extends BaseClass {
                     break;
                 case 'pushover':
                     {
+
                         const opt = { message: msg };
                         //newMsg.title = topic;newMsg.device sound = `none`
                         if (action !== 'remove' || activeWarnings)
@@ -701,7 +793,9 @@ export class NotificationClass extends BaseClass {
     }
 }
 export class AllNotificationClass extends NotificationClass {
-    providerDB: { [key: string]: { starttime: number; msg: string | object }[] };
+    providerDB: {
+        [key: string]: { starttime: number; msg: string | object }[];
+    };
     constructor(adapter: WeatherWarnings, options: notificationServiceBaseType) {
         super(adapter, options);
         this.providerDB = {};
@@ -748,7 +842,12 @@ export class AllNotificationClass extends NotificationClass {
                             } else {
                                 if (action == 'removeAll') {
                                     for (const p in this.providerDB) {
-                                        this.providerDB[p] = [{ starttime: Date.now(), msg: json }];
+                                        this.providerDB[p] = [
+                                            {
+                                                starttime: Date.now(),
+                                                msg: json,
+                                            },
+                                        ];
                                     }
                                 }
                                 this.log.debug('sendNotifications(2): removeAll: ' + msg);

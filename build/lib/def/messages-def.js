@@ -36,6 +36,8 @@ const customFormatedTokensJson = {
   enddate: "End Date",
   startdayofweek: "Start day of the week",
   enddayofweek: "End day of the week",
+  startdayofweekshort: "Start day of the week short",
+  enddayofweekshort: "End day of the week short",
   headline: "Headline",
   description: "Description",
   weathertext: "Weathertext",
@@ -50,7 +52,8 @@ const customFormatedTokensJson = {
   location: "Location retrieved from the provider",
   instruction: "Instructions",
   provider: "Provider",
-  locationcustom: "Location from admin configuration"
+  locationcustom: "Location from admin configuration",
+  countdown: "Remaining time until the start of the warning."
 };
 const textLevels = {
   textGeneric: {
@@ -309,7 +312,13 @@ function isKeyOfObject(key, obj) {
   return key in obj;
 }
 const genericWarntyp = {
-  1: { name: "unknown", id: "unknown", dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
+  1: {
+    name: "unknown",
+    id: "unknown",
+    dwdService: [],
+    uwzService: [0, 1],
+    zamgService: [0, 8]
+  },
   2: {
     name: "storm",
     id: "storm",
@@ -331,8 +340,20 @@ const genericWarntyp = {
     uwzService: [3],
     zamgService: [3]
   },
-  5: { name: "cold", id: "cold", dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
-  6: { name: "forest fire", id: "forest_fire", dwdService: [], uwzService: [6], zamgService: [] },
+  5: {
+    name: "cold",
+    id: "cold",
+    dwdService: [82, 22],
+    uwzService: [10, 11, 5],
+    zamgService: [7]
+  },
+  6: {
+    name: "forest fire",
+    id: "forest_fire",
+    dwdService: [],
+    uwzService: [6],
+    zamgService: []
+  },
   7: {
     name: "thunderstorm",
     id: "thunderstorm",
@@ -347,10 +368,34 @@ const genericWarntyp = {
     uwzService: [8],
     zamgService: [4]
   },
-  9: { name: "heat", id: "heat", dwdService: [247, 248], uwzService: [9], zamgService: [6] },
-  10: { name: "hail", id: "hail", dwdService: [95, 96, 45, 46, 48, 49], uwzService: [], zamgService: [] },
-  11: { name: "fog", id: "fog", dwdService: [59], uwzService: [], zamgService: [] },
-  12: { name: "thaw", id: "thaw", dwdService: [88, 89], uwzService: [], zamgService: [] }
+  9: {
+    name: "heat",
+    id: "heat",
+    dwdService: [247, 248],
+    uwzService: [9],
+    zamgService: [6]
+  },
+  10: {
+    name: "hail",
+    id: "hail",
+    dwdService: [95, 96, 45, 46, 48, 49],
+    uwzService: [],
+    zamgService: []
+  },
+  11: {
+    name: "fog",
+    id: "fog",
+    dwdService: [59],
+    uwzService: [],
+    zamgService: []
+  },
+  12: {
+    name: "thaw",
+    id: "thaw",
+    dwdService: [88, 89],
+    uwzService: [],
+    zamgService: []
+  }
 };
 const warnTypeName = {
   uwzService: {

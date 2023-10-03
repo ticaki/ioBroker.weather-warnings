@@ -20,6 +20,7 @@ var definitionen_exports = {};
 __export(definitionen_exports, {
   Defaults: () => Defaults,
   PROVIDER_OPTIONS: () => PROVIDER_OPTIONS,
+  defaultChannel: () => defaultChannel,
   genericStateObjects: () => genericStateObjects,
   statesObjectsWarnings: () => statesObjectsWarnings
 });
@@ -136,7 +137,7 @@ const genericStateObjects = {
       native: {}
     }
   },
-  activWarnings: {
+  activeWarnings: {
     _id: "activWarnings",
     type: "state",
     common: {
@@ -169,14 +170,6 @@ const genericStateObjects = {
       role: "json",
       read: true,
       write: false
-    },
-    native: {}
-  },
-  channel: {
-    _id: "info",
-    type: "channel",
-    common: {
-      name: ""
     },
     native: {}
   }
@@ -1425,6 +1418,18 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      countdown: {
+        _id: "starttime",
+        type: "state",
+        common: {
+          name: "countdown",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       starttime: {
         _id: "starttime",
         type: "state",
@@ -1490,6 +1495,30 @@ const statesObjectsWarnings = {
         type: "state",
         common: {
           name: "End day of the week of Warning",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      startdayofweekshort: {
+        _id: "begin",
+        type: "state",
+        common: {
+          name: "Start day of the week short",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      enddayofweekshort: {
+        _id: "begin",
+        type: "state",
+        common: {
+          name: "End day of the week short",
           type: "string",
           role: "text",
           read: true,
@@ -1697,7 +1726,10 @@ const statesObjectsWarnings = {
       },
       thunderstorm: {
         ...cloneObj(import_messages_def.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "thunderstorm" } }
+        _channel: {
+          ...defaultChannel,
+          common: { name: "thunderstorm" }
+        }
       },
       rain: {
         ...cloneObj(import_messages_def.genericWarntypState),
@@ -1705,7 +1737,10 @@ const statesObjectsWarnings = {
       },
       black_ice_slippery: {
         ...cloneObj(import_messages_def.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "black ice/slippery" } }
+        _channel: {
+          ...defaultChannel,
+          common: { name: "black ice/slippery" }
+        }
       },
       snowfall: {
         ...cloneObj(import_messages_def.genericWarntypState),
@@ -1725,7 +1760,10 @@ const statesObjectsWarnings = {
       },
       forest_fire: {
         ...cloneObj(import_messages_def.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "forest fire" } }
+        _channel: {
+          ...defaultChannel,
+          common: { name: "forest fire" }
+        }
       },
       heat: {
         ...cloneObj(import_messages_def.genericWarntypState),
@@ -1790,6 +1828,7 @@ const PROVIDER_OPTIONS = {
 0 && (module.exports = {
   Defaults,
   PROVIDER_OPTIONS,
+  defaultChannel,
   genericStateObjects,
   statesObjectsWarnings
 });
