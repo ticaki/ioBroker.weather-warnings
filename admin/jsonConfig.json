@@ -113,7 +113,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 2,
-                            "label": "dpWarning"
+                            "text": ".warning"
                         },
                         {
                             "attr": "dpMessage",
@@ -121,7 +121,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 2,
-                            "label": "dpMessage"
+                            "text": ".messages"
                         },
                         {
                             "attr": "dpFormated",
@@ -129,7 +129,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 2,
-                            "label": "dpFormated"
+                            "text": ".formatedKeys"
                         },
                         {
                             "attr": "dpAlerts",
@@ -137,7 +137,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 2,
-                            "label": "dpAlerts"
+                            "text": ".alerts"
                         }
                     ]
                 },

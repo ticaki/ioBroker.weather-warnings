@@ -464,27 +464,49 @@ class MessagesClass extends import_library.BaseClass {
     const messages = [];
     if (this.formatedData) {
       for (const a in templates) {
-        const template = templates[a].template;
-        if (!template)
-          continue;
-        const temp = template.split(/(?<!\\)\${/g);
-        let msg = temp[0];
-        for (let b = 1; temp.length > b; b++) {
-          const token = temp[b];
-          const t = token.split(/(?<!\\)}/g);
-          const key = t[0];
-          if (key && this.formatedData[key] !== void 0)
-            msg += this.formatedData[key];
-          else if (key && this.formatedData[key.toLowerCase()] !== void 0) {
-            let m = this.formatedData[key.toLowerCase()];
-            if (typeof m == "string" && m.length > 0) {
-              m = m[0].toUpperCase() + (key[key.length - 1] == key[key.length - 1].toUpperCase() ? m.slice(1).toUpperCase() : m.slice(1));
-            }
-            msg += m;
-          } else
-            msg += key;
-          if (t.length > 1)
-            msg += t[1];
+        let msg = "";
+        while (true) {
+          let rerun = false;
+          const template = msg === "" ? templates[a].template : msg;
+          if (!template)
+            continue;
+          const temp = template.split(/(?<!\\)\${/g);
+          msg = temp[0];
+          for (let b = 1; temp.length > b; b++) {
+            const t = temp[b].split(/(?<!\\)}/g);
+            const key = t[0];
+            const configTemplate = this.adapter.config.templateTable.filter((a2) => a2.templateKey == key);
+            if (key[0] == "[") {
+              const arraykey = key.split("]");
+              arraykey[0] = arraykey[0].slice(1);
+              if (arraykey[1] && this.formatedData[arraykey[1]] !== void 0) {
+                const n = this.formatedData[arraykey[1]];
+                if (n != "" && !Number.isNaN(n)) {
+                  msg += arraykey[0].split(",")[this.formatedData[arraykey[1]]].trim();
+                }
+              } else {
+                this.log.error(
+                  `Unknown or not a number key ${arraykey[1]}  in template ${templates[a].templateKey}!`
+                );
+              }
+            } else if (configTemplate.length == 1) {
+              msg += configTemplate[0].template;
+              rerun = true;
+            } else if (key && this.formatedData[key] !== void 0)
+              msg += this.formatedData[key];
+            else if (key && this.formatedData[key.toLowerCase()] !== void 0) {
+              let m = this.formatedData[key.toLowerCase()];
+              if (typeof m == "string" && m.length > 0) {
+                m = m[0].toUpperCase() + (key[key.length - 1] == key[key.length - 1].toUpperCase() ? m.slice(1).toUpperCase() : m.slice(1));
+              }
+              msg += m;
+            } else
+              msg += key;
+            if (t.length > 1)
+              msg += t[1];
+          }
+          if (!rerun)
+            break;
         }
         msg = msg.replace("\\", "");
         messages.push({ key: templates[a].templateKey, message: msg });

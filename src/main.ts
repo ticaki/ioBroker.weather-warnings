@@ -330,7 +330,7 @@ class WeatherWarnings extends utils.Adapter {
                             ];
                             for (const a in templates) {
                                 const t = templates[a];
-                                if (t.templateKey !== '') {
+                                if (t.templateKey !== '' && !t.templateKey.startsWith('_')) {
                                     reply.push({
                                         label: `${t.templateKey}`,
                                         value: `${t.templateKey}`,
