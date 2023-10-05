@@ -358,11 +358,11 @@ function getTestData(service, _that) {
     for (const i in testData.uwzService.results) {
       const f = testData.uwzService.results[i];
       const start = Date.now() + Math.random() * 12e5 + 6e4;
-      if (f.dtgEnd + 36e5 < start) {
-        f.dtgStart = new Date(start).getTime();
-        f.dtgEnd = new Date(start + Math.random() * 24e5 + 3e5).getTime();
+      if (f.dtgEnd * 1e3 + 36e5 < start) {
+        f.dtgStart = new Date(start).getTime() / 1e3;
+        f.dtgEnd = new Date(start + Math.random() * 24e5 + 3e5).getTime() / 1e3;
       }
-      if (f.dtgEnd < Date.now()) {
+      if (f.dtgEnd < Date.now() / 1e3) {
         result.uwzService.results[i] = null;
       } else {
         result.uwzService.results[i] = testData.uwzService.results[i];
@@ -377,11 +377,11 @@ function getTestData(service, _that) {
     for (const i in testData.zamgService.properties.warnings) {
       const f = testData.zamgService.properties.warnings[i];
       const start = Date.now() + Math.random() * 12e5 + 6e4;
-      if (Number(f.properties.rawinfo.end) + 36e5 < start) {
-        f.properties.rawinfo.start = new Date(start).getTime().toString();
-        f.properties.rawinfo.start = new Date(start + Math.random() * 24e5 + 3e5).getTime().toString();
+      if (Number(f.properties.rawinfo.end) * 1e3 + 36e5 < start) {
+        f.properties.rawinfo.start = (new Date(start).getTime() / 1e3).toString();
+        f.properties.rawinfo.start = (new Date(start + Math.random() * 24e5 + 3e5).getTime() / 1e3).toString();
       }
-      if (Number(f.properties.rawinfo.end) < Date.now()) {
+      if (Number(f.properties.rawinfo.end) * 1e3 < Date.now()) {
         result.zamgService.properties.warnings[i] = null;
       } else {
         result.zamgService.properties.warnings[i] = testData.zamgService.properties.warnings[i];

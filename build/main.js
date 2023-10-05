@@ -40,6 +40,7 @@ class WeatherWarnings extends utils.Adapter {
     });
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.onStateChange.bind(this));
+    this.on("objectChange", this.onObjectChange.bind(this));
     this.on("message", this.onMessage.bind(this));
     this.on("unload", this.onUnload.bind(this));
     this.library = new import_library.Library(this);
@@ -49,6 +50,7 @@ class WeatherWarnings extends utils.Adapter {
     if (!this.providerController) {
       throw new Error("Provider controller doesnt exists.");
     }
+    this.subscribeForeignObjects("system.config");
     if (!Array.isArray(this.config.allowedDirs))
       this.config.allowedDirs = [];
     let i = 0;
@@ -101,10 +103,11 @@ class WeatherWarnings extends utils.Adapter {
         if (!self)
           return;
         try {
+          await self.library.init();
           await self.library.initStates(await self.getStatesAsync("*"));
           await self.library.initStates(await self.getChannelsAsync());
         } catch (error) {
-          self.log.error(`catch (1): init error while reading states! ${error}`);
+          self.log.error(`catch(1): init error while reading states! ${error}`);
         }
         self.providerController.init();
         self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 6e4} minutes`);
@@ -223,6 +226,11 @@ class WeatherWarnings extends utils.Adapter {
             });
           }
         }
+        const holdStates = [];
+        for (const a in self.providerController.provider) {
+          holdStates.push(self.providerController.provider[a].name);
+        }
+        await self.library.cleanUpTree(holdStates, 3);
         self.providerController.updateEndless(self.providerController);
         self.providerController.updateAlertEndless(self.providerController);
       },
@@ -237,6 +245,13 @@ class WeatherWarnings extends utils.Adapter {
       callback();
     } catch (e) {
       callback();
+    }
+  }
+  onObjectChange(id, obj) {
+    if (obj) {
+      if (id == "system.config") {
+        this.library.setLanguage(obj.common.language);
+      }
     }
   }
   onStateChange(id, state) {

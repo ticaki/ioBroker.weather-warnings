@@ -348,11 +348,11 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
         for (const i in testData.uwzService.results) {
             const f = testData.uwzService.results[i];
             const start = Date.now() + Math.random() * 1200000 + 60000;
-            if (f.dtgEnd + 3600000 < start) {
-                f.dtgStart = new Date(start).getTime();
-                f.dtgEnd = new Date(start + Math.random() * 2400000 + 300000).getTime();
+            if (f.dtgEnd * 1000 + 3600000 < start) {
+                f.dtgStart = new Date(start).getTime() / 1000;
+                f.dtgEnd = new Date(start + Math.random() * 2400000 + 300000).getTime() / 1000;
             }
-            if (f.dtgEnd < Date.now()) {
+            if (f.dtgEnd < Date.now() / 1000) {
                 result.uwzService.results[i] = null;
             } else {
                 result.uwzService.results[i] = testData.uwzService.results[i];
@@ -366,11 +366,13 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
         for (const i in testData.zamgService.properties.warnings) {
             const f = testData.zamgService.properties.warnings[i];
             const start = Date.now() + Math.random() * 1200000 + 60000;
-            if (Number(f.properties.rawinfo.end) + 3600000 < start) {
-                f.properties.rawinfo.start = new Date(start).getTime().toString();
-                f.properties.rawinfo.start = new Date(start + Math.random() * 2400000 + 300000).getTime().toString();
+            if (Number(f.properties.rawinfo.end) * 1000 + 3600000 < start) {
+                f.properties.rawinfo.start = (new Date(start).getTime() / 1000).toString();
+                f.properties.rawinfo.start = (
+                    new Date(start + Math.random() * 2400000 + 300000).getTime() / 1000
+                ).toString();
             }
-            if (Number(f.properties.rawinfo.end) < Date.now()) {
+            if (Number(f.properties.rawinfo.end) * 1000 < Date.now()) {
                 result.zamgService.properties.warnings[i] = null;
             } else {
                 result.zamgService.properties.warnings[i] = testData.zamgService.properties.warnings[i];

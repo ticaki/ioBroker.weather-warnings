@@ -41,7 +41,7 @@ class WeatherWarnings extends utils.Adapter {
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
-        // this.on('objectChange', this.onObjectChange.bind(this));
+        this.on('objectChange', this.onObjectChange.bind(this));
         this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
         this.library = new Library(this);
@@ -55,6 +55,7 @@ class WeatherWarnings extends utils.Adapter {
         if (!this.providerController) {
             throw new Error('Provider controller doesnt exists.');
         }
+        this.subscribeForeignObjects('system.config');
 
         // dynamic create of configuration datapoint.
         if (!Array.isArray(this.config.allowedDirs)) this.config.allowedDirs = [];
@@ -113,10 +114,11 @@ class WeatherWarnings extends utils.Adapter {
                 if (!self) return;
                 try {
                     //const states = await self.getStatesAsync('*');
+                    await self.library.init();
                     await self.library.initStates(await self.getStatesAsync('*'));
                     await self.library.initStates((await self.getChannelsAsync()) as any);
                 } catch (error) {
-                    self.log.error(`catch (1): init error while reading states! ${error}`);
+                    self.log.error(`catch(1): init error while reading states! ${error}`);
                 }
 
                 self.providerController.init();
@@ -262,6 +264,13 @@ class WeatherWarnings extends utils.Adapter {
                     }
                 }
 
+                //clear tree
+                const holdStates = [];
+                for (const a in self.providerController.provider) {
+                    holdStates.push(self.providerController.provider[a].name);
+                }
+                await self.library.cleanUpTree(holdStates, 3);
+
                 self.providerController.updateEndless(self.providerController);
                 self.providerController.updateAlertEndless(self.providerController);
             },
@@ -290,15 +299,14 @@ class WeatherWarnings extends utils.Adapter {
     // /**
     //  * Is called if a subscribed object changes
     //  */
-    // private onObjectChange(id: string, obj: ioBroker.Object | null | undefined): void {
-    // 	if (obj) {
-    // 		// The object was changed
-    // 		this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-    // 	} else {
-    // 		// The object was deleted
-    // 		this.log.info(`object ${id} deleted`);
-    // 	}
-    // }
+    private onObjectChange(id: string, obj: ioBroker.Object | null | undefined): void {
+        if (obj) {
+            // The object was changed
+            if (id == 'system.config') {
+                this.library.setLanguage(obj.common.language);
+            }
+        }
+    }
 
     /**
      * Is called if a subscribed state changes

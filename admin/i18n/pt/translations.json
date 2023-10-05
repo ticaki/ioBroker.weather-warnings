@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Fornecedor",
     "customFormatedTokensJson.locationcustom": "Localização da configuração do administrador",
     "useJsonHistory": "O armazenamento do histórico de dados brutos é ativado ou desativado e excluído (alto consumo de memória).",
-    "allowedDirs": "Permitir ou remover diretórios do provedor! Outras configurações serão substituídas!"
+    "allowedDirs": "Permitir ou remover diretórios do provedor! Outras configurações serão substituídas!",
+    "color.textGeneric.0": "verde",
+    "color.textGeneric.1": "verde escuro",
+    "color.textGeneric.2": "amarelo",
+    "color.textGeneric.3": "laranja",
+    "color.textGeneric.4": "vermelho",
+    "color.textGeneric.5": "tolet"
 }

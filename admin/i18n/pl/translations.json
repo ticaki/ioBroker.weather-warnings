@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Dostawca",
     "customFormatedTokensJson.locationcustom": "Lokalizacja z konfiguracji administratora",
     "useJsonHistory": "Przechowywanie historii surowych danych jest aktywowane lub dezaktywowane i usuwane (duże zużycie pamięci).",
-    "allowedDirs": "Zezwól lub usuń katalogi dostawcy! Inne ustawienia zostaną nadpisane!"
+    "allowedDirs": "Zezwól lub usuń katalogi dostawcy! Inne ustawienia zostaną nadpisane!",
+    "color.textGeneric.0": "zielony",
+    "color.textGeneric.1": "ciemnozielony",
+    "color.textGeneric.2": "żółty",
+    "color.textGeneric.3": "Pomarańczowy",
+    "color.textGeneric.4": "czerwony",
+    "color.textGeneric.5": "fioletowy"
 }

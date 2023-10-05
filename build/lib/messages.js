@@ -123,29 +123,29 @@ class MessagesClass extends import_library.BaseClass {
         cmd: "dayoftheweekshort"
       },
       countdown: {
-        cmd: void 0,
-        node: ""
+        cmd: "countdown",
+        node: "$toMillis(ONSET)"
       }
     },
     uwzService: {
       starttime: {
-        node: `$fromMillis(dtgStart*1000,"[H#1]:[m01]","\${this.timeOffset}")`
+        node: `$fromMillis(dtgStart * 1000,"[H#1]:[m01]","\${this.timeOffset}")`
       },
       startdate: {
-        node: `$fromMillis(dtgStart*1000,"[D01].[M01]","\${this.timeOffset}")`
+        node: `$fromMillis(dtgStart * 1000,"[D01].[M01]","\${this.timeOffset}")`
       },
       endtime: {
-        node: `$fromMillis(dtgEnd*1000,"[H#1]:[m01]","\${this.timeOffset}")`
+        node: `$fromMillis(dtgEnd * 1000,"[H#1]:[m01]","\${this.timeOffset}")`
       },
       enddate: {
-        node: `$fromMillis(dtgEnd*1000,"[D01].[M01]","\${this.timeOffset}")`
+        node: `$fromMillis(dtgEnd * 1000,"[D01].[M01]","\${this.timeOffset}")`
       },
       startdayofweek: {
-        node: `dtgStart*1000`,
+        node: `dtgStart * 1000`,
         cmd: "dayoftheweek"
       },
       enddayofweek: {
-        node: `dtgEnd*1000`,
+        node: `dtgEnd * 1000`,
         cmd: "dayoftheweek"
       },
       headline: { node: `payload.translationsShortText` },
@@ -199,16 +199,16 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       startdayofweekshort: {
-        node: `dtgStart*1000`,
+        node: `dtgStart * 1000`,
         cmd: "dayoftheweekshort"
       },
       enddayofweekshort: {
-        node: `dtgEnd*1000`,
+        node: `dtgEnd * 1000`,
         cmd: "dayoftheweekshort"
       },
       countdown: {
-        cmd: void 0,
-        node: ""
+        cmd: "countdown",
+        node: "dtgStart * 1000"
       }
     },
     zamgService: {
@@ -278,8 +278,8 @@ class MessagesClass extends import_library.BaseClass {
         cmd: "dayoftheweekshort"
       },
       countdown: {
-        cmd: void 0,
-        node: ""
+        cmd: "countdown",
+        node: "$number(rawinfo.start)*1000"
       }
     },
     default: {
@@ -395,8 +395,12 @@ class MessagesClass extends import_library.BaseClass {
         break;
       case "uwzService":
         {
-          this.starttime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(dtgStart)`));
-          this.endtime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(dtgEnd)`));
+          this.starttime = Number(
+            await this.library.readWithJsonata(this.rawWarning, `$number(dtgStart * 1000)`)
+          );
+          this.endtime = Number(
+            await this.library.readWithJsonata(this.rawWarning, `$number(dtgEnd * 1000)`)
+          );
           this.ceiling = Number(await this.library.readWithJsonata(this.rawWarning, `payload.altMax`));
           this.altitude = Number(await this.library.readWithJsonata(this.rawWarning, `payload.altMin`));
           this.level = Number(
@@ -576,6 +580,9 @@ class MessagesClass extends import_library.BaseClass {
       case "translate": {
         return this.library.getTranslation(data);
       }
+      case "countdown": {
+        return this.getCountdown(data);
+      }
     }
     return "";
   }
@@ -594,15 +601,8 @@ class MessagesClass extends import_library.BaseClass {
       if (!override)
         action = "all";
     }
-    if (this.formatedData) {
-      const negativ = this.starttime - Date.now() < 0;
-      const remain = new Date(Math.abs(this.starttime - Date.now()));
-      const d = remain.getDate() - 1;
-      const h = d > 0 ? ("00" + String(remain.getHours())).slice(2) : String(remain.getHours());
-      this.formatedData.countdown = `${negativ ? "-" : ""}${d > 0 ? `${String(d)}:` : ""}${h}:${String(
-        remain.getMinutes()
-      )}`;
-    }
+    if (this.formatedData)
+      this.formatedData.countdown = this.getCountdown(this.starttime);
     const msgsend = {};
     for (let a = 0; a < this.messages.length; a++) {
       const msg = this.messages[a];
@@ -621,6 +621,13 @@ class MessagesClass extends import_library.BaseClass {
     );
     this.newMessage = false;
     return false;
+  }
+  getCountdown(time) {
+    const diff = time - Date.now();
+    const remain = new Date(Math.abs(diff));
+    const d = remain.getUTCDate() - 1;
+    const h = d > 0 ? ("00" + String(remain.getUTCHours())).slice(2) : String(remain.getUTCHours());
+    return `${diff < 0 ? "-" : ""}${d > 0 ? `${String(d)}:` : ""}${h}:${("00" + String(remain.getUTCMinutes())).slice(-2)}`;
   }
   delete() {
     this.notDeleted = false;

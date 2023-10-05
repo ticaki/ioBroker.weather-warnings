@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Fornitore",
     "customFormatedTokensJson.locationcustom": "Posizione dalla configurazione dell'amministratore",
     "useJsonHistory": "La memorizzazione della cronologia dei dati grezzi viene attivata o disattivata ed eliminata (elevato consumo di memoria).",
-    "allowedDirs": "Consenti o rimuovi le directory del provider! Le altre impostazioni verranno sovrascritte!"
+    "allowedDirs": "Consenti o rimuovi le directory del provider! Le altre impostazioni verranno sovrascritte!",
+    "color.textGeneric.0": "verde",
+    "color.textGeneric.1": "verde scuro",
+    "color.textGeneric.2": "giallo",
+    "color.textGeneric.3": "arancia",
+    "color.textGeneric.4": "rosso",
+    "color.textGeneric.5": "Viola"
 }

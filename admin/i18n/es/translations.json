@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Proveedor",
     "customFormatedTokensJson.locationcustom": "Ubicación desde la configuración del administrador",
     "useJsonHistory": "El almacenamiento del historial de datos sin procesar se activa o desactiva y se elimina (alto consumo de memoria).",
-    "allowedDirs": "¡Permitir o eliminar directorios del proveedor! ¡Se sobrescribirán otras configuraciones!"
+    "allowedDirs": "¡Permitir o eliminar directorios del proveedor! ¡Se sobrescribirán otras configuraciones!",
+    "color.textGeneric.0": "verde",
+    "color.textGeneric.1": "verde oscuro",
+    "color.textGeneric.2": "amarillo",
+    "color.textGeneric.3": "naranja",
+    "color.textGeneric.4": "rojo",
+    "color.textGeneric.5": "Violeta"
 }

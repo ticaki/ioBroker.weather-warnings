@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Провайдер",
     "customFormatedTokensJson.locationcustom": "Розташування з конфігурації адміністратора",
     "useJsonHistory": "Зберігання історії необроблених даних активовано або дезактивовано та видалено (велике споживання пам’яті).",
-    "allowedDirs": "Дозволити або видалити каталоги провайдера! Інші налаштування будуть перезаписані!"
+    "allowedDirs": "Дозволити або видалити каталоги провайдера! Інші налаштування будуть перезаписані!",
+    "color.textGeneric.0": "зелений",
+    "color.textGeneric.1": "темно-зелений",
+    "color.textGeneric.2": "жовтий",
+    "color.textGeneric.3": "помаранчевий",
+    "color.textGeneric.4": "червоний",
+    "color.textGeneric.5": "фіолетовий"
 }

@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Поставщик",
     "customFormatedTokensJson.locationcustom": "Местоположение из конфигурации администратора",
     "useJsonHistory": "Хранение истории необработанных данных активируется или деактивируется и удаляется (высокое потребление памяти).",
-    "allowedDirs": "Разрешите или удалите каталоги провайдера! Остальные настройки будут перезаписаны!"
+    "allowedDirs": "Разрешите или удалите каталоги провайдера! Остальные настройки будут перезаписаны!",
+    "color.textGeneric.0": "зеленый",
+    "color.textGeneric.1": "темно-зеленый",
+    "color.textGeneric.2": "желтый",
+    "color.textGeneric.3": "апельсин",
+    "color.textGeneric.4": "красный",
+    "color.textGeneric.5": "фиолетовый"
 }

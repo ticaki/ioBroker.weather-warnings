@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "提供者",
     "customFormatedTokensJson.locationcustom": "管理配置中的位置",
     "useJsonHistory": "原始数据历史存储被激活或停用和删除（高内存消耗）。",
-    "allowedDirs": "允许或删除提供商的目录！其他设置将被覆盖！"
+    "allowedDirs": "允许或删除提供商的目录！其他设置将被覆盖！",
+    "color.textGeneric.0": "绿色的",
+    "color.textGeneric.1": "深绿色",
+    "color.textGeneric.2": "黄色的",
+    "color.textGeneric.3": "橙子",
+    "color.textGeneric.4": "红色的",
+    "color.textGeneric.5": "紫色"
 }

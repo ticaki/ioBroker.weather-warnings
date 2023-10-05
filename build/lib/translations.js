@@ -26,6 +26,7 @@ var translations_exports = {};
 __export(translations_exports, {
   geti18nTranslation: () => geti18nTranslation,
   seti18nTranslation: () => seti18nTranslation,
+  writefile: () => writefile,
   writei18nTranslation: () => writei18nTranslation
 });
 module.exports = __toCommonJS(translations_exports);
@@ -91,10 +92,17 @@ async function writei18nTranslation() {
     await import_fs.default.writeFileSync("./admin/i18n/en/translations.json", JSON.stringify(allTranslations.en));
   }
 }
+async function writefile(name, value) {
+  if (await import_fs.default.existsSync("./.dev-data")) {
+    return;
+    await import_fs.default.writeFileSync("./.dev-data/" + name + ".json", JSON.stringify(value));
+  }
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   geti18nTranslation,
   seti18nTranslation,
+  writefile,
   writei18nTranslation
 });
 //# sourceMappingURL=translations.js.map

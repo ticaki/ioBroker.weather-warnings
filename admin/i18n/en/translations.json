@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Provider",
     "customFormatedTokensJson.locationcustom": "Location from admin configuration",
     "useJsonHistory": "Raw data history storage is activated or deactivated and deleted (high memory consumption).",
-    "allowedDirs":"Allow or remove directories of the provider! Other settings will be overwritten!"
+    "allowedDirs":"Allow or remove directories of the provider! Other settings will be overwritten!",
+    "color.textGeneric.0":"green",
+    "color.textGeneric.1":"dark green",
+    "color.textGeneric.2":"yellow",
+    "color.textGeneric.3":"orange",
+    "color.textGeneric.4":"red",
+    "color.textGeneric.5":"violet"
 }

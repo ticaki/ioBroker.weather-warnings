@@ -2,14 +2,8 @@ import jsonata from 'jsonata';
 import { genericStateObjects, statesObjectsWarningsType } from './def/definitionen';
 import WeatherWarnings from '../main';
 
-import {
-    customFormatedTokensJson,
-    genericWarntyp,
-    genericWarntypeType,
-    textLevels,
-    warnTypeName,
-} from './def/messages-def';
-import { geti18nTranslation, seti18nTranslation, writei18nTranslation } from './translations';
+import { customFormatedTokensJson, textLevels } from './def/messages-def';
+import { geti18nTranslation, seti18nTranslation, writefile } from './translations';
 
 // only change this for other adapters
 type AdapterClassDefinition = WeatherWarnings;
@@ -72,8 +66,9 @@ class CustomLog {
 
 export class Library extends BaseClass {
     stateDataBase: { [key: string]: LibraryStateVal } = {};
-    language: string | undefined;
+    language: string = 'en';
     allowedDirs: string[] = [];
+    translation: { [key: string]: string } = {};
     constructor(adapter: AdapterClassDefinition, _options: any = null) {
         super(adapter, 'library');
         this.stateDataBase = {};
@@ -89,6 +84,11 @@ export class Library extends BaseClass {
      * @returns  void
      */
     async init(): Promise<void> {
+        const obj = await this.adapter.getForeignObjectAsync('system.config');
+        if (obj) {
+            await this.setLanguage(obj.common.language);
+        }
+
         await this.updateTranslations();
     }
 
@@ -240,6 +240,19 @@ export class Library extends BaseClass {
             }
         }
         return true;
+    }
+
+    async cleanUpTree(hold: string[], deep: number): Promise<void> {
+        const del = [];
+        for (const dp in this.stateDataBase) {
+            if (hold.filter((a) => dp.startsWith(a)).length > 0) continue;
+            this.stateDataBase[dp] = undefined;
+            if (hold.filter((a) => dp.startsWith(a)).length > 0) continue;
+            del.push(dp.split('.').slice(0, deep).join('.'));
+        }
+        for (const a in del) {
+            this.adapter.delObjectAsync(del[a], { recursive: true });
+        }
     }
     /**
      * Remove forbidden chars from datapoint string.
@@ -432,7 +445,7 @@ export class Library extends BaseClass {
         }
     }
 
-    async getTranslation(text: string | { [key: string]: string }): Promise<string> {
+    async getTranslation2(text: string | { [key: string]: string }): Promise<string> {
         if (typeof text == 'object') {
             if (!this.language) {
                 const obj = await this.adapter.getForeignObjectAsync('system.config');
@@ -448,61 +461,35 @@ export class Library extends BaseClass {
         if (this.language) return this.language;
         return 'en-En';
     }
-
+    async getTranslation(key: string): Promise<string> {
+        const language = await import(`../../admin/i18n/${this.language}/translations.json`);
+        if (language && language[key] !== undefined) return language[key];
+        return key;
+    }
+    async setLanguage(language: string): Promise<void> {
+        if (!language) language = 'en';
+        this.language = language;
+        this.translation = await import(`../../admin/i18n/${language}/translations.json`);
+    }
     async updateTranslations(): Promise<void> {
-        for (const b in genericWarntyp) {
-            const l = Number(b) as keyof genericWarntypeType;
-            const key = 'genericWarntyp.' + l + '.name';
-            const translation = geti18nTranslation(key);
-            if (translation != '' && typeof translation == 'object' && translation.en !== '') {
-                genericWarntyp[l].name = translation as ioBroker.StringOrTranslated;
-            } else {
-                seti18nTranslation(key, genericWarntyp[l].name);
-            }
-        }
-        for (const l in warnTypeName) {
-            //@ts-expect-error faulheit
-            for (const l2 in warnTypeName[l]) {
-                const key = 'warnTypeName.' + l + '.' + l2;
-                const translation = geti18nTranslation(key);
-                if (translation != '' && typeof translation == 'object' && translation.en !== '') {
-                    //@ts-expect-error faulheit
-                    warnTypeName[l][l2] = translation as ioBroker.StringOrTranslated;
-                } else {
-                    //@ts-expect-error faulheit
-                    seti18nTranslation(key, warnTypeName[l][l2]);
-                }
-            }
-        }
-        for (const l in textLevels) {
-            //@ts-expect-error faulheit
-            for (const l2 in textLevels[l]) {
-                const key = 'textLevels.' + l + '.' + l2;
-                const translation = geti18nTranslation(key);
-                if (translation != '' && typeof translation == 'object' && translation.en !== '') {
-                    //@ts-expect-error faulheit
-                    textLevels[l][l2] = translation as ioBroker.StringOrTranslated;
-                } else {
-                    //@ts-expect-error faulheit
-                    seti18nTranslation(key, textLevels[l][l2]);
-                }
-            }
-        }
+        return;
+        writefile('textLevels', textLevels);
         for (const l in customFormatedTokensJson) {
             const key = 'customFormatedTokensJson.' + l;
             const translation = geti18nTranslation(key);
             //@ts-expect-error faulheit
             if (customFormatedTokensJson[l] !== '') {
-                if (translation != '' && typeof translation == 'object' && translation.en !== '') {
+                if (translation != '' && typeof translation == 'object') {
                     //@ts-expect-error faulheit
-                    customFormatedTokensJson[l] = translation as ioBroker.StringOrTranslated;
+                    customFormatedTokensJson[l] = key;
                 } else {
                     //@ts-expect-error faulheit
                     seti18nTranslation(key, customFormatedTokensJson[l]);
                 }
             }
         }
-        await writei18nTranslation();
+        writefile('customFormatedTokensJson', customFormatedTokensJson);
+        //await writei18nTranslation();
     }
     setAllowedDirs(dirs: any[]): void {
         this.allowedDirs = this.allowedDirs.concat(dirs);

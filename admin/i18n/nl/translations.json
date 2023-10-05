@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Aanbieder",
     "customFormatedTokensJson.locationcustom": "Locatie uit beheerdersconfiguratie",
     "useJsonHistory": "De opslag van onbewerkte gegevensgeschiedenis wordt geactiveerd of gedeactiveerd en verwijderd (hoog geheugengebruik).",
-    "allowedDirs": "Mappen van de provider toestaan ​​of verwijderen! Andere instellingen worden overschreven!"
+    "allowedDirs": "Mappen van de provider toestaan ​​of verwijderen! Andere instellingen worden overschreven!",
+    "color.textGeneric.0": "groente",
+    "color.textGeneric.1": "donkergroen",
+    "color.textGeneric.2": "geel",
+    "color.textGeneric.3": "oranje",
+    "color.textGeneric.4": "rood",
+    "color.textGeneric.5": "paars"
 }

@@ -193,5 +193,11 @@
     "customFormatedTokensJson.provider": "Fournisseur",
     "customFormatedTokensJson.locationcustom": "Emplacement à partir de la configuration de l'administrateur",
     "useJsonHistory": "Le stockage de l'historique des données brutes est activé ou désactivé et supprimé (consommation mémoire élevée).",
-    "allowedDirs": "Autorisez ou supprimez les répertoires du fournisseur ! Les autres paramètres seront écrasés !"
+    "allowedDirs": "Autorisez ou supprimez les répertoires du fournisseur ! Les autres paramètres seront écrasés !",
+    "color.textGeneric.0": "vert",
+    "color.textGeneric.1": "vert foncé",
+    "color.textGeneric.2": "jaune",
+    "color.textGeneric.3": "orange",
+    "color.textGeneric.4": "rouge",
+    "color.textGeneric.5": "violet"
 }

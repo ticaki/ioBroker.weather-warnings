@@ -194,5 +194,11 @@
     "useJsonHistory": "Die Speicherung der Rohdatenhistorie wird aktiviert bzw. deaktiviert und gelöscht (hoher Speicherverbrauch).",
     "uwzSelectId": "UWZ Warncell-Identifikator",
     "allowedDirs": "Verzeichnisse des Anbieters zulassen oder entfernen! Andere Einstellungen werden überschrieben!",
-    "zamgSelectId": "ZAMG Koordinaten zum Standort. Teiler '#'"
+    "zamgSelectId": "ZAMG Koordinaten zum Standort. Teiler '#'",
+    "color.textGeneric.0": "Grün",
+    "color.textGeneric.1": "dunkelgrün",
+    "color.textGeneric.2": "Gelb",
+    "color.textGeneric.3": "orange",
+    "color.textGeneric.4": "Rot",
+    "color.textGeneric.5": "violett"
 }

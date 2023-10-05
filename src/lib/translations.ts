@@ -91,3 +91,11 @@ export async function writei18nTranslation(): Promise<void> {
         //await _fs.writeFileSync('./admin/i18n/de/translations.json', JSON.stringify(allTranslations.de));
     }
 }
+
+export async function writefile(name: string, value: object): Promise<void> {
+    if (await _fs.existsSync('./.dev-data')) {
+        // only use it on my iobroker dev-server
+        return;
+        await _fs.writeFileSync('./.dev-data/' + name + '.json', JSON.stringify(value));
+    }
+}

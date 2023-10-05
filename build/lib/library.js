@@ -95,13 +95,18 @@ _adapter = new WeakMap();
 _prefix = new WeakMap();
 class Library extends BaseClass {
   stateDataBase = {};
-  language;
+  language = "en";
   allowedDirs = [];
+  translation = {};
   constructor(adapter, _options = null) {
     super(adapter, "library");
     this.stateDataBase = {};
   }
   async init() {
+    const obj = await this.adapter.getForeignObjectAsync("system.config");
+    if (obj) {
+      await this.setLanguage(obj.common.language);
+    }
     await this.updateTranslations();
   }
   async writeFromJson(prefix, objNode, def, data, expandTree = false) {
@@ -206,6 +211,20 @@ class Library extends BaseClass {
       }
     }
     return true;
+  }
+  async cleanUpTree(hold, deep) {
+    const del = [];
+    for (const dp in this.stateDataBase) {
+      if (hold.filter((a) => dp.startsWith(a)).length > 0)
+        continue;
+      this.stateDataBase[dp] = void 0;
+      if (hold.filter((a) => dp.startsWith(a)).length > 0)
+        continue;
+      del.push(dp.split(".").slice(0, deep).join("."));
+    }
+    for (const a in del) {
+      this.adapter.delObjectAsync(del[a], { recursive: true });
+    }
   }
   cleandp(string, lowerCase = false) {
     if (!string && typeof string != "string")
@@ -368,7 +387,7 @@ class Library extends BaseClass {
       }
     }
   }
-  async getTranslation(text) {
+  async getTranslation2(text) {
     if (typeof text == "object") {
       if (!this.language) {
         const obj = await this.adapter.getForeignObjectAsync("system.config");
@@ -388,51 +407,33 @@ class Library extends BaseClass {
       return this.language;
     return "en-En";
   }
+  async getTranslation(key) {
+    const language = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${this.language}/translations.json`)));
+    if (language && language[key] !== void 0)
+      return language[key];
+    return key;
+  }
+  async setLanguage(language) {
+    if (!language)
+      language = "en";
+    this.language = language;
+    this.translation = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${language}/translations.json`)));
+  }
   async updateTranslations() {
-    for (const b in import_messages_def.genericWarntyp) {
-      const l = Number(b);
-      const key = "genericWarntyp." + l + ".name";
-      const translation = (0, import_translations.geti18nTranslation)(key);
-      if (translation != "" && typeof translation == "object" && translation.en !== "") {
-        import_messages_def.genericWarntyp[l].name = translation;
-      } else {
-        (0, import_translations.seti18nTranslation)(key, import_messages_def.genericWarntyp[l].name);
-      }
-    }
-    for (const l in import_messages_def.warnTypeName) {
-      for (const l2 in import_messages_def.warnTypeName[l]) {
-        const key = "warnTypeName." + l + "." + l2;
-        const translation = (0, import_translations.geti18nTranslation)(key);
-        if (translation != "" && typeof translation == "object" && translation.en !== "") {
-          import_messages_def.warnTypeName[l][l2] = translation;
-        } else {
-          (0, import_translations.seti18nTranslation)(key, import_messages_def.warnTypeName[l][l2]);
-        }
-      }
-    }
-    for (const l in import_messages_def.textLevels) {
-      for (const l2 in import_messages_def.textLevels[l]) {
-        const key = "textLevels." + l + "." + l2;
-        const translation = (0, import_translations.geti18nTranslation)(key);
-        if (translation != "" && typeof translation == "object" && translation.en !== "") {
-          import_messages_def.textLevels[l][l2] = translation;
-        } else {
-          (0, import_translations.seti18nTranslation)(key, import_messages_def.textLevels[l][l2]);
-        }
-      }
-    }
+    return;
+    (0, import_translations.writefile)("textLevels", import_messages_def.textLevels);
     for (const l in import_messages_def.customFormatedTokensJson) {
       const key = "customFormatedTokensJson." + l;
       const translation = (0, import_translations.geti18nTranslation)(key);
       if (import_messages_def.customFormatedTokensJson[l] !== "") {
-        if (translation != "" && typeof translation == "object" && translation.en !== "") {
-          import_messages_def.customFormatedTokensJson[l] = translation;
+        if (translation != "" && typeof translation == "object") {
+          import_messages_def.customFormatedTokensJson[l] = key;
         } else {
           (0, import_translations.seti18nTranslation)(key, import_messages_def.customFormatedTokensJson[l]);
         }
       }
     }
-    await (0, import_translations.writei18nTranslation)();
+    (0, import_translations.writefile)("customFormatedTokensJson", import_messages_def.customFormatedTokensJson);
   }
   setAllowedDirs(dirs) {
     this.allowedDirs = this.allowedDirs.concat(dirs);
