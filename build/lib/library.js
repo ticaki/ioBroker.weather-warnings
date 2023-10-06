@@ -107,12 +107,6 @@ class Library extends BaseClass {
     } else {
       await this.setLanguage("en");
     }
-    try {
-      const tools = await Promise.resolve().then(() => __toESM(require("../../.dev-data/translations.ts")));
-      if (tools)
-        await tools.updateTranslations();
-    } catch {
-    }
   }
   async writeFromJson(prefix, objNode, def, data, expandTree = false) {
     if (!def || typeof def !== "object")

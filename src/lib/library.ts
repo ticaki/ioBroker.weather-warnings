@@ -88,13 +88,13 @@ export class Library extends BaseClass {
         } else {
             await this.setLanguage('en');
         }
-        try {
-            // optional module
+        /*try {
+            // optional module - test ts check fail
             const tools = await import('../../.dev-data/translations.ts');
             if (tools) await tools.updateTranslations();
         } catch {
             // do nothing
-        }
+        }*/
     }
 
     async writeFromJson(
