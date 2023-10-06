@@ -2,9 +2,6 @@ import jsonata from 'jsonata';
 import { genericStateObjects, statesObjectsWarningsType } from './def/definitionen';
 import WeatherWarnings from '../main';
 
-import { customFormatedTokensJson, textLevels } from './def/messages-def';
-import { geti18nTranslation, seti18nTranslation, writefile } from './translations';
-
 // only change this for other adapters
 type AdapterClassDefinition = WeatherWarnings;
 
@@ -66,9 +63,10 @@ class CustomLog {
 
 export class Library extends BaseClass {
     stateDataBase: { [key: string]: LibraryStateVal } = {};
-    language: string = 'en';
+    language: string = 'no language';
     allowedDirs: string[] = [];
     translation: { [key: string]: string } = {};
+
     constructor(adapter: AdapterClassDefinition, _options: any = null) {
         super(adapter, 'library');
         this.stateDataBase = {};
@@ -87,9 +85,16 @@ export class Library extends BaseClass {
         const obj = await this.adapter.getForeignObjectAsync('system.config');
         if (obj) {
             await this.setLanguage(obj.common.language);
+        } else {
+            await this.setLanguage('en');
         }
-
-        await this.updateTranslations();
+        try {
+            // optional module
+            const tools = await import('../../.dev-data/translations.ts');
+            if (tools) await tools.updateTranslations();
+        } catch {
+            // do nothing
+        }
     }
 
     async writeFromJson(
@@ -445,51 +450,26 @@ export class Library extends BaseClass {
         }
     }
 
-    async getTranslation2(text: string | { [key: string]: string }): Promise<string> {
-        if (typeof text == 'object') {
-            if (!this.language) {
-                const obj = await this.adapter.getForeignObjectAsync('system.config');
-                if (obj) this.language = obj.common.language;
-
-                if (!this.language) this.language = 'en';
-            }
-            if (!text[this.language]) return text['en'];
-            return text[this.language];
-        } else return text;
-    }
     getLocalLanguage(): string {
         if (this.language) return this.language;
         return 'en-En';
     }
     async getTranslation(key: string): Promise<string> {
-        const language = await import(`../../admin/i18n/${this.language}/translations.json`);
-        if (language && language[key] !== undefined) return language[key];
+        if (this.translation[key] !== undefined) return this.translation[key];
         return key;
     }
-    async setLanguage(language: string): Promise<void> {
+    async setLanguage(language: string): Promise<boolean> {
         if (!language) language = 'en';
-        this.language = language;
-        this.translation = await import(`../../admin/i18n/${language}/translations.json`);
-    }
-    async updateTranslations(): Promise<void> {
-        return;
-        writefile('textLevels', textLevels);
-        for (const l in customFormatedTokensJson) {
-            const key = 'customFormatedTokensJson.' + l;
-            const translation = geti18nTranslation(key);
-            //@ts-expect-error faulheit
-            if (customFormatedTokensJson[l] !== '') {
-                if (translation != '' && typeof translation == 'object') {
-                    //@ts-expect-error faulheit
-                    customFormatedTokensJson[l] = key;
-                } else {
-                    //@ts-expect-error faulheit
-                    seti18nTranslation(key, customFormatedTokensJson[l]);
-                }
+        if (this.language != language) {
+            try {
+                this.translation = await import(`../../admin/i18n/${language}/translations.json`);
+                this.language = language;
+                return true;
+            } catch (error) {
+                this.log.error(`Language ${language} not exist!`);
             }
         }
-        writefile('customFormatedTokensJson', customFormatedTokensJson);
-        //await writei18nTranslation();
+        return false;
     }
     setAllowedDirs(dirs: any[]): void {
         this.allowedDirs = this.allowedDirs.concat(dirs);

@@ -16,6 +16,8 @@
 		"outDir": "./build/",
 		"removeComments": false,
 
+        "allowImportingTsExtensions": true,
+
 		// This is necessary for the automatic typing of the adapter config
 		"resolveJsonModule": true,
 
@@ -34,6 +36,6 @@
 		"sourceMap": true,
 		"inlineSourceMap": false
 	},
-	"include": ["src/**/*.ts"],
+	"include": ["src/**/*.ts", ".dev-data/translations.ts"],
 	"exclude": ["build/**", "node_modules/**", "widgets/**"]
 }

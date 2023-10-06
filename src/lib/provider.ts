@@ -614,7 +614,7 @@ export class ProviderController extends BaseClass {
             if (p) this.provider.push(p);
             return p;
         } else {
-            this.log.error('Try to create a exist provider.');
+            this.log.error('Attempt to create an existing provider.');
             return this.provider[index];
         }
     }
@@ -731,6 +731,14 @@ export class ProviderController extends BaseClass {
                 dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.formatedKeys`);
 
             this.library.setAllowedDirs(dirs);
+        }
+    }
+    async updateMesssages(): Promise<void> {
+        for (const a in this.provider) {
+            for (const b in this.provider[a].messages) {
+                await this.provider[a].messages[b].updateFormatedData(true);
+                await this.provider[a].messages[b].writeFormatedKeys(Number(b));
+            }
         }
     }
 }

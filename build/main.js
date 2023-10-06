@@ -247,10 +247,13 @@ class WeatherWarnings extends utils.Adapter {
       callback();
     }
   }
-  onObjectChange(id, obj) {
+  async onObjectChange(id, obj) {
     if (obj) {
       if (id == "system.config") {
-        this.library.setLanguage(obj.common.language);
+        if (await this.library.setLanguage(obj.common.language)) {
+          if (this.providerController)
+            this.providerController.updateMesssages();
+        }
       }
     }
   }

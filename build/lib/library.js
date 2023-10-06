@@ -48,8 +48,6 @@ __export(library_exports, {
 module.exports = __toCommonJS(library_exports);
 var import_jsonata = __toESM(require("jsonata"));
 var import_definitionen = require("./def/definitionen");
-var import_messages_def = require("./def/messages-def");
-var import_translations = require("./translations");
 var _adapter, _prefix;
 class BaseClass {
   unload = false;
@@ -95,7 +93,7 @@ _adapter = new WeakMap();
 _prefix = new WeakMap();
 class Library extends BaseClass {
   stateDataBase = {};
-  language = "en";
+  language = "no language";
   allowedDirs = [];
   translation = {};
   constructor(adapter, _options = null) {
@@ -106,8 +104,15 @@ class Library extends BaseClass {
     const obj = await this.adapter.getForeignObjectAsync("system.config");
     if (obj) {
       await this.setLanguage(obj.common.language);
+    } else {
+      await this.setLanguage("en");
     }
-    await this.updateTranslations();
+    try {
+      const tools = await Promise.resolve().then(() => __toESM(require("../../.dev-data/translations.ts")));
+      if (tools)
+        await tools.updateTranslations();
+    } catch {
+    }
   }
   async writeFromJson(prefix, objNode, def, data, expandTree = false) {
     if (!def || typeof def !== "object")
@@ -387,53 +392,29 @@ class Library extends BaseClass {
       }
     }
   }
-  async getTranslation2(text) {
-    if (typeof text == "object") {
-      if (!this.language) {
-        const obj = await this.adapter.getForeignObjectAsync("system.config");
-        if (obj)
-          this.language = obj.common.language;
-        if (!this.language)
-          this.language = "en";
-      }
-      if (!text[this.language])
-        return text["en"];
-      return text[this.language];
-    } else
-      return text;
-  }
   getLocalLanguage() {
     if (this.language)
       return this.language;
     return "en-En";
   }
   async getTranslation(key) {
-    const language = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${this.language}/translations.json`)));
-    if (language && language[key] !== void 0)
-      return language[key];
+    if (this.translation[key] !== void 0)
+      return this.translation[key];
     return key;
   }
   async setLanguage(language) {
     if (!language)
       language = "en";
-    this.language = language;
-    this.translation = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${language}/translations.json`)));
-  }
-  async updateTranslations() {
-    return;
-    (0, import_translations.writefile)("textLevels", import_messages_def.textLevels);
-    for (const l in import_messages_def.customFormatedTokensJson) {
-      const key = "customFormatedTokensJson." + l;
-      const translation = (0, import_translations.geti18nTranslation)(key);
-      if (import_messages_def.customFormatedTokensJson[l] !== "") {
-        if (translation != "" && typeof translation == "object") {
-          import_messages_def.customFormatedTokensJson[l] = key;
-        } else {
-          (0, import_translations.seti18nTranslation)(key, import_messages_def.customFormatedTokensJson[l]);
-        }
+    if (this.language != language) {
+      try {
+        this.translation = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${language}/translations.json`)));
+        this.language = language;
+        return true;
+      } catch (error) {
+        this.log.error(`Language ${language} not exist!`);
       }
     }
-    (0, import_translations.writefile)("customFormatedTokensJson", import_messages_def.customFormatedTokensJson);
+    return false;
   }
   setAllowedDirs(dirs) {
     this.allowedDirs = this.allowedDirs.concat(dirs);

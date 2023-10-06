@@ -299,11 +299,13 @@ class WeatherWarnings extends utils.Adapter {
     // /**
     //  * Is called if a subscribed object changes
     //  */
-    private onObjectChange(id: string, obj: ioBroker.Object | null | undefined): void {
+    private async onObjectChange(id: string, obj: ioBroker.Object | null | undefined): Promise<void> {
         if (obj) {
             // The object was changed
             if (id == 'system.config') {
-                this.library.setLanguage(obj.common.language);
+                if (await this.library.setLanguage(obj.common.language)) {
+                    if (this.providerController) this.providerController.updateMesssages();
+                }
             }
         }
     }
