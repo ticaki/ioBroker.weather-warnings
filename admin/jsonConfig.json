@@ -126,7 +126,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 2,
-                            "text": ".warning"
+                            "label": ".warning"
                         },
                         {
                             "attr": "dpFormated",
@@ -134,7 +134,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 2,
-                            "text": ".formatedKeys"
+                            "label": ".formatedKeys"
                         },
                         {
                             "attr": "dpAlerts",
@@ -142,7 +142,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 2,
-                            "text": ".alerts"
+                            "label": ".alerts"
                         }
                     ]
                 },
