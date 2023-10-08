@@ -198,7 +198,6 @@ export class BaseProvider extends BaseClass {
 
             // show text mode in Info states
             const objDef = await this.library.getObjectDefFromJson(`info.testMode`, definitionen.genericStateObjects);
-            //this.adapter.config.useTestWarnings = Math.random() * 3 > 1;
             this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
             if (this.adapter.config.useTestWarnings) {
                 return this.library.cloneGenericObject(
@@ -486,7 +485,7 @@ export class ProviderController extends BaseClass {
         super(adapter, 'provider');
         this.library = this.adapter.library;
         this.noWarningMessage = new MessagesClass(this.adapter, 'default', null, {}, this);
-        this.pushOn = !this.adapter.config.notPushAtStart;
+        this.pushOn = this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
     }
     async init(): Promise<void> {
         this.refreshTime = this.adapter.config.refreshTime * 60000;
@@ -598,8 +597,8 @@ export class ProviderController extends BaseClass {
         if (this.alertTimeoutRef) this.adapter.clearTimeout(this.alertTimeoutRef);
     }
 
-    sendNoMessages(): void {}
     updateEndless(that: ProviderController): void {
+        //that.adapter.config.useTestWarnings = !that.adapter.config.useTestWarnings;
         that.connection = false;
         if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);
         if (that.providers.length == 0) {

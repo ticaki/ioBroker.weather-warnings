@@ -439,7 +439,7 @@ class ProviderController extends import_library.BaseClass {
     super(adapter, "provider");
     this.library = this.adapter.library;
     this.noWarningMessage = new import_messages.MessagesClass(this.adapter, "default", null, {}, this);
-    this.pushOn = !this.adapter.config.notPushAtStart;
+    this.pushOn = this.adapter.config.notPushAtStart;
   }
   async init() {
     this.refreshTime = this.adapter.config.refreshTime * 6e4;
@@ -540,8 +540,6 @@ class ProviderController extends import_library.BaseClass {
       this.adapter.clearTimeout(this.refreshTimeRef);
     if (this.alertTimeoutRef)
       this.adapter.clearTimeout(this.alertTimeoutRef);
-  }
-  sendNoMessages() {
   }
   updateEndless(that) {
     that.connection = false;

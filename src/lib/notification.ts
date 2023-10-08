@@ -81,7 +81,7 @@ export class NotificationClass extends library.BaseClass {
 
             //if (this.config.notifications.includes('all')) result = result.concat(resultProvider); // hier sammele die Nachrichten
         }
-        if (result.length > 0) {
+        if (result.length > 0 && activeWarnings > 0) {
             await this.sendNotifications(result); // hier an alle
             this.removeAllSend = false;
         } else {
@@ -90,7 +90,7 @@ export class NotificationClass extends library.BaseClass {
             if (
                 this.config.notifications.includes('removeAll') &&
                 this.options.actions['removeAll'] != 'none' &&
-                (override || (this.removeAllSend && activeWarnings == 0))
+                (override || (!this.removeAllSend && activeWarnings == 0))
             ) {
                 const templates = this.adapter.config.templateTable;
                 const tempid = templates.findIndex((a) => a.templateKey == this.options.actions['removeAll']);

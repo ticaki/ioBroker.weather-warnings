@@ -81,11 +81,11 @@ class NotificationClass extends library.BaseClass {
         }
       }
     }
-    if (result.length > 0) {
+    if (result.length > 0 && activeWarnings > 0) {
       await this.sendNotifications(result);
       this.removeAllSend = false;
     } else {
-      if (this.config.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && (override || this.removeAllSend && activeWarnings == 0)) {
+      if (this.config.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && (override || !this.removeAllSend && activeWarnings == 0)) {
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex((a) => a.templateKey == this.options.actions["removeAll"]);
         if (tempid != -1) {
