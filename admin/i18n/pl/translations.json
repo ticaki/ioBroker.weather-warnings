@@ -73,7 +73,7 @@
     "uwzEnabled": "Aktywuj UWZ",
     "uwzSelectDescription": "Identyfikator UWZ składa się z kodu kraju i kodu pocztowego (DE12345, AT54321)",
     "uwzSelectId": "Identyfikator UWZ Warncell",
-    "zamgSelectId": "ZAMG współrzędne do lokalizacji. Dzielnik „#”",
+    "zamgSelectId": "ZAMG współrzędne do lokalizacji. Dzielnik „/”",
     "uwzTypeFilter": "Odfiltruj następujące typy ostrzeżeń z wyniku.",
     "warnTypeName.dwdService.22": "mróz",
     "warnTypeName.dwdService.24": "Lekko śliskie",
@@ -199,5 +199,13 @@
     "color.textGeneric.2": "żółty",
     "color.textGeneric.3": "Pomarańczowy",
     "color.textGeneric.4": "czerwony",
-    "color.textGeneric.5": "fioletowy"
+    "color.textGeneric.5": "fioletowy",
+    "message.status.new": "Nowe ostrzeżenie",
+    "message.status.hold": "Ważne ostrzeżenie",
+    "message.status.clear": "Wszystko jasne",
+    "notPushAtStart": "Ostrzeżenia przychodzące po uruchomieniu adaptera są uważane za znane.",
+    "email_Header": "Nagłówek wiadomości e-mail",
+    "email_Header_hint": "Jedynym działającym tokenem jest tutaj ${emailheader}. (Nowe ostrzeżenie lub Wszystko jasne)",
+    "email_Footer": "Stopka do e-maila",
+    "dividerDirs": "Katalogi wewnętrzne"
 }

@@ -73,7 +73,7 @@
     "uwzEnabled": "Активировать УВЗ",
     "uwzSelectDescription": "Идентификатор UWZ состоит из кода страны и почтового индекса (DE12345, AT54321).",
     "uwzSelectId": "Идентификатор UWZ Warncell",
-    "zamgSelectId": "ZAMG Координаты местоположения. Разделитель '#'",
+    "zamgSelectId": "ZAMG Координаты местоположения. Разделитель '/'",
     "uwzTypeFilter": "Отфильтруйте следующие типы предупреждений из результатов.",
     "warnTypeName.dwdService.22": "мороз",
     "warnTypeName.dwdService.24": "Немного скользкий",
@@ -199,5 +199,13 @@
     "color.textGeneric.2": "желтый",
     "color.textGeneric.3": "апельсин",
     "color.textGeneric.4": "красный",
-    "color.textGeneric.5": "фиолетовый"
+    "color.textGeneric.5": "фиолетовый",
+    "message.status.new": "Новое предупреждение",
+    "message.status.hold": "Действительное предупреждение",
+    "message.status.clear": "Все чисто",
+    "notPushAtStart": "Поступившие предупреждения после запуска адаптера считаются известными.",
+    "email_Header": "Заголовок электронного письма",
+    "email_Header_hint": "${emailheader} — единственный работающий токен здесь. (Новое предупреждение или Все ясно)",
+    "email_Footer": "Нижний колонтитул электронной почты",
+    "dividerDirs": "Внутренние каталоги"
 }

@@ -73,7 +73,7 @@
     "uwzEnabled": "Activeer UWZ",
     "uwzSelectDescription": "UWZ ID dit bestaat uit landcode en postcode (DE12345, AT54321)",
     "uwzSelectId": "UWZ Warncell-identificatie",
-    "zamgSelectId": "ZAMG Coördineert naar locatie. Verdeler '#'",
+    "zamgSelectId": "ZAMG Coördineert naar locatie. Verdeler '/'",
     "uwzTypeFilter": "Filter de volgende waarschuwingstypen uit het resultaat.",
     "warnTypeName.dwdService.22": "vorst",
     "warnTypeName.dwdService.24": "Enigszins glad",
@@ -199,5 +199,13 @@
     "color.textGeneric.2": "geel",
     "color.textGeneric.3": "oranje",
     "color.textGeneric.4": "rood",
-    "color.textGeneric.5": "paars"
+    "color.textGeneric.5": "paars",
+    "message.status.new": "Nieuwe waarschuwing",
+    "message.status.hold": "Geldige waarschuwing",
+    "message.status.clear": "Alles duidelijk",
+    "notPushAtStart": "Binnenkomende waarschuwingen na het starten van de adapter worden als bekend beschouwd.",
+    "email_Header": "Koptekst voor e-mail",
+    "email_Header_hint": "${emailheader} is hier het enige werkende token. (Nieuwe waarschuwing of Alles gewist)",
+    "email_Footer": "Voettekst voor e-mail",
+    "dividerDirs": "Interne mappen"
 }

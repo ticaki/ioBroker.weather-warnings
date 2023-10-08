@@ -73,7 +73,7 @@
     "uwzEnabled": "Активуйте UWZ",
     "uwzSelectDescription": "UWZ ID складається з коду країни та поштового індексу (DE12345, AT54321)",
     "uwzSelectId": "Ідентифікатор UWZ Warncell",
-    "zamgSelectId": "ZAMG Координати розташування. Розділювач \"#\"",
+    "zamgSelectId": "ZAMG Координати розташування. Розділювач \"/\"",
     "uwzTypeFilter": "Відфільтруйте наступні типи попереджень із результату.",
     "warnTypeName.dwdService.22": "мороз",
     "warnTypeName.dwdService.24": "Трохи слизький",
@@ -199,5 +199,13 @@
     "color.textGeneric.2": "жовтий",
     "color.textGeneric.3": "помаранчевий",
     "color.textGeneric.4": "червоний",
-    "color.textGeneric.5": "фіолетовий"
+    "color.textGeneric.5": "фіолетовий",
+    "message.status.new": "Нове попередження",
+    "message.status.hold": "Дійсне попередження",
+    "message.status.clear": "Все чисто",
+    "notPushAtStart": "Вхідні попередження після запуску адаптера вважаються відомими.",
+    "email_Header": "Заголовок електронної пошти",
+    "email_Header_hint": "${emailheader} — єдиний робочий маркер тут. (Нове попередження або все очищено)",
+    "email_Footer": "Нижній колонтитул електронної пошти",
+    "dividerDirs": "Внутрішні каталоги"
 }

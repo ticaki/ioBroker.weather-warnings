@@ -1,56 +1,65 @@
-import { messageFilterType, providerServices } from './provider-def';
+import { MessagesClass } from '../messages';
+import { ProviderClassType, messageFilterType, providerServices } from './provider-def';
 
-export type notificationServiceType = Required<keyof notificationServiceOptionsType>;
+export type Type = Required<keyof OptionsType>;
 
-export type notificationServiceOptionsType = {
+export type OptionsType = {
     telegram?: {
         name: 'telegram';
-    } & notificationServiceBaseType;
+    } & BaseType;
     pushover?: {
         name: 'pushover';
-    } & notificationServiceBaseType;
+    } & BaseType;
     whatsapp?: {
         name: 'whatsapp';
-    } & notificationServiceBaseType;
+    } & BaseType;
     json?: {
         name: 'json';
-    } & notificationServiceBaseType;
+    } & BaseType;
     history?: {
         name: 'history';
-    } & notificationServiceBaseType;
+    } & BaseType;
     email?: {
         name: 'email';
-    } & notificationServiceBaseType;
+    } & BaseType;
 };
-export type notificationServiceBaseType = {
+export type BaseType = {
     service: providerServices[];
     filter: messageFilterType;
     adapter: string;
-    name: notificationServiceType;
-    template: notificationTemplateType;
-    class: any;
+    name: Type;
+    actions: ActionsType;
     useadapter: boolean;
 };
 
-export type notificationTemplateUnionType = keyof notificationTemplateType;
+export type ActionsUnionType = keyof ActionsType;
 
-export type notificationTemplateType = {
+export type ActionsType = {
     new: string;
     remove: string;
     removeAll: string;
     all: string;
+    header?: string;
+    footer?: string;
 };
 
-export type notificationServiceConfigType = {
-    notifications: notificationTemplateUnionType[];
+export type ConfigType = {
+    notifications: ActionsUnionType[];
 };
-const push: notificationTemplateUnionType[] = ['new', 'remove', 'removeAll'];
-const history: notificationTemplateUnionType[] = ['new', 'remove'];
-const json: notificationTemplateUnionType[] = ['new', 'all', 'removeAll'];
-const email: notificationTemplateUnionType[] = ['new', 'all', 'removeAll', 'remove'];
 
-//const speak: notificationTemplateUnionType[] = ['new', 'remove', 'removeAll'];
-export const serciceCapabilities: Record<notificationServiceType, notificationServiceConfigType> = {
+/**
+ * new: send new messages for new Warnings
+ * all: send all messages always (with new, only if a new warning comes up)
+ * removeAll: send remove all messages
+ * remove: send a remove message for a removed warning
+ */
+const push: ActionsUnionType[] = ['new', 'remove', 'removeAll'];
+const history: ActionsUnionType[] = ['new', 'remove'];
+const json: ActionsUnionType[] = ['all', 'removeAll'];
+const email: ActionsUnionType[] = ['new', 'all', 'removeAll', 'remove'];
+
+//const speak: ActionsUnionType[] = ['new', 'remove', 'removeAll'];
+export const serciceCapabilities: Record<Type, ConfigType> = {
     telegram: { notifications: push },
     email: { notifications: email },
     json: { notifications: json },
@@ -59,11 +68,13 @@ export const serciceCapabilities: Record<notificationServiceType, notificationSe
     history: { notifications: history },
 };
 
-export const notificationServiceArray: notificationServiceType[] = [
-    'telegram',
-    'pushover',
-    'whatsapp',
-    'json',
-    'history',
-    'email',
-];
+export const Array: Type[] = ['telegram', 'pushover', 'whatsapp', 'json', 'history', 'email'];
+
+export type MessageType = {
+    text: string;
+    startts: number;
+    template: string;
+    action?: keyof ActionsType;
+    provider?: ProviderClassType;
+    message?: MessagesClass;
+};

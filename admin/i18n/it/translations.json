@@ -73,7 +73,7 @@
     "uwzEnabled": "Attiva UWZ",
     "uwzSelectDescription": "ID UWZ composto dal codice paese e dal codice postale (DE12345, AT54321)",
     "uwzSelectId": "Identificatore Warncell UWZ",
-    "zamgSelectId": "ZAMG Coordinate per la posizione. Divisore '#'",
+    "zamgSelectId": "ZAMG Coordinate per la posizione. Divisore '/'",
     "uwzTypeFilter": "Filtra i seguenti tipi di avviso dal risultato.",
     "warnTypeName.dwdService.22": "gelo",
     "warnTypeName.dwdService.24": "Leggermente scivoloso",
@@ -199,5 +199,13 @@
     "color.textGeneric.2": "giallo",
     "color.textGeneric.3": "arancia",
     "color.textGeneric.4": "rosso",
-    "color.textGeneric.5": "Viola"
+    "color.textGeneric.5": "Viola",
+    "message.status.new": "Nuovo avvertimento",
+    "message.status.hold": "Avvertimento valido",
+    "message.status.clear": "Tutto chiaro",
+    "notPushAtStart": "Gli avvisi in arrivo dopo l'avvio dell'adattatore sono considerati noti.",
+    "email_Header": "Intestazione per e-mail",
+    "email_Header_hint": "${emailheader} è l'unico token funzionante qui. (Nuovo avviso o Tutto chiaro)",
+    "email_Footer": "Piè di pagina per e-mail",
+    "dividerDirs": "Directory interne"
 }

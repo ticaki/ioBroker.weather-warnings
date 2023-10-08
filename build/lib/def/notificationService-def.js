@@ -18,13 +18,13 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var notificationService_def_exports = {};
 __export(notificationService_def_exports, {
-  notificationServiceArray: () => notificationServiceArray,
+  Array: () => Array,
   serciceCapabilities: () => serciceCapabilities
 });
 module.exports = __toCommonJS(notificationService_def_exports);
 const push = ["new", "remove", "removeAll"];
 const history = ["new", "remove"];
-const json = ["new", "all", "removeAll"];
+const json = ["all", "removeAll"];
 const email = ["new", "all", "removeAll", "remove"];
 const serciceCapabilities = {
   telegram: { notifications: push },
@@ -34,17 +34,10 @@ const serciceCapabilities = {
   pushover: { notifications: push },
   history: { notifications: history }
 };
-const notificationServiceArray = [
-  "telegram",
-  "pushover",
-  "whatsapp",
-  "json",
-  "history",
-  "email"
-];
+const Array = ["telegram", "pushover", "whatsapp", "json", "history", "email"];
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  notificationServiceArray,
+  Array,
   serciceCapabilities
 });
 //# sourceMappingURL=notificationService-def.js.map

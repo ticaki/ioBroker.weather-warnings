@@ -21,30 +21,23 @@ __export(notificationConfig_d_exports, {
   notificationServiceDefaults: () => notificationServiceDefaults
 });
 module.exports = __toCommonJS(notificationConfig_d_exports);
-var import_messages = require("../messages");
 const notificationServiceDefaults = {
   telegram: {
-    class: import_messages.NotificationClass,
     useadapter: true
   },
   pushover: {
-    class: import_messages.NotificationClass,
     useadapter: true
   },
   whatsapp: {
-    class: import_messages.NotificationClass,
     useadapter: true
   },
   json: {
-    class: import_messages.AllNotificationClass,
     useadapter: false
   },
   history: {
-    class: import_messages.AllNotificationClass,
     useadapter: false
   },
   email: {
-    class: import_messages.AllNotificationClass,
     useadapter: true
   }
 };

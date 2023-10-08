@@ -1,6 +1,15 @@
+import * as Provider from '../provider';
+export * from '../provider';
+
 /**Available provider identifier strings */
 export type providerServices = 'dwdService' | 'zamgService' | 'ninaService' | 'uwzService' | 'metroService';
 export const providerServicesArray = ['dwdService', 'zamgService', 'uwzService']; //, 'uwzService', 'metroService'];
+export type ProviderClassType =
+    | Provider.DWDProvider
+    | Provider.ZAMGProvider
+    | Provider.UWZProvider
+    | Provider.NINAProvider
+    | Provider.METROProvider;
 
 type nullType = null | undefined | void;
 export type messageFilterTypeWithFilter = { filter: messageFilterType };

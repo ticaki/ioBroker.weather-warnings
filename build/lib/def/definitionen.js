@@ -89,7 +89,7 @@ const genericStateObjects = {
   },
   warningDevice: {
     _id: "warning",
-    type: "device",
+    type: "channel",
     common: {
       name: "Warnings from Server"
     },
@@ -97,7 +97,7 @@ const genericStateObjects = {
   },
   formatedKeysDevice: {
     _id: "formatedKeys",
-    type: "device",
+    type: "channel",
     common: {
       name: "Variables that can be used in the admin settings to configure the messages."
     },
@@ -214,7 +214,7 @@ const statesObjectsWarnings = {
   dwdService: {
     _channel: {
       _id: "dwd",
-      type: "channel",
+      type: "device",
       common: {
         name: {
           en: "DWD Warnings",
@@ -731,7 +731,7 @@ const statesObjectsWarnings = {
   uwzService: {
     _channel: {
       _id: "uwz",
-      type: "channel",
+      type: "device",
       common: {
         name: {
           en: "UWZ Warnings",
@@ -1182,7 +1182,7 @@ const statesObjectsWarnings = {
   zamgService: {
     _channel: {
       _id: "zamg",
-      type: "channel",
+      type: "device",
       common: {
         name: {
           en: "ZAMG Warnings",
@@ -1459,6 +1459,18 @@ const statesObjectsWarnings = {
         type: "state",
         common: {
           name: "countdown",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      status: {
+        _id: "status",
+        type: "state",
+        common: {
+          name: "state of warning",
           type: "string",
           role: "text",
           read: true,

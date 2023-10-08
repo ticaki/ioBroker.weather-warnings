@@ -30,6 +30,7 @@ export type customFormatedTokens = {
     provider: string;
     locationcustom: string;
     countdown: string;
+    status: string;
 };
 
 export const customFormatedTokensJson: customFormatedTokens = {
@@ -57,6 +58,7 @@ export const customFormatedTokensJson: customFormatedTokens = {
     provider: 'Provider',
     locationcustom: 'Location from admin configuration',
     countdown: 'Remaining time until the start of the warning.',
+    status: 'Status of warning. new, hold, all clear',
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;
@@ -390,3 +392,9 @@ export const dwdLevel = { minor: 1, moderate: 2, severe: 3, extreme: 4 };
         89: 'vORABINFORMATION starkes Tauwetter',
         99: 'tEST-VORABINFORM ATIO N UNWETTER',
         */
+
+export const status = {
+    new: 'message.status.new',
+    hold: 'message.status.hold',
+    clear: 'message.status.clear',
+};

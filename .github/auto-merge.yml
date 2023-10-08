@@ -3,7 +3,7 @@
 - match:
     # Only merge patches for production dependencies
     dependency_type: production
-    update_type: "semver:patch"
+    update_type: "semver:minor"
 - match:
     # Except for security fixes, here we allow minor patches
     dependency_type: production

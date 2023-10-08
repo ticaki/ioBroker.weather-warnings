@@ -25,6 +25,7 @@ __export(messages_def_exports, {
   genericWarntypState: () => genericWarntypState,
   isKeyOfObject: () => isKeyOfObject,
   level: () => level,
+  status: () => status,
   textLevels: () => textLevels,
   warnTypeName: () => warnTypeName
 });
@@ -53,7 +54,8 @@ const customFormatedTokensJson = {
   instruction: "Instructions",
   provider: "Provider",
   locationcustom: "Location from admin configuration",
-  countdown: "Remaining time until the start of the warning."
+  countdown: "Remaining time until the start of the warning.",
+  status: "Status of warning. new, hold, all clear"
 };
 const textLevels = {
   textGeneric: {
@@ -304,6 +306,11 @@ const level = {
   uwz: { green: 0, darkgreen: 0, yellow: 1, orange: 2, red: 3, violet: 4 }
 };
 const dwdLevel = { minor: 1, moderate: 2, severe: 3, extreme: 4 };
+const status = {
+  new: "message.status.new",
+  hold: "message.status.hold",
+  clear: "message.status.clear"
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   color,
@@ -313,6 +320,7 @@ const dwdLevel = { minor: 1, moderate: 2, severe: 3, extreme: 4 };
   genericWarntypState,
   isKeyOfObject,
   level,
+  status,
   textLevels,
   warnTypeName
 });

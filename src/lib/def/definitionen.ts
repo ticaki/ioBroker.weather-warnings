@@ -52,8 +52,8 @@ export const genericStateObjects: {
         testMode: ioBroker.StateObject;
     };
     state: ioBroker.StateObject;
-    warningDevice: ioBroker.DeviceObject;
-    formatedKeysDevice: ioBroker.DeviceObject;
+    warningDevice: ioBroker.ChannelObject;
+    formatedKeysDevice: ioBroker.ChannelObject;
     messageStates: customChannelType & {
         message: ioBroker.StateObject;
         messageJson: ioBroker.StateObject;
@@ -117,7 +117,7 @@ export const genericStateObjects: {
     },
     warningDevice: {
         _id: 'warning',
-        type: 'device',
+        type: 'channel',
         common: {
             name: 'Warnings from Server',
         },
@@ -125,7 +125,7 @@ export const genericStateObjects: {
     },
     formatedKeysDevice: {
         _id: 'formatedKeys',
-        type: 'device',
+        type: 'channel',
         common: {
             name: 'Variables that can be used in the admin settings to configure the messages.',
         },
@@ -242,7 +242,7 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
     dwdService: {
         _channel: {
             _id: 'dwd',
-            type: 'channel',
+            type: 'device',
             common: {
                 name: {
                     en: 'DWD Warnings',
@@ -791,7 +791,7 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
     uwzService: {
         _channel: {
             _id: 'uwz',
-            type: 'channel',
+            type: 'device',
             common: {
                 name: {
                     en: 'UWZ Warnings',
@@ -1242,7 +1242,7 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
     zamgService: {
         _channel: {
             _id: 'zamg',
-            type: 'channel',
+            type: 'device',
             common: {
                 name: {
                     en: 'ZAMG Warnings',
@@ -1524,6 +1524,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'countdown',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
+            status: {
+                _id: 'status',
+                type: 'state',
+                common: {
+                    name: 'state of warning',
                     type: 'string',
                     role: 'text',
                     read: true,

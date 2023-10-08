@@ -25,7 +25,7 @@ var import_provider = require("./lib/provider.js");
 var import_library = require("./lib/library.js");
 var import_messages_def = require("./lib/def/messages-def");
 var import_provider_def = require("./lib/def/provider-def");
-var import_notificationService_def = require("./lib/def/notificationService-def");
+var NotificationType = __toESM(require("./lib/def/notificationService-def"));
 var import_notificationConfig_d = require("./lib/def/notificationConfig-d");
 import_axios.default.defaults.timeout = 8e3;
 class WeatherWarnings extends utils.Adapter {
@@ -112,10 +112,8 @@ class WeatherWarnings extends utils.Adapter {
         self.providerController.init();
         self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 6e4} minutes`);
         const notificationServiceOpt = {};
-        for (const a in import_notificationService_def.notificationServiceArray) {
-          const notificationService = import_notificationService_def.notificationServiceArray[a];
-          if (notificationService === void 0)
-            continue;
+        for (const a in NotificationType.Array) {
+          const notificationService = NotificationType.Array[a];
           if (self.config[notificationService + "_Enabled"]) {
             const service = [];
             if (self.config[notificationService + "_DwdEnabled"])
@@ -143,7 +141,7 @@ class WeatherWarnings extends utils.Adapter {
               },
               adapter: self.config[notificationService + "_Adapter"],
               name: notificationService,
-              template,
+              actions: template,
               useadapter: true
             };
             Object.assign(
@@ -162,7 +160,9 @@ class WeatherWarnings extends utils.Adapter {
         }
         if (self.config.history_Enabled) {
         }
-        if (self.config.email_Enabled) {
+        if (self.config.email_Enabled && notificationServiceOpt.email != void 0) {
+          notificationServiceOpt.email.actions.header = self.config.email_Header;
+          notificationServiceOpt.email.actions.footer = self.config.email_Footer;
         }
         self.providerController.createNotificationService(notificationServiceOpt);
         for (const a in self.config.dwdwarncellTable) {
@@ -227,8 +227,8 @@ class WeatherWarnings extends utils.Adapter {
           }
         }
         const holdStates = [];
-        for (const a in self.providerController.provider) {
-          holdStates.push(self.providerController.provider[a].name);
+        for (const a in self.providerController.providers) {
+          holdStates.push(self.providerController.providers[a].name);
         }
         await self.library.cleanUpTree(holdStates, 3);
         self.providerController.updateEndless(self.providerController);
@@ -374,7 +374,7 @@ class WeatherWarnings extends utils.Adapter {
                   });
                 }
               }
-            } else if (obj.message && obj.message.service && import_notificationService_def.notificationServiceArray.indexOf(obj.message.service) != -1) {
+            } else if (obj.message && obj.message.service && NotificationType.Array.indexOf(obj.message.service) != -1) {
               for (const b in import_messages_def.genericWarntyp) {
                 const a = Number(b);
                 reply.push({

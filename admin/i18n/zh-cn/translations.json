@@ -73,7 +73,7 @@
     "uwzEnabled": "激活UWZ",
     "uwzSelectDescription": "UWZ ID 由国家/地区代码和邮政编码组成（DE12345、AT54321）",
     "uwzSelectId": "UWZ 警告单元标识符",
-    "zamgSelectId": "ZAMG 坐标到位置。分隔符“#”",
+    "zamgSelectId": "ZAMG 坐标到位置。分隔符“/”",
     "uwzTypeFilter": "从结果中过滤以下警告类型。",
     "warnTypeName.dwdService.22": "霜",
     "warnTypeName.dwdService.24": "有点滑",
@@ -199,5 +199,13 @@
     "color.textGeneric.2": "黄色的",
     "color.textGeneric.3": "橙子",
     "color.textGeneric.4": "红色的",
-    "color.textGeneric.5": "紫色"
+    "color.textGeneric.5": "紫色",
+    "message.status.new": "新警告",
+    "message.status.hold": "有效警告",
+    "message.status.clear": "全清",
+    "notPushAtStart": "适配器启动后传入的警告被视为已知。",
+    "email_Header": "电子邮件标题",
+    "email_Header_hint": "${emailheader} 是这里唯一的工作令牌。 （新警告或全部清除）",
+    "email_Footer": "电子邮件页脚",
+    "dividerDirs": "内部目录"
 }

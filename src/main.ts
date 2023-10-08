@@ -19,11 +19,7 @@ import {
     textLevels,
 } from './lib/def/messages-def';
 import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
-import {
-    notificationServiceArray,
-    notificationServiceOptionsType,
-    notificationTemplateType,
-} from './lib/def/notificationService-def';
+import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationConfig-d';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
@@ -124,10 +120,9 @@ class WeatherWarnings extends utils.Adapter {
                 self.providerController.init();
                 self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 60000} minutes`);
 
-                const notificationServiceOpt: notificationServiceOptionsType = {};
-                for (const a in notificationServiceArray) {
-                    const notificationService = notificationServiceArray[a] as keyof notificationServiceOptionsType;
-                    if (notificationService === undefined) continue;
+                const notificationServiceOpt: NotificationType.OptionsType = {};
+                for (const a in NotificationType.Array) {
+                    const notificationService = NotificationType.Array[a] as NotificationType.Type;
                     if (self.config[(notificationService + '_Enabled') as keyof ioBroker.AdapterConfig]) {
                         const service: providerServices[] = [];
                         if (self.config[(notificationService + '_DwdEnabled') as keyof ioBroker.AdapterConfig])
@@ -136,7 +131,7 @@ class WeatherWarnings extends utils.Adapter {
                             service.push('uwzService');
                         if (self.config[(notificationService + '_UwzEnabled') as keyof ioBroker.AdapterConfig])
                             service.push('zamgService');
-                        const template: notificationTemplateType = {
+                        const template: NotificationType.ActionsType = {
                             new: self.config[
                                 (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
                             ] as string,
@@ -152,7 +147,7 @@ class WeatherWarnings extends utils.Adapter {
                         template.remove = template.remove ? template.remove : 'none';
                         template.removeAll = template.removeAll ? template.removeAll : 'none';
                         template.all = template.all ? template.all : 'none';
-                        //@ts-expect-error verstehe ich nicht
+                        // @ts-expect-error keine ahnung :)
                         notificationServiceOpt[notificationService] = {
                             ...notificationServiceDefaults[notificationService],
                             service: service,
@@ -170,7 +165,7 @@ class WeatherWarnings extends utils.Adapter {
                                 (notificationService + '_Adapter') as keyof ioBroker.AdapterConfig
                             ] as string,
                             name: notificationService,
-                            template: template,
+                            actions: template,
                             useadapter: true,
                         };
                         Object.assign(
@@ -191,7 +186,9 @@ class WeatherWarnings extends utils.Adapter {
                 }
                 if (self.config.history_Enabled) {
                 }
-                if (self.config.email_Enabled) {
+                if (self.config.email_Enabled && notificationServiceOpt.email != undefined) {
+                    notificationServiceOpt.email.actions.header = self.config.email_Header;
+                    notificationServiceOpt.email.actions.footer = self.config.email_Footer;
                 }
 
                 self.providerController.createNotificationService(notificationServiceOpt);
@@ -266,8 +263,8 @@ class WeatherWarnings extends utils.Adapter {
 
                 //clear tree
                 const holdStates = [];
-                for (const a in self.providerController.provider) {
-                    holdStates.push(self.providerController.provider[a].name);
+                for (const a in self.providerController.providers) {
+                    holdStates.push(self.providerController.providers[a].name);
                 }
                 await self.library.cleanUpTree(holdStates, 3);
 
@@ -450,7 +447,7 @@ class WeatherWarnings extends utils.Adapter {
                         } else if (
                             obj.message &&
                             obj.message.service &&
-                            notificationServiceArray.indexOf(obj.message.service) != -1
+                            NotificationType.Array.indexOf(obj.message.service) != -1
                         ) {
                             for (const b in genericWarntyp) {
                                 const a = Number(b) as keyof genericWarntypeType;

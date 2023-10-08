@@ -30,14 +30,6 @@
                     "label": "json_Enabled",
                     "newLine": false
                 },
-                "history_Enabled": {
-                    "type": "checkbox",
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2,
-                    "label": "history_Enabled",
-                    "newLine": false
-                },
                 "uwzEnabled": {
                     "type": "checkbox",
                     "sm": 6,
@@ -52,6 +44,14 @@
                     "md": 4,
                     "lg": 2,
                     "label": "whatsapp_Enabled",
+                    "newLine": false
+                },
+                "history_Enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "history_Enabled",
                     "newLine": false
                 },
                 "zamgEnabled": {
@@ -88,6 +88,20 @@
                     "lg": 2,
                     "newLine": true
                 },
+                "notPushAtStart": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "notPushAtStart",
+                    "newLine": true
+                },
+                "dividerDirs": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "dividerDirs",
+                    "size": 2
+                },
                 "allowedDirs": {
                     "type": "accordion",
                     "newLine": true,
@@ -106,22 +120,13 @@
                             "md": 2,
                             "lg": 2
                         },
-                        {
-                            
+                        { 
                             "attr": "dpWarning",
                             "type": "checkbox",
                             "sm": 12,
                             "md": 2,
                             "lg": 2,
                             "text": ".warning"
-                        },
-                        {
-                            "attr": "dpMessage",
-                            "type": "checkbox",
-                            "sm": 12,
-                            "md": 2,
-                            "lg": 2,
-                            "text": ".messages"
                         },
                         {
                             "attr": "dpFormated",
@@ -451,41 +456,8 @@
                     "lg": 4,
                     "label": "LevelFilter",
                     "newLine": true
-                },
-                
-            /*"uwzdpWarning": {
-                    "type": "checkbox",
-                    
-                    "sm": 12,
-                    "md": 5,
-                    "lg": 3,
-                    "label": "dpWarning"
-                    
-                },
-                "uwzdpMessage": {
-                    "type": "checkbox",
-                    
-                    "sm": 12,
-                    "md": 5,
-                    "lg": 3,
-                    "label": "dpMessage"
-                    
-                },
-                "uwzdpFormated": {
-                    "type": "checkbox",
-                    
-                    "sm": 12,
-                    "md": 5,
-                    "lg": 3,
-                    "label": "dpFormated"
-                },
-                "uwzdpAlerts": {
-                    "type": "checkbox",
-                    "sm": 12,
-                    "md": 5,
-                    "lg": 3,
-                    "label": "dpAlerts" 
-                }*/
+                }
+              
         }
     },
     "_zamgpanel": {
@@ -507,7 +479,7 @@
                     {
                         "attr": "zamgSelectId",
                         "type": "coordinates",
-                        "divider": "#",
+                        "divider": "/",
                         "useSystemName": false,
                         "newLine": true,
                         "label": "COORDINATES",
@@ -1138,7 +1110,7 @@
                 "sm": 12,
                 "md": 5,
                 "lg": 3,
-                "disabled": "$data.history_allinOne",
+                "disabled": "data.history_allinOne",
                 "label": "MessageAll",
                 "newLine": true
             },
@@ -1151,7 +1123,7 @@
                 "sm": 12,
                 "md": 5,
                 "lg": 3,
-                "disabled": "$data.history_allinOne",
+                "disabled": "data.history_allinOne",
                 "label": "MessageRemove",
                 "newLine": true
             }
@@ -1257,6 +1229,31 @@
                 "md": 5,
                 "lg": 4,
                 "label": "MessageRemove",
+                "newLine": true
+            },          
+            "email_Header": {
+                "type": "selectSendTo",
+                "command": "Messages",
+                "jsonData": "{ \"service\": \"email\" }",
+                "manual": false,
+                "multiple": false,
+                "tooltip": "email_Header_hint",
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "email_Header",
+                "newLine": true
+            },
+            "email_Footer": {
+                "type": "selectSendTo",
+                "command": "Messages",
+                "jsonData": "{ \"service\": \"email\" }",
+                "manual": false,
+                "multiple": false,
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "email_Footer",
                 "newLine": true
             }
         }

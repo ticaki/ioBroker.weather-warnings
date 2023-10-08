@@ -228,7 +228,7 @@ class Library extends BaseClass {
   cleandp(string, lowerCase = false) {
     if (!string && typeof string != "string")
       return string;
-    string = string.replace(this.adapter.FORBIDDEN_CHARS, "#");
+    string = string.replace(this.adapter.FORBIDDEN_CHARS, "_");
     return lowerCase ? string.toLowerCase() : string;
   }
   convertToType(value, type) {

@@ -1,7 +1,9 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -15,17 +17,18 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var messages_exports = {};
 __export(messages_exports, {
-  AllNotificationClass: () => AllNotificationClass,
-  MessagesClass: () => MessagesClass,
-  NotificationClass: () => NotificationClass
+  MessagesClass: () => MessagesClass
 });
 module.exports = __toCommonJS(messages_exports);
 var import_definitionen = require("./def/definitionen");
-var import_messages_def = require("./def/messages-def");
-var import_notificationService_def = require("./def/notificationService-def");
+var MessageType = __toESM(require("./def/messages-def"));
 var import_library = require("./library");
 class MessagesClass extends import_library.BaseClass {
   provider;
@@ -45,6 +48,10 @@ class MessagesClass extends import_library.BaseClass {
   altitude = 0;
   level = 0;
   type = 0;
+  cache = {
+    messages: {},
+    ts: 0
+  };
   genericType = 1;
   formatedKeyCommand = {
     dwdService: {
@@ -74,27 +81,29 @@ class MessagesClass extends import_library.BaseClass {
       ceiling: { node: `$floor(CEILING * 0.3048)` },
       altitude: { node: `$floor(ALTITUDE * 0.3048)` },
       warnlevelcolorhex: {
-        node: `($temp := $lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
-          import_messages_def.color.generic
-        )},$string($temp)))`
+        node: `($temp := $lookup(${JSON.stringify(
+          MessageType.dwdLevel
+        )},$lowercase(SEVERITY));$lookup(${JSON.stringify(MessageType.color.generic)},$string($temp)))`
       },
       warnlevelcolorname: {
-        node: `($temp := $lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
-          import_messages_def.color.textGeneric
-        )},$string($temp)))`,
+        node: `($temp := $lookup(${JSON.stringify(
+          MessageType.dwdLevel
+        )},$lowercase(SEVERITY));$lookup(${JSON.stringify(MessageType.color.textGeneric)},$string($temp)))`,
         cmd: "translate"
       },
       warnlevelname: {
-        node: `($temp := $lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY));$lookup(${JSON.stringify(
-          import_messages_def.textLevels.textGeneric
+        node: `($temp := $lookup(${JSON.stringify(
+          MessageType.dwdLevel
+        )},$lowercase(SEVERITY));$lookup(${JSON.stringify(
+          MessageType.textLevels.textGeneric
         )},$string($temp)))`,
         cmd: "translate"
       },
       warnlevelnumber: {
-        node: `$lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY))`
+        node: `$lookup(${JSON.stringify(MessageType.dwdLevel)},$lowercase(SEVERITY))`
       },
       warntypename: {
-        node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.dwdService)}, $string(EC_II))`,
+        node: `$lookup(${JSON.stringify(MessageType.warnTypeName.dwdService)}, $string(EC_II))`,
         cmd: "translate"
       },
       location: { node: `AREADESC` },
@@ -125,6 +134,10 @@ class MessagesClass extends import_library.BaseClass {
       countdown: {
         cmd: "countdown",
         node: "$toMillis(ONSET)"
+      },
+      status: {
+        cmd: void 0,
+        node: ""
       }
     },
     uwzService: {
@@ -155,30 +168,30 @@ class MessagesClass extends import_library.BaseClass {
       altitude: { node: `payload.altMin` },
       warnlevelcolorname: {
         node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-          import_messages_def.level.uwz
-        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def.color.textGeneric)},$string($l)))`,
+          MessageType.level.uwz
+        )}, $i[2]); $lookup(${JSON.stringify(MessageType.color.textGeneric)},$string($l)))`,
         cmd: "translate"
       },
       warnlevelnumber: {
         node: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-          import_messages_def.level.uwz
+          MessageType.level.uwz
         )}, $i[2]))`
       },
       warnlevelcolorhex: {
         node: `$lookup(${JSON.stringify(
-          import_messages_def.color.generic
+          MessageType.color.generic
         )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-          import_messages_def.level.uwz
+          MessageType.level.uwz
         )}, $i[2]))))`
       },
       warnlevelname: {
         node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-          import_messages_def.level.uwz
-        )}, $i[2]); $lookup(${JSON.stringify(import_messages_def.textLevels.textGeneric)},$string($l)))`,
+          MessageType.level.uwz
+        )}, $i[2]); $lookup(${JSON.stringify(MessageType.textLevels.textGeneric)},$string($l)))`,
         cmd: "translate"
       },
       warntypename: {
-        node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.uwzService)}, $string(type))`,
+        node: `$lookup(${JSON.stringify(MessageType.warnTypeName.uwzService)}, $string(type))`,
         cmd: "translate"
       },
       location: { node: `areaID` },
@@ -209,6 +222,10 @@ class MessagesClass extends import_library.BaseClass {
       countdown: {
         cmd: "countdown",
         node: "dtgStart * 1000"
+      },
+      status: {
+        cmd: void 0,
+        node: ""
       }
     },
     zamgService: {
@@ -238,21 +255,21 @@ class MessagesClass extends import_library.BaseClass {
       ceiling: { node: `` },
       altitude: { node: `` },
       warnlevelcolorname: {
-        node: `$lookup(${JSON.stringify(import_messages_def.color.textGeneric)},$string(rawinfo.wlevel + 1))`,
+        node: `$lookup(${JSON.stringify(MessageType.color.textGeneric)},$string(rawinfo.wlevel + 1))`,
         cmd: "translate"
       },
       warnlevelnumber: {
         node: `$string(rawinfo.wlevel + 1)`
       },
       warnlevelcolorhex: {
-        node: `$lookup(${JSON.stringify(import_messages_def.color.zamgColor)},$string(rawinfo.wlevel + 1))`
+        node: `$lookup(${JSON.stringify(MessageType.color.zamgColor)},$string(rawinfo.wlevel + 1))`
       },
       warnlevelname: {
-        node: `$lookup(${JSON.stringify(import_messages_def.textLevels.textGeneric)},$string(rawinfo.wlevel + 1))`,
+        node: `$lookup(${JSON.stringify(MessageType.textLevels.textGeneric)},$string(rawinfo.wlevel + 1))`,
         cmd: "translate"
       },
       warntypename: {
-        node: `$lookup(${JSON.stringify(import_messages_def.warnTypeName.zamgService)},$string(rawinfo.wtype))`,
+        node: `$lookup(${JSON.stringify(MessageType.warnTypeName.zamgService)},$string(rawinfo.wtype))`,
         cmd: "translate"
       },
       location: { node: `location` },
@@ -280,6 +297,10 @@ class MessagesClass extends import_library.BaseClass {
       countdown: {
         cmd: "countdown",
         node: "$number(rawinfo.start)*1000"
+      },
+      status: {
+        cmd: void 0,
+        node: ""
       }
     },
     default: {
@@ -322,6 +343,10 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       countdown: {
+        cmd: void 0,
+        node: ""
+      },
+      status: {
         cmd: void 0,
         node: ""
       }
@@ -387,7 +412,7 @@ class MessagesClass extends import_library.BaseClass {
           this.level = Number(
             await this.library.readWithJsonata(
               this.rawWarning,
-              `$number($lookup(${JSON.stringify(import_messages_def.dwdLevel)},$lowercase(SEVERITY)))`
+              `$number($lookup(${JSON.stringify(MessageType.dwdLevel)},$lowercase(SEVERITY)))`
             )
           );
           this.type = Number(await this.library.readWithJsonata(this.rawWarning, `$number(EC_II)`));
@@ -407,7 +432,7 @@ class MessagesClass extends import_library.BaseClass {
             await this.library.readWithJsonata(
               this.rawWarning,
               `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
-                import_messages_def.level.uwz
+                MessageType.level.uwz
               )}, $i[2]))`
             )
           );
@@ -435,10 +460,23 @@ class MessagesClass extends import_library.BaseClass {
         this.type = 0;
       }
     }
-    const sortedWarntypes = [10, 7, 2, 4, 3, 8, 9, 5, 6, 11, 12, 1];
+    const sortedWarntypes = [
+      10,
+      7,
+      2,
+      4,
+      3,
+      8,
+      9,
+      5,
+      6,
+      11,
+      12,
+      1
+    ];
     if (this.provider) {
       for (const t in sortedWarntypes) {
-        const o = import_messages_def.genericWarntyp[sortedWarntypes[t]];
+        const o = MessageType.genericWarntyp[sortedWarntypes[t]];
         const s = this.provider.service;
         if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
           this.genericType = sortedWarntypes[t];
@@ -454,7 +492,7 @@ class MessagesClass extends import_library.BaseClass {
     if (filter.level && filter.level > this.level)
       return false;
     for (const f in filter.type) {
-      if (import_messages_def.genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1) {
+      if (MessageType.genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1) {
         hit = true;
         break;
       }
@@ -520,13 +558,82 @@ class MessagesClass extends import_library.BaseClass {
     }
     this.messages = messages;
   }
+  async getMessage(templateActions, templateKey, action, override = false) {
+    let msg = "";
+    const templates = this.adapter.config.templateTable;
+    const tempid = templates.findIndex((a) => a.templateKey == templateKey);
+    if (override)
+      action = "new";
+    if (override || action == "new" && this.newMessage || action == "remove" && !this.notDeleted || action == "all" && templateActions.includes("all") && !templateActions.includes("new") && !templateActions.includes("remove")) {
+      if (this.cache.ts < Date.now() - 6e4) {
+        this.updateFormatedData();
+      }
+      if (this.cache.messages[templateKey] !== void 0)
+        return this.cache.messages[templateKey];
+      if (this.formatedData) {
+        while (true) {
+          if (tempid == -1)
+            break;
+          let rerun = false;
+          const template = msg === "" ? templates[tempid].template : msg;
+          if (!template)
+            break;
+          const temp = template.split(/(?<!\\)\${/g);
+          msg = temp[0];
+          for (let b = 1; temp.length > b; b++) {
+            const t = temp[b].split(/(?<!\\)}/g);
+            const key = t[0];
+            const configTemplate = this.adapter.config.templateTable.filter((a) => a.templateKey == key);
+            if (key[0] == "[") {
+              const arraykey = key.split("]");
+              arraykey[0] = arraykey[0].slice(1);
+              if (arraykey[1] && this.formatedData[arraykey[1]] !== void 0) {
+                const n = this.formatedData[arraykey[1]];
+                if (n != "" && !Number.isNaN(n)) {
+                  msg += arraykey[0].split(",")[this.formatedData[arraykey[1]]].trim();
+                }
+              } else {
+                this.log.error(
+                  `Unknown or not a number key ${arraykey[1]}  in template ${templates[tempid].templateKey}!`
+                );
+              }
+            } else if (configTemplate.length == 1) {
+              msg += configTemplate[0].template;
+              rerun = true;
+            } else if (key && this.formatedData[key] !== void 0)
+              msg += this.formatedData[key];
+            else if (key && this.formatedData[key.toLowerCase()] !== void 0) {
+              let m = this.formatedData[key.toLowerCase()];
+              if (typeof m == "string" && m.length > 0) {
+                m = m[0].toUpperCase() + (key[key.length - 1] == key[key.length - 1].toUpperCase() ? m.slice(1).toUpperCase() : m.slice(1));
+              }
+              msg += m;
+            } else
+              msg += key;
+            if (t.length > 1)
+              msg += t[1];
+          }
+          if (!rerun)
+            break;
+        }
+        msg = msg.replace("\\", "");
+        this.cache.messages[templates[tempid].templateKey] = this.returnMessage(msg, this.starttime, templateKey);
+        return this.returnMessage(msg, this.starttime, templateKey);
+      }
+    }
+    return this.returnMessage(msg, this.starttime, templateKey);
+  }
+  returnMessage = (msg, time, template) => {
+    return { startts: time, text: msg, template };
+  };
   async updateFormatedData(update = false) {
     if (!this.rawWarning && !this.formatedData) {
       throw new Error(`${this.log.getName()} error(165) rawWarning and formatedDate empty!`);
     }
     if (!this.formatedData || this.updated || update) {
       const timeOffset = (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0 ? "+" : "-") + ("00" + Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))).slice(-2) + ("00" + Math.abs(new Date().getTimezoneOffset() % 60)).slice(-2);
-      const temp = {};
+      const status = this.newMessage ? MessageType.status.new : this.notDeleted ? MessageType.status.hold : MessageType.status.clear;
+      const temp = { status: this.library.getTranslation(status) };
       for (const key in this.formatedKeysJsonataDefinition) {
         const obj = this.formatedKeysJsonataDefinition[key];
         if (obj !== void 0 && obj.node !== void 0) {
@@ -536,7 +643,10 @@ class MessagesClass extends import_library.BaseClass {
             cmd
           ) : "";
           if (obj.cmd !== void 0)
-            result = await this.readWithTypescript(result, obj.cmd);
+            result = await this.readWithTypescript(
+              result,
+              obj.cmd
+            );
           if (typeof result == "object") {
             for (const a in result) {
               if (temp[key])
@@ -551,7 +661,7 @@ class MessagesClass extends import_library.BaseClass {
       }
       this.formatedData = temp;
       this.formatedData.warntypegenericname = await this.library.getTranslation(
-        import_messages_def.genericWarntyp[this.genericType].name
+        MessageType.genericWarntyp[this.genericType].name
       );
       this.formatedData.locationcustom = this.provider ? this.provider.customName : "";
       this.formatedData.provider = this.provider ? this.provider.service.replace("Service", "").toUpperCase() : "unknown";
@@ -560,6 +670,8 @@ class MessagesClass extends import_library.BaseClass {
     if (!this.formatedData) {
       throw new Error(`${this.log.getName()} formatedDate is empty!`);
     }
+    this.cache.ts = Date.now();
+    this.cache.messages = {};
     return this.formatedData;
   }
   async readWithTypescript(data, cmd) {
@@ -594,34 +706,6 @@ class MessagesClass extends import_library.BaseClass {
     this.newMessage = false;
     this.notDeleted = true;
   }
-  async sendMessage(action, activeWarnings, override = false) {
-    if (this.messages.length == 0)
-      return false;
-    if (!(this.newMessage && action == "new" || !this.notDeleted && action == "remove" || action == "removeAll")) {
-      if (!override)
-        action = "all";
-    }
-    if (this.formatedData)
-      this.formatedData.countdown = this.getCountdown(this.starttime);
-    const msgsend = {};
-    for (let a = 0; a < this.messages.length; a++) {
-      const msg = this.messages[a];
-      if (this.provider)
-        this.library.writedp(
-          `${this.provider.name}.messages.${msg.key}`,
-          msg.message,
-          import_definitionen.genericStateObjects.messageStates.message
-        );
-      msgsend[msg.key] = msg.message;
-    }
-    await this.providerController.sendToNotifications(
-      { msgs: msgsend, obj: this },
-      override ? "new" : action,
-      activeWarnings
-    );
-    this.newMessage = false;
-    return false;
-  }
   getCountdown(time) {
     const diff = time - Date.now();
     const remain = new Date(Math.abs(diff));
@@ -653,219 +737,8 @@ class MessagesClass extends import_library.BaseClass {
     this.formatedKeysJsonataDefinition[key] = arg;
   }
 }
-class NotificationClass extends import_library.BaseClass {
-  options;
-  takeThemAll = false;
-  config;
-  clearAll() {
-  }
-  async writeNotifications() {
-  }
-  constructor(adapter, notifcationOptions) {
-    super(adapter, notifcationOptions.name);
-    this.options = notifcationOptions;
-    this.config = import_notificationService_def.serciceCapabilities[notifcationOptions.name];
-  }
-  async sendNotifications(messages, action, activeWarnings) {
-    if (this.config.notifications.indexOf(action) == -1)
-      return false;
-    if (!messages.obj || !messages.obj.provider || this.options.service.indexOf(messages.obj.provider.service) != -1 && (this.options.filter.level === void 0 || this.options.filter.level <= messages.obj.level) && this.options.filter.type.indexOf(String(messages.obj.type)) == -1) {
-      if (this.options.template[action] == "none" || this.options.template[action] == "")
-        return false;
-      const msg = messages.msgs[this.options.template[action]];
-      if (msg == "")
-        return false;
-      switch (this.name) {
-        case "telegram":
-          {
-            const opt = { text: msg, disable_notification: true };
-            if (action !== "remove" || activeWarnings)
-              this.adapter.sendTo(this.options.adapter, "send", opt, () => {
-                this.log.debug(`Send the message: ${msg}`);
-              });
-          }
-          break;
-        case "pushover":
-          {
-            const opt = { message: msg };
-            if (action !== "remove" || activeWarnings)
-              this.adapter.sendTo(this.options.adapter, "send", opt, () => {
-                this.log.debug(`Send the message: ${msg}`);
-              });
-          }
-          break;
-        case "whatsapp":
-          {
-            const service = this.options.adapter.replace("whatsapp", "whatsapp-cmb");
-            const opt = { text: msg };
-            if (action !== "remove" || activeWarnings)
-              this.adapter.sendTo(service, "send", opt, () => {
-                this.log.debug(`Send the message: ${msg}`);
-              });
-          }
-          break;
-        case "history":
-          {
-            if (!messages.obj || !messages.obj.provider || !this.adapter.config.history_Enabled)
-              return false;
-            let newMsg = msg;
-            if (this.adapter.config.history_allinOne) {
-              newMsg = JSON.stringify(messages.obj.formatedData);
-            }
-            const targets = [messages.obj.provider.name, messages.obj.provider.providerController.name];
-            for (const a in targets) {
-              try {
-                const dp = `${targets[a]}.history`;
-                const state = this.adapter.library.getdb(dp);
-                let json = [];
-                if (state && state.val && typeof state.val == "string" && state.val != "")
-                  json = JSON.parse(state.val);
-                json.unshift(JSON.parse(newMsg));
-                json.splice(500);
-                await this.adapter.library.writedp(
-                  dp,
-                  JSON.stringify(json),
-                  import_definitionen.genericStateObjects.history
-                );
-              } catch (error) {
-                this.log.error(
-                  `${this.name} template has wrong formate. ${this.name} deactivated! template: ${this.options.template[action]}, message: ${msg}`
-                );
-                this.adapter.config.history_Enabled = false;
-                return false;
-              }
-            }
-          }
-          break;
-        case "json":
-          {
-          }
-          break;
-        case "email":
-          {
-          }
-          break;
-      }
-      return true;
-    }
-    return false;
-  }
-}
-class AllNotificationClass extends NotificationClass {
-  providerDB;
-  constructor(adapter, options) {
-    super(adapter, options);
-    this.providerDB = {};
-    this.takeThemAll = true;
-    this.adapter.providerController && this.adapter.providerController.provider.forEach((a) => this.providerDB[a.name] = []);
-  }
-  clearAll() {
-    for (const l in this.providerDB) {
-      this.providerDB[l] = [];
-    }
-  }
-  async sendNotifications(messages, action, activeWarnings) {
-    if (await super.sendNotifications(messages, action, activeWarnings)) {
-      const msg = messages.msgs[this.options.template[action]];
-      switch (this.name) {
-        case "json":
-        case "email":
-          {
-            try {
-              if (action == "remove" && !activeWarnings)
-                return false;
-              const json = this.name == "json" && this.adapter.config.json_parse ? JSON.parse(msg) : msg;
-              if (messages.obj && messages.obj.provider) {
-                if (this.providerDB[messages.obj.provider.name] === void 0 || !Array.isArray(this.providerDB[messages.obj.provider.name])) {
-                  this.providerDB[messages.obj.provider.name] = [];
-                }
-                this.log.debug(
-                  `sendNotifications(1): from: ${messages.obj.provider.name}, message:${msg}`
-                );
-                this.providerDB[messages.obj.provider.name].push({
-                  starttime: messages.obj.starttime,
-                  msg: json
-                });
-              } else {
-                if (action == "removeAll") {
-                  for (const p in this.providerDB) {
-                    this.providerDB[p] = [
-                      {
-                        starttime: Date.now(),
-                        msg: json
-                      }
-                    ];
-                  }
-                }
-                this.log.debug("sendNotifications(2): removeAll: " + msg);
-              }
-            } catch (error) {
-              this.log.error(
-                `Json template has wrong formate. Conversion deactivated! template: ${this.options.template[action]}, message: ${msg}`
-              );
-              this.adapter.config.json_parse = false;
-              return false;
-            }
-          }
-          break;
-      }
-      return true;
-    }
-    return false;
-  }
-  async writeNotifications(msg = "") {
-    switch (this.name) {
-      case "json":
-        {
-          let all = [];
-          for (const name in this.providerDB) {
-            all = all.concat(this.providerDB[name]);
-            const prefix = name + ".activeWarnings_json";
-            this.adapter.library.writedp(
-              prefix,
-              JSON.stringify(
-                this.providerDB[name].length > 0 ? this.providerDB[name].map((a) => a.msg) : [msg]
-              ),
-              import_definitionen.genericStateObjects.activeWarningsJson
-            );
-          }
-          all = all.filter((item, pos) => {
-            return all.indexOf(item) == pos;
-          });
-          all.sort((a, b) => a.starttime - b.starttime);
-          if (this.adapter.providerController) {
-            this.adapter.library.writedp(
-              this.adapter.providerController.name + ".activeWarnings_json",
-              JSON.stringify(all.length > 0 ? all.map((a) => a.msg) : [msg]),
-              import_definitionen.genericStateObjects.activeWarningsJson
-            );
-          }
-        }
-        break;
-      case "email":
-        {
-          let all = [];
-          for (const name in this.providerDB) {
-            all = all.concat(this.providerDB[name]);
-          }
-          all.sort((a, b) => a.starttime - b.starttime);
-          let flat = all.map((a) => a.msg);
-          flat = flat.filter((a, pos) => {
-            return flat.indexOf(a) == pos;
-          });
-          const message = flat.join(this.adapter.config.email_line_break);
-          this.adapter.sendTo(this.options.adapter, "send", message, () => {
-            this.log.debug(`Send the message: ${msg}`);
-          });
-        }
-        break;
-    }
-  }
-}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  AllNotificationClass,
-  MessagesClass,
-  NotificationClass
+  MessagesClass
 });
 //# sourceMappingURL=messages.js.map

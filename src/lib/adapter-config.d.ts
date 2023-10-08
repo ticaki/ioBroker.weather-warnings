@@ -14,7 +14,7 @@ declare global {
             }>;
             useJsonHistory: boolean;
             useTestWarnings: boolean;
-
+            notPushAtStart: boolean;
             dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
             uwzwarncellTable: { uwzSelectId: string; uwzCityname: string }[];
             zamgwarncellTable: { zamgSelectId: string; zamgCityname: string }[];
@@ -102,6 +102,8 @@ declare global {
             email_Enabled: boolean;
             email_MessageNew: string;
             email_MessageRemove: string;
+            email_Header: string;
+            email_Footer: string;
         }
     }
 }

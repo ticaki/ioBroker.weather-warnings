@@ -15,12 +15,14 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __reExport = (target, mod, secondTarget) => (__copyProps(target, mod, "default"), secondTarget && __copyProps(secondTarget, mod, "default"));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var provider_def_exports = {};
 __export(provider_def_exports, {
   providerServicesArray: () => providerServicesArray
 });
 module.exports = __toCommonJS(provider_def_exports);
+__reExport(provider_def_exports, require("../provider"), module.exports);
 const providerServicesArray = ["dwdService", "zamgService", "uwzService"];
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

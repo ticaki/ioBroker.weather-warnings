@@ -73,7 +73,7 @@
     "uwzEnabled": "Activer l'UWZ",
     "uwzSelectDescription": "ID UWZ composé du code du pays et du code postal (DE12345, AT54321)",
     "uwzSelectId": "Identifiant UWZ Warncell",
-    "zamgSelectId": "ZAMG Coordonnées de l'emplacement. Diviseur '#'",
+    "zamgSelectId": "ZAMG Coordonnées de l'emplacement. Diviseur '/'",
     "uwzTypeFilter": "Filtrez les types d’avertissement suivants à partir du résultat.",
     "warnTypeName.dwdService.22": "gel",
     "warnTypeName.dwdService.24": "Légèrement glissant",
@@ -199,5 +199,13 @@
     "color.textGeneric.2": "jaune",
     "color.textGeneric.3": "orange",
     "color.textGeneric.4": "rouge",
-    "color.textGeneric.5": "violet"
+    "color.textGeneric.5": "violet",
+    "message.status.new": "Nouvel avertissement",
+    "message.status.hold": "Avertissement valide",
+    "message.status.clear": "Tout est clair",
+    "notPushAtStart": "Les avertissements entrants après le démarrage de l'adaptateur sont considérés comme connus.",
+    "email_Header": "En-tête du courrier électronique",
+    "email_Header_hint": "${emailheader} est le seul jeton fonctionnel ici. (Nouvel avertissement ou Tout est clair)",
+    "email_Footer": "Pied de page pour l'e-mail",
+    "dividerDirs": "Annuaires internes"
 }

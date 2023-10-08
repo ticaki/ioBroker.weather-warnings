@@ -72,15 +72,6 @@ export class Library extends BaseClass {
         this.stateDataBase = {};
     }
 
-    /**
-     * Write/create from a Json with defined keys, the associated states and channels
-     * @param prefix iobroker datapoint prefix where to write
-     * @param objNode Entry point into the definition json.
-     * @param def the definition json
-     * @param data The Json to read
-     * @param expandTree expand arrays up to 99
-     * @returns  void
-     */
     async init(): Promise<void> {
         const obj = await this.adapter.getForeignObjectAsync('system.config');
         if (obj) {
@@ -97,6 +88,15 @@ export class Library extends BaseClass {
         }*/
     }
 
+    /**
+     * Write/create from a Json with defined keys, the associated states and channels
+     * @param prefix iobroker datapoint prefix where to write
+     * @param objNode Entry point into the definition json.
+     * @param def the definition json
+     * @param data The Json to read
+     * @param expandTree expand arrays up to 99
+     * @returns  void
+     */
     async writeFromJson(
         // provider.dwd.*warncellid*.warnung*1-5*
         prefix: string,
@@ -107,7 +107,7 @@ export class Library extends BaseClass {
     ): Promise<void> {
         if (!def || typeof def !== 'object') return;
         if (data === undefined || ['string', 'number', 'boolean', 'object'].indexOf(typeof data) == -1) return;
-        // wir arbeiten immer nur mit einem Datenpunkt ist dieses ein json wird mit expandTree recrusise aufgerufen für arrays erstmal immer plain
+
         const objectDefinition = objNode ? await this.getObjectDefFromJson(`${objNode}`, def) : null;
 
         if (objectDefinition)
@@ -268,7 +268,7 @@ export class Library extends BaseClass {
     cleandp(string: string, lowerCase: boolean = false): string {
         if (!string && typeof string != 'string') return string;
 
-        string = string.replace(this.adapter.FORBIDDEN_CHARS, '#');
+        string = string.replace(this.adapter.FORBIDDEN_CHARS, '_');
 
         return lowerCase ? string.toLowerCase() : string;
     }

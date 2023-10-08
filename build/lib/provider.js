@@ -24,6 +24,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var provider_exports = {};
 __export(provider_exports, {
+  BaseProvider: () => BaseProvider,
   DIV: () => DIV,
   DWDProvider: () => DWDProvider,
   METROProvider: () => METROProvider,
@@ -34,12 +35,13 @@ __export(provider_exports, {
 });
 module.exports = __toCommonJS(provider_exports);
 var import_axios = __toESM(require("axios"));
-var import_definitionen = require("./def/definitionen");
+var definitionen = __toESM(require("./def/definitionen"));
 var import_library = require("./library");
 var import_messages = require("./messages");
+var NotificationClass = __toESM(require("./notification"));
 var import_test_warnings = require("./test-warnings");
-var import_messages_def = require("./def/messages-def");
-const DIV = "#";
+var messagesDef = __toESM(require("./def/messages-def"));
+const DIV = "/";
 class BaseProvider extends import_library.BaseClass {
   service;
   url = "";
@@ -63,21 +65,26 @@ class BaseProvider extends import_library.BaseClass {
     this.log.setLogPrefix(`${name}-${options.warncellId}`);
     this.filter = options.filter;
     this.customName = options.customName;
-    const temp = this.library.cloneGenericObject(import_definitionen.defaultChannel);
+    const temp = this.library.cloneGenericObject(
+      definitionen.statesObjectsWarnings[this.service]._channel
+    );
     temp.common.name = name.toUpperCase();
     this.library.writedp("provider." + name, void 0, temp);
     this.init();
   }
   async init() {
-    const temp = this.library.cloneGenericObject(import_definitionen.defaultChannel);
+    const temp = this.library.cloneGenericObject(definitionen.defaultChannel);
     temp.common.name = this.customName;
     await this.library.writedp(`${this.name}`, void 0, temp);
     await this.adapter.extendObjectAsync(`${this.name}`, {
       common: { name: this.customName }
     });
-    await this.library.writedp(`${this.name}.info`, void 0, import_definitionen.genericStateObjects.info._channel);
-    await this.library.writedp(`${this.name}.messages`, void 0, import_definitionen.genericStateObjects.messageStates._channel);
-    await this.library.writedp(`${this.name}.formatedKeys`, void 0, import_definitionen.genericStateObjects.formatedKeysDevice);
+    await this.library.writedp(`${this.name}.info`, void 0, definitionen.genericStateObjects.info._channel);
+    await this.library.writedp(
+      `${this.name}.formatedKeys`,
+      void 0,
+      definitionen.genericStateObjects.formatedKeysDevice
+    );
     this.setConnected(false);
   }
   delete() {
@@ -99,7 +106,7 @@ class BaseProvider extends import_library.BaseClass {
   }
   setUrl(url = "", keys) {
     if (!url) {
-      this.url = import_definitionen.PROVIDER_OPTIONS[this.service]["url"];
+      this.url = definitionen.PROVIDER_OPTIONS[this.service]["url"];
     } else {
       this.url = url;
     }
@@ -112,18 +119,24 @@ class BaseProvider extends import_library.BaseClass {
   }
   async setConnected(status) {
     this.providerController.connection = this.providerController.connection || status;
-    const objDef = await this.library.getObjectDefFromJson(`info.connection`, import_definitionen.genericStateObjects);
+    const objDef = await this.library.getObjectDefFromJson(`info.connection`, definitionen.genericStateObjects);
     this.library.writedp(`${this.name}.info.connection`, !!status, objDef);
   }
   async update() {
   }
   static async setAlerts(that, prefix, data) {
-    await that.library.writeFromJson(prefix + ".alerts", "allService.alerts", import_definitionen.statesObjectsWarnings, data, false);
+    await that.library.writeFromJson(
+      prefix + ".alerts",
+      "allService.alerts",
+      definitionen.statesObjectsWarnings,
+      data,
+      false
+    );
   }
   async getAlertsAndWrite() {
     const reply = {};
-    for (const t in import_messages_def.genericWarntyp) {
-      reply[import_messages_def.genericWarntyp[Number(t)].id] = {
+    for (const t in messagesDef.genericWarntyp) {
+      reply[messagesDef.genericWarntyp[Number(t)].id] = {
         level: -1,
         start: 1,
         end: 1,
@@ -138,7 +151,7 @@ class BaseProvider extends import_library.BaseClass {
       const m = this.messages[a];
       if (!m)
         continue;
-      const name = import_messages_def.genericWarntyp[m.genericType].id;
+      const name = messagesDef.genericWarntyp[m.genericType].id;
       if (reply[name] === void 0)
         continue;
       if (m.endtime < Date.now())
@@ -167,7 +180,7 @@ class BaseProvider extends import_library.BaseClass {
       if (this.unload) {
         return;
       }
-      const objDef = await this.library.getObjectDefFromJson(`info.testMode`, import_definitionen.genericStateObjects);
+      const objDef = await this.library.getObjectDefFromJson(`info.testMode`, definitionen.genericStateObjects);
       this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
       if (this.adapter.config.useTestWarnings) {
         return this.library.cloneGenericObject(
@@ -181,7 +194,7 @@ class BaseProvider extends import_library.BaseClass {
           this.library.writedp(
             `${this.name}.warning.warning_json`,
             JSON.stringify(result),
-            import_definitionen.genericStateObjects.warnings_json
+            definitionen.genericStateObjects.warnings_json
           );
           if (this.adapter.config.useJsonHistory) {
             const dp = `${this.name}.warning.jsonHistory`;
@@ -190,9 +203,13 @@ class BaseProvider extends import_library.BaseClass {
             if (state && state.val && typeof state.val == "string")
               history = JSON.parse(state.val);
             history.unshift(result);
-            this.library.writedp(dp, JSON.stringify(history), import_definitionen.genericStateObjects.jsonHistory);
+            this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
           }
-          this.library.writedp(`${this.name}.lastUpdate`, Date.now(), import_definitionen.genericStateObjects.lastUpdate);
+          this.library.writedp(
+            `${this.name}.lastUpdate`,
+            Date.now(),
+            definitionen.genericStateObjects.lastUpdate
+          );
           return result;
         } else {
           this.log.warn("Warn(23) " + data.statusText);
@@ -228,58 +245,29 @@ class BaseProvider extends import_library.BaseClass {
   async updateData(data, counter) {
     if (!data)
       return;
-    this.library.writedp(`${this.name}.warning`, void 0, import_definitionen.genericStateObjects.warningDevice);
+    this.library.writedp(`${this.name}.warning`, void 0, definitionen.genericStateObjects.warningDevice);
     await this.library.writeFromJson(
       `${this.name}.warning.${("00" + counter.toString()).slice(-2)}`,
       `${this.service}.raw`,
-      import_definitionen.statesObjectsWarnings,
+      definitionen.statesObjectsWarnings,
       data
     );
   }
-  async sendMessages(moreWarnings, override = false) {
-    const removeMessages = [];
-    const jsonMessage = {};
+  async clearMessages() {
     for (let m = 0; m < this.messages.length; m++) {
+      this.messages[m].newMessage = false;
       if (this.messages[m].notDeleted == false) {
-        removeMessages.push(this.messages[Number(m)]);
         this.log.debug("Remove a warning from db.");
         this.messages.splice(Number(m--), 1);
-      } else {
-        await this.messages[m].sendMessage("new", true);
-        for (const k in this.messages[m].messages) {
-          const key = this.messages[m].messages[k].key;
-          const msg = this.messages[m].messages[k].message;
-          jsonMessage[key] = jsonMessage[key] || [];
-          jsonMessage[key].push(msg);
-        }
       }
     }
-    if (this.messages.length == 0 && !override) {
-      for (const m in removeMessages) {
-        await removeMessages[m].sendMessage("remove", moreWarnings);
-        for (const k in removeMessages[m].messages) {
-          const key = removeMessages[m].messages[k].key;
-          const msg = removeMessages[m].messages[k].message;
-          jsonMessage[key] = jsonMessage[key] || [];
-          jsonMessage[key].push(msg);
-        }
-      }
-      for (const key in jsonMessage) {
-        this.library.writedp(
-          `${this.name}.messages.${key}_array`,
-          JSON.stringify(jsonMessage[key]),
-          import_definitionen.genericStateObjects.messageStates.messageJson
-        );
-      }
-    }
-    return;
   }
 }
 class DWDProvider extends BaseProvider {
   constructor(adapter, options) {
     super(adapter, { ...options, service: "dwdService" }, `dwd`);
     this.warncellId = options.warncellId;
-    const url = import_definitionen.PROVIDER_OPTIONS.dwdService.url_base + (this.warncellId.startsWith("9") || this.warncellId.startsWith("10") ? import_definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_land : import_definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_town) + import_definitionen.PROVIDER_OPTIONS.dwdService.url_language;
+    const url = definitionen.PROVIDER_OPTIONS.dwdService.url_base + (this.warncellId.startsWith("9") || this.warncellId.startsWith("10") ? definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_land : definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_town) + definitionen.PROVIDER_OPTIONS.dwdService.url_language;
     this.url = this.setUrl(url, [this.warncellId, options.language]);
   }
   async updateData() {
@@ -437,7 +425,7 @@ class METROProvider extends BaseProvider {
   }
 }
 class ProviderController extends import_library.BaseClass {
-  provider = [];
+  providers = [];
   refreshTimeRef = null;
   alertTimeoutRef = null;
   connection = true;
@@ -446,10 +434,12 @@ class ProviderController extends import_library.BaseClass {
   library;
   notificationServices = [];
   noWarningMessage;
+  pushOn = false;
   constructor(adapter) {
     super(adapter, "provider");
     this.library = this.adapter.library;
     this.noWarningMessage = new import_messages.MessagesClass(this.adapter, "default", null, {}, this);
+    this.pushOn = !this.adapter.config.notPushAtStart;
   }
   async init() {
     this.refreshTime = this.adapter.config.refreshTime * 6e4;
@@ -466,7 +456,7 @@ class ProviderController extends import_library.BaseClass {
         endkey: `system.adapter.${options.adapter}`
       }) : null;
       if (!options.useadapter || objs && objs.rows && objs.rows.length > 0) {
-        const noti = new options.class(this.adapter, options);
+        const noti = new NotificationClass.NotificationClass(this.adapter, options);
         this.notificationServices.push(noti);
       } else {
         this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
@@ -481,7 +471,7 @@ class ProviderController extends import_library.BaseClass {
     }
   }
   createProviderIfNotExist(options) {
-    const index = this.provider.findIndex(
+    const index = this.providers.findIndex(
       (p) => p && (typeof p.warncellId == "string" && p.warncellIdString == options.warncellId || typeof options.warncellId == "object" && options.warncellId.join(DIV) == p.warncellIdString) && p.getService() == options.service
     );
     if (index == -1) {
@@ -532,20 +522,20 @@ class ProviderController extends import_library.BaseClass {
           throw new Error("Error 126 service is not defined");
       }
       if (p)
-        this.provider.push(p);
+        this.providers.push(p);
       return p;
     } else {
       this.log.error("Attempt to create an existing provider.");
-      return this.provider[index];
+      return this.providers[index];
     }
   }
   delete() {
     super.delete();
-    for (const p of this.provider) {
+    for (const p of this.providers) {
       if (p)
         p.delete();
     }
-    this.provider = [];
+    this.providers = [];
     if (this.refreshTimeRef)
       this.adapter.clearTimeout(this.refreshTimeRef);
     if (this.alertTimeoutRef)
@@ -553,29 +543,22 @@ class ProviderController extends import_library.BaseClass {
   }
   sendNoMessages() {
   }
-  async sendToNotifications(msg, action, moreWarnings) {
-    for (const a in this.notificationServices) {
-      const n = this.notificationServices[a];
-      if (n.config.notifications.indexOf(action) == -1)
-        continue;
-      await n.sendNotifications(msg, action, moreWarnings);
-    }
-  }
   updateEndless(that) {
     that.connection = false;
     if (that.refreshTimeRef)
       that.adapter.clearTimeout(that.refreshTimeRef);
-    if (that.provider.length == 0) {
+    if (that.providers.length == 0) {
       that.setConnected(false);
       return;
     }
     updater(that);
-    async function updater(that2, index = 0) {
+    async function updater(self, index = 0) {
+      const that2 = self;
       if (that2.unload)
         return;
-      if (index < that2.provider.length) {
-        if (that2.provider[index])
-          await that2.provider[index].updateData();
+      if (index < that2.providers.length) {
+        if (that2.providers[index])
+          await that2.providers[index].updateData();
         index++;
         that2.refreshTimeRef = that2.adapter.setTimeout(updater, 500, that2, index);
       } else {
@@ -592,48 +575,50 @@ class ProviderController extends import_library.BaseClass {
     that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
   }
   checkAlerts() {
-    for (const p in this.provider) {
-      this.provider[p].getAlertsAndWrite();
+    for (const p in this.providers) {
+      this.providers[p].getAlertsAndWrite();
     }
   }
   async doEndOfUpdater() {
     this.setConnected();
+    await this.updateMesssages();
     let activMessages = 0;
-    let totalMessages = 0;
-    for (const a in this.provider) {
+    for (const a in this.providers) {
       let am = 0;
-      for (const b in this.provider[a].messages) {
-        totalMessages++;
-        if (this.provider[a].messages[b].notDeleted)
+      for (const b in this.providers[a].messages) {
+        if (this.providers[a].messages[b].notDeleted) {
           am++;
+        }
       }
       this.adapter.library.writedp(
-        `${this.provider[a].name}.activeWarnings`,
+        `${this.providers[a].name}.activeWarnings`,
         am,
-        import_definitionen.genericStateObjects.activeWarnings
+        definitionen.genericStateObjects.activeWarnings
       );
       activMessages += am;
     }
-    this.notificationServices.forEach((a) => a.clearAll());
-    for (const a in this.provider) {
-      try {
-        await this.provider[a].sendMessages(activMessages > 0);
-      } catch (error) {
-        this.log.error("error(44) " + error);
+    if (this.pushOn) {
+      for (const push of this.notificationServices) {
+        await push.sendMessage(this.providers, ["new", "remove", "all"]);
       }
     }
-    if (activMessages == 0 && totalMessages > 0)
-      await this.noWarningMessage.sendMessage("removeAll", false);
-    this.notificationServices.forEach((a) => a.writeNotifications());
-    this.adapter.library.writedp(`${this.name}.activeWarnings`, activMessages, import_definitionen.genericStateObjects.activeWarnings);
-    this.library.language = "";
+    this.pushOn = true;
+    await this.adapter.library.writedp(
+      `${this.name}.activeWarnings`,
+      activMessages,
+      definitionen.genericStateObjects.activeWarnings
+    );
+    this.providers.forEach((a) => a.clearMessages());
     this.log.debug(`We have ${activMessages} active messages.`);
   }
   providersExist() {
-    return this.provider.length > 0;
+    return this.providers.length > 0;
   }
   async setConnected(status = this.connection) {
-    const objDef = await this.adapter.library.getObjectDefFromJson(`info.connection`, import_definitionen.genericStateObjects);
+    const objDef = await this.adapter.library.getObjectDefFromJson(
+      `info.connection`,
+      definitionen.genericStateObjects
+    );
     this.adapter.library.writedp(`info.connection`, !!status, objDef);
   }
   setAllowedDirs(allowedDirs) {
@@ -643,24 +628,23 @@ class ProviderController extends import_library.BaseClass {
         dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.warning`);
       if (!allowedDirs[a].dpMessage)
         dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.alerts`);
-      if (!allowedDirs[a].dpFormated)
-        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.messages`);
       if (!allowedDirs[a].dpAlerts)
         dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.formatedKeys`);
       this.library.setAllowedDirs(dirs);
     }
   }
   async updateMesssages() {
-    for (const a in this.provider) {
-      for (const b in this.provider[a].messages) {
-        await this.provider[a].messages[b].updateFormatedData(true);
-        await this.provider[a].messages[b].writeFormatedKeys(Number(b));
+    for (const a in this.providers) {
+      for (const b in this.providers[a].messages) {
+        await this.providers[a].messages[b].updateFormatedData(true);
+        await this.providers[a].messages[b].writeFormatedKeys(Number(b));
       }
     }
   }
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  BaseProvider,
   DIV,
   DWDProvider,
   METROProvider,

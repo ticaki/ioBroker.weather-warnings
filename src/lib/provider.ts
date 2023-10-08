@@ -2,59 +2,48 @@
 
 import axios from 'axios';
 import WeatherWarnings from '../main';
-import { PROVIDER_OPTIONS, defaultChannel, genericStateObjects, statesObjectsWarnings } from './def/definitionen';
+import * as definitionen from './def/definitionen';
 import { BaseClass, Library } from './library';
-import {
-    DataImportType,
-    dataImportDwdType,
-    dataImportUWZType,
-    dataImportZamgType,
-    messageFilterType,
-    providerServices,
-} from './def/provider-def';
-import { AllNotificationClass, MessagesClass, NotificationClass } from './messages';
+import * as providerDef from './def/provider-def';
+import { MessagesClass } from './messages';
+import * as NotificationClass from './notification';
 import { getTestData } from './test-warnings';
-import { notificationServiceOptionsType, notificationTemplateUnionType } from './def/notificationService-def';
-import {
-    genericWarntyp,
-    genericWarntypeAlertJsonType,
-    genericWarntypeType,
-    notificationMessageType,
-} from './def/messages-def';
-export const DIV = '#';
-type ProvideOptionsTypeInternal = {
-    service: providerServices;
+import * as NotificationType from './def/notificationService-def';
+import * as messagesDef from './def/messages-def';
+export const DIV = '/';
+type ProviderOptionsTypeInternal = {
+    service: providerDef.providerServices;
     warncellId: string | [string, string];
-} & (StringProvideOptionsType | CoordinateProvideOptionsType);
+} & (StringProviderOptionsType | CoordinateProviderOptionsType);
 
-type ProvideOptionsType = ProvideOptionsTypeInternal;
+type ProviderOptionsType = ProviderOptionsTypeInternal;
 
-type StringProvideOptionsType = BaseProviderOptionsType & {
+type StringProviderOptionsType = BaseProviderOptionsType & {
     warncellId: string;
 };
-type CoordinateProvideOptionsType = BaseProviderOptionsType & {
+type CoordinateProviderOptionsType = BaseProviderOptionsType & {
     warncellId: [string, string];
 };
 type BaseProviderOptionsType = {
     providerController: ProviderController;
     language: string;
-    filter: messageFilterType;
+    filter: providerDef.messageFilterType;
     customName: string;
 };
 
 /** Base class for every provider */
-class BaseProvider extends BaseClass {
-    service: providerServices;
+export class BaseProvider extends BaseClass {
+    service: providerDef.providerServices;
     url: string = '';
     warncellId: string | Array<string> = '';
-    rawData: DataImportType = null;
+    rawData: providerDef.DataImportType = null;
     library: Library;
     messages: MessagesClass[] = [];
     providerController: ProviderController;
-    filter: messageFilterType;
+    filter: providerDef.messageFilterType;
     customName: string = '';
     warncellIdString: string;
-    constructor(adapter: WeatherWarnings, options: ProvideOptionsTypeInternal, name: string) {
+    constructor(adapter: WeatherWarnings, options: ProviderOptionsTypeInternal, name: string) {
         let warncell = typeof options.warncellId == 'string' ? options.warncellId : options.warncellId.join(DIV);
         warncell = warncell.replaceAll('.', '_');
         super(adapter, 'provider.' + `${name}.${warncell}`);
@@ -68,23 +57,29 @@ class BaseProvider extends BaseClass {
         this.filter = options.filter;
         this.customName = options.customName;
 
-        const temp = this.library.cloneGenericObject(defaultChannel) as ioBroker.ChannelObject;
+        const temp = this.library.cloneGenericObject(
+            //@ts-expect-error ist vorhanden
+            definitionen.statesObjectsWarnings[this.service]._channel,
+        ) as ioBroker.DeviceObject;
         temp.common.name = name.toUpperCase();
         this.library.writedp('provider.' + name, undefined, temp);
 
         this.init();
     }
     async init(): Promise<void> {
-        const temp = this.library.cloneGenericObject(defaultChannel) as ioBroker.ChannelObject;
+        const temp = this.library.cloneGenericObject(definitionen.defaultChannel) as ioBroker.ChannelObject;
         temp.common.name = this.customName;
         await this.library.writedp(`${this.name}`, undefined, temp);
         await this.adapter.extendObjectAsync(`${this.name}`, {
             common: { name: this.customName },
         });
 
-        await this.library.writedp(`${this.name}.info`, undefined, genericStateObjects.info._channel);
-        await this.library.writedp(`${this.name}.messages`, undefined, genericStateObjects.messageStates._channel);
-        await this.library.writedp(`${this.name}.formatedKeys`, undefined, genericStateObjects.formatedKeysDevice);
+        await this.library.writedp(`${this.name}.info`, undefined, definitionen.genericStateObjects.info._channel);
+        await this.library.writedp(
+            `${this.name}.formatedKeys`,
+            undefined,
+            definitionen.genericStateObjects.formatedKeysDevice,
+        );
 
         this.setConnected(false);
     }
@@ -94,7 +89,7 @@ class BaseProvider extends BaseClass {
         this.setConnected(false);
     }
 
-    getService(): providerServices {
+    getService(): providerDef.providerServices {
         if (!this.service) {
             throw new Error(`baseProvider.getService service is ${this.service == '' ? `''` : `undefined`}`);
         }
@@ -104,7 +99,7 @@ class BaseProvider extends BaseClass {
         return statesObjectsWarnings[this.service][key];
     }*/
 
-    setService(service: providerServices): boolean {
+    setService(service: providerDef.providerServices): boolean {
         if (
             !service ||
             ['dwdService', 'zamgService', 'uwzService', 'ninaService', 'metroService'].indexOf(service) === -1
@@ -121,7 +116,7 @@ class BaseProvider extends BaseClass {
      */
     setUrl(url: string = '', keys: string[]): string {
         if (!url) {
-            this.url = PROVIDER_OPTIONS[this.service]['url'];
+            this.url = definitionen.PROVIDER_OPTIONS[this.service]['url'];
         } else {
             this.url = url;
         }
@@ -134,7 +129,7 @@ class BaseProvider extends BaseClass {
     }
     async setConnected(status: boolean): Promise<void> {
         this.providerController.connection = this.providerController.connection || status;
-        const objDef = await this.library.getObjectDefFromJson(`info.connection`, genericStateObjects);
+        const objDef = await this.library.getObjectDefFromJson(`info.connection`, definitionen.genericStateObjects);
         this.library.writedp(`${this.name}.info.connection`, !!status, objDef);
     }
     async update(): Promise<void> {
@@ -145,12 +140,18 @@ class BaseProvider extends BaseClass {
         prefix: string,
         data: { [key: string]: string | number | boolean },
     ): Promise<void> {
-        await that.library.writeFromJson(prefix + '.alerts', 'allService.alerts', statesObjectsWarnings, data, false);
+        await that.library.writeFromJson(
+            prefix + '.alerts',
+            'allService.alerts',
+            definitionen.statesObjectsWarnings,
+            data,
+            false,
+        );
     }
-    async getAlertsAndWrite(): Promise<genericWarntypeAlertJsonType> {
+    async getAlertsAndWrite(): Promise<messagesDef.genericWarntypeAlertJsonType> {
         const reply: any = {};
-        for (const t in genericWarntyp) {
-            reply[genericWarntyp[Number(t) as keyof genericWarntypeType].id] = {
+        for (const t in messagesDef.genericWarntyp) {
+            reply[messagesDef.genericWarntyp[Number(t) as keyof messagesDef.genericWarntypeType].id] = {
                 level: -1,
                 start: 1,
                 end: 1,
@@ -164,7 +165,7 @@ class BaseProvider extends BaseClass {
         for (const a in this.messages) {
             const m = this.messages[a];
             if (!m) continue;
-            const name = genericWarntyp[m.genericType].id;
+            const name = messagesDef.genericWarntyp[m.genericType].id;
             if (reply[name] === undefined) continue;
             if (m.endtime < Date.now()) continue;
 
@@ -183,7 +184,7 @@ class BaseProvider extends BaseClass {
         return reply;
     }
     // General function that retrieves data
-    async getDataFromProvider(): Promise<DataImportType> {
+    async getDataFromProvider(): Promise<providerDef.DataImportType> {
         if (!this.url || !this.warncellId) {
             this.log.debug(
                 // eslint-disable-next-line prettier/prettier
@@ -196,12 +197,13 @@ class BaseProvider extends BaseClass {
             }
 
             // show text mode in Info states
-            const objDef = await this.library.getObjectDefFromJson(`info.testMode`, genericStateObjects);
+            const objDef = await this.library.getObjectDefFromJson(`info.testMode`, definitionen.genericStateObjects);
+            //this.adapter.config.useTestWarnings = Math.random() * 3 > 1;
             this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
             if (this.adapter.config.useTestWarnings) {
                 return this.library.cloneGenericObject(
                     getTestData(this.service, this.adapter) as object,
-                ) as DataImportType;
+                ) as providerDef.DataImportType;
             } else {
                 const data = await axios.get(this.url);
                 if (data.status == 200) {
@@ -212,7 +214,7 @@ class BaseProvider extends BaseClass {
                     this.library.writedp(
                         `${this.name}.warning.warning_json`,
                         JSON.stringify(result),
-                        genericStateObjects.warnings_json,
+                        definitionen.genericStateObjects.warnings_json,
                     );
                     if (this.adapter.config.useJsonHistory) {
                         const dp = `${this.name}.warning.jsonHistory`;
@@ -220,9 +222,13 @@ class BaseProvider extends BaseClass {
                         let history: object[] = [];
                         if (state && state.val && typeof state.val == 'string') history = JSON.parse(state.val);
                         history.unshift(result);
-                        this.library.writedp(dp, JSON.stringify(history), genericStateObjects.jsonHistory);
+                        this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
                     }
-                    this.library.writedp(`${this.name}.lastUpdate`, Date.now(), genericStateObjects.lastUpdate);
+                    this.library.writedp(
+                        `${this.name}.lastUpdate`,
+                        Date.now(),
+                        definitionen.genericStateObjects.lastUpdate,
+                    );
                     return result;
                 } else {
                     this.log.warn('Warn(23) ' + data.statusText);
@@ -256,7 +262,7 @@ class BaseProvider extends BaseClass {
      * @param data              json object flat
      * @returns                 void
      */
-    async dumpData(prefix: string, data: DataImportType): Promise<void> {
+    async dumpData(prefix: string, data: providerDef.DataImportType): Promise<void> {
         if (!prefix || !data || typeof data !== 'object') return;
         for (const key in data) {
             //@ts-expect-error write code for next line
@@ -265,80 +271,41 @@ class BaseProvider extends BaseClass {
     }
     async updateData(data: any, counter: number): Promise<void> {
         if (!data) return;
-        this.library.writedp(`${this.name}.warning`, undefined, genericStateObjects.warningDevice);
+        this.library.writedp(`${this.name}.warning`, undefined, definitionen.genericStateObjects.warningDevice);
         await this.library.writeFromJson(
             `${this.name}.warning.${('00' + counter.toString()).slice(-2)}`,
             `${this.service}.raw`,
-            statesObjectsWarnings,
+            definitionen.statesObjectsWarnings,
             data,
         );
     }
-    /** Call on every message sendMessage() and removed notDelete == false messages. */
-    async sendMessages(moreWarnings: boolean, override = false): Promise<void> {
-        /**
-         * send Messages, remove old one
-         */
-        const removeMessages: MessagesClass[] = [];
-        const jsonMessage: { [key: string]: string[] } = {};
+    /** Remove marked Messages. */
+    async clearMessages(): Promise<void> {
         for (let m = 0; m < this.messages.length; m++) {
+            this.messages[m].newMessage = false;
             if (this.messages[m].notDeleted == false) {
-                removeMessages.push(this.messages[Number(m)]);
                 this.log.debug('Remove a warning from db.');
                 this.messages.splice(Number(m--), 1);
-            } else {
-                await this.messages[m].sendMessage('new', true);
-                for (const k in this.messages[m].messages) {
-                    const key = this.messages[m].messages[k].key;
-                    const msg = this.messages[m].messages[k].message;
-                    jsonMessage[key] = jsonMessage[key] || [];
-                    jsonMessage[key].push(msg);
-                }
             }
         }
-
-        if (this.messages.length == 0 && !override) {
-            /**
-             * Handle removed msg
-             */
-            for (const m in removeMessages) {
-                await removeMessages[m].sendMessage('remove', moreWarnings);
-                for (const k in removeMessages[m].messages) {
-                    const key = removeMessages[m].messages[k].key;
-                    const msg = removeMessages[m].messages[k].message;
-                    jsonMessage[key] = jsonMessage[key] || [];
-                    jsonMessage[key].push(msg);
-                }
-            }
-            /**
-             * write messages_json to states
-             */
-            for (const key in jsonMessage) {
-                this.library.writedp(
-                    `${this.name}.messages.${key}_array`,
-                    JSON.stringify(jsonMessage[key]),
-                    genericStateObjects.messageStates.messageJson,
-                );
-            }
-        }
-        return;
     }
 }
 
 // nuzte klassen um Daten zu parsen
 export class DWDProvider extends BaseProvider {
-    constructor(adapter: WeatherWarnings, options: StringProvideOptionsType) {
+    constructor(adapter: WeatherWarnings, options: StringProviderOptionsType) {
         super(adapter, { ...options, service: 'dwdService' }, `dwd`);
         this.warncellId = options.warncellId;
         const url =
-            PROVIDER_OPTIONS.dwdService.url_base +
+            definitionen.PROVIDER_OPTIONS.dwdService.url_base +
             (this.warncellId.startsWith('9') || this.warncellId.startsWith('10')
-                ? PROVIDER_OPTIONS.dwdService.url_appendix_land
-                : PROVIDER_OPTIONS.dwdService.url_appendix_town) +
-            PROVIDER_OPTIONS.dwdService.url_language;
+                ? definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_land
+                : definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_town) +
+            definitionen.PROVIDER_OPTIONS.dwdService.url_language;
         this.url = this.setUrl(url, [this.warncellId, options.language]);
     }
     async updateData(): Promise<void> {
-        const result = (await this.getDataFromProvider()) as dataImportDwdType;
+        const result = (await this.getDataFromProvider()) as providerDef.dataImportDwdType;
         if (!result) return;
 
         this.log.debug(`Got ${result.features.length} warnings from server`);
@@ -403,14 +370,14 @@ export class DWDProvider extends BaseProvider {
 }
 
 export class ZAMGProvider extends BaseProvider {
-    constructor(adapter: WeatherWarnings, options: CoordinateProvideOptionsType) {
+    constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
         super(adapter, { ...options, service: 'zamgService' }, `zamg`);
         this.warncellId = options.warncellId;
         this.setUrl('', [this.warncellId[0], this.warncellId[1], options.language]);
     }
 
     async updateData(): Promise<void> {
-        const result = (await this.getDataFromProvider()) as dataImportZamgType;
+        const result = (await this.getDataFromProvider()) as providerDef.dataImportZamgType;
         if (!result) return;
 
         if (!result.properties || !result.properties.warnings) {
@@ -450,13 +417,13 @@ export class ZAMGProvider extends BaseProvider {
 }
 
 export class UWZProvider extends BaseProvider {
-    constructor(adapter: WeatherWarnings, options: StringProvideOptionsType) {
+    constructor(adapter: WeatherWarnings, options: StringProviderOptionsType) {
         super(adapter, { ...options, service: 'uwzService' }, `uwz`);
         this.warncellId = options.warncellId.toUpperCase();
         this.setUrl('', [this.warncellId, options.language]);
     }
     async updateData(): Promise<void> {
-        const result = (await this.getDataFromProvider()) as dataImportUWZType;
+        const result = (await this.getDataFromProvider()) as providerDef.dataImportUWZType;
         if (!result || !result.results || result.results == null) {
             this.log.warn('Invalid result from uwz server!');
             return;
@@ -493,31 +460,33 @@ export class UWZProvider extends BaseProvider {
     }
 }
 export class NINAProvider extends BaseProvider {
-    constructor(adapter: WeatherWarnings, options: CoordinateProvideOptionsType) {
+    constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
         super(adapter, { ...options, service: 'ninaService' }, `nina`);
     }
 }
 export class METROProvider extends BaseProvider {
-    constructor(adapter: WeatherWarnings, options: CoordinateProvideOptionsType) {
+    constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
         super(adapter, { ...options, service: 'metroService' }, `nina`);
     }
 }
 
 export class ProviderController extends BaseClass {
-    provider: ProvideClassType[] = [];
-    refreshTimeRef = null;
-    alertTimeoutRef = null;
+    providers: providerDef.ProviderClassType[] = [];
+    refreshTimeRef: any = null;
+    alertTimeoutRef: any = null;
     connection = true;
     name = 'provider';
     refreshTime: number = 300000;
     library: Library;
-    notificationServices: (NotificationClass | AllNotificationClass)[] = [];
+    notificationServices: NotificationClass.NotificationClass[] = [];
     noWarningMessage: MessagesClass;
+    pushOn = false;
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
         this.library = this.adapter.library;
         this.noWarningMessage = new MessagesClass(this.adapter, 'default', null, {}, this);
+        this.pushOn = !this.adapter.config.notPushAtStart;
     }
     async init(): Promise<void> {
         this.refreshTime = this.adapter.config.refreshTime * 60000;
@@ -529,9 +498,9 @@ export class ProviderController extends BaseClass {
      * @param optionList specialcase: adapter == '' then it is createn anyway
      * @returns
      */
-    async createNotificationService(optionList: notificationServiceOptionsType): Promise<void> {
+    async createNotificationService(optionList: NotificationType.OptionsType): Promise<void> {
         for (const a in optionList) {
-            const options = optionList[a as keyof notificationServiceOptionsType];
+            const options = optionList[a as keyof NotificationType.OptionsType];
             if (options === undefined) return;
             const objs =
                 options.adapter != ''
@@ -541,7 +510,7 @@ export class ProviderController extends BaseClass {
                       })
                     : null;
             if (!options.useadapter || (objs && objs.rows && objs.rows.length > 0)) {
-                const noti = new options.class(this.adapter, options);
+                const noti = new NotificationClass.NotificationClass(this.adapter, options);
                 this.notificationServices.push(noti);
             } else {
                 this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
@@ -555,8 +524,8 @@ export class ProviderController extends BaseClass {
         }
     }
 
-    createProviderIfNotExist(options: ProvideOptionsType): ProvideClassType {
-        const index = this.provider.findIndex(
+    createProviderIfNotExist(options: ProviderOptionsType): providerDef.ProviderClassType {
+        const index = this.providers.findIndex(
             (p) =>
                 p &&
                 ((typeof p.warncellId == 'string' && p.warncellIdString == options.warncellId) ||
@@ -564,7 +533,7 @@ export class ProviderController extends BaseClass {
                 p.getService() == options.service,
         );
         if (index == -1) {
-            let p: ProvideClassType;
+            let p: providerDef.ProviderClassType;
             switch (options.service) {
                 case 'dwdService':
                     if (Array.isArray(options.warncellId)) {
@@ -611,48 +580,38 @@ export class ProviderController extends BaseClass {
                     throw new Error('Error 126 service is not defined');
                 //todo add metroServicce
             }
-            if (p) this.provider.push(p);
+            if (p) this.providers.push(p);
             return p;
         } else {
             this.log.error('Attempt to create an existing provider.');
-            return this.provider[index];
+            return this.providers[index];
         }
     }
 
     delete(): void {
         super.delete();
-        for (const p of this.provider) {
+        for (const p of this.providers) {
             if (p) p.delete();
         }
-        this.provider = [];
+        this.providers = [];
         if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);
         if (this.alertTimeoutRef) this.adapter.clearTimeout(this.alertTimeoutRef);
     }
 
     sendNoMessages(): void {}
-    async sendToNotifications(
-        msg: notificationMessageType,
-        action: notificationTemplateUnionType,
-        moreWarnings: boolean,
-    ): Promise<void> {
-        for (const a in this.notificationServices) {
-            const n = this.notificationServices[a];
-            if (n.config.notifications.indexOf(action) == -1) continue;
-            await n.sendNotifications(msg, action, moreWarnings);
-        }
-    }
     updateEndless(that: ProviderController): void {
         that.connection = false;
         if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);
-        if (that.provider.length == 0) {
+        if (that.providers.length == 0) {
             that.setConnected(false);
             return;
         }
         updater(that);
-        async function updater(that: any, index: number = 0): Promise<void> {
+        async function updater(self: any, index: number = 0): Promise<void> {
+            const that = self; //as ProviderController;
             if (that.unload) return;
-            if (index < that.provider.length) {
-                if (that.provider[index]) await that.provider[index].updateData();
+            if (index < that.providers.length) {
+                if (that.providers[index]) await that.providers[index].updateData();
                 index++;
                 that.refreshTimeRef = that.adapter.setTimeout(updater, 500, that, index);
             } else {
@@ -671,51 +630,53 @@ export class ProviderController extends BaseClass {
     }
 
     checkAlerts(): void {
-        for (const p in this.provider) {
-            this.provider[p].getAlertsAndWrite();
+        for (const p in this.providers) {
+            this.providers[p].getAlertsAndWrite();
         }
     }
 
     async doEndOfUpdater(): Promise<void> {
         this.setConnected();
+        await this.updateMesssages();
         let activMessages = 0;
-        let totalMessages = 0;
-        for (const a in this.provider) {
+        for (const a in this.providers) {
             let am = 0;
-            for (const b in this.provider[a].messages) {
-                totalMessages++;
-                if (this.provider[a].messages[b].notDeleted) am++;
+            for (const b in this.providers[a].messages) {
+                if (this.providers[a].messages[b].notDeleted) {
+                    am++;
+                }
             }
             this.adapter.library.writedp(
-                `${this.provider[a].name}.activeWarnings`,
+                `${this.providers[a].name}.activeWarnings`,
                 am,
-                genericStateObjects.activeWarnings,
+                definitionen.genericStateObjects.activeWarnings,
             );
             activMessages += am;
         }
-        this.notificationServices.forEach((a) => a.clearAll());
 
-        for (const a in this.provider) {
-            try {
-                await this.provider[a].sendMessages(activMessages > 0);
-            } catch (error) {
-                this.log.error(('error(44) ' + error) as string);
+        if (this.pushOn) {
+            for (const push of this.notificationServices) {
+                await push.sendMessage(this.providers, ['new', 'remove', 'all']);
             }
         }
+        this.pushOn = true;
+        await this.adapter.library.writedp(
+            `${this.name}.activeWarnings`,
+            activMessages,
+            definitionen.genericStateObjects.activeWarnings,
+        );
+        this.providers.forEach((a) => a.clearMessages());
 
-        if (activMessages == 0 && totalMessages > 0) await this.noWarningMessage.sendMessage('removeAll', false);
-
-        this.notificationServices.forEach((a) => a.writeNotifications());
-        this.adapter.library.writedp(`${this.name}.activeWarnings`, activMessages, genericStateObjects.activeWarnings);
-        // reset language
-        this.library.language = '';
         this.log.debug(`We have ${activMessages} active messages.`);
     }
     providersExist(): boolean {
-        return this.provider.length > 0;
+        return this.providers.length > 0;
     }
     async setConnected(status: boolean = this.connection): Promise<void> {
-        const objDef = await this.adapter.library.getObjectDefFromJson(`info.connection`, genericStateObjects);
+        const objDef = await this.adapter.library.getObjectDefFromJson(
+            `info.connection`,
+            definitionen.genericStateObjects,
+        );
         this.adapter.library.writedp(`info.connection`, !!status, objDef);
     }
     setAllowedDirs(allowedDirs: any): void {
@@ -725,8 +686,8 @@ export class ProviderController extends BaseClass {
                 dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.warning`);
             if (!allowedDirs[a].dpMessage)
                 dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.alerts`);
-            if (!allowedDirs[a].dpFormated)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.messages`);
+            /*if (!allowedDirs[a].dpFormated)
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.messages`);*/
             if (!allowedDirs[a].dpAlerts)
                 dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.formatedKeys`);
 
@@ -734,12 +695,11 @@ export class ProviderController extends BaseClass {
         }
     }
     async updateMesssages(): Promise<void> {
-        for (const a in this.provider) {
-            for (const b in this.provider[a].messages) {
-                await this.provider[a].messages[b].updateFormatedData(true);
-                await this.provider[a].messages[b].writeFormatedKeys(Number(b));
+        for (const a in this.providers) {
+            for (const b in this.providers[a].messages) {
+                await this.providers[a].messages[b].updateFormatedData(true);
+                await this.providers[a].messages[b].writeFormatedKeys(Number(b));
             }
         }
     }
 }
-export type ProvideClassType = DWDProvider | ZAMGProvider | UWZProvider | NINAProvider | METROProvider;
