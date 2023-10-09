@@ -132,16 +132,26 @@ class WeatherWarnings extends utils.Adapter {
                         if (self.config[(notificationService + '_UwzEnabled') as keyof ioBroker.AdapterConfig])
                             service.push('zamgService');
                         const template: NotificationType.ActionsType = {
-                            new: self.config[
-                                (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
-                            ] as string,
+                            new:
+                                self.config[(notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig] !==
+                                undefined
+                                    ? (self.config[
+                                          (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
+                                      ] as string)
+                                    : '',
                             remove: self.config[
                                 (notificationService + '_MessageRemove') as keyof ioBroker.AdapterConfig
                             ] as string,
                             removeAll: self.config[
                                 (notificationService + '_MessageAllRemove') as keyof ioBroker.AdapterConfig
                             ] as string,
-                            all: '',
+                            all:
+                                self.config[(notificationService + '_MessageAll') as keyof ioBroker.AdapterConfig] !==
+                                undefined
+                                    ? (self.config[
+                                          (notificationService + '_MessageAll') as keyof ioBroker.AdapterConfig
+                                      ] as string)
+                                    : '',
                         };
                         template.new = template.new ? template.new : 'none';
                         template.remove = template.remove ? template.remove : 'none';

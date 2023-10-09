@@ -38,12 +38,46 @@ class NotificationClass extends library.BaseClass {
   removeAllSend = true;
   clearAll() {
   }
-  async writeNotifications() {
-  }
   constructor(adapter, notifcationOptions) {
     super(adapter, notifcationOptions.name);
+    this.log.debug(`Create notification service ${this.name}`);
     this.options = notifcationOptions;
     this.config = NotificationType.serciceCapabilities[notifcationOptions.name];
+  }
+  async init() {
+    switch (this.name) {
+      case "history":
+      case "json":
+        {
+          let dp = "";
+          let def = import_definitionen.genericStateObjects.history;
+          const providers = this.adapter.providerController.providers.filter(
+            (a) => this.options.service.includes(a.service)
+          );
+          const targets = [...providers, this.adapter.providerController];
+          for (const a in targets) {
+            switch (this.name) {
+              case "history":
+                {
+                  dp = `${targets[a].name}.history`;
+                  def = import_definitionen.genericStateObjects.history;
+                }
+                break;
+              case "json":
+                {
+                  dp = `${targets[a].name}.activeWarnings_json`;
+                  def = import_definitionen.genericStateObjects.activeWarningsJson;
+                }
+                break;
+            }
+            const state = this.adapter.library.getdb(dp);
+            if (state == void 0) {
+              await this.adapter.library.writedp(dp, "[]", def);
+            }
+          }
+        }
+        break;
+    }
   }
   async sendMessage(providers, allowActions, override = false) {
     let activeWarnings = 0;
@@ -91,7 +125,7 @@ class NotificationClass extends library.BaseClass {
         if (tempid != -1) {
           this.sendNotifications([
             {
-              text: templates[tempid].template,
+              text: templates[tempid].template.replaceAll("\\", ""),
               startts: 1,
               template: templates[tempid].template,
               action: "removeAll"
@@ -182,7 +216,7 @@ class NotificationClass extends library.BaseClass {
           let providers = [];
           for (const a in messages) {
             try {
-              const temp = this.adapter.config.json_parse ? JSON.parse(messages[a].text) : messages[a].message;
+              const temp = this.adapter.config.json_parse ? JSON.parse(messages[a].text) : messages[a].text;
               result.push({
                 startts: messages[a].startts,
                 message: temp,
@@ -207,7 +241,7 @@ class NotificationClass extends library.BaseClass {
           result = result.filter((i, p) => {
             if (i.message != "" && i.provider) {
               if (result.findIndex(
-                (i2) => i2.provider.name == i.provider.name && i2.message != i.message
+                (i2) => i2.provider.name == i.provider.name && i2.message == i.message
               ) == p)
                 return true;
             }
@@ -223,17 +257,16 @@ class NotificationClass extends library.BaseClass {
           });
           for (const p of providers) {
             const dp = p + ".activeWarnings_json";
+            const data = result.filter((a) => a.provider && a.provider.name == p).map((a) => a.message);
             await this.adapter.library.writedp(
               dp,
-              JSON.stringify(
-                result.filter((a) => a.provider && a.provider.name == p).map((a) => this.adapter.config.json_parse ? JSON.parse(a.message) : a.message)
-              ),
+              JSON.stringify(data),
               import_definitionen.genericStateObjects.activeWarningsJson
             );
           }
           result = result.filter((i, p) => {
             if (i.message != "" && i.provider) {
-              if (result.findIndex((i2) => i2.message != i.message) == p)
+              if (result.findIndex((i2) => i2.message == i.message) == p)
                 return true;
             }
             return false;
@@ -242,9 +275,7 @@ class NotificationClass extends library.BaseClass {
             const dp = this.adapter.providerController.name + ".activeWarnings_json";
             await this.adapter.library.writedp(
               dp,
-              JSON.stringify(
-                result.map((a) => this.adapter.config.json_parse ? JSON.parse(a.message) : a.message)
-              ),
+              JSON.stringify(result.map((a) => a.message)),
               import_definitionen.genericStateObjects.activeWarningsJson
             );
           }

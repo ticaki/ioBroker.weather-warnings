@@ -78,7 +78,7 @@ declare global {
             json_TypeFilter: number[];
             json_LevelFilter: number;
             json_Enabled: boolean;
-            json_MessageNew: string;
+            json_MessageAll: string;
             json_MessageAllRemove: string;
             json_parse: boolean;
 

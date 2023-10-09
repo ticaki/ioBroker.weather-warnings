@@ -658,7 +658,7 @@ export class MessagesClass extends BaseClass {
 
                     if (!rerun) break;
                 }
-                msg = msg.replace('\\', '');
+
                 //messages.push({ key: templates[a].templateKey, message: msg });
                 this.cache.messages[templates[tempid].templateKey as keyof typeof this.cache.messages] =
                     this.returnMessage(msg, this.starttime, templateKey);
@@ -668,7 +668,7 @@ export class MessagesClass extends BaseClass {
         return this.returnMessage(msg, this.starttime, templateKey);
     }
     private returnMessage = (msg: string, time: number, template: string): NotificationType.MessageType => {
-        return { startts: time, text: msg, template: template };
+        return { startts: time, text: msg.replaceAll('\\', ''), template: template };
     };
 
     async updateFormatedData(update: boolean = false): Promise<customFormatedKR> {

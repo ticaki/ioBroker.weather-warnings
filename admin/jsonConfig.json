@@ -1009,7 +1009,7 @@
                 "label": "LevelFilter",
                 "newLine": true
             },
-            "json_MessageNew": {
+            "json_MessageAll": {
                 "type": "selectSendTo",
                 "command": "Messages",
                 "jsonData": "{ \"service\": \"json\" }",

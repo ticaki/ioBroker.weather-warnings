@@ -248,7 +248,7 @@
         "json_TypeFilter": [],
         "json_LevelFilter": 0,
         "json_Enabled": false,
-        "json_MessageNew": "addedPush",
+        "json_MessageAll": "addedPush",
         "json_MessageAllRemove": "removeAllPush",
         "json_parse": false,
         "history_DwdEnabled": true,

@@ -458,6 +458,7 @@ class ProviderController extends import_library.BaseClass {
       if (!options.useadapter || objs && objs.rows && objs.rows.length > 0) {
         const noti = new NotificationClass.NotificationClass(this.adapter, options);
         this.notificationServices.push(noti);
+        await noti.init();
       } else {
         this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
         if (this.adapter && this.adapter.stop)

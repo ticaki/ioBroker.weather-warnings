@@ -123,10 +123,10 @@ class WeatherWarnings extends utils.Adapter {
             if (self.config[notificationService + "_UwzEnabled"])
               service.push("zamgService");
             const template = {
-              new: self.config[notificationService + "_MessageNew"],
+              new: self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "",
               remove: self.config[notificationService + "_MessageRemove"],
               removeAll: self.config[notificationService + "_MessageAllRemove"],
-              all: ""
+              all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : ""
             };
             template.new = template.new ? template.new : "none";
             template.remove = template.remove ? template.remove : "none";

@@ -616,7 +616,6 @@ class MessagesClass extends import_library.BaseClass {
           if (!rerun)
             break;
         }
-        msg = msg.replace("\\", "");
         this.cache.messages[templates[tempid].templateKey] = this.returnMessage(msg, this.starttime, templateKey);
         return this.returnMessage(msg, this.starttime, templateKey);
       }
@@ -624,7 +623,7 @@ class MessagesClass extends import_library.BaseClass {
     return this.returnMessage(msg, this.starttime, templateKey);
   }
   returnMessage = (msg, time, template) => {
-    return { startts: time, text: msg, template };
+    return { startts: time, text: msg.replaceAll("\\", ""), template };
   };
   async updateFormatedData(update = false) {
     if (!this.rawWarning && !this.formatedData) {
