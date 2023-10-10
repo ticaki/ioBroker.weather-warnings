@@ -595,7 +595,7 @@
             "restoreDefault": {
                 "type": "sendTo",
                 "command": "restoreDefault",
-                "jsonData": "{ \"service\": \"nothing\" }",
+                "jsonData": "{ \"service\": \"template\" }",
                 "newLine": true,
                 "label": "restoreDefault",
                 "sm": 6,
@@ -718,6 +718,18 @@
                 "lg": 4,
                 "label": "MessageAllRemove",
                 "newLine": true
+            },
+            "restoreDefault": {
+                "type": "sendTo",
+                "command": "restoreDefault",
+                "jsonData": "{ \"service\": \"telegram\" }",
+                "newLine": true,
+                "label": "restoreDefaultService",
+                "sm": 6,
+                "md":4,
+                "lg":2,
+                "hidden": "true",
+                "useNative": true
             }
         }
     },
@@ -834,6 +846,18 @@
                 "lg": 4,
                 "label": "MessageAllRemove",
                 "newLine": true
+            },
+            "restoreDefault": {
+                "type": "sendTo",
+                "command": "restoreDefault",
+                "jsonData": "{ \"service\": \"whatsapp\" }",
+                "newLine": true,
+                "label": "restoreDefaultService",
+                "sm": 6,
+                "md":4,
+                "lg":2,
+                "hidden": "true",
+                "useNative": true
             }
         }
     },
@@ -950,6 +974,18 @@
                 "lg": 4,
                 "label": "MessageAllRemove",
                 "newLine": true
+            },
+            "restoreDefault": {
+                "type": "sendTo",
+                "command": "restoreDefault",
+                "jsonData": "{ \"service\": \"pushover\" }",
+                "newLine": true,
+                "label": "restoreDefaultService",
+                "sm": 6,
+                "md":4,
+                "lg":2,
+                "hidden": "true",
+                "useNative": true
             }
         }
     },
@@ -1043,6 +1079,18 @@
                 "lg": 4,
                 "label": "MessageAllRemove",
                 "newLine": true
+            },
+            "restoreDefault": {
+                "type": "sendTo",
+                "command": "restoreDefault",
+                "jsonData": "{ \"service\": \"json\" }",
+                "newLine": true,
+                "label": "restoreDefaultService",
+                "sm": 6,
+                "md":4,
+                "lg":2,
+                "hidden": "true",
+                "useNative": true
             }
         }
     },
@@ -1137,6 +1185,18 @@
                 "disabled": "data.history_allinOne",
                 "label": "MessageRemove",
                 "newLine": true
+            },
+            "restoreDefault": {
+                "type": "sendTo",
+                "command": "restoreDefault",
+                "jsonData": "{ \"service\": \"history\" }",
+                "newLine": true,
+                "label": "restoreDefaultService",
+                "sm": 6,
+                "md":4,
+                "lg":2,
+                "hidden": "true",
+                "useNative": true
             }
         }
     },
@@ -1266,6 +1326,18 @@
                 "lg": 4,
                 "label": "email_Footer",
                 "newLine": true
+            },
+            "restoreDefault": {
+                "type": "sendTo",
+                "command": "restoreDefault",
+                "jsonData": "{ \"service\": \"email\" }",
+                "newLine": true,
+                "label": "restoreDefaultService",
+                "sm": 6,
+                "md":4,
+                "lg":2,
+                "hidden": "true",
+                "useNative": true
             }
         }
     },

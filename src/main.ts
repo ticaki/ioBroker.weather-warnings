@@ -5,7 +5,7 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
-
+import io_package from '../io-package.json';
 import axios from 'axios';
 import 'source-map-support/register';
 import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
@@ -335,46 +335,29 @@ class WeatherWarnings extends utils.Adapter {
             let connected = true;
             let state;
             switch (String(obj.command)) {
-                /** good defaults for templates */
+                /** defaults for templates */
                 case 'restoreDefault':
                     {
-                        const native = {
-                            native: {
-                                templateTable: [
-                                    {
-                                        templateKey: 'addedPush',
-                                        template:
-                                            '${Warntypename} warning from ${starttime}, level: ${warnlevelcolorname}',
-                                    },
-                                    {
-                                        templateKey: 'removePush',
-                                        template: '${Warntypename} all clear, level: ${warnlevelcolorname}',
-                                    },
-                                    { templateKey: 'removeAllPush', template: 'All clear!' },
-                                    {
-                                        templateKey: 'tableNew',
-                                        template:
-                                            '{ "action":"${status}", "start": "${starttime}", "ende": "${endtime}", type:"${warntypename}" }',
-                                    },
-                                    {
-                                        templateKey: 'tableRemove',
-                                        template: '{ "headline": "${Headline}", "status": "${status}"}',
-                                    },
-                                    { templateKey: 'tableAllRemove', template: '{ "status": "All clear!"}' },
-                                    {
-                                        templateKey: 'addedPushSpecial',
-                                        template:
-                                            'Luke we got a new warning ${Warntypename} from ${starttime}, looks like a ${_customArray}',
-                                    },
-                                    {
-                                        templateKey: '_customArray',
-                                        template:
-                                            '${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}',
-                                    },
-                                ],
-                            },
-                        };
-                        this.sendTo(obj.from, obj.command, native, obj.callback);
+                        let data: any = {};
+                        if (obj.message.service == 'template') {
+                            data = {
+                                native: {
+                                    templateTable: this.library.cloneGenericObject(io_package.native.templateTable),
+                                },
+                            };
+                        } else {
+                            data = { native: {} };
+                            [
+                                `${obj.message.service}_MessageNew`,
+                                `${obj.message.service}_MessageRemove`,
+                                `${obj.message.service}_MessageAllRemove`,
+                                `${obj.message.service}_MessageAll`,
+                            ].forEach((a) => {
+                                data.native[a] = io_package.native[a as keyof typeof io_package.native];
+                            });
+                        }
+                        this.log.debug(JSON.stringify(data));
+                        this.sendTo(obj.from, obj.command, data, obj.callback);
                     }
                     break;
                 case 'Messages':

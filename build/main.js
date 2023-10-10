@@ -18,6 +18,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var utils = __toESM(require("@iobroker/adapter-core"));
+var import_io_package = __toESM(require("../io-package.json"));
 var import_axios = __toESM(require("axios"));
 var import_register = require("source-map-support/register");
 var import_dwdWarncellIdLong = require("./lib/def/dwdWarncellIdLong");
@@ -271,39 +272,26 @@ class WeatherWarnings extends utils.Adapter {
       switch (String(obj.command)) {
         case "restoreDefault":
           {
-            const native = {
-              native: {
-                templateTable: [
-                  {
-                    templateKey: "addedPush",
-                    template: "${Warntypename} warning from ${starttime}, level: ${warnlevelcolorname}"
-                  },
-                  {
-                    templateKey: "removePush",
-                    template: "${Warntypename} all clear, level: ${warnlevelcolorname}"
-                  },
-                  { templateKey: "removeAllPush", template: "All clear!" },
-                  {
-                    templateKey: "tableNew",
-                    template: '{ "action":"${status}", "start": "${starttime}", "ende": "${endtime}", type:"${warntypename}" }'
-                  },
-                  {
-                    templateKey: "tableRemove",
-                    template: '{ "headline": "${Headline}", "status": "${status}"}'
-                  },
-                  { templateKey: "tableAllRemove", template: '{ "status": "All clear!"}' },
-                  {
-                    templateKey: "addedPushSpecial",
-                    template: "Luke we got a new warning ${Warntypename} from ${starttime}, looks like a ${_customArray}"
-                  },
-                  {
-                    templateKey: "_customArray",
-                    template: "${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}"
-                  }
-                ]
-              }
-            };
-            this.sendTo(obj.from, obj.command, native, obj.callback);
+            let data = {};
+            if (obj.message.service == "template") {
+              data = {
+                native: {
+                  templateTable: this.library.cloneGenericObject(import_io_package.default.native.templateTable)
+                }
+              };
+            } else {
+              data = { native: {} };
+              [
+                `${obj.message.service}_MessageNew`,
+                `${obj.message.service}_MessageRemove`,
+                `${obj.message.service}_MessageAllRemove`,
+                `${obj.message.service}_MessageAll`
+              ].forEach((a) => {
+                data.native[a] = import_io_package.default.native[a];
+              });
+            }
+            this.log.debug(JSON.stringify(data));
+            this.sendTo(obj.from, obj.command, data, obj.callback);
           }
           break;
         case "Messages":

@@ -191,13 +191,13 @@
             {
                 "templateKey": "tableNew",
                 "template":
-                    "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", type:\"${warntypename}\" }"
+                    "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", type:\"${warntypename}\" \\}"
             },
             {
                 "templateKey": "tableRemove",
-                "template": "{ \"headline\": \"${Headline}\", \"status\": \"${status}\"}"
+                "template": "{ \"headline\": \"${Headline}\", \"status\": \"${status}\"\\}"
             },
-            { "templateKey": "tableAllRemove", "template": "{ \"status\": \"All clear!\"}" },
+            { "templateKey": "tableAllRemove", "template": "{ \"status\": \"All clear!\"\\}" },
             {
                 "templateKey": "addedPushSpecial",
                 "template":
