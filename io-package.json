@@ -276,9 +276,19 @@
         "email_Enabled": false,
         "email_MessageNew": "addedPush",
         "email_MessageRemove": "removePush",
-        "email_allinOne": false,
         "email_Header": "none",
-        "email_Footer": "none"
+        "email_Footer": "none",
+        "alexa2_Adapter": "none",
+        "alexa2_DwdEnabled": true,
+        "alexa2_UwzEnabled": true,
+        "alexa2_ZamgEnabled": true,
+        "alexa2_device_ids": [],
+        "alexa2_TypeFilter": [],
+        "alexa2_LevelFilter": 0,
+        "alexa2_Enabled": false,
+        "alexa2_MessageNew": "addedPush",
+        "alexa2_MessageRemove": "removePush",
+        "alexa2_MessageAllRemove": "removeAllPush"
     },
     "objects": [],
     "instanceObjects": []

@@ -104,6 +104,18 @@ declare global {
             email_MessageRemove: string;
             email_Header: string;
             email_Footer: string;
+
+            alexa2_Adapter: string;
+            alexa2_DwdEnabled: boolean;
+            alexa2_UwzEnabled: boolean;
+            alexa2_ZamgEnabled: boolean;
+            alexa2_TypeFilter: number[];
+            alexa2_LevelFilter: number;
+            alexa2_Enabled: boolean;
+            alexa2_MessageNew: string;
+            alexa2_MessageRemove: string;
+            alexa2_MessageAllRemove: string;
+            alexa2_device_ids: string[];
         }
     }
 }

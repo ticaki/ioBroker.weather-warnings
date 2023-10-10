@@ -335,6 +335,30 @@ class WeatherWarnings extends utils.Adapter {
             let connected = true;
             let state;
             switch (String(obj.command)) {
+                case 'alexa2_device_ids':
+                    {
+                        const data: any[] = [];
+                        if (obj.message.adapter != 'none') {
+                            /* Wenn Doku oder testbar dann so:
+                            const test = await this.getObjectViewAsync('system', 'device', {
+                                startkey: `${obj.message.adapter}.`,
+                                endkey: `${obj.message.adapter}.\u9999`,
+                            });
+                            */
+                            const objs = await this.getForeignObjectsAsync(obj.message.adapter + '.Echo-Devices.*');
+                            for (const a in objs) {
+                                if (a.endsWith('.Commands.announcement'))
+                                    data.push({
+                                        value: a.split('.')[4],
+                                        label: objs[a.split('.').slice(0, 4).join('.')].common.name,
+                                    });
+                            }
+                        }
+
+                        this.sendTo(obj.from, obj.command, data, obj.callback);
+                    }
+                    break;
+
                 /** defaults for templates */
                 case 'restoreDefault':
                     {

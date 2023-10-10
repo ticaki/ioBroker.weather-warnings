@@ -22,6 +22,14 @@
                     "label": "telegram_Enabled",
                     "newLine": false
                 },
+                "alexa2_Enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "label": "alexa2_Enabled",
+                    "newLine": false
+                },
                 "json_Enabled": {
                     "type": "checkbox",
                     "sm": 6,
@@ -989,6 +997,148 @@
             }
         }
     },
+    "_alexa2": {
+        "type": "panel",
+        "label": "alexa2",
+        "hidden": "!data.alexa2_Enabled",
+        "items": {
+            "alexa2_Adapter": {
+                "type": "selectSendTo",
+                "command": "notificationService",
+                "jsonData": "{ \"service\": \"alexa2\" }",
+                "manual": false,
+                "multiple": false,
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "SelectNotificationService",
+                "newLine": true
+            },
+            "alexa2_device_ids": {
+                "type": "selectSendTo",
+                "command": "alexa2_device_ids",
+                "jsonData": "{ \"service\": \"alexa2\",\"adapter\": \"$data.alexa2_Adapter\"}",
+                "manual": false,
+                "multiple": true,
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "alexa2_device_ids",
+                "newLine": true
+            },
+            "alexa2_DwdEnabled": {
+                "type": "checkbox",
+                "sm": 6,
+                "md": 4,
+                "lg": 2,
+                "hidden": "!data.dwdEnabled",
+                "default": "none",
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "label": "dwdEnabled",
+                "newLine": true
+            },
+            "alexa2_UwzEnabled": {
+                "type": "checkbox",
+                "sm": 6,
+                "md": 4,
+                "lg": 2,
+                "hidden": "!data.uwzEnabled",
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "label": "uwzEnabled",
+                "newLine": true
+            },
+            "alexa2_ZamgEnabled": {
+                "type": "checkbox",
+                "sm": 6,
+                "md": 4,
+                "lg": 2,
+                "hidden": "!data.zamgEnabled",
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "label": "zamgEnabled",
+                "newLine": true
+            },
+            "alexa2_TypeFilter": {
+                "type": "selectSendTo",
+                "command": "filterType",
+                "jsonData": "{ \"service\": \"alexa2\" }",
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "manual": false,
+                "multiple": true,
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "TypeFilter",
+                "tooltip": "TypeFilter",
+                "newLine": true
+            },
+            "alexa2_LevelFilter": {
+                "type": "selectSendTo",
+                "command": "filterLevel",
+                "jsonData": "{ \"service\": \"alexa2\" }",
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "manual": false,
+                "multiple": false,
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "LevelFilter",
+                "newLine": true
+            },
+            "alexa2_MessageNew": {
+                "type": "selectSendTo",
+                "command": "Messages",
+                "jsonData": "{ \"service\": \"alexa2\" }",
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "manual": false,
+                "multiple": false,
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "MessageNew",
+                "newLine": true
+            },
+            "alexa2_MessageRemove": {
+                "type": "selectSendTo",
+                "command": "Messages",
+                "jsonData": "{ \"service\": \"alexa2\"}",
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "manual": false,
+                "multiple": false,
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "MessageRemove",
+                "newLine": true
+            },
+            "alexa2_MessageAllRemove": {
+                "type": "selectSendTo",
+                "command": "Messages",
+                "jsonData": "{ \"service\": \"alexa2\"}",
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "manual": false,
+                "multiple": false,
+                "sm": 12,
+                "md": 5,
+                "lg": 4,
+                "label": "MessageAllRemove",
+                "newLine": true
+            },
+            "restoreDefault": {
+                "type": "sendTo",
+                "command": "restoreDefault",
+                "jsonData": "{ \"service\": \"alexa2\" }",
+                "newLine": true,
+                "label": "restoreDefaultService",
+                "sm": 6,
+                "md":4,
+                "lg":2,
+                "hidden": "true",
+                "useNative": true
+            }
+        }
+    },
+
     "_json": {
         "type": "panel",
         "label": "json_panel",
