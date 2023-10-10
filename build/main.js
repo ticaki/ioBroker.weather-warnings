@@ -133,6 +133,11 @@ class WeatherWarnings extends utils.Adapter {
             template.remove = template.remove ? template.remove : "none";
             template.removeAll = template.removeAll ? template.removeAll : "none";
             template.all = template.all ? template.all : "none";
+            self.log.debug(
+              JSON.stringify(
+                self.config[notificationService + "_TypeFilter"]
+              )
+            );
             notificationServiceOpt[notificationService] = {
               ...import_notificationConfig_d.notificationServiceDefaults[notificationService],
               service,

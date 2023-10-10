@@ -484,9 +484,11 @@ export class ProviderController extends BaseClass {
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
         this.library = this.adapter.library;
-        this.pushOn = this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
+
+        this.doEndOfUpdater.bind(this);
     }
     async init(): Promise<void> {
+        this.pushOn = !this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
         this.refreshTime = this.adapter.config.refreshTime * 60000;
     }
     /**

@@ -207,5 +207,6 @@
     "email_Header":"Header for email",
     "email_Header_hint":"${emailheader} is the only working token here. (New warning or All clear)",
     "email_Footer":"Footer for email",
-    "dividerDirs":"Internal directories"
+    "dividerDirs":"Internal directories",
+    "alexa2_device_ids":"Device/Group"
 }

@@ -207,5 +207,6 @@
     "email_Header": "Intestazione per e-mail",
     "email_Header_hint": "${emailheader} è l'unico token funzionante qui. (Nuovo avviso o Tutto chiaro)",
     "email_Footer": "Piè di pagina per e-mail",
-    "dividerDirs": "Directory interne"
+    "dividerDirs": "Directory interne",
+    "alexa2_device_ids": "Dispositivo/Gruppo"
 }

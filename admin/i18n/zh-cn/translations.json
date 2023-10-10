@@ -207,5 +207,6 @@
     "email_Header": "电子邮件标题",
     "email_Header_hint": "${emailheader} 是这里唯一的工作令牌。 （新警告或全部清除）",
     "email_Footer": "电子邮件页脚",
-    "dividerDirs": "内部目录"
+    "dividerDirs": "内部目录",
+    "alexa2_device_ids": "设备/组"
 }

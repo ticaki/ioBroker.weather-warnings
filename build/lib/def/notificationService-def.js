@@ -32,9 +32,10 @@ const serciceCapabilities = {
   json: { notifications: json },
   whatsapp: { notifications: push },
   pushover: { notifications: push },
-  history: { notifications: history }
+  history: { notifications: history },
+  alexa2: { notifications: push }
 };
-const Array = ["telegram", "pushover", "whatsapp", "json", "history", "email"];
+const Array = ["telegram", "pushover", "whatsapp", "json", "history", "email", "alexa2"];
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Array,

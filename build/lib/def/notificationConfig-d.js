@@ -39,6 +39,9 @@ const notificationServiceDefaults = {
   },
   email: {
     useadapter: true
+  },
+  alexa2: {
+    useadapter: true
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

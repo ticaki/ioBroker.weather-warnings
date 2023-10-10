@@ -207,5 +207,6 @@
     "email_Header": "Encabezado para correo electrónico",
     "email_Header_hint": "${emailheader} es el único token que funciona aquí. (Nueva advertencia o Todo claro)",
     "email_Footer": "Pie de página para correo electrónico",
-    "dividerDirs": "Directorios internos"
+    "dividerDirs": "Directorios internos",
+    "alexa2_device_ids": "Dispositivo/Grupo"
 }

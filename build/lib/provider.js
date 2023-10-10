@@ -437,9 +437,10 @@ class ProviderController extends import_library.BaseClass {
   constructor(adapter) {
     super(adapter, "provider");
     this.library = this.adapter.library;
-    this.pushOn = this.adapter.config.notPushAtStart;
+    this.doEndOfUpdater.bind(this);
   }
   async init() {
+    this.pushOn = !this.adapter.config.notPushAtStart;
     this.refreshTime = this.adapter.config.refreshTime * 6e4;
   }
   async createNotificationService(optionList) {

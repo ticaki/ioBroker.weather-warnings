@@ -207,5 +207,6 @@
     "email_Header": "En-tête du courrier électronique",
     "email_Header_hint": "${emailheader} est le seul jeton fonctionnel ici. (Nouvel avertissement ou Tout est clair)",
     "email_Footer": "Pied de page pour l'e-mail",
-    "dividerDirs": "Annuaires internes"
+    "dividerDirs": "Annuaires internes",
+    "alexa2_device_ids": "Appareil/Groupe"
 }

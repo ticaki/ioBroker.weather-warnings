@@ -22,6 +22,9 @@ export type OptionsType = {
     email?: {
         name: 'email';
     } & BaseType;
+    alexa2?: {
+        name: 'alexa2';
+    } & BaseType;
 };
 export type BaseType = {
     service: providerServices[];
@@ -66,9 +69,10 @@ export const serciceCapabilities: Record<Type, ConfigType> = {
     whatsapp: { notifications: push },
     pushover: { notifications: push },
     history: { notifications: history },
+    alexa2: { notifications: push },
 };
 
-export const Array: Type[] = ['telegram', 'pushover', 'whatsapp', 'json', 'history', 'email'];
+export const Array: Type[] = ['telegram', 'pushover', 'whatsapp', 'json', 'history', 'email', 'alexa2'];
 
 export type MessageType = {
     text: string;

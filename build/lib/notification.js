@@ -171,6 +171,37 @@ class NotificationClass extends library.BaseClass {
           }
         }
         break;
+      case "alexa2":
+        {
+          const devices = this.adapter.config.alexa2_device_ids;
+          if (devices.length == 0)
+            break;
+          const opt = {
+            deviceSerialNumber: devices[0],
+            sequenceNodes: [],
+            sequenceType: "ParallelNode"
+          };
+          for (const a in devices) {
+            const optsub = { sequenceType: "SerialNode", nodes: [] };
+            optsub.nodes.push({
+              command: "speak-volume",
+              value: "15",
+              device: devices[a]
+            });
+            for (const msg of messages) {
+              if (Array.isArray(msg))
+                continue;
+              optsub.nodes.push({
+                command: "announcement",
+                value: msg.text,
+                device: devices[a]
+              });
+            }
+            opt.sequenceNodes.push(optsub);
+          }
+          await this.adapter.sendToAsync(this.options.adapter, "sendSequenceCommand", opt);
+        }
+        break;
       case "history":
         {
           for (const msg of messages) {

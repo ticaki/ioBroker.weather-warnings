@@ -19,4 +19,7 @@ export const notificationServiceDefaults: Record<NotificationType.Type, Partial<
     email: {
         useadapter: true,
     },
+    alexa2: {
+        useadapter: true,
+    },
 };

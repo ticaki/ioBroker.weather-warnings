@@ -208,5 +208,6 @@
     "email_Header": "Kopfzeile für E-Mail",
     "email_Header_hint": "${emailheader} ist hier das einzige funktionierende Token. (Neue Warnung oder Entwarnung)",
     "email_Footer": "Fußzeile für E-Mail",
-    "dividerDirs": "Interne Verzeichnisse"
+    "dividerDirs": "Interne Verzeichnisse",
+    "alexa2_device_ids": "Gerät/Gruppe"
 }

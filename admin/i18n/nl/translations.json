@@ -207,5 +207,6 @@
     "email_Header": "Koptekst voor e-mail",
     "email_Header_hint": "${emailheader} is hier het enige werkende token. (Nieuwe waarschuwing of Alles gewist)",
     "email_Footer": "Voettekst voor e-mail",
-    "dividerDirs": "Interne mappen"
+    "dividerDirs": "Interne mappen",
+    "alexa2_device_ids": "Apparaat/groep"
 }
