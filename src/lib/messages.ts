@@ -402,7 +402,7 @@ export class MessagesClass extends BaseClass {
                 };
         }
     }
-    async init(): Promise<customFormatedKR> {
+    async updateFormated(): Promise<customFormatedKR> {
         switch (this.provider ? this.provider.service : 'default') {
             case 'dwdService':
                 {
@@ -594,7 +594,7 @@ export class MessagesClass extends BaseClass {
         ) {
             // all messages with new/remove
             if (this.cache.ts < Date.now() - 60000) {
-                this.updateFormatedData();
+                this.updateFormated();
             }
             if (this.cache.messages[templateKey as string] !== undefined)
                 return this.cache.messages[templateKey as string];
@@ -764,6 +764,7 @@ export class MessagesClass extends BaseClass {
     updateData(data: object): void {
         this.rawWarning = data;
         this.notDeleted = true;
+        this.updateFormated();
     }
 
     //** dont send a message and dont delete this*/

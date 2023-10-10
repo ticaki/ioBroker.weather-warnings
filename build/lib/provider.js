@@ -293,7 +293,7 @@ class DWDProvider extends BaseProvider {
           w.properties,
           this.providerController
         );
-        await nmessage.init();
+        await nmessage.updateFormated();
         if (nmessage && nmessage.filter(this.filter))
           this.messages.push(nmessage);
       } else {
@@ -360,7 +360,7 @@ class ZAMGProvider extends BaseProvider {
           result.properties.warnings[a].properties,
           this.providerController
         );
-        await nmessage.init();
+        await nmessage.updateFormated();
         if (nmessage && nmessage.filter(this.filter))
           this.messages.push(nmessage);
       } else {
@@ -402,7 +402,7 @@ class UWZProvider extends BaseProvider {
           result.results[a],
           this.providerController
         );
-        await nmessage.init();
+        await nmessage.updateFormated();
         if (nmessage && nmessage.filter(this.filter))
           this.messages.push(nmessage);
       } else {
@@ -433,18 +433,14 @@ class ProviderController extends import_library.BaseClass {
   refreshTime = 3e5;
   library;
   notificationServices = [];
-  noWarningMessage;
   pushOn = false;
   constructor(adapter) {
     super(adapter, "provider");
     this.library = this.adapter.library;
-    this.noWarningMessage = new import_messages.MessagesClass(this.adapter, "default", null, {}, this);
     this.pushOn = this.adapter.config.notPushAtStart;
   }
   async init() {
     this.refreshTime = this.adapter.config.refreshTime * 6e4;
-    await this.noWarningMessage.init();
-    await this.noWarningMessage.formatMessages();
   }
   async createNotificationService(optionList) {
     for (const a in optionList) {

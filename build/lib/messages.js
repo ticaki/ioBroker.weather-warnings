@@ -397,7 +397,7 @@ class MessagesClass extends import_library.BaseClass {
         };
     }
   }
-  async init() {
+  async updateFormated() {
     switch (this.provider ? this.provider.service : "default") {
       case "dwdService":
         {
@@ -566,7 +566,7 @@ class MessagesClass extends import_library.BaseClass {
       action = "new";
     if (override || action == "new" && this.newMessage || action == "remove" && !this.notDeleted || action == "all" && templateActions.includes("all") && !templateActions.includes("new") && !templateActions.includes("remove")) {
       if (this.cache.ts < Date.now() - 6e4) {
-        this.updateFormatedData();
+        this.updateFormated();
       }
       if (this.cache.messages[templateKey] !== void 0)
         return this.cache.messages[templateKey];
@@ -700,6 +700,7 @@ class MessagesClass extends import_library.BaseClass {
   updateData(data) {
     this.rawWarning = data;
     this.notDeleted = true;
+    this.updateFormated();
   }
   silentUpdate() {
     this.newMessage = false;

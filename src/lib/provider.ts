@@ -330,7 +330,7 @@ export class DWDProvider extends BaseProvider {
                     w.properties,
                     this.providerController,
                 );
-                await nmessage.init();
+                await nmessage.updateFormated();
 
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
             } else {
@@ -404,7 +404,7 @@ export class ZAMGProvider extends BaseProvider {
                     result.properties.warnings[a].properties,
                     this.providerController,
                 );
-                await nmessage.init();
+                await nmessage.updateFormated();
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
             } else {
                 this.messages[index].updateData(result.properties.warnings[a].properties);
@@ -445,7 +445,7 @@ export class UWZProvider extends BaseProvider {
                     result.results[a],
                     this.providerController,
                 );
-                await nmessage.init();
+                await nmessage.updateFormated();
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
             } else {
                 this.messages[index].updateData(result.results[a]);
@@ -478,19 +478,16 @@ export class ProviderController extends BaseClass {
     refreshTime: number = 300000;
     library: Library;
     notificationServices: NotificationClass.NotificationClass[] = [];
-    noWarningMessage: MessagesClass;
+
     pushOn = false;
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
         this.library = this.adapter.library;
-        this.noWarningMessage = new MessagesClass(this.adapter, 'default', null, {}, this);
         this.pushOn = this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
     }
     async init(): Promise<void> {
         this.refreshTime = this.adapter.config.refreshTime * 60000;
-        await this.noWarningMessage.init();
-        await this.noWarningMessage.formatMessages();
     }
     /**
      * Create a notificationService

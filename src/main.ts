@@ -335,6 +335,48 @@ class WeatherWarnings extends utils.Adapter {
             let connected = true;
             let state;
             switch (String(obj.command)) {
+                /** good defaults for templates */
+                case 'restoreDefault':
+                    {
+                        const native = {
+                            native: {
+                                templateTable: [
+                                    {
+                                        templateKey: 'addedPush',
+                                        template:
+                                            '${Warntypename} warning from ${starttime}, level: ${warnlevelcolorname}',
+                                    },
+                                    {
+                                        templateKey: 'removePush',
+                                        template: '${Warntypename} all clear, level: ${warnlevelcolorname}',
+                                    },
+                                    { templateKey: 'removeAllPush', template: 'All clear!' },
+                                    {
+                                        templateKey: 'tableNew',
+                                        template:
+                                            '{ "action":"${status}", "start": "${starttime}", "ende": "${endtime}", type:"${warntypename}" }',
+                                    },
+                                    {
+                                        templateKey: 'tableRemove',
+                                        template: '{ "headline": "${Headline}", "status": "${status}"}',
+                                    },
+                                    { templateKey: 'tableAllRemove', template: '{ "status": "All clear!"}' },
+                                    {
+                                        templateKey: 'addedPushSpecial',
+                                        template:
+                                            'Luke we got a new warning ${Warntypename} from ${starttime}, looks like a ${_customArray}',
+                                    },
+                                    {
+                                        templateKey: '_customArray',
+                                        template:
+                                            '${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}',
+                                    },
+                                ],
+                            },
+                        };
+                        this.sendTo(obj.from, obj.command, native, obj.callback);
+                    }
+                    break;
                 case 'Messages':
                     {
                         if (obj.message.service) {

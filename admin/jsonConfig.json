@@ -591,6 +591,17 @@
                 "md": 12,
                 "lg": 12,
                 "newLine": true
+            },
+            "restoreDefault": {
+                "type": "sendTo",
+                "command": "restoreDefault",
+                "jsonData": "{ \"service\": \"nothing\" }",
+                "newLine": true,
+                "label": "restoreDefault",
+                "sm": 6,
+                "md":4,
+                "lg":2,
+                "useNative": true
             }
         }
     },

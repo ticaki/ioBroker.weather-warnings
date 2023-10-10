@@ -1,5 +1,5 @@
-import { customFormatedKeysDef, genericWarntypState, genericWarntypStatesTree } from './messages-def';
-import { dataImportDwdTypeProperties, dataImportUwzTypeProperties, dataImportZamgTypeProperties } from './provider-def';
+import * as messagesDef from './messages-def';
+import * as providerDef from './provider-def';
 
 type ChangeTypeToChannelAndState<Obj> = Obj extends object
     ? {
@@ -34,15 +34,16 @@ export type statesObjectsWarningsType =
               | customChannelType
               | {
                     raw?:
-                        | ChangeTypeToChannelAndState<dataImportDwdTypeProperties>
-                        | ChangeTypeToChannelAndState<dataImportUwzTypeProperties>
-                        | ChangeTypeToChannelAndState<dataImportZamgTypeProperties>;
+                        | ChangeTypeToChannelAndState<providerDef.dataImportDwdTypeProperties>
+                        | ChangeTypeToChannelAndState<providerDef.dataImportUwzTypeProperties>
+                        | ChangeTypeToChannelAndState<providerDef.dataImportZamgTypeProperties>;
                 };
       }
     | {
           allService: {
-              formatedkeys: customChannelType & ChangeTypeOfKeys<Required<customFormatedKeysDef>, ioBroker.StateObject>;
-              alerts: customChannelType & genericWarntypStatesTree;
+              formatedkeys: customChannelType &
+                  ChangeTypeOfKeys<Required<messagesDef.customFormatedKeysDef>, ioBroker.StateObject>;
+              alerts: customChannelType & messagesDef.genericWarntypStatesTree;
           };
       };
 
@@ -1474,7 +1475,7 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                     common: {
                         name: 'Warning level',
                         type: 'number',
-                        role: 'value',
+                        role: 'value.warning',
                         read: true,
                         write: false,
                     },
@@ -1740,8 +1741,8 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 type: 'state',
                 common: {
                     name: 'Level of Warning as Number',
-                    type: 'string',
-                    role: 'text',
+                    type: 'number',
+                    role: 'value.warning',
                     read: true,
                     write: false,
                 },
@@ -1830,60 +1831,60 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 native: {},
             },
             storm: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'Storm' } },
             },
             hail: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'hail' } },
             },
             thunderstorm: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: {
                     ...defaultChannel,
                     common: { name: 'thunderstorm' },
                 },
             },
             rain: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'rain' } },
             },
             black_ice_slippery: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: {
                     ...defaultChannel,
                     common: { name: 'black ice/slippery' },
                 },
             },
             snowfall: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'snowfall' } },
             },
             thaw: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'thaw' } },
             },
             unknown: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'unknown' } },
             },
             cold: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'cold' } },
             },
             forest_fire: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: {
                     ...defaultChannel,
                     common: { name: 'forest fire' },
                 },
             },
             heat: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'heat' } },
             },
             fog: {
-                ...cloneObj(genericWarntypState),
+                ...cloneObj(messagesDef.genericWarntypState),
                 _channel: { ...defaultChannel, common: { name: 'fog' } },
             },
         },

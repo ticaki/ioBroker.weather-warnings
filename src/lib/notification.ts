@@ -12,7 +12,7 @@ export class NotificationClass extends library.BaseClass {
     providerDB: any;
     removeAllSend: boolean = true;
 
-    clearAll(): void {}
+    //clearAll(): void {}
 
     constructor(adapter: WeatherWarnings, notifcationOptions: NotificationType.BaseType) {
         super(adapter, notifcationOptions.name);
@@ -21,6 +21,9 @@ export class NotificationClass extends library.BaseClass {
         this.config = NotificationType.serciceCapabilities[notifcationOptions.name];
     }
 
+    /**
+     * Initialisiere class - create channel, states etc
+     */
     async init(): Promise<void> {
         switch (this.name as NotificationType.Type) {
             case 'history':
@@ -156,7 +159,7 @@ export class NotificationClass extends library.BaseClass {
     }
 
     async sendNotifications(messages: NotificationType.MessageType[]): Promise<boolean> {
-        if (Array.isArray(messages) && messages.length == 0) return false;
+        if (!Array.isArray(messages) || messages.length == 0) return false;
 
         switch (this.name as NotificationType.Type) {
             case 'telegram':
@@ -199,7 +202,7 @@ export class NotificationClass extends library.BaseClass {
                         if (!msg || !msg.provider || !this.adapter.config.history_Enabled || !msg.message) return false;
                         let newMsg = msg.text;
                         if (this.adapter.config.history_allinOne) {
-                            newMsg = JSON.stringify(msg.message.formatedData);
+                            newMsg = JSON.stringify({ ...msg.message.formatedData, ts: Date.now() });
                         }
                         const targets = [msg.provider.name, msg.provider.providerController.name];
                         for (const a in targets) {

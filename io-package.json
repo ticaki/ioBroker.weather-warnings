@@ -180,27 +180,33 @@
         "templateTable": [
             {
                 "templateKey": "addedPush",
-                "template": "New Warning ${headline}, start at ${starttime}."
+                "template":
+                    "${Warntypename} warning from ${starttime}, level: ${warnlevelcolorname}"
             },
             {
                 "templateKey": "removePush",
-                "template": "Remove Warning ${headline}, end at ${endtime}."
+                "template": "${Warntypename} all clear, level: ${warnlevelcolorname}"
             },
-            {
-                "templateKey": "removeAllPush",
-                "template": "No warning - dont use ${} here, this may change later."
-            },
+            { "templateKey": "removeAllPush", "template": "All clear!" },
             {
                 "templateKey": "tableNew",
-                "template": "{ \"action\":\"new\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\" \\}"
+                "template":
+                    "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", type:\"${warntypename}\" }"
             },
             {
                 "templateKey": "tableRemove",
-                "template": "{ \"action\":\"remove\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\" \\}"
+                "template": "{ \"headline\": \"${Headline}\", \"status\": \"${status}\"}"
+            },
+            { "templateKey": "tableAllRemove", "template": "{ \"status\": \"All clear!\"}" },
+            {
+                "templateKey": "addedPushSpecial",
+                "template":
+                    "Luke we got a new warning ${Warntypename} from ${starttime}, looks like a ${_customArray}"
             },
             {
-                "templateKey": "historyRemove",
-                "template": "{ \"action\":\"remove\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\" \\}"
+                "templateKey": "_customArray",
+                "template":
+                    "${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}"
             }
         ],
         "dwdLanguage": "ger",
@@ -248,8 +254,8 @@
         "json_TypeFilter": [],
         "json_LevelFilter": 0,
         "json_Enabled": false,
-        "json_MessageAll": "addedPush",
-        "json_MessageAllRemove": "removeAllPush",
+        "json_MessageAll": "tableNew",
+        "json_MessageAllRemove": "tableAllRemove",
         "json_parse": false,
         "history_DwdEnabled": true,
         "history_UwzEnabled": true,
@@ -257,8 +263,8 @@
         "history_TypeFilter": [],
         "history_LevelFilter": 0,
         "history_Enabled": false,
-        "history_MessageNew": "addedPush",
-        "history_MessageRemove": "removePush",
+        "history_MessageNew": "tableNew",
+        "history_MessageRemove": "tableAllRemove",
         "history_allinOne": false,
         "email_Adapter": "none",
         "email_line_break": "\n",

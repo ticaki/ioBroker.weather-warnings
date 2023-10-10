@@ -146,7 +146,7 @@ export const genericWarntypState: genericWarntypeStatesType = {
         common: {
             name: 'Headline of warning.',
             type: 'string',
-            role: '',
+            role: 'text',
             read: true,
             write: false,
         },
@@ -158,7 +158,7 @@ export const genericWarntypState: genericWarntypeStatesType = {
         common: {
             name: 'Warntype as number.',
             type: 'number',
-            role: '',
+            role: 'value',
             read: true,
             write: false,
         },
@@ -170,7 +170,7 @@ export const genericWarntypState: genericWarntypeStatesType = {
         common: {
             name: 'Now is between start and end.',
             type: 'boolean',
-            role: '',
+            role: 'indicator',
             read: true,
             write: false,
         },

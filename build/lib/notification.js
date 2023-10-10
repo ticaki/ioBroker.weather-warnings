@@ -36,8 +36,6 @@ class NotificationClass extends library.BaseClass {
   config;
   providerDB;
   removeAllSend = true;
-  clearAll() {
-  }
   constructor(adapter, notifcationOptions) {
     super(adapter, notifcationOptions.name);
     this.log.debug(`Create notification service ${this.name}`);
@@ -140,7 +138,7 @@ class NotificationClass extends library.BaseClass {
     return await message.getMessage(templateType, templateKey, action, override);
   }
   async sendNotifications(messages) {
-    if (Array.isArray(messages) && messages.length == 0)
+    if (!Array.isArray(messages) || messages.length == 0)
       return false;
     switch (this.name) {
       case "telegram":
@@ -182,7 +180,7 @@ class NotificationClass extends library.BaseClass {
               return false;
             let newMsg = msg.text;
             if (this.adapter.config.history_allinOne) {
-              newMsg = JSON.stringify(msg.message.formatedData);
+              newMsg = JSON.stringify({ ...msg.message.formatedData, ts: Date.now() });
             }
             const targets = [msg.provider.name, msg.provider.providerController.name];
             for (const a in targets) {
