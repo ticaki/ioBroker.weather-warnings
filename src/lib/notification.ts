@@ -198,7 +198,23 @@ export class NotificationClass extends library.BaseClass {
             case 'alexa2':
                 {
                     const devices = this.adapter.config.alexa2_device_ids;
+
                     if (devices.length == 0) break;
+
+                    let opt = `${this.adapter.config.alexa2_volumen}`;
+                    for (const a in devices) {
+                        for (const msg of messages) {
+                            if (Array.isArray(msg)) continue;
+                            opt += `;${msg.text}`;
+                        }
+                        if (opt != `${this.adapter.config.alexa2_volumen}`) {
+                            await this.adapter.setForeignStateAsync(
+                                `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
+                                opt,
+                            );
+                        }
+                    }
+                    /*
                     const opt: any = {
                         // value
                         deviceSerialNumber: devices[0], // Serial number of one device to get Meta data which will be used if no device is pecified on the commands
@@ -209,20 +225,24 @@ export class NotificationClass extends library.BaseClass {
                         const optsub: any = { sequenceType: 'SerialNode', nodes: [] };
                         optsub.nodes.push({
                             command: 'speak-volume',
-                            value: '15',
+                            value: 1, //this.adapter.config.alexa2_volumen,
                             device: devices[a],
                         });
                         for (const msg of messages) {
                             if (Array.isArray(msg)) continue;
                             optsub.nodes.push({
-                                command: 'announcement',
-                                value: msg.text,
+                                command: 'speak',
+                                value: `${this.adapter.config.alexa2_volumen};${msg.text}`,
                                 device: devices[a],
                             });
                         }
                         opt.sequenceNodes.push(optsub);
                     }
-                    await this.adapter.sendToAsync(this.options.adapter, 'sendSequenceCommand', opt);
+                    this.log.debug(
+                        JSON.stringify(
+                            await this.adapter.sendToAsync(this.options.adapter, 'sendSequenceCommand', opt),
+                        ),
+                    );*/
                 }
                 break;
             case 'history':

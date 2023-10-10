@@ -6,7 +6,7 @@
     "SelectNotificationService": "Wählen Sie die Adapterinstanz aus.",
     "TypeFilter": "Die folgenden Warnungstypen werden aus Benachrichtigungen herausgefiltert.",
     "WarnLanguage": "Sprache der abgerufenen Warnungen.",
-    "alexa_Enabled": "Alexa aktivieren",
+    "alexa2_Enabled": "Alexa aktivieren",
     "bulgarian": "bulgarisch",
     "croatian": "kroatisch",
     "czech": "tschechisch",
@@ -209,5 +209,6 @@
     "email_Header_hint": "${emailheader} ist hier das einzige funktionierende Token. (Neue Warnung oder Entwarnung)",
     "email_Footer": "Fußzeile für E-Mail",
     "dividerDirs": "Interne Verzeichnisse",
-    "alexa2_device_ids": "Gerät/Gruppe"
+    "alexa2_device_ids": "Gerät/Gruppe",
+    "alexa2_volumen": "Volumen"
 }

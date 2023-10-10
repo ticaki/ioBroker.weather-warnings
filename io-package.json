@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "news": {
+      "0.3.2": {
+        "en": "add alexa volumen",
+        "de": "alexa volumen hinzufügen",
+        "ru": "добавить alexa volumen",
+        "pt": "adicionar volume de alexa",
+        "nl": "voeg alexa volume toe",
+        "fr": "ajouter alexa volumen",
+        "it": "aggiungere alexa volume",
+        "es": "añadir alexa volumen",
+        "pl": "dodać aleksję",
+        "uk": "додати alexa об'єм",
+        "zh-cn": "增 编"
+      },
       "0.3.1": {
         "en": "added alexa",
         "de": "Hinzugefügt Alexa",
@@ -80,19 +93,6 @@
         "pl": "tłumaczenia\nfiltry ostrzegają typy, typy ostrzegawcze\ntesty wstępne",
         "uk": "більше перекладів\nфільтр попереджає тип, загальні попередження\nбільше тестів",
         "zh-cn": "更多翻译\n战争类型、普通战争类型\n更多的预制试验"
-      },
-      "0.2.2-alpha1.0": {
-        "en": "more CustomTokens,\ntranslations for warntypes, warnlevelcolor,\ntotal active warningcounts\nremove old warnings",
-        "de": "mehr CustomTokens,\nübersetzungen für warntypen, warnlevelcolor,\ngesamte aktive warnmeldungsanzahl\nalte warnungen entfernen",
-        "ru": "больше CustomTokens,\nпереводы для предупреждений, предупредительного,\nполное активное предупреждение\nудалить старые предупреждения",
-        "pt": "mais CustomTokens,\ntraduções para avisotipos, advertlevelcolor,\ntotal de alertas ativos\nremover avisos antigos",
-        "nl": "meer Custom Tokens,\nvertaling:,\ntotale actieve waarschuwingscounts\nverwijder oude waarschuwingen",
-        "fr": "plus CustomTokens,\ntraductions pour les mises en garde, avertissementlevelcolor,\ntotal des comptes d ' avertissement actifs\nsupprimer les vieux avertissements",
-        "it": "più CustomTokens,\ntraduzioni per i tipi di avvertimento, avvertilevelcolor,\ntotali di segnalazione attiva\nrimuovere vecchi avvisi",
-        "es": "más CustomTokens,\ntraducción para warntypes, warnlevelcolor,\ntotal active warningcounts\neliminar viejas advertencias",
-        "pl": "kliencki,\ntranslacje dla typów ostrzegawczych kolorów,\noficjalna strona ostrzegania\nusunąć stare ostrzeżenia",
-        "uk": "більше CustomTokens,\nпереклади для попередженнятипів, попереджають,\nзагальний активний контроль\nвидалити старі попередження",
-        "zh-cn": "更加习惯,\n战争原型、战地殖民者的翻译,\n积极警告总数\n取消旧警告"
       }
     },
     "title": "Weather Warnings",
@@ -290,7 +290,8 @@
     "alexa2_Enabled": false,
     "alexa2_MessageNew": "addedPush",
     "alexa2_MessageRemove": "removePush",
-    "alexa2_MessageAllRemove": "removeAllPush"
+    "alexa2_MessageAllRemove": "removeAllPush",
+    "alexa2_volumen": 15
   },
   "objects": [],
   "instanceObjects": []

@@ -1027,6 +1027,18 @@
                 "label": "alexa2_device_ids",
                 "newLine": true
             },
+            "alexa2_volumen": {
+                "type": "number",
+                "label": "alexa2_volumen",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "disabled": "data.alexa2_Adapter == 'none'",
+                "sm": 8,
+                "md": 4,
+                "lg": 2,
+                "newLine": false
+            },
             "alexa2_DwdEnabled": {
                 "type": "checkbox",
                 "sm": 6,

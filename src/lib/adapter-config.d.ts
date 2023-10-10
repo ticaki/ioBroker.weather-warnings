@@ -116,6 +116,7 @@ declare global {
             alexa2_MessageRemove: string;
             alexa2_MessageAllRemove: string;
             alexa2_device_ids: string[];
+            alexa2_volumen: number;
         }
     }
 }

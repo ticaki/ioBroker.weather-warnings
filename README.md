@@ -111,6 +111,9 @@ Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevel
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.3.2 (2023-10-10)
+* add alexa volumen
+
 ### 0.3.1 (2023-10-10)
 * (ticaki) added alexa
 

@@ -176,30 +176,20 @@ class NotificationClass extends library.BaseClass {
           const devices = this.adapter.config.alexa2_device_ids;
           if (devices.length == 0)
             break;
-          const opt = {
-            deviceSerialNumber: devices[0],
-            sequenceNodes: [],
-            sequenceType: "ParallelNode"
-          };
+          let opt = `${this.adapter.config.alexa2_volumen}`;
           for (const a in devices) {
-            const optsub = { sequenceType: "SerialNode", nodes: [] };
-            optsub.nodes.push({
-              command: "speak-volume",
-              value: "15",
-              device: devices[a]
-            });
             for (const msg of messages) {
               if (Array.isArray(msg))
                 continue;
-              optsub.nodes.push({
-                command: "announcement",
-                value: msg.text,
-                device: devices[a]
-              });
+              opt += `;${msg.text}`;
             }
-            opt.sequenceNodes.push(optsub);
+            if (opt != `${this.adapter.config.alexa2_volumen}`) {
+              await this.adapter.setForeignStateAsync(
+                `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
+                opt
+              );
+            }
           }
-          await this.adapter.sendToAsync(this.options.adapter, "sendSequenceCommand", opt);
         }
         break;
       case "history":

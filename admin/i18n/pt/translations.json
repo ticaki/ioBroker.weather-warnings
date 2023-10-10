@@ -208,5 +208,6 @@
     "email_Header_hint": "${emailheader} é o único token funcional aqui. (Novo aviso ou Tudo limpo)",
     "email_Footer": "Rodapé para e-mail",
     "dividerDirs": "Diretórios internos",
-    "alexa2_device_ids": "Dispositivo/Grupo"
+    "alexa2_device_ids": "Dispositivo/Grupo",
+    "alexa2_volumen": "Volume"
 }

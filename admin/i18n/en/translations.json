@@ -7,7 +7,7 @@
     "SelectNotificationService": "Select adapter instance.",
     "TypeFilter": "The following warning types are filtered out of the notifications.",
     "WarnLanguage": "Languange of retrieved warnings.",
-    "alexa_Enabled": "Activate alexa",
+    "alexa2_Enabled": "Activate alexa",
     "bulgarian": "bulgarian",
     "croatian": "croatian",
     "czech": "czech",
@@ -208,5 +208,7 @@
     "email_Header_hint":"${emailheader} is the only working token here. (New warning or All clear)",
     "email_Footer":"Footer for email",
     "dividerDirs":"Internal directories",
-    "alexa2_device_ids":"Device/Group"
+    "alexa2_device_ids":"Device/Group",
+    "alexa2_volumen": "Volume"
+    
 }
