@@ -41,7 +41,7 @@ var import_messages = require("./messages");
 var NotificationClass = __toESM(require("./notification"));
 var import_test_warnings = require("./test-warnings");
 var messagesDef = __toESM(require("./def/messages-def"));
-const DIV = "/";
+const DIV = "-";
 class BaseProvider extends import_library.BaseClass {
   service;
   url = "";

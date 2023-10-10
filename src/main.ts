@@ -9,7 +9,7 @@ import io_package from '../io-package.json';
 import axios from 'axios';
 import 'source-map-support/register';
 import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
-import { DIV, ProviderController } from './lib/provider.js';
+import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 import {
     customFormatedTokens,
@@ -157,13 +157,6 @@ class WeatherWarnings extends utils.Adapter {
                         template.remove = template.remove ? template.remove : 'none';
                         template.removeAll = template.removeAll ? template.removeAll : 'none';
                         template.all = template.all ? template.all : 'none';
-                        self.log.debug(
-                            JSON.stringify(
-                                self.config[
-                                    (notificationService + '_TypeFilter') as keyof ioBroker.AdapterConfig
-                                ] as string[],
-                            ),
-                        );
                         // @ts-expect-error keine ahnung :)
                         notificationServiceOpt[notificationService] = {
                             ...notificationServiceDefaults[notificationService],
@@ -247,7 +240,7 @@ class WeatherWarnings extends utils.Adapter {
                         } = {
                             filter: { type: self.config.zamgTypeFilter },
                         };
-                        const zamgArr = id.zamgSelectId.split(DIV) as [string, string];
+                        const zamgArr = id.zamgSelectId.split('/') as [string, string];
                         if (zamgArr.length == 2) {
                             self.providerController.createProviderIfNotExist({
                                 ...options,
@@ -391,7 +384,6 @@ class WeatherWarnings extends utils.Adapter {
                                 data.native[a] = io_package.native[a as keyof typeof io_package.native];
                             });
                         }
-                        this.log.debug(JSON.stringify(data));
                         this.sendTo(obj.from, obj.command, data, obj.callback);
                     }
                     break;

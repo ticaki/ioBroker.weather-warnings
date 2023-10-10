@@ -133,11 +133,6 @@ class WeatherWarnings extends utils.Adapter {
             template.remove = template.remove ? template.remove : "none";
             template.removeAll = template.removeAll ? template.removeAll : "none";
             template.all = template.all ? template.all : "none";
-            self.log.debug(
-              JSON.stringify(
-                self.config[notificationService + "_TypeFilter"]
-              )
-            );
             notificationServiceOpt[notificationService] = {
               ...import_notificationConfig_d.notificationServiceDefaults[notificationService],
               service,
@@ -202,7 +197,7 @@ class WeatherWarnings extends utils.Adapter {
             const options = {
               filter: { type: self.config.zamgTypeFilter }
             };
-            const zamgArr = id.zamgSelectId.split(import_provider.DIV);
+            const zamgArr = id.zamgSelectId.split("/");
             if (zamgArr.length == 2) {
               self.providerController.createProviderIfNotExist({
                 ...options,
@@ -315,7 +310,6 @@ class WeatherWarnings extends utils.Adapter {
                 data.native[a] = import_io_package.default.native[a];
               });
             }
-            this.log.debug(JSON.stringify(data));
             this.sendTo(obj.from, obj.command, data, obj.callback);
           }
           break;

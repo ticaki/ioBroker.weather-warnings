@@ -10,7 +10,7 @@ import * as NotificationClass from './notification';
 import { getTestData } from './test-warnings';
 import * as NotificationType from './def/notificationService-def';
 import * as messagesDef from './def/messages-def';
-export const DIV = '/';
+export const DIV = '-';
 type ProviderOptionsTypeInternal = {
     service: providerDef.providerServices;
     warncellId: string | [string, string];
