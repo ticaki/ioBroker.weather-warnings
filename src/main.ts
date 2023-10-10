@@ -347,11 +347,15 @@ class WeatherWarnings extends utils.Adapter {
                             */
                             const objs = await this.getForeignObjectsAsync(obj.message.adapter + '.Echo-Devices.*');
                             for (const a in objs) {
-                                if (a.endsWith('.Commands.announcement'))
+                                if (a.endsWith('.Commands.announcement')) {
+                                    const channel = await this.getForeignObjectAsync(
+                                        a.split('.').slice(0, 4).join('.'),
+                                    );
                                     data.push({
-                                        value: a.split('.')[4],
-                                        label: objs[a.split('.').slice(0, 4).join('.')].common.name,
+                                        value: a.split('.')[3],
+                                        label: channel ? channel.common.name : '',
                                     });
+                                }
                             }
                         }
 

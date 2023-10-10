@@ -269,7 +269,8 @@ export class Library extends BaseClass {
         if (!string && typeof string != 'string') return string;
 
         string = string.replace(this.adapter.FORBIDDEN_CHARS, '_');
-
+        // hardliner
+        string = string.replace(/[^0-9A-Za-z\._-]/gu, '_');
         return lowerCase ? string.toLowerCase() : string;
     }
     /* Convert a value to the given type

@@ -1017,7 +1017,7 @@
             "alexa2_device_ids": {
                 "type": "selectSendTo",
                 "command": "alexa2_device_ids",
-                "jsonData": "{ \"service\": \"alexa2\",\"adapter\": \"$data.alexa2_Adapter\"}",
+                "jsonData": "{ \"service\": \"alexa2\",\"adapter\": \"${data.alexa2_Adapter}\"}",
                 "manual": false,
                 "multiple": true,
                 "disabled": "data.alexa2_Adapter == 'none'",
