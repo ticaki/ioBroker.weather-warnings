@@ -251,7 +251,7 @@ export class BaseProvider extends BaseClass {
             });
             await this.messages[m].writeFormatedKeys(m);
 
-            await this.messages[m].formatMessages();
+            //await this.messages[m].formatMessages();
         }
         this.library.garbageColleting(`${this.name}.formatedKeys`, (this.providerController.refreshTime || 600000) / 2);
     }
@@ -513,12 +513,7 @@ export class ProviderController extends BaseClass {
                 await noti.init();
             } else {
                 this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
-                if (this.adapter && this.adapter.stop) this.adapter.stop();
-                else {
-                    throw new Error(
-                        `Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`,
-                    );
-                }
+                throw new Error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
             }
         }
     }
@@ -682,15 +677,15 @@ export class ProviderController extends BaseClass {
         const dirs = [];
         for (const a in allowedDirs) {
             if (!allowedDirs[a].dpWarning)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.warning`);
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.warning`);
             if (!allowedDirs[a].dpMessage)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.alerts`);
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.alerts`);
             /*if (!allowedDirs[a].dpFormated)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.messages`);*/
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.messages`);*/
             if (!allowedDirs[a].dpAlerts)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.formatedKeys`);
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.formatedKeys`);
 
-            this.library.setAllowedDirs(dirs);
+            this.library.setForbiddenDirs(dirs);
         }
     }
     async updateMesssages(): Promise<void> {

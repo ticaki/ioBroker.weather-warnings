@@ -95,12 +95,12 @@ class WeatherWarnings extends utils.Adapter {
         this.log.warn("Fixed configuration for allowed datapoints! ");
       }
     }
-    this.providerController.setAllowedDirs(allowedDirsConfig);
     setTimeout(
       async function(that) {
         const self = that;
         if (!self.providerController)
           return;
+        self.providerController.setAllowedDirs(allowedDirsConfig);
         if (!self)
           return;
         try {
@@ -165,7 +165,14 @@ class WeatherWarnings extends utils.Adapter {
           notificationServiceOpt.email.actions.header = self.config.email_Header;
           notificationServiceOpt.email.actions.footer = self.config.email_Footer;
         }
-        self.providerController.createNotificationService(notificationServiceOpt);
+        try {
+          await self.providerController.createNotificationService(notificationServiceOpt);
+        } catch (error) {
+          self.log.error(
+            "--- Status undefined - execution interrupted - Please check your configuration. ---"
+          );
+          return;
+        }
         for (const a in self.config.dwdwarncellTable) {
           const id = self.config.dwdwarncellTable[a];
           if (self.config.dwdEnabled) {
@@ -299,6 +306,10 @@ class WeatherWarnings extends utils.Adapter {
                   templateTable: this.library.cloneGenericObject(import_io_package.default.native.templateTable)
                 }
               };
+              for (const a in data.native.templateTable) {
+                const key = `template.${data.native.templateTable[a].templateKey}`;
+                data.native.templateTable[a].template = await this.library.getTranslation(key);
+              }
             } else {
               data = { native: {} };
               [

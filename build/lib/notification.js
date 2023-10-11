@@ -52,25 +52,27 @@ class NotificationClass extends library.BaseClass {
           const providers = this.adapter.providerController.providers.filter(
             (a) => this.options.service.includes(a.service)
           );
-          const targets = [...providers, this.adapter.providerController];
-          for (const a in targets) {
-            switch (this.name) {
-              case "history":
-                {
-                  dp = `${targets[a].name}.history`;
-                  def = import_definitionen.genericStateObjects.history;
-                }
-                break;
-              case "json":
-                {
-                  dp = `${targets[a].name}.activeWarnings_json`;
-                  def = import_definitionen.genericStateObjects.activeWarningsJson;
-                }
-                break;
-            }
-            const state = this.adapter.library.getdb(dp);
-            if (state == void 0) {
-              await this.adapter.library.writedp(dp, "[]", def);
+          if (this.adapter.providerController) {
+            const targets = [...providers, this.adapter.providerController];
+            for (const a in targets) {
+              switch (this.name) {
+                case "history":
+                  {
+                    dp = `${targets[a].name}.history`;
+                    def = import_definitionen.genericStateObjects.history;
+                  }
+                  break;
+                case "json":
+                  {
+                    dp = `${targets[a].name}.activeWarnings_json`;
+                    def = import_definitionen.genericStateObjects.activeWarningsJson;
+                  }
+                  break;
+              }
+              const state = this.adapter.library.getdb(dp);
+              if (state == void 0) {
+                await this.adapter.library.writedp(dp, "[]", def);
+              }
             }
           }
         }
@@ -290,7 +292,7 @@ class NotificationClass extends library.BaseClass {
             }
             return false;
           });
-          {
+          if (this.adapter.providerController) {
             const dp = this.adapter.providerController.name + ".activeWarnings_json";
             await this.adapter.library.writedp(
               dp,

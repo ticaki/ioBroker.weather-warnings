@@ -7,7 +7,7 @@
     "SelectNotificationService": "Selecteer adapterinstantie.",
     "TypeFilter": "De volgende waarschuwingstypen worden uit de meldingen gefilterd.",
     "WarnLanguage": "Taal van opgehaalde waarschuwingen.",
-    "alexa_Enabled": "Activeer Alexa",
+    "alexa2_Enabled": "Activeer Alexa",
     "bulgarian": "Bulgaars",
     "croatian": "Kroatisch",
     "czech": "Tsjechisch",
@@ -209,5 +209,15 @@
     "email_Footer": "Voettekst voor e-mail",
     "dividerDirs": "Interne mappen",
     "alexa2_device_ids": "Apparaat/groep",
-    "alexa2_volumen": "Volume"
+    "alexa2_volumen": "Volume",
+    "template.NewMessage": "${Warntypename} waarschuwing van ${starttime}, niveau: ${warnlevelcolorname}",
+    "template.RemoveMessage": "${Warntypename} helemaal duidelijk, niveau: ${warnlevelcolorname}",
+    "template.RemoveAllMessage": "Alles duidelijk!",
+    "template.NewJson": "{ \"action\":${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", type:\"${warntypename}\" \\}",
+    "template.RemoveJson": "{ \"headline\": \"${Headline}\", \"status\": \"${status}\"\\}",
+    "template.RemoveAllJson": "{ \"status\": \"Alles duidelijk!\"\\}",
+    "template.NewMessageWithArray": "Luke, we hebben een nieuwe waarschuwing ${Warntypename} gekregen van ${starttime}, lijkt op een ${_customArray}",
+    "template._CustomArray": "${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}",
+    "restoreDefault": "Sjablonen herstellen",
+    "restoreDefaultToolTip": "Herstel de standaardsjablonen in de huidige taal!"
 }

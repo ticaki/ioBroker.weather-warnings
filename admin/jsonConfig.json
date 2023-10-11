@@ -606,6 +606,7 @@
                 "jsonData": "{ \"service\": \"template\" }",
                 "newLine": true,
                 "label": "restoreDefault",
+                "tooltip": "restoreDefaultToolTip",
                 "sm": 6,
                 "md":4,
                 "lg":2,

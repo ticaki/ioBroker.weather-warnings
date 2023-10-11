@@ -7,7 +7,7 @@
     "SelectNotificationService": "Seleccione la instancia del adaptador.",
     "TypeFilter": "Los siguientes tipos de advertencia se filtran de las notificaciones.",
     "WarnLanguage": "Idioma de las advertencias recuperadas.",
-    "alexa_Enabled": "activar alexa",
+    "alexa2_Enabled": "activar alexa",
     "bulgarian": "búlgaro",
     "croatian": "croata",
     "czech": "checo",
@@ -209,5 +209,15 @@
     "email_Footer": "Pie de página para correo electrónico",
     "dividerDirs": "Directorios internos",
     "alexa2_device_ids": "Dispositivo/Grupo",
-    "alexa2_volumen": "Volumen"
+    "alexa2_volumen": "Volumen",
+    "template.NewMessage": "Advertencia de ${Warntypename} de ${starttime}, nivel: ${warnlevelcolorname}",
+    "template.RemoveMessage": "${Warntypename} todo despejado, nivel: ${warnlevelcolorname}",
+    "template.RemoveAllMessage": "¡Todo claro!",
+    "template.NewJson": "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", tipo:\"${warntypename}\" \\}",
+    "template.RemoveJson": "{ \"título\": \"${Título}\", \"status\": \"${status}\"\\}",
+    "template.RemoveAllJson": "{ \"status\": \"¡Todo despejado!\"\\}",
+    "template.NewMessageWithArray": "Luke, recibimos una nueva advertencia ${Warntypename} de ${starttime}, parece un ${_customArray}",
+    "template._CustomArray": "${[pastel,soldado de asalto,caza corbata,cruceros imperiales,estrella de la muerte]número de nivel de advertencia}",
+    "restoreDefault": "Restaurar plantillas",
+    "restoreDefaultToolTip": "¡Restaura las plantillas predeterminadas en el idioma actual!"
 }

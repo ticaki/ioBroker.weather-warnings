@@ -64,7 +64,7 @@ class CustomLog {
 export class Library extends BaseClass {
     stateDataBase: { [key: string]: LibraryStateVal } = {};
     language: string = 'no language';
-    allowedDirs: string[] = [];
+    forbiddenDirs: string[] = [];
     translation: { [key: string]: string } = {};
 
     constructor(adapter: AdapterClassDefinition, _options: any = null) {
@@ -238,9 +238,9 @@ export class Library extends BaseClass {
         }
     }
     isDirAllowed(dp: string): boolean {
-        for (const a in this.allowedDirs) {
-            if (dp.search(new RegExp(this.allowedDirs[a], 'g')) != -1) {
-                if (dp.search('uwz') != -1) this.log.debug(dp + ' ' + this.allowedDirs[a]);
+        if (dp && dp.split('.').length <= 2) return true;
+        for (const a in this.forbiddenDirs) {
+            if (dp.search(new RegExp(this.forbiddenDirs[a], 'g')) != -1) {
                 return false;
             }
         }
@@ -386,6 +386,7 @@ export class Library extends BaseClass {
             if (!del) {
                 const obj = await this.adapter.getObjectAsync(dp);
                 if (!this.adapter.config.useJsonHistory && dp.endsWith('.warning.jsonHistory')) {
+                    this.log.debug('delete state: ' + dp);
                     await this.adapter.delStateAsync(dp);
                     continue;
                 }
@@ -472,7 +473,7 @@ export class Library extends BaseClass {
         }
         return false;
     }
-    setAllowedDirs(dirs: any[]): void {
-        this.allowedDirs = this.allowedDirs.concat(dirs);
+    setForbiddenDirs(dirs: any[]): void {
+        this.forbiddenDirs = this.forbiddenDirs.concat(dirs);
     }
 }

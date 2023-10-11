@@ -7,7 +7,7 @@
     "SelectNotificationService": "Wybierz instancję adaptera.",
     "TypeFilter": "Z powiadomień są odfiltrowywane następujące typy ostrzeżeń.",
     "WarnLanguage": "Język pobranych ostrzeżeń.",
-    "alexa_Enabled": "Aktywuj Alexę",
+    "alexa2_Enabled": "Aktywuj Alexę",
     "bulgarian": "bułgarski",
     "croatian": "chorwacki",
     "czech": "Czech",
@@ -209,5 +209,15 @@
     "email_Footer": "Stopka do e-maila",
     "dividerDirs": "Katalogi wewnętrzne",
     "alexa2_device_ids": "Urządzenie/grupa",
-    "alexa2_volumen": "Tom"
+    "alexa2_volumen": "Tom",
+    "template.NewMessage": "Ostrzeżenie ${Warntypename} od ${starttime}, poziom: ${warnlevelcolorname}",
+    "template.RemoveMessage": "${Warntypename} wszystko jasne, poziom: ${warnlevelcolorname}",
+    "template.RemoveAllMessage": "Wszystko jasne!",
+    "template.NewJson": "{ \"akcja\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", wpisz:\"${warntypename}\" \\}",
+    "template.RemoveJson": "{ \"headline\": \"${Nagłówek}\", \"status\": \"${status}\"\\}",
+    "template.RemoveAllJson": "{ \"status\": \"Wszystko jasne!\"\\}",
+    "template.NewMessageWithArray": "Luke, otrzymaliśmy nowe ostrzeżenie ${Warntypename} od ${starttime}, wygląda jak ${_customArray}",
+    "template._CustomArray": "${[ciasto, szturmowiec, myśliwiec remisowy, krążowniki imperialne, gwiazda śmierci]warnlevelnumber}",
+    "restoreDefault": "Przywróć szablony",
+    "restoreDefaultToolTip": "Przywróć domyślne szablony w bieżącym języku!"
 }

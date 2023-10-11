@@ -7,7 +7,7 @@
     "SelectNotificationService": "Выберите экземпляр адаптера.",
     "TypeFilter": "Следующие типы предупреждений отфильтровываются из уведомлений.",
     "WarnLanguage": "Язык полученных предупреждений.",
-    "alexa_Enabled": "Активировать Алекса",
+    "alexa2_Enabled": "Активировать Алекса",
     "bulgarian": "болгарский",
     "croatian": "хорватский",
     "czech": "Чешский",
@@ -209,5 +209,15 @@
     "email_Footer": "Нижний колонтитул электронной почты",
     "dividerDirs": "Внутренние каталоги",
     "alexa2_device_ids": "Устройство/группа",
-    "alexa2_volumen": "Объем"
+    "alexa2_volumen": "Объем",
+    "template.NewMessage": "Предупреждение ${Warntypename} от ${starttime}, уровень: ${warnlevelcolorname}",
+    "template.RemoveMessage": "${Warntypename} все очищено, уровень: ${warnlevelcolorname}",
+    "template.RemoveAllMessage": "Все чисто!",
+    "template.NewJson": "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", type:\"${warntypename}\" \\}",
+    "template.RemoveJson": "{ \"headline\": \"${Headline}\", \"status\": \"${status}\"\\}",
+    "template.RemoveAllJson": "{ \"status\": \"Все ясно!\"\\}",
+    "template.NewMessageWithArray": "Люк, мы получили новое предупреждение ${Warntypename} от ${starttime}, оно выглядит как ${_customArray}.",
+    "template._CustomArray": "${[торт,штурмовик,истребитель,имперские крейсеры,звезда смерти]warnlevelnumber}",
+    "restoreDefault": "Восстановление шаблонов",
+    "restoreDefaultToolTip": "Восстановите шаблоны по умолчанию на текущем языке!"
 }

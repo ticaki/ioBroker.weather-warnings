@@ -501,7 +501,7 @@ class MessagesClass extends import_library.BaseClass {
       return false;
     return true;
   }
-  async formatMessages() {
+  async formatMessagesDep() {
     const templates = this.adapter.config.templateTable;
     const messages = [];
     if (this.formatedData) {
@@ -550,7 +550,7 @@ class MessagesClass extends import_library.BaseClass {
           if (!rerun)
             break;
         }
-        msg = msg.replace("\\", "");
+        msg = msg.replace("\\}", "}");
         messages.push({ key: templates[a].templateKey, message: msg });
       }
     } else {
@@ -627,7 +627,7 @@ class MessagesClass extends import_library.BaseClass {
     return this.returnMessage(msg, this.starttime, templateKey);
   }
   returnMessage = (msg, time, template) => {
-    return { startts: time, text: msg.replaceAll("\\", ""), template };
+    return { startts: time, text: msg.replaceAll("\\}", "}"), template };
   };
   async updateFormatedData(update = false) {
     if (!this.rawWarning && !this.formatedData) {

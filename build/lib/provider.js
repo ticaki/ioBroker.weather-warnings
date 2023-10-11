@@ -231,7 +231,6 @@ class BaseProvider extends import_library.BaseClass {
         return a.starttime - b.starttime;
       });
       await this.messages[m].writeFormatedKeys(m);
-      await this.messages[m].formatMessages();
     }
     this.library.garbageColleting(`${this.name}.formatedKeys`, (this.providerController.refreshTime || 6e5) / 2);
   }
@@ -458,13 +457,7 @@ class ProviderController extends import_library.BaseClass {
         await noti.init();
       } else {
         this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
-        if (this.adapter && this.adapter.stop)
-          this.adapter.stop();
-        else {
-          throw new Error(
-            `Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`
-          );
-        }
+        throw new Error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
       }
     }
   }
@@ -621,12 +614,12 @@ class ProviderController extends import_library.BaseClass {
     const dirs = [];
     for (const a in allowedDirs) {
       if (!allowedDirs[a].dpWarning)
-        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.warning`);
+        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.warning`);
       if (!allowedDirs[a].dpMessage)
-        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.alerts`);
+        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.alerts`);
       if (!allowedDirs[a].dpAlerts)
-        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9#_]+\\.formatedKeys`);
-      this.library.setAllowedDirs(dirs);
+        dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.formatedKeys`);
+      this.library.setForbiddenDirs(dirs);
     }
   }
   async updateMesssages() {

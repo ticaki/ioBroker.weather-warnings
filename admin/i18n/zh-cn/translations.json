@@ -7,7 +7,7 @@
     "SelectNotificationService": "选择适配器实例。",
     "TypeFilter": "以下警告类型将从通知中过滤掉。",
     "WarnLanguage": "检索到的警告的语言。",
-    "alexa_Enabled": "激活 Alexa",
+    "alexa2_Enabled": "激活 Alexa",
     "bulgarian": "保加利亚语",
     "croatian": "克罗地亚语",
     "czech": "捷克语",
@@ -209,5 +209,15 @@
     "email_Footer": "电子邮件页脚",
     "dividerDirs": "内部目录",
     "alexa2_device_ids": "设备/组",
-    "alexa2_volumen": "体积"
+    "alexa2_volumen": "体积",
+    "template.NewMessage": "来自 ${starttime} 的 ${Warntypename} 警告，级别：${warnlevelcolorname}",
+    "template.RemoveMessage": "${Warntypename} 全部清除，级别：${warnlevelcolorname}",
+    "template.RemoveAllMessage": "全清！",
+    "template.NewJson": "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", type:\"${warntypename}\" \\}",
+    "template.RemoveJson": "{ “标题”：“${标题}”，“状态”：“${状态}”\\}",
+    "template.RemoveAllJson": "{ \"status\": \"全部清除！\"\\}",
+    "template.NewMessageWithArray": "Luke 我们收到了来自 ${starttime} 的新警告 ${Warntypename}，看起来像 ${_customArray}",
+    "template._CustomArray": "${[蛋糕、冲锋队、领带战斗机、帝国巡洋舰、死星]warnlevelnumber}",
+    "restoreDefault": "恢复模板",
+    "restoreDefaultToolTip": "恢复当前语言的默认模板！"
 }

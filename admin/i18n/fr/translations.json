@@ -7,7 +7,7 @@
     "SelectNotificationService": "Sélectionnez l'instance d'adaptateur.",
     "TypeFilter": "Les types d'avertissement suivants sont filtrés des notifications.",
     "WarnLanguage": "Langue des avertissements récupérés.",
-    "alexa_Enabled": "Activer Alexa",
+    "alexa2_Enabled": "Activer Alexa",
     "bulgarian": "bulgare",
     "croatian": "croate",
     "czech": "tchèque",
@@ -209,5 +209,15 @@
     "email_Footer": "Pied de page pour l'e-mail",
     "dividerDirs": "Annuaires internes",
     "alexa2_device_ids": "Appareil/Groupe",
-    "alexa2_volumen": "Volume"
+    "alexa2_volumen": "Volume",
+    "template.NewMessage": "${Warntypename} avertissement de ${starttime}, niveau : ${warnlevelcolorname}",
+    "template.RemoveMessage": "${Warntypename} tout est clair, niveau : ${warnlevelcolorname}",
+    "template.RemoveAllMessage": "Tout est clair!",
+    "template.NewJson": "{ \"action\": \"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", tapez: \"${warntypename}\" \\}",
+    "template.RemoveJson": "{ \"titre\": \"${Titre}\", \"status\": \"${statut}\"\\}",
+    "template.RemoveAllJson": "{ \"status\": \"Tout est clair !\"\\}",
+    "template.NewMessageWithArray": "Luke, nous avons reçu un nouvel avertissement ${Warntypename} de ${starttime}, qui ressemble à un ${_customArray}",
+    "template._CustomArray": "${[gâteau, stormtrooper, tie-fighter, croiseurs impériaux, étoile de la mort] numéro de niveau d'avertissement}",
+    "restoreDefault": "Restaurer les modèles",
+    "restoreDefaultToolTip": "Restaurez les modèles par défaut dans la langue actuelle !"
 }

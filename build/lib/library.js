@@ -94,7 +94,7 @@ _prefix = new WeakMap();
 class Library extends BaseClass {
   stateDataBase = {};
   language = "no language";
-  allowedDirs = [];
+  forbiddenDirs = [];
   translation = {};
   constructor(adapter, _options = null) {
     super(adapter, "library");
@@ -202,10 +202,10 @@ class Library extends BaseClass {
     }
   }
   isDirAllowed(dp) {
-    for (const a in this.allowedDirs) {
-      if (dp.search(new RegExp(this.allowedDirs[a], "g")) != -1) {
-        if (dp.search("uwz") != -1)
-          this.log.debug(dp + " " + this.allowedDirs[a]);
+    if (dp && dp.split(".").length <= 2)
+      return true;
+    for (const a in this.forbiddenDirs) {
+      if (dp.search(new RegExp(this.forbiddenDirs[a], "g")) != -1) {
         return false;
       }
     }
@@ -325,6 +325,7 @@ class Library extends BaseClass {
       if (!del) {
         const obj = await this.adapter.getObjectAsync(dp);
         if (!this.adapter.config.useJsonHistory && dp.endsWith(".warning.jsonHistory")) {
+          this.log.debug("delete state: " + dp);
           await this.adapter.delStateAsync(dp);
           continue;
         }
@@ -411,8 +412,8 @@ class Library extends BaseClass {
     }
     return false;
   }
-  setAllowedDirs(dirs) {
-    this.allowedDirs = this.allowedDirs.concat(dirs);
+  setForbiddenDirs(dirs) {
+    this.forbiddenDirs = this.forbiddenDirs.concat(dirs);
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

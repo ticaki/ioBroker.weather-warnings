@@ -501,7 +501,7 @@ export class MessagesClass extends BaseClass {
         return true;
     }
     //old
-    async formatMessages(): Promise<void> {
+    async formatMessagesDep(): Promise<void> {
         const templates = this.adapter.config.templateTable;
         const messages: { message: string; key: string }[] = [];
         if (this.formatedData) {
@@ -564,7 +564,7 @@ export class MessagesClass extends BaseClass {
 
                     if (!rerun) break;
                 }
-                msg = msg.replace('\\', '');
+                msg = msg.replace('\\}', '}');
                 messages.push({ key: templates[a].templateKey, message: msg });
             }
         } else {
@@ -672,7 +672,7 @@ export class MessagesClass extends BaseClass {
         return this.returnMessage(msg, this.starttime, templateKey);
     }
     private returnMessage = (msg: string, time: number, template: string): NotificationType.MessageType => {
-        return { startts: time, text: msg.replaceAll('\\', ''), template: template };
+        return { startts: time, text: msg.replaceAll('\\}', '}'), template: template };
     };
 
     async updateFormatedData(update: boolean = false): Promise<customFormatedKR> {

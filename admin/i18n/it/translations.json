@@ -7,7 +7,7 @@
     "SelectNotificationService": "Seleziona l'istanza dell'adattatore.",
     "TypeFilter": "I seguenti tipi di avviso vengono esclusi dalle notifiche.",
     "WarnLanguage": "Lingua degli avvisi recuperati.",
-    "alexa_Enabled": "Attiva Alexa",
+    "alexa2_Enabled": "Attiva Alexa",
     "bulgarian": "bulgaro",
     "croatian": "croato",
     "czech": "ceco",
@@ -209,5 +209,15 @@
     "email_Footer": "Piè di pagina per e-mail",
     "dividerDirs": "Directory interne",
     "alexa2_device_ids": "Dispositivo/Gruppo",
-    "alexa2_volumen": "Volume"
+    "alexa2_volumen": "Volume",
+    "template.NewMessage": "Avviso ${Warntypename} da ${starttime}, livello: ${warnlevelcolorname}",
+    "template.RemoveMessage": "${Warntypename} tutto pulito, livello: ${warnlevelcolorname}",
+    "template.RemoveAllMessage": "Tutto chiaro!",
+    "template.NewJson": "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", type:\"${warntypename}\" \\}",
+    "template.RemoveJson": "{ \"titolo\": \"${Titolo}\", \"status\": \"${status}\"\\}",
+    "template.RemoveAllJson": "{ \"status\": \"Tutto a posto!\"\\}",
+    "template.NewMessageWithArray": "Luke, abbiamo ricevuto un nuovo avviso ${Warntypename} da ${starttime}, sembra un ${_customArray}",
+    "template._CustomArray": "${[torta,stormtrooper,tie-fighter,incrociatori imperiali,morte nera]warnlevelnumber}",
+    "restoreDefault": "Ripristina modelli",
+    "restoreDefaultToolTip": "Ripristina i modelli predefiniti nella lingua corrente!"
 }
