@@ -140,8 +140,10 @@ class NotificationClass extends library.BaseClass {
     return await message.getMessage(templateType, templateKey, action, override);
   }
   async sendNotifications(messages) {
-    if (!Array.isArray(messages) || messages.length == 0)
+    if (!Array.isArray(messages) || messages.length == 0) {
+      this.log.debug(`no messages`);
       return false;
+    }
     switch (this.name) {
       case "telegram":
         {
@@ -304,6 +306,7 @@ class NotificationClass extends library.BaseClass {
         break;
       case "email":
         {
+          this.log.info(`start email sending! Messagecount: ${messages.length}`);
           const result = messages.filter((i, p) => {
             if (i.text != "" && i.provider) {
               if (messages.findIndex((i2) => i2.text == i.text) == p)
@@ -311,10 +314,12 @@ class NotificationClass extends library.BaseClass {
             }
             return false;
           });
+          this.log.info(`first filter! Messagecount: ${result.length}`);
           result.sort((a, b) => a.startts - b.startts);
           const flat = result.map((a) => a.text);
           let message = flat.join(this.adapter.config.email_line_break);
           const templates = this.adapter.config.templateTable;
+          this.log.info(`Email message: ${message.length}`);
           if (this.adapter.config.email_Header !== "none") {
             const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Header);
             if (tempid != -1) {
@@ -334,6 +339,7 @@ class NotificationClass extends library.BaseClass {
               message = message + templates[tempid];
             }
           }
+          this.log.debug(`start email sending! Messagecount: ${result.length}`);
           await this.adapter.sendToAsync(this.options.adapter, "send", message);
           this.log.debug(`Send the message: ${message}`);
         }
