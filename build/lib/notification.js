@@ -304,7 +304,7 @@ class NotificationClass extends library.BaseClass {
         {
           const result = messages.filter((i, p) => {
             if (i.text != "" && i.provider) {
-              if (messages.findIndex((i2) => i2.text != i.text) == p)
+              if (messages.findIndex((i2) => i2.text == i.text) == p)
                 return true;
             }
             return false;

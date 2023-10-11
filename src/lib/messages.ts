@@ -660,8 +660,12 @@ export class MessagesClass extends BaseClass {
                 }
 
                 //messages.push({ key: templates[a].templateKey, message: msg });
-                this.cache.messages[templates[tempid].templateKey as keyof typeof this.cache.messages] =
-                    this.returnMessage(msg, this.starttime, templateKey);
+                if (tempid == -1) {
+                    this.log.error(`No template for Key: ${templateKey}!`);
+                } else {
+                    this.cache.messages[templates[tempid].templateKey as keyof typeof this.cache.messages] =
+                        this.returnMessage(msg, this.starttime, templateKey);
+                }
                 return this.returnMessage(msg, this.starttime, templateKey);
             }
         }

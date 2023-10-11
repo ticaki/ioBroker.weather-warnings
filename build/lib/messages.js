@@ -616,7 +616,11 @@ class MessagesClass extends import_library.BaseClass {
           if (!rerun)
             break;
         }
-        this.cache.messages[templates[tempid].templateKey] = this.returnMessage(msg, this.starttime, templateKey);
+        if (tempid == -1) {
+          this.log.error(`No template for Key: ${templateKey}!`);
+        } else {
+          this.cache.messages[templates[tempid].templateKey] = this.returnMessage(msg, this.starttime, templateKey);
+        }
         return this.returnMessage(msg, this.starttime, templateKey);
       }
     }
