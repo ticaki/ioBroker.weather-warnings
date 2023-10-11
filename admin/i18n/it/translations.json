@@ -219,5 +219,7 @@
     "template.NewMessageWithArray": "Luke, abbiamo ricevuto un nuovo avviso ${Warntypename} da ${starttime}, sembra un ${_customArray}",
     "template._CustomArray": "${[torta,stormtrooper,tie-fighter,incrociatori imperiali,morte nera]warnlevelnumber}",
     "restoreDefault": "Ripristina modelli",
-    "restoreDefaultToolTip": "Ripristina i modelli predefiniti nella lingua corrente!"
+    "restoreDefaultToolTip": "Ripristina i modelli predefiniti nella lingua corrente!",
+    "HourFilter": "Filtra i dati grezzi: Ora di inizio (0 = disattivato)",
+    "HourFilterTip": "Filtra i dati grezzi la cui ora di inizio è più lontana di X (in ore)."
 }

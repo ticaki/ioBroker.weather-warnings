@@ -219,5 +219,7 @@
     "template.NewMessageWithArray": "Люк, ми отримали нове попередження ${Warntypename} від ${starttime}, схоже на ${_customArray}",
     "template._CustomArray": "${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}",
     "restoreDefault": "Відновити шаблони",
-    "restoreDefaultToolTip": "Відновити стандартні шаблони поточною мовою!"
+    "restoreDefaultToolTip": "Відновити стандартні шаблони поточною мовою!",
+    "HourFilter": "Фільтр вихідних даних: час початку (0 = вимкнено)",
+    "HourFilterTip": "Фільтрувати необроблені дані, час початку яких знаходиться далі в майбутньому, ніж X (у годинах)."
 }

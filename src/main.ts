@@ -101,21 +101,43 @@ class WeatherWarnings extends utils.Adapter {
                 this.log.warn('Fixed configuration for allowed datapoints! ');
             }
         }
+        try {
+            //const states = await self.getStatesAsync('*');
+            await this.library.init();
+            await this.library.initStates(await this.getStatesAsync('*'));
+            await this.library.initStates((await this.getChannelsAsync()) as any);
+        } catch (error) {
+            this.log.error(`catch(1): init error while reading states! ${error}`);
+        }
+
+        /** write default templates to config if template 0 == translation token */
+        const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+        if (
+            config &&
+            config.native &&
+            config.native.templateTable[0] &&
+            config.native.templateTable[0].template == 'template.NewMessage'
+        ) {
+            const templateTable = this.library.cloneGenericObject(config.native.templateTable);
+            for (const a in config.native.templateTable) {
+                //@ts-expect-error faulheit
+                templateTable[a as keyof typeof this.config.templateTable].template = await this.library.getTranslation(
+                    config.native.templateTable[a].template,
+                );
+                this.log.debug(await this.library.getTranslation(config.native.templateTable[a].template));
+            }
+            this.log.debug(`Write default templates to config for ${this.namespace}!`);
+            await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+                native: { templateTable: templateTable },
+            });
+        }
 
         setTimeout(
             async function (that: any) {
                 const self = that as WeatherWarnings;
+                if (!self) return;
                 if (!self.providerController) return;
                 self.providerController.setAllowedDirs(allowedDirsConfig);
-                if (!self) return;
-                try {
-                    //const states = await self.getStatesAsync('*');
-                    await self.library.init();
-                    await self.library.initStates(await self.getStatesAsync('*'));
-                    await self.library.initStates((await self.getChannelsAsync()) as any);
-                } catch (error) {
-                    self.log.error(`catch(1): init error while reading states! ${error}`);
-                }
 
                 self.providerController.init();
                 self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 60000} minutes`);
@@ -222,6 +244,7 @@ class WeatherWarnings extends utils.Adapter {
                             filter: {
                                 type: self.config.dwdTypeFilter,
                                 level: self.config.dwdLevelFilter,
+                                hours: self.config.dwdHourFilter,
                             },
                         };
                         self.log.info('DWD activated. Retrieve data.');
@@ -243,7 +266,11 @@ class WeatherWarnings extends utils.Adapter {
                         const options: messageFilterTypeWithFilter & {
                             [key: string]: any;
                         } = {
-                            filter: { type: self.config.zamgTypeFilter },
+                            filter: {
+                                type: self.config.zamgTypeFilter,
+                                level: self.config.zamgLevelFilter,
+                                hours: self.config.zamgHourFilter,
+                            },
                         };
                         const zamgArr = id.zamgSelectId.split('/') as [string, string];
                         if (zamgArr.length == 2) {
@@ -262,7 +289,11 @@ class WeatherWarnings extends utils.Adapter {
                     const id = self.config.uwzwarncellTable[a];
                     if (self.config.uwzEnabled && !!id.uwzSelectId) {
                         const options: messageFilterTypeWithFilter = {
-                            filter: { type: self.config.uwzTypeFilter },
+                            filter: {
+                                type: self.config.uwzTypeFilter,
+                                level: self.config.uwzLevelFilter,
+                                hours: self.config.uwzHourFilter,
+                            },
                         };
                         self.log.info('UWZ activated. Retrieve data.');
                         self.providerController.createProviderIfNotExist({
