@@ -282,6 +282,8 @@ class DWDProvider extends BaseProvider {
       const w = result.features[a];
       if (w.properties.STATUS == "Test")
         continue;
+      if (this.filter.hours && new Date(w.properties.ONSET).getTime() > Date.now() + this.filter.hours * 36e5)
+        continue;
       await super.updateData(w.properties, a);
       const index = this.messages.findIndex((m) => m.rawWarning.IDENTIFIER == w.properties.IDENTIFIER);
       if (index == -1) {
@@ -345,6 +347,8 @@ class ZAMGProvider extends BaseProvider {
     });
     this.messages.forEach((a) => a.notDeleted = false);
     for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
+      if (this.filter.hours && Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() + this.filter.hours * 3600)
+        continue;
       result.properties.warnings[a].properties.location = result.properties.location.properties.name;
       result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
       await super.updateData(result.properties.warnings[a].properties, a);
@@ -390,6 +394,8 @@ class UWZProvider extends BaseProvider {
     this.messages.forEach((a) => a.notDeleted = false);
     for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
       if (result.results[a] == null)
+        continue;
+      if (this.filter.hours && result.results[a].dtgStart > Date.now() + this.filter.hours * 3600)
         continue;
       await super.updateData(result.results[a], a);
       const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);

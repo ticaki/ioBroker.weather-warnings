@@ -2,9 +2,11 @@
     "i18n": true,
     "type": "tabs",
     "items": {
+       
         "_basicconfig": {
             "type": "panel",
             "label": "basicconfig",
+            "hidden": "data.templateTable[0].template == 'template.NewMessage'",
             "items": {
                 "dwdEnabled": {
                     "type": "checkbox",
@@ -179,6 +181,69 @@
                 }
             }
         },
+        "_templates": {
+            "type": "panel",
+            "label": "Templates",
+            "items": {
+                "templateTable": {
+                    "type": "table",
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "label": "",
+                    "showSecondAddAt": 5,
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "templateKey",
+                            "width": "10% ",
+                            "title": "Unique Identifier",
+                            "tooltip": "Enter a unique text",
+                            "filter": false,
+                            "sort": false,
+                            "default": "",
+                            "validator": "const x={};for (const c of globalData.templateTable) {if (x[c.templateKey]==='x') return false; x[c.templateKey]='x';}; return true;",
+                            "validatorNoSaveOnError": true
+                        },
+                        {
+                            "type": "text",
+                            "attr": "template",
+                            "width": "90% ",
+                            "title": "Text",
+                            "tooltip": "Enter your template text.",
+                            "filter": false,
+                            "sort": false,
+                            "default": ""
+                        }
+                    ]
+                },
+                "templateHelp": {
+                    "type": "textSendTo",
+                    "command": "templateHelp",
+                    "minRows": 2,
+                    "maxRows": 30,
+                    "text": "",
+                    "jsonData": "{ \"service\": \"${data.templateHelp}\" }",
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "newLine": true
+                },
+                "restoreDefault": {
+                    "type": "sendTo",
+                    "command": "restoreDefault",
+                    "jsonData": "{ \"service\": \"template\" }",
+                    "newLine": true,
+                    "label": "restoreDefault",
+                    "tooltip": "restoreDefaultToolTip",
+                    "sm": 6,
+                    "md":4,
+                    "lg":3,
+                    "useNative": true
+                }
+            }
+        },
         "_dwdpanel": {
             "type": "panel",
             "label": "DWD",
@@ -339,6 +404,16 @@
                     "md": 6,
                     "lg": 3
                 },
+                "dwdHourFilter": {
+                    "type": "number",
+                    "min": 0,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "tooltip": "HourFilterTip",
+                    "label": "HourFilter",
+                    "newLine": false
+                },
                 "dwdTypeFilter": {
                     "type": "selectSendTo",
                     "command": "filterType",
@@ -441,6 +516,16 @@
                     "md": 6,
                     "lg": 4
                 },
+                "uwzHourFilter": {
+                    "type": "number",
+                    "min": 0,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "tooltip": "HourFilterTip",
+                    "label": "HourFilter",
+                    "newLine": false
+                },
                 "uwzTypeFilter": {
                     "type": "selectSendTo",
                     "command": "filterType",
@@ -525,6 +610,16 @@
                 "md": 6,
                 "lg": 4
             },
+            "zamgHourFilter": {
+                "type": "number",
+                "min": 0,
+                "sm": 12,
+                "md": 4,
+                "lg": 3,
+                "tooltip": "HourFilterTip",
+                "label": "HourFilter",
+                "newLine": false
+            },
             "zamgTypeFilter": {
                 "type": "selectSendTo",
                 "command": "filterType",
@@ -548,69 +643,6 @@
                 "lg": 4,
                 "label": "LevelFilter",
                 "newLine": true
-            }
-        }
-    },
-    "_templates": {
-        "type": "panel",
-        "label": "Templates",
-        "items": {
-            "templateTable": {
-                "type": "table",
-                "newLine": true,
-                "sm": 12,
-                "md": 12,
-                "lg": 12,
-                "label": "",
-                "showSecondAddAt": 5,
-                "items": [
-                    {
-                        "type": "text",
-                        "attr": "templateKey",
-                        "width": "10% ",
-                        "title": "Unique Identifier",
-                        "tooltip": "Enter a unique text",
-                        "filter": false,
-                        "sort": false,
-                        "default": "",
-                        "validator": "const x={};for (const c of globalData.templateTable) {if (x[c.templateKey]==='x') return false; x[c.templateKey]='x';}; return true;",
-                        "validatorNoSaveOnError": true
-                    },
-                    {
-                        "type": "text",
-                        "attr": "template",
-                        "width": "90% ",
-                        "title": "Text",
-                        "tooltip": "Enter your template text.",
-                        "filter": false,
-                        "sort": false,
-                        "default": ""
-                    }
-                ]
-            },
-            "templateHelp": {
-                "type": "textSendTo",
-                "command": "templateHelp",
-                "minRows": 2,
-                "maxRows": 30,
-                "text": "",
-                "jsonData": "{ \"service\": \"${data.templateHelp}\" }",
-                "sm": 12,
-                "md": 12,
-                "lg": 12,
-                "newLine": true
-            },
-            "restoreDefault": {
-                "type": "sendTo",
-                "command": "restoreDefault",
-                "jsonData": "{ \"service\": \"template\" }",
-                "newLine": true,
-                "label": "restoreDefault",
-                "tooltip": "restoreDefaultToolTip",
-                "sm": 6,
-                "md":4,
-                "lg":2,
-                "useNative": true
             }
         }
     },

@@ -95,21 +95,35 @@ class WeatherWarnings extends utils.Adapter {
         this.log.warn("Fixed configuration for allowed datapoints! ");
       }
     }
+    try {
+      await this.library.init();
+      await this.library.initStates(await this.getStatesAsync("*"));
+      await this.library.initStates(await this.getChannelsAsync());
+    } catch (error) {
+      this.log.error(`catch(1): init error while reading states! ${error}`);
+    }
+    const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+    if (config && config.native && config.native.templateTable[0] && config.native.templateTable[0].template == "template.NewMessage") {
+      const templateTable = this.library.cloneGenericObject(config.native.templateTable);
+      for (const a in config.native.templateTable) {
+        templateTable[a].template = await this.library.getTranslation(
+          config.native.templateTable[a].template
+        );
+        this.log.debug(await this.library.getTranslation(config.native.templateTable[a].template));
+      }
+      this.log.debug(`Write default templates to config for ${this.namespace}!`);
+      await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+        native: { templateTable }
+      });
+    }
     setTimeout(
       async function(that) {
         const self = that;
+        if (!self)
+          return;
         if (!self.providerController)
           return;
         self.providerController.setAllowedDirs(allowedDirsConfig);
-        if (!self)
-          return;
-        try {
-          await self.library.init();
-          await self.library.initStates(await self.getStatesAsync("*"));
-          await self.library.initStates(await self.getChannelsAsync());
-        } catch (error) {
-          self.log.error(`catch(1): init error while reading states! ${error}`);
-        }
         self.providerController.init();
         self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 6e4} minutes`);
         const notificationServiceOpt = {};
@@ -183,7 +197,8 @@ class WeatherWarnings extends utils.Adapter {
             const options = {
               filter: {
                 type: self.config.dwdTypeFilter,
-                level: self.config.dwdLevelFilter
+                level: self.config.dwdLevelFilter,
+                hours: self.config.dwdHourFilter
               }
             };
             self.log.info("DWD activated. Retrieve data.");
@@ -202,7 +217,11 @@ class WeatherWarnings extends utils.Adapter {
           if (self.config.zamgEnabled && id && typeof id.zamgSelectId == "string") {
             self.log.info("ZAMG activated. Retrieve data.");
             const options = {
-              filter: { type: self.config.zamgTypeFilter }
+              filter: {
+                type: self.config.zamgTypeFilter,
+                level: self.config.zamgLevelFilter,
+                hours: self.config.zamgHourFilter
+              }
             };
             const zamgArr = id.zamgSelectId.split("/");
             if (zamgArr.length == 2) {
@@ -221,7 +240,11 @@ class WeatherWarnings extends utils.Adapter {
           const id = self.config.uwzwarncellTable[a];
           if (self.config.uwzEnabled && !!id.uwzSelectId) {
             const options = {
-              filter: { type: self.config.uwzTypeFilter }
+              filter: {
+                type: self.config.uwzTypeFilter,
+                level: self.config.uwzLevelFilter,
+                hours: self.config.uwzHourFilter
+              }
             };
             self.log.info("UWZ activated. Retrieve data.");
             self.providerController.createProviderIfNotExist({

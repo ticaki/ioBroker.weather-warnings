@@ -219,5 +219,7 @@
     "template.NewMessageWithArray": "Luke, otrzymaliśmy nowe ostrzeżenie ${Warntypename} od ${starttime}, wygląda jak ${_customArray}",
     "template._CustomArray": "${[ciasto, szturmowiec, myśliwiec remisowy, krążowniki imperialne, gwiazda śmierci]warnlevelnumber}",
     "restoreDefault": "Przywróć szablony",
-    "restoreDefaultToolTip": "Przywróć domyślne szablony w bieżącym języku!"
+    "restoreDefaultToolTip": "Przywróć domyślne szablony w bieżącym języku!",
+    "HourFilter": "Filtruj surowe dane: Czas rozpoczęcia (0 = wyłączony)",
+    "HourFilterTip": "Filtruj surowe dane, których czas rozpoczęcia przypada dalej w przyszłości niż X (w godzinach)."
 }

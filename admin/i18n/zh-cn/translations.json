@@ -219,5 +219,7 @@
     "template.NewMessageWithArray": "Luke 我们收到了来自 ${starttime} 的新警告 ${Warntypename}，看起来像 ${_customArray}",
     "template._CustomArray": "${[蛋糕、冲锋队、领带战斗机、帝国巡洋舰、死星]warnlevelnumber}",
     "restoreDefault": "恢复模板",
-    "restoreDefaultToolTip": "恢复当前语言的默认模板！"
+    "restoreDefaultToolTip": "恢复当前语言的默认模板！",
+    "HourFilter": "过滤原始数据：开始时间（0 = 关闭）",
+    "HourFilterTip": "过滤开始时间比 X（以小时为单位）更远的原始数据。"
 }
