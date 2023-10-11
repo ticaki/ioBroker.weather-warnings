@@ -219,5 +219,7 @@
     "template.NewMessageWithArray": "Luke, we hebben een nieuwe waarschuwing ${Warntypename} gekregen van ${starttime}, lijkt op een ${_customArray}",
     "template._CustomArray": "${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}",
     "restoreDefault": "Sjablonen herstellen",
-    "restoreDefaultToolTip": "Herstel de standaardsjablonen in de huidige taal!"
+    "restoreDefaultToolTip": "Herstel de standaardsjablonen in de huidige taal!",
+    "HourFilter": "Filter ruwe gegevens: Starttijd (0 = uit)",
+    "HourFilterTip": "Filter onbewerkte gegevens waarvan de starttijd verder in de toekomst ligt dan X (in uren)."
 }

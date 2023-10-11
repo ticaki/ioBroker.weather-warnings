@@ -31,6 +31,10 @@ declare global {
             uwzLanguage: string;
             zamgLanguage: string;
 
+            dwdHourFilter: number;
+            uwzHourFilter: number;
+            zamgHourFilter: number;
+
             dwdTypeFilter: string[];
             zamgTypeFilter: string[];
             uwzTypeFilter: string[];

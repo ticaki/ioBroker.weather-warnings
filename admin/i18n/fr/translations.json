@@ -219,5 +219,7 @@
     "template.NewMessageWithArray": "Luke, nous avons reçu un nouvel avertissement ${Warntypename} de ${starttime}, qui ressemble à un ${_customArray}",
     "template._CustomArray": "${[gâteau, stormtrooper, tie-fighter, croiseurs impériaux, étoile de la mort] numéro de niveau d'avertissement}",
     "restoreDefault": "Restaurer les modèles",
-    "restoreDefaultToolTip": "Restaurez les modèles par défaut dans la langue actuelle !"
+    "restoreDefaultToolTip": "Restaurez les modèles par défaut dans la langue actuelle !",
+    "HourFilter": "Filtrer les données brutes : heure de début (0 = désactivé)",
+    "HourFilterTip": "Filtrez les données brutes dont l'heure de début est plus lointaine que X (en heures)."
 }

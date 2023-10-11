@@ -220,5 +220,7 @@
     "template.NewMessageWithArray": "Luke, wir haben eine neue Warnung ${Warntypename} ab ${starttime} erhalten, sieht aus wie ein ${_customArray}",
     "template._CustomArray": "${[Keks,Sturmtrooper,Tie-Jäger,Imperialer Kreuzer,Todesstern]warnlevelnumber}",
     "restoreDefault": "Vorlagen wiederherstellen",
-    "restoreDefaultToolTip": "Stellen Sie die Standardvorlagen in der aktuellen Sprache wieder her!"
+    "restoreDefaultToolTip": "Stellen Sie die Standardvorlagen in der aktuellen Sprache wieder her!",
+    "HourFilter": "Rohdaten filtern: Startzeit (0 = aus)",
+    "HourFilterTip": "Filtern Sie Rohdaten, deren Startzeit weiter als X (in Stunden) in der Zukunft liegt."
 }

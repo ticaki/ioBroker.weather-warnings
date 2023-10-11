@@ -16,6 +16,7 @@ export type messageFilterTypeWithFilter = { filter: messageFilterType };
 export type messageFilterType = {
     level?: number;
     type: string[];
+    hours: number;
 };
 /** Full dwd import jsons */
 export type dataImportDwdType =
