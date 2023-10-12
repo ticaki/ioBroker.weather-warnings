@@ -6,7 +6,6 @@
         "_basicconfig": {
             "type": "panel",
             "label": "basicconfig",
-            "hidden": "data.templateTable[0].template == 'template.NewMessage'",
             "items": {
                 "dwdEnabled": {
                     "type": "checkbox",
