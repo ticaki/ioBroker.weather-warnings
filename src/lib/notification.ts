@@ -169,6 +169,13 @@ export class NotificationClass extends library.BaseClass {
         switch (this.name as NotificationType.Type) {
             case 'telegram':
                 {
+                    /*this.log.debug(
+                        JSON.stringify(
+                            messages.map((a) => {
+                                if (a.message) return a.message.rawWarning;
+                            }),
+                        ),
+                    );*/
                     for (const msg of messages) {
                         const opt = { text: msg.text, disable_notification: true };
 

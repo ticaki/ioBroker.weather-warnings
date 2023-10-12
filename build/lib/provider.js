@@ -304,19 +304,18 @@ class DWDProvider extends BaseProvider {
     this.library.garbageColleting(`${this.name}.warning`);
     for (let m = 0; m < this.messages.length; m++) {
       const msg = this.messages[m];
-      if (msg.rawWarning.MSGTYPE == "Update") {
+      if (msg.rawWarning.MSGTYPE == "Update" || msg.rawWarning.MSGTYPE == "Alert") {
         for (let m2 = 0; m2 < this.messages.length; m2++) {
           const oldmsg = this.messages[m2];
           if (msg === oldmsg)
             continue;
           if (oldmsg.newMessage)
             continue;
-          if (oldmsg.formatedData === void 0)
+          if (oldmsg.formatedData === void 0 || msg.formatedData === void 0)
             continue;
           if (oldmsg.rawWarning.EC_II == msg.rawWarning.EC_II) {
             msg.silentUpdate();
             this.log.debug("Remove a warning from db.(Update)");
-            this.messages[m2].delete();
             this.messages.splice(Number(m2--), 1);
             m--;
             break;
