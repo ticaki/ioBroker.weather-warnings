@@ -12,99 +12,34 @@
 
 ## weather-warnings adapter for ioBroker
 
-Describe your project here. English translation will come later.
+Dieser Adapter ruft Wetterwarnungen verschiedener optionaler Dienste ab und gibt diese als Textnachricht oder Sprachnachrichten aus. Zusätzlich werden nach Typ gruppierte States bereitgestellt, mit denen man auf aktuelle Warnlagen reagieren kann.
+#### Installation
+Nach der Installation und dem automatischen öffnen der Konfigurationsseite diese **nochmals reloaden**. Damit werden die Vorlagen in der eingestellten Sprache angezeigt.
 
+#### Konfiguration
+![Basicconfiguration](img/basic.png)
 
-Adapter ist noch in der Anfangsphase und soll schlußendlich dieses Skript: https://forum.iobroker.net/post/385276 ersetzen.
+**Activate DWD/UWZ/ZAMG:** aktiviere den Datenabruf von diesen Dienstleistern
+**Activate telegram/pushover,...:** aktiviere die Ausgabe von Nachrichten an diese installierten Adapter. 
+**Activate email:** Schreibt alle aktuellen Warnungen in eine Email.
+**Activate history:** schreibt in den State: .history einen Verlauf der bis zu 500 Einträgen beinhalten kann. Alle Daten oder ausgewählte.
+**Activate json-array:** sehr spezielle, schreibt die aktuellen Warnungen in ein Array oder nach Aktivierung ein benutzerdefiniertes Json in ein Array, das von Skripten ausgewertet werden kann.
 
-Bis Version 0.4.x wird er weniger einen direkten Nutzen haben, sondern mehr ein "da geht die Reise hin" Ansichtsadapter sein.
+**Update interval:** Abrufinterval in Minuten zu dem Daten geladen werden. (minimum: 5)
 
-#### Aktueller Funktionsumfang:
-- Abruf von Wetterdaten folgender Dienste:
-    - DWD Ort und Kreis
-    - UWZ Postleitzahlengebiet
-    - ZAMG (Österreich) Koordinaten
-- Unbearbeitete Daten werden in States hinterlegt
-- formatierte Daten werden in States hinterlegt
-- eine Vorlagenerstellung eigenen Nachrichten ist implementiert (noch keine gute Ausgabe)
-- Es gibt States in denen dies Nachrichten angezeigt werden, aber die zappen da durch und die letzte bleibt. Der Code dahinter versenden später die Pushnachrichten.
-- Testmodus steht zur Verfügung, beim Nutzen dieser ist der Adapter offline und gelb.
-- Abruf von Warnungen in den von den Diensten zur Verfügung gestellten Sprachen.
-- Filtern von Warnungen nach Typ und Level
-- States die es erlauben bei aktiver Warnung und innerhalb des Warnzeitraums automatisch Maßnahmen zu ergreifen (ich schließe den Balkonrollladen, bei Warnungen für Starkregen, Gewitter und Sturm wenn ich nicht da bin)
-- Bereitstellung von Nutzer formatierbarem Text für die Gestaltung von z.B. Html Tabellen
-- Ausgabe über telegram, whatsapp, pushover
+**Incoming warnings...:** Nach dem Adapterstart werden die beim ersten Datenabruf erhaltenen Warnungen als bekannt und lösen keine Benachrichtigung aus.
 
-#### Baustellen: 
-- Übersetzungen sind noch lange nicht fertig, an vielen Stellen ist englisch und deutsch gemischt.
+**Testing- Activate...:** Use testdata. Adapter is offline.
+**Testing- Raw data history:** Für Debugging, nur nach Aufforderung.
 
-#### Todo:
-- Vereinheitlichung der Warnungen, so das sie über die Dienste vergleichbar werden.
-- Unterstützung der ioBroker Sprachen an jeder Stelle
-- Versand der Warnungen per Mail
-- Unterstützung von Sayit und Alexa
-- manuelles Auslösen von Pushnachrichten
-- Readme schreiben
-- Unterstützung von mehr als einem Warngebiet.
+![Template](img/template.png)
 
+Hier kannst du eigenen Nachrichten erstellen, oder vorhandene anpassen. Unterhalb der Tabelle stehen alle verfügbare "Tokens" und was sie bedeuten. Der Unique identifier wird in den Pushdiensten verwendet, um einzustellen welche Vorlage mit welcher Meldungsart verwendet werden soll.
 
-Feedback gerne hier.
+**Restore Templates:** Setzt die Vorlagen auf die aktuelle Systemsprache zurück. Vorhandene Vorlagen gehen **verloren**. Anschließend speichern & schließen. Sollte ebenfalls verwendent werden, wenn die Systemsprache geändert wurde.
 
-**Verbesserungvorschläge/Feature Requests bitte als Github Issue in deutsch oder englisch.**
-
-https://forum.iobroker.net/topic/68595/test-adapter-weather-warnings
-
-#### Kurze Erläuterung:
-
-![Bildschirmfoto 2023-09-24 um 19.45.19.png](https://forum.iobroker.net/assets/uploads/files/1695577524739-bildschirmfoto-2023-09-24-um-19.45.19.png) 
-
-**formatedKeys**: Die Datenpunkte darunter kann man in eigenen Meldungen verwenden.
-
-Was braucht ihr noch an Daten?
-
-**messages**: Darunter befinden sich die Mitteilungen die ihr im Admin unter Template/Vorlage (ka ob schon übersetzt) einrichten könnt.
-
-**warning**: drunter sind alle Daten die vom Dienst geliefert werden. 
-
-Unter den Info Ordnern seht ihr ob der Adapter/der Dienst beim letzten Zugriff online war.
-
-**Im Admin/Template**
-In der Tablelle schreibt ihr ins erste Feld einen Bezeichung die sich als state später unter Message erzeugt wird, also keine Punkte oder Leerzeichen.
-In das zweite Feld kommt eure Formatierung. Zur Zeit hab ich folgende Datenpunkte vorbereitet:
-
-```
-/** Bezeichnungen die in Template verwendet werden können ohne "?: string;"
-     * Erste Buchstabe groß geschrieben erzeugt auch im Ergebnis, das der erste Buchstabe großgeschrieben ist.
-     * Ist der letzte Buchstabe großgeschrieben, wird die komplette Zeichenkette in Großbuchstaben umgewandelt.
-     */
-    export type customFormatedKeysDef = {
-        starttime?: string; // Start Uhrzeit HH:MM
-        startdate?: string; // Start Datum DD.MM
-        endtime?: string; // Endzeitpunkt
-        enddate?: string; // Enddatum
-        startdayofweek?: string; // Start Tag der Woche
-        enddayofweek?: string; // End Tag der Woche
-        headline?: string; // Schlagzeile
-        description?: string; // Beschreibung
-        weathertext?: string; // nur Zamg wetterbeschreibender Text
-        ceiling?: string; // max höhe
-        altitude?: string; // min höhe
-        warnlevelname?: string; // Textbezeichnung des Levels
-        warnlevelnumber?: string; // Levelhöhe
-        warnlevelcolorname?: string; // Farbbezeichnung des Levels
-        warnlevelcolorhex?: string; // RGB im Hexformat
-        warntypename?: string; // gelieferter Warntype
-        location?: string; // gelieferte Location (meinst Unsinn)
-        instruction?: string; // Anweisungen
-        /** unix timestamp of start time for internal use */
-        startunixtime?: string;
-    };
-```
-Eine formatierte Nachricht könnte dann z.B. vorerst so aussehen:
-
-```
-Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevelnamE}
-```
+![DWD](img/DWD.png)
+in Arbeit
 
 ## Icons
 https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
@@ -147,7 +82,7 @@ https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 ### 0.2.2-alpha1.0 (2023-09-26)
 * (ticaki) more CustomTokens,
 * translations for warntypes, warnlevelcolor,
-* total active warningcounts
+* total active warningcountshttps://github.com/ticaki/ioBroker.weather-warnings
 * remove old warnings
 
 ### 0.2.1-alpha.0 (2023-09-25)
