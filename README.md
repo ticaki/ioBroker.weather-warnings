@@ -27,7 +27,7 @@ Nach der Installation und dem automatischen öffnen der Konfigurationsseite dies
 
 - **Update interval:** Abrufinterval in Minuten zu dem Daten geladen werden. (minimum: 5)
 
-- **Incoming warnings...:** Nach dem Adapterstart werden die beim ersten Datenabruf erhaltenen Warnungen als bekannt und lösen keine Benachrichtigung aus.
+- **Incoming warnings...:** Nach dem Adapterstart werden die beim ersten Datenabruf erhaltenen Warnungen als bekannt angesehen und lösen keine Benachrichtigung aus.
 
 - **Testing- Activate...:** Use testdata. Adapter is offline.
 
@@ -43,10 +43,10 @@ Zeichen mit besonderer Bedeutung:
 - `${}` umfasst Tokens die aufgelöst werden. Der Vorlagenbezeichner kann hier ebenfalls eingesetzt werden.
 - Vorlagenbezeichner die mit `_` beginnen, werden bei Diensten nicht angeboten.
 - `${[0,1,2,3,4]token}` Eine Zeichenkette mit Werten, token muß ein Zahlentoken sein. Index ist wie im Beispiel. 0 ist der erste Wert in der Liste
-- bei einer Vorlage für Jsons muß das abschließende `}` so geschrieben werden `\\}`
+- bei einer Vorlage für Jsons muß das abschließende `}` so geschrieben werden `\}`
 - siehe Beispiele im Adapter.
 
-**Restore Templates:** Setzt die Vorlagen auf die aktuelle Systemsprache zurück. Vorhandene Vorlagen gehen **verloren**. Anschließend speichern & schließen. Sollte ebenfalls verwendent werden, wenn die Systemsprache geändert wurde.
+**Restore Templates:** Setzt die Vorlagen auf die aktuelle Systemsprache zurück. Vorhandene Vorlagen gehen **verloren**. Anschließend speichern & schließen. Sollte ebenfalls verwendet werden, wenn die Systemsprache geändert wurde.
 
 ![DWD](img/DWD.png)
 
