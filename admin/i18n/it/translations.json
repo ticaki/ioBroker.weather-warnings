@@ -221,5 +221,8 @@
     "restoreDefault": "Ripristina modelli",
     "restoreDefaultToolTip": "Ripristina i modelli predefiniti nella lingua corrente!",
     "HourFilter": "Filtra i dati grezzi: Ora di inizio (0 = disattivato)",
-    "HourFilterTip": "Filtra i dati grezzi la cui ora di inizio è più lontana di X (in ore)."
+    "HourFilterTip": "Filtra i dati grezzi la cui ora di inizio è più lontana di X (in ore).",
+    "templateTitle": "Testo del modello",
+    "templateTitleTip": "Inserisci qui il testo del tuo modello.",
+    "requestReload": "Ricarica il browser o premi il pulsante!"
 }

@@ -222,5 +222,8 @@
     "restoreDefault": "Vorlagen wiederherstellen",
     "restoreDefaultToolTip": "Stellen Sie die Standardvorlagen in der aktuellen Sprache wieder her!",
     "HourFilter": "Rohdaten filtern: Startzeit (0 = aus)",
-    "HourFilterTip": "Filtern Sie Rohdaten, deren Startzeit weiter als X (in Stunden) in der Zukunft liegt."
+    "HourFilterTip": "Filtern Sie Rohdaten, deren Startzeit weiter als X (in Stunden) in der Zukunft liegt.",
+    "templateTitle": "Vorlagentext",
+    "templateTitleTip": "Geben Sie hier Ihren Vorlagentext ein.",
+    "requestReload": "Browser neu laden oder Button drücken!"
 }

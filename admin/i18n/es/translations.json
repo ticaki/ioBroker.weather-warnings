@@ -221,5 +221,8 @@
     "restoreDefault": "Restaurar plantillas",
     "restoreDefaultToolTip": "¡Restaura las plantillas predeterminadas en el idioma actual!",
     "HourFilter": "Filtrar datos sin procesar: hora de inicio (0 = desactivado)",
-    "HourFilterTip": "Filtrar datos sin procesar cuya hora de inicio sea más futura que X (en horas)."
+    "HourFilterTip": "Filtrar datos sin procesar cuya hora de inicio sea más futura que X (en horas).",
+    "templateTitle": "Texto de plantilla",
+    "templateTitleTip": "Ingrese el texto de su plantilla aquí.",
+    "requestReload": "¡Recarga el navegador o presiona el botón!"
 }

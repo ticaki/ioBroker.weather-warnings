@@ -190,6 +190,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "hidden": "data.templateTable[0].template == 'template.NewMessage'",
                     "label": "",
                     "showSecondAddAt": 5,
                     "items": [
@@ -197,8 +198,8 @@
                             "type": "text",
                             "attr": "templateKey",
                             "width": "10% ",
-                            "title": "Unique Identifier",
-                            "tooltip": "Enter a unique text",
+                            "title": "templateKey",
+                            "tooltip": "templateKeyTip",
                             "filter": false,
                             "sort": false,
                             "default": "",
@@ -209,17 +210,27 @@
                             "type": "text",
                             "attr": "template",
                             "width": "90% ",
-                            "title": "Text",
-                            "tooltip": "Enter your template text.",
+                            "title": "templateTitle",
+                            "tooltip": "templateTitleTip",
                             "filter": false,
                             "sort": false,
                             "default": ""
                         }
                     ]
                 },
+                "requestReload": {
+                    "type": "staticText",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "data.templateTable[0].template != 'template.NewMessage'",
+                    "label": "requestReload",
+                    "newLine": true
+                },
                 "templateHelp": {
                     "type": "textSendTo",
                     "command": "templateHelp",
+                    "hidden": "data.templateTable[0].template == 'template.NewMessage'",
                     "minRows": 2,
                     "maxRows": 30,
                     "text": "",
@@ -232,8 +243,9 @@
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",
-                    "jsonData": "{ \"service\": \"template\" }",
+                    "jsonData": "{ \"service\": \"template\", \"value\": ${JSON.stringify(data.templateTable)} }",
                     "newLine": true,
+                    "reloadBrowser": true,
                     "label": "restoreDefault",
                     "tooltip": "restoreDefaultToolTip",
                     "sm": 6,

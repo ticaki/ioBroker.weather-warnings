@@ -218,8 +218,11 @@
     "template.RemoveAllJson": "{ \"status\": \"All clear!\"\\}",
     "template.NewMessageWithArray": "Luke we got a new warning ${Warntypename} from ${starttime}, looks like a ${_customArray}",
     "template._CustomArray": "${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}",
-    "restoreDefault":"Restore templates",
+    "restoreDefault": "Restore templates",
     "restoreDefaultToolTip": "Restore the default templates in the current language!",
     "HourFilter": "Filter raw data: Start time (0 = off)",
-    "HourFilterTip": "Filter raw data whose start time is further in the future than X (in hours)."
+    "HourFilterTip": "Filter raw data whose start time is further in the future than X (in hours).",
+    "templateTitle": "Template text",
+    "templateTitleTip": "Enter your template text here.",
+    "requestReload": "Reload browser or push the buttom!"
 }

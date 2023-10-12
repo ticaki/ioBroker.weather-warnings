@@ -221,5 +221,8 @@
     "restoreDefault": "Restaurar modelos",
     "restoreDefaultToolTip": "Restaure os modelos padrão no idioma atual!",
     "HourFilter": "Filtrar dados brutos: hora de início (0 = desativado)",
-    "HourFilterTip": "Filtre dados brutos cujo horário de início esteja mais distante do que X (em horas)."
+    "HourFilterTip": "Filtre dados brutos cujo horário de início esteja mais distante do que X (em horas).",
+    "templateTitle": "Texto do modelo",
+    "templateTitleTip": "Insira o texto do seu modelo aqui.",
+    "requestReload": "Recarregue o navegador ou aperte o botão!"
 }

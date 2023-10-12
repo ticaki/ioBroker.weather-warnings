@@ -221,5 +221,8 @@
     "restoreDefault": "恢复模板",
     "restoreDefaultToolTip": "恢复当前语言的默认模板！",
     "HourFilter": "过滤原始数据：开始时间（0 = 关闭）",
-    "HourFilterTip": "过滤开始时间比 X（以小时为单位）更远的原始数据。"
+    "HourFilterTip": "过滤开始时间比 X（以小时为单位）更远的原始数据。",
+    "templateTitle": "模板文本",
+    "templateTitleTip": "在此输入您的模板文本。",
+    "requestReload": "重新加载浏览器或按下按钮！"
 }

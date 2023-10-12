@@ -221,5 +221,8 @@
     "restoreDefault": "Przywróć szablony",
     "restoreDefaultToolTip": "Przywróć domyślne szablony w bieżącym języku!",
     "HourFilter": "Filtruj surowe dane: Czas rozpoczęcia (0 = wyłączony)",
-    "HourFilterTip": "Filtruj surowe dane, których czas rozpoczęcia przypada dalej w przyszłości niż X (w godzinach)."
+    "HourFilterTip": "Filtruj surowe dane, których czas rozpoczęcia przypada dalej w przyszłości niż X (w godzinach).",
+    "templateTitle": "Tekst szablonu",
+    "templateTitleTip": "Wpisz tutaj tekst szablonu.",
+    "requestReload": "Załaduj ponownie przeglądarkę lub naciśnij przycisk!"
 }

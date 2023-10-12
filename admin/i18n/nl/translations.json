@@ -221,5 +221,8 @@
     "restoreDefault": "Sjablonen herstellen",
     "restoreDefaultToolTip": "Herstel de standaardsjablonen in de huidige taal!",
     "HourFilter": "Filter ruwe gegevens: Starttijd (0 = uit)",
-    "HourFilterTip": "Filter onbewerkte gegevens waarvan de starttijd verder in de toekomst ligt dan X (in uren)."
+    "HourFilterTip": "Filter onbewerkte gegevens waarvan de starttijd verder in de toekomst ligt dan X (in uren).",
+    "templateTitle": "Sjabloontekst",
+    "templateTitleTip": "Voer hier uw sjabloontekst in.",
+    "requestReload": "Herlaad browser of druk op de knop!"
 }
