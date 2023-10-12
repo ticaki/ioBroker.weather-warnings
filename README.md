@@ -106,6 +106,9 @@ Eine formatierte Nachricht könnte dann z.B. vorerst so aussehen:
 Warnung: ${Warntypename} am ${startdayofweek} um ${starttime} Stufe: ${warnlevelnamE}
 ```
 
+## Icons
+https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
+
 ## Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
