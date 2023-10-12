@@ -222,6 +222,17 @@ class WeatherWarnings extends utils.Adapter {
                     notificationServiceOpt.email.actions.header = self.config.email_Header;
                     notificationServiceOpt.email.actions.footer = self.config.email_Footer;
                 }
+                if (self.config.alexa2_Enabled && notificationServiceOpt.alexa2 != undefined) {
+                    if (self.config.alexa2_device_ids.length == 0 || !self.config.alexa2_device_ids[0]) {
+                        self.log.error(`Missing devices for alexa - deactivated`);
+                        delete notificationServiceOpt.alexa2;
+                        self.config.alexa2_Enabled = false;
+                    } else if (self.config.alexa2_Adapter == 'none') {
+                        self.log.error(`Missing adapter for alexa - deactivated`);
+                        delete notificationServiceOpt.alexa2;
+                        self.config.alexa2_Enabled = false;
+                    }
+                }
                 try {
                     await self.providerController.createNotificationService(notificationServiceOpt);
                 } catch (error) {
