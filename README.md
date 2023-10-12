@@ -30,6 +30,7 @@ Nach der Installation und dem automatischen öffnen der Konfigurationsseite dies
 - **Incoming warnings...:** Nach dem Adapterstart werden die beim ersten Datenabruf erhaltenen Warnungen als bekannt und lösen keine Benachrichtigung aus.
 
 - **Testing- Activate...:** Use testdata. Adapter is offline.
+
 - **Testing- Raw data history:** Für Debugging, nur nach Aufforderung.
 
 
@@ -59,6 +60,7 @@ Zeichen mit besonderer Bedeutung:
 
 ![telegram](img/telegram.png)
 **Adapter:** Wenn diese Möglichkeit aktiviert wurde und es ein Adapterfeld gibt muß dort einen gültige Auswahl getroffen werden. Eine Fehlermeldung im Log weißt auf fehlende Einstellungen hin. 
+
 **Activate ...:** Versende Warnungen von diesem Anbieter mit diesem Dienst.
 
 **Filter:** 
@@ -71,7 +73,9 @@ Zeichen mit besonderer Bedeutung:
 3) Warnungen wurden entfernt und es gibt **keine** weiteren Aktiven.
 
 **Besonderheiten**
+
 **email:** Header wird vor die Mail gestellt, dann kommt wiederholt: 1,2 oder 3 +  Zeilenumbruch und anschließend Footer.(weitere Funktionen in Arbeit)
+
 **alexa:** Zusätzlich muß hier noch ein/mehrere Geräte ausgewählt werden.
 
 Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht mehrere Warnungen in Frage kommen.
