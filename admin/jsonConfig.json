@@ -243,9 +243,8 @@
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",
-                    "jsonData": "{ \"service\": \"template\", \"value\": ${JSON.stringify(data.templateTable)} }",
+                    "jsonData": "{ \"service\": \"template\"}",
                     "newLine": true,
-                    "reloadBrowser": true,
                     "label": "restoreDefault",
                     "tooltip": "restoreDefaultToolTip",
                     "sm": 6,

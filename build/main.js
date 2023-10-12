@@ -344,7 +344,7 @@ class WeatherWarnings extends utils.Adapter {
                 data.native[a] = import_io_package.default.native[a];
               });
             }
-            this.sendTo(obj.from, obj.command, { ...data, reloadBrowser: true }, obj.callback);
+            this.sendTo(obj.from, obj.command, data, obj.callback);
           }
           break;
         case "Messages":

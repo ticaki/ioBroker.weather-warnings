@@ -154,8 +154,6 @@ https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 * (ticaki) initial release
 
 
-Bild von <a href="https://de.freepik.com/vektoren-kostenlos/handgezeichnete-wettereffekte-set_18778981.htm#query=wetter%20symbole&position=49&from_view=keyword&track=ais">Freepik</a>
-
 ## License
 MIT License
 
