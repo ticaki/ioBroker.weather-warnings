@@ -100,6 +100,10 @@ https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.3.3 (2023-10-13)
+* (ticaki) fixed: repeat message dwd
+* (ticaki) small bugfixes
+
 ### 0.3.2 (2023-10-10)
 * add alexa volumen
 
@@ -138,7 +142,6 @@ https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 
 ### 0.2.1-alpha.0 (2023-09-25)
 * (ticaki) initial release
-
 
 ## License
 MIT License
