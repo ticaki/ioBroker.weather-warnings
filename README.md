@@ -77,13 +77,20 @@ Zeichen mit besonderer Bedeutung:
 2) Eine Warnung wurde entfernt und es gibt **noch** weitere Aktive.
 3) Warnungen wurden entfernt und es gibt **keine** weiteren Aktiven.
 
-**Besonderheiten**
+**Special features**
 
 **email:** Header wird vor die Mail gestellt, dann kommt wiederholt: 1,2 oder 3 +  Zeilenumbruch und anschließend Footer.(weitere Funktionen in Arbeit)
 
-**alexa:** Zusätzlich muß hier noch ein/mehrere Geräte ausgewählt werden.
+**alexa:** Zusätzlich muß hier noch ein/mehrere Geräte ausgewählt werden. Die Lautstärke wird nur für die Sprachnachrichten verändert und sollte anschließend wieder zurück gesetzt werden. Nachrichtengröße pro Warnung ist maximal 250 Zeichen.
 
 Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht mehrere Warnungen in Frage kommen.
+## General Behaviour
+- No duplicate messages should be sent for one and the same thing. DWD is very particular about this.
+- If `none` is selected as the template, no notifications are sent for it.
+- States unter `.alerts` enthalten nach Warntypen guppierte Felder für Start, Ende, Warntyp, **jetzt** aktiv und Schlagzeile. Angezeigt wird 1 Warnung pro Gruppe gefiltert nach folgenden Kriterien: 
+  1) Warnung ist **jetzt** aktiv, die mit dem höchsten Level.
+  2) Warnung mit dem jüngsten Startzeitpunkt und bei mehreren mit gleicher Zeit, die mit dem höchsten Level.
+
 
 ## Icons
 https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
