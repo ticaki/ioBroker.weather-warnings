@@ -52,11 +52,16 @@ Zeichen mit besonderer Bedeutung:
 
 **DWD:** Die Auswahl erfolgt nach einer Liste von 10000 Orten, nach der Eingabe in ein anderes Feld klicken und wieder zurück gehen, die Liste ist zu groß und muß aktualisiert werden.
 
-**UWZ:** Eingabe erfolgt mit Ladenkennzeichen DE AT (weitere möglich muß man ausprobieren) und der Postleitzahl, also DE12345
+**UWZ:** Eingabe erfolgt mit Landeskennzeichen DE AT (weitere möglich muß man ausprobieren) und der Postleitzahl, also DE12345
 
 **ZAMG:** Nur für Österreich. Eingabe von Koordinaten die in Österreich liegen.
 
 **Place name:** benutzerdefinierte Ortsbezeichnung, kann in Warnungen verwendet werden. (Nützlich bei mehreren Warncellen)
+
+**Filter:** 
+- Filter Raw data: Filtert vor jeder weiteren Auswertung alles aus das X Stunden in der Zukunft liegt.
+- Type: alles mit diesem Type wird verworfen. 
+- Level: ales gleich oder kleiner dieses Levels wird verworfen.
 
 ![telegram](img/telegram.png)
 **Adapter:** Wenn diese Möglichkeit aktiviert wurde und es ein Adapterfeld gibt muß dort einen gültige Auswahl getroffen werden. Eine Fehlermeldung im Log weißt auf fehlende Einstellungen hin. 

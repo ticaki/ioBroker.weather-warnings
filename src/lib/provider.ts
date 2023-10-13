@@ -335,30 +335,25 @@ export class DWDProvider extends BaseProvider {
 
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
             } else {
-                this.messages[index].updateData(w.properties);
+                await this.messages[index].updateData(w.properties);
             }
         }
         this.library.garbageColleting(`${this.name}.warning`);
 
-        for (let m = 0; m < this.messages.length; m++) {
-            const msg = this.messages[m];
-            //const formatedData = await msg.updateFormatedData();
-            if (msg.rawWarning.MSGTYPE == 'Update' || msg.rawWarning.MSGTYPE == 'Alert') {
-                for (let m2 = 0; m2 < this.messages.length; m2++) {
-                    const oldmsg = this.messages[m2];
-                    if (msg === oldmsg) continue;
-                    if (oldmsg.newMessage) continue;
-                    //if (oldmsg.notDeleted) continue;
-                    if (oldmsg.formatedData === undefined || msg.formatedData === undefined) continue; // überflüssig?
-                    if (oldmsg.rawWarning.EC_II == msg.rawWarning.EC_II) {
-                        msg.silentUpdate();
-                        this.log.debug('Remove a warning from db.(Update)');
-                        //this.messages[m2].delete();
-                        this.messages.splice(Number(m2--), 1);
-                        m--;
-                        break;
-                    }
-                }
+        for (let n = 0; n < this.messages.length; n++) {
+            const newmsg = this.messages[n];
+            if (!newmsg.newMessage) continue;
+            for (let o = 0; o < this.messages.length; o++) {
+                const oldmsg = this.messages[o];
+                if (oldmsg.newMessage) continue;
+                if (oldmsg.formatedData === undefined || newmsg.formatedData === undefined) continue;
+                if (oldmsg.rawWarning.EC_II != newmsg.rawWarning.EC_II) continue;
+                if (oldmsg.starttime > newmsg.endtime || newmsg.starttime > oldmsg.endtime) continue;
+                newmsg.silentUpdate();
+                this.log.debug('Remove a old warning.(Silent Update)');
+                if (o <= n) n--;
+                this.messages.splice(o--, 1);
+                break;
             }
         }
         /**
@@ -413,7 +408,7 @@ export class ZAMGProvider extends BaseProvider {
                 await nmessage.updateFormated();
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
             } else {
-                this.messages[index].updateData(result.properties.warnings[a].properties);
+                await this.messages[index].updateData(result.properties.warnings[a].properties);
             }
         }
         this.library.garbageColleting(`${this.name}.warning`);
@@ -455,7 +450,7 @@ export class UWZProvider extends BaseProvider {
                 await nmessage.updateFormated();
                 if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
             } else {
-                this.messages[index].updateData(result.results[a]);
+                await this.messages[index].updateData(result.results[a]);
             }
         }
 

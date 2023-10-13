@@ -298,29 +298,30 @@ class DWDProvider extends BaseProvider {
         if (nmessage && nmessage.filter(this.filter))
           this.messages.push(nmessage);
       } else {
-        this.messages[index].updateData(w.properties);
+        await this.messages[index].updateData(w.properties);
       }
     }
     this.library.garbageColleting(`${this.name}.warning`);
-    for (let m = 0; m < this.messages.length; m++) {
-      const msg = this.messages[m];
-      if (msg.rawWarning.MSGTYPE == "Update" || msg.rawWarning.MSGTYPE == "Alert") {
-        for (let m2 = 0; m2 < this.messages.length; m2++) {
-          const oldmsg = this.messages[m2];
-          if (msg === oldmsg)
-            continue;
-          if (oldmsg.newMessage)
-            continue;
-          if (oldmsg.formatedData === void 0 || msg.formatedData === void 0)
-            continue;
-          if (oldmsg.rawWarning.EC_II == msg.rawWarning.EC_II) {
-            msg.silentUpdate();
-            this.log.debug("Remove a warning from db.(Update)");
-            this.messages.splice(Number(m2--), 1);
-            m--;
-            break;
-          }
-        }
+    for (let n = 0; n < this.messages.length; n++) {
+      const newmsg = this.messages[n];
+      if (!newmsg.newMessage)
+        continue;
+      for (let o = 0; o < this.messages.length; o++) {
+        const oldmsg = this.messages[o];
+        if (oldmsg.newMessage)
+          continue;
+        if (oldmsg.formatedData === void 0 || newmsg.formatedData === void 0)
+          continue;
+        if (oldmsg.rawWarning.EC_II != newmsg.rawWarning.EC_II)
+          continue;
+        if (oldmsg.starttime > newmsg.endtime || newmsg.starttime > oldmsg.endtime)
+          continue;
+        newmsg.silentUpdate();
+        this.log.debug("Remove a old warning.(Silent Update)");
+        if (o <= n)
+          n--;
+        this.messages.splice(o--, 1);
+        break;
       }
     }
     await this.finishUpdateData();
@@ -366,7 +367,7 @@ class ZAMGProvider extends BaseProvider {
         if (nmessage && nmessage.filter(this.filter))
           this.messages.push(nmessage);
       } else {
-        this.messages[index].updateData(result.properties.warnings[a].properties);
+        await this.messages[index].updateData(result.properties.warnings[a].properties);
       }
     }
     this.library.garbageColleting(`${this.name}.warning`);
@@ -410,7 +411,7 @@ class UWZProvider extends BaseProvider {
         if (nmessage && nmessage.filter(this.filter))
           this.messages.push(nmessage);
       } else {
-        this.messages[index].updateData(result.results[a]);
+        await this.messages[index].updateData(result.results[a]);
       }
     }
     this.log.debug(`Got ${result.results.length} warnings from server`);

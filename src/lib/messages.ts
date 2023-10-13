@@ -765,10 +765,10 @@ export class MessagesClass extends BaseClass {
     }
 
     //** Update rawWanrings and dont delete message */
-    updateData(data: object): void {
+    async updateData(data: object): Promise<void> {
         this.rawWarning = data;
         this.notDeleted = true;
-        this.updateFormated();
+        await this.updateFormated();
     }
 
     //** dont send a message and dont delete this*/

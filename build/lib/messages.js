@@ -701,10 +701,10 @@ class MessagesClass extends import_library.BaseClass {
     }
     return "";
   }
-  updateData(data) {
+  async updateData(data) {
     this.rawWarning = data;
     this.notDeleted = true;
-    this.updateFormated();
+    await this.updateFormated();
   }
   silentUpdate() {
     this.newMessage = false;
