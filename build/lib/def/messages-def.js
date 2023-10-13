@@ -97,7 +97,7 @@ const genericWarntypState = {
     _id: "",
     type: "state",
     common: {
-      name: "Level of warning as number",
+      name: "genericWarntypState.level",
       type: "number",
       role: "",
       read: true,
@@ -109,7 +109,7 @@ const genericWarntypState = {
     _id: "",
     type: "state",
     common: {
-      name: "Start time of warning",
+      name: "genericWarntypState.start",
       type: "string",
       role: "date",
       read: true,
@@ -121,7 +121,7 @@ const genericWarntypState = {
     _id: "",
     type: "state",
     common: {
-      name: "End time of warning",
+      name: "genericWarntypState.end",
       type: "string",
       role: "date",
       read: true,
@@ -133,7 +133,7 @@ const genericWarntypState = {
     _id: "",
     type: "state",
     common: {
-      name: "Headline of warning.",
+      name: "genericWarntypState.headline",
       type: "string",
       role: "text",
       read: true,
@@ -145,7 +145,7 @@ const genericWarntypState = {
     _id: "",
     type: "state",
     common: {
-      name: "Warntype as number.",
+      name: "genericWarntypState.type",
       type: "number",
       role: "value",
       read: true,
@@ -157,7 +157,7 @@ const genericWarntypState = {
     _id: "",
     type: "state",
     common: {
-      name: "Now is between start and end.",
+      name: "genericWarntypState.active",
       type: "boolean",
       role: "indicator",
       read: true,

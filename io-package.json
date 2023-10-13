@@ -1,299 +1,299 @@
 {
-  "common": {
-    "name": "weather-warnings",
-    "version": "0.3.3",
-    "news": {
-      "0.3.3": {
-        "en": "fixed: repeat message dwd\nsmall bugfixes",
-        "de": "fest: wiederholungsmeldung dwd\nkleine bugfixes",
-        "ru": "исправлено: повторное сообщение dwd\nнебольшие багфиксы",
-        "pt": "corrigido: repita a mensagem dwd\npequenos correções de bugs",
-        "nl": "herhaal dwd\nkleine insectenfixen",
-        "fr": "corrigé: message répétitif dwd\npetits bugfixes",
-        "it": "fisso: messaggio di ripetizione dwd\npiccoli bugfix",
-        "es": "fijo: mensaje de repetición dwd\npequeños bugfixes",
-        "pl": "data: repeat message dwd\nmałe trąbki",
-        "uk": "фіксована: повторне повідомлення dwd\nмаленькі багфікси",
-        "zh-cn": "固定:重复信息\n小型配件"
-      },
-      "0.3.2": {
-        "en": "add alexa volumen",
-        "de": "alexa volumen hinzufügen",
-        "ru": "добавить alexa volumen",
-        "pt": "adicionar volume de alexa",
-        "nl": "voeg alexa volume toe",
-        "fr": "ajouter alexa volumen",
-        "it": "aggiungere alexa volume",
-        "es": "añadir alexa volumen",
-        "pl": "dodać aleksję",
-        "uk": "додати alexa об'єм",
-        "zh-cn": "增 编"
-      },
-      "0.3.1": {
-        "en": "added alexa",
-        "de": "Hinzugefügt Alexa",
-        "ru": "добавлена alexa",
-        "pt": "adicionado alexa",
-        "nl": "alexa toegevoegd",
-        "fr": "ajouté alexa",
-        "it": "aggiunto alexa",
-        "es": "añadido alexa",
-        "pl": "dodać aleksję",
-        "uk": "додано alexa",
-        "zh-cn": "附加法"
-      },
-      "0.3.0": {
-        "en": "added multiple warncell\nadded option to remove channels\nfixed alot bugs",
-        "de": "mehrfach warncell\nzusätzliche Option zum Entfernen von Ordner\nviele Fehler behoben",
-        "ru": "добавлено несколько alertcell\nдобавлена опция для удаления каналов\nисправлены ошибки alot",
-        "pt": "adicionado várias células de aviso\nopção adicionada para remover canais\nbugs de lote fixos",
-        "nl": "vertaling:\nvoegde optie om kanalen te verwijderen\n_",
-        "fr": "ajouté multiple warningcell\noption ajoutée pour supprimer les canaux\ncorrection de bugs alot",
-        "it": "aggiunto più celle di avvertimento\nopzione aggiunta per rimuovere i canali\nbug alot fissi",
-        "es": "añadido varios warncell\nopción agregada para eliminar canales\nbugs de alot fijo",
-        "pl": "dodać\nusunąć kanały\nalot bug",
-        "uk": "додано кілька попереджувачів\nдоданий варіант для видалення каналів\nвиправлені золотих помилок",
-        "zh-cn": "增加多重战争\n取消渠道的附加选择\na. 固定配量"
-      },
-      "0.2.6-alpha.0": {
-        "en": "added email, json, history\nadd more template key\nadd mulitple dwd warncells\nfixed alot bugs",
-        "de": "Hinzugefügt e-mail, json, verlauf\nweitere vorlagenschlüssel\nmulitple dwd warncells hinzufügen\nalot fehler behoben",
-        "ru": "добавлена электронная почта, json, история\nдобавить больше ключа шаблона\nдобавить mulitple dwd предупреждает\nисправлены ошибки alot",
-        "pt": "adicionado e-mail, json, história\nadicionar mais chave de modelo\nadicionar células de aviso de dwd\nbugs de lote fixos",
-        "nl": "e-mail, json, geschiedenis\nvoeg meer tempelsleutel\nvoeg mulitple dwd warncells toe\n_",
-        "fr": "e-mail ajouté, json, histoire\najouter plus de clé de gabarit\najouter les cellules d ' avertissement du dwd mulitple\ncorrection de bugs alot",
-        "it": "aggiunto email, json, storia\naggiungere più codice modello\naggiungere mulitple dwd avverti celle\nbug alot fissi",
-        "es": "email añadido, json, historia\nañadir más plantilla clave\nañadir mulitple dwd warncells\nbugs de alot fijo",
-        "pl": "e-mail, json, historia\ndodanie klucza szablonów\nzapytaj błogosławieństwo\nalot bug",
-        "uk": "додано електронну пошту, json, історія\nдодати більше ключ шаблону\nadd mulitple dwd попереджаєклітини\nвиправлені золотих помилок",
-        "zh-cn": "电子邮件: json,历史\n增加模板\n增加弹壳\na. 固定配量"
-      },
-      "0.2.5-alpha.0": {
-        "en": "added telegram, whatsapp, pushover\nadded remove all\nadded json/array output for all current warnings.",
-        "de": "telegramm hinzugefügt, whatsapp, pushover\nentfernen\njson/array ausgabe für alle aktuellen warnungen.",
-        "ru": "добавил telegram, whatsapp, pushover\nдобавлено удалить все\nдобавлено json/array выход для всех текущих предупреждений.",
-        "pt": "adicionado telegrama, whatsapp, pushover\nadicionado remover tudo\nadicionada saída json/array para todos os avisos atuais.",
-        "nl": "voegde telegram toe, watsapp, pushover\nverwijder alles\nvoegde json/array uitput toe voor alle huidige waarschuwingen.",
-        "fr": "télégramme ajouté, whatsapp, pushover\najouté supprimer tous\nsortie json/array pour tous les avertissements actuels.",
-        "it": "aggiunto telegramma, whatsapp, pushover\naggiunto rimuovere tutto\naggiunto json/array output per tutti gli avvisi correnti.",
-        "es": "telegrama añadido, whatsapp, pushover\nañadido eliminar todo\njson / salida de rayos para todas las advertencias actuales.",
-        "pl": "dodał telegram, cosapp, pushover\nusunąć\ndodano wyjście json/array dla wszystkich bieżących ostrzeżeń.",
-        "uk": "додано телеграму, whatsapp, pushover\nвидалити все\nдодано json/array вихід на всі поточні попередження.",
-        "zh-cn": "加电图、申请、推销\n增删\njson/array产出供所有现有警告使用。."
-      },
-      "0.2.4-alpha.0": {
-        "en": "add alerts",
-        "de": "Benachrichtigungsstates hinzufügen",
-        "ru": "добавить оповещения",
-        "pt": "adicionar alertas",
-        "nl": "vertaling:",
-        "fr": "ajouter des alertes",
-        "it": "aggiungere avvisi",
-        "es": "agregar alertas",
-        "pl": "dodać alarm",
-        "uk": "додати сповіщення",
-        "zh-cn": "增加警觉"
-      }
+    "common": {
+        "name": "weather-warnings",
+        "version": "0.3.3",
+        "news": {
+            "0.3.3": {
+                "en": "fixed: repeat message dwd\nsmall bugfixes",
+                "de": "fest: wiederholungsmeldung dwd\nkleine bugfixes",
+                "ru": "исправлено: повторное сообщение dwd\nнебольшие багфиксы",
+                "pt": "corrigido: repita a mensagem dwd\npequenos correções de bugs",
+                "nl": "herhaal dwd\nkleine insectenfixen",
+                "fr": "corrigé: message répétitif dwd\npetits bugfixes",
+                "it": "fisso: messaggio di ripetizione dwd\npiccoli bugfix",
+                "es": "fijo: mensaje de repetición dwd\npequeños bugfixes",
+                "pl": "data: repeat message dwd\nmałe trąbki",
+                "uk": "фіксована: повторне повідомлення dwd\nмаленькі багфікси",
+                "zh-cn": "固定:重复信息\n小型配件"
+            },
+            "0.3.2": {
+                "en": "add alexa volumen",
+                "de": "alexa volumen hinzufügen",
+                "ru": "добавить alexa volumen",
+                "pt": "adicionar volume de alexa",
+                "nl": "voeg alexa volume toe",
+                "fr": "ajouter alexa volumen",
+                "it": "aggiungere alexa volume",
+                "es": "añadir alexa volumen",
+                "pl": "dodać aleksję",
+                "uk": "додати alexa об'єм",
+                "zh-cn": "增 编"
+            },
+            "0.3.1": {
+                "en": "added alexa",
+                "de": "Hinzugefügt Alexa",
+                "ru": "добавлена alexa",
+                "pt": "adicionado alexa",
+                "nl": "alexa toegevoegd",
+                "fr": "ajouté alexa",
+                "it": "aggiunto alexa",
+                "es": "añadido alexa",
+                "pl": "dodać aleksję",
+                "uk": "додано alexa",
+                "zh-cn": "附加法"
+            },
+            "0.3.0": {
+                "en": "added multiple warncell\nadded option to remove channels\nfixed alot bugs",
+                "de": "mehrfach warncell\nzusätzliche Option zum Entfernen von Ordner\nviele Fehler behoben",
+                "ru": "добавлено несколько alertcell\nдобавлена опция для удаления каналов\nисправлены ошибки alot",
+                "pt": "adicionado várias células de aviso\nopção adicionada para remover canais\nbugs de lote fixos",
+                "nl": "vertaling:\nvoegde optie om kanalen te verwijderen\n_",
+                "fr": "ajouté multiple warningcell\noption ajoutée pour supprimer les canaux\ncorrection de bugs alot",
+                "it": "aggiunto più celle di avvertimento\nopzione aggiunta per rimuovere i canali\nbug alot fissi",
+                "es": "añadido varios warncell\nopción agregada para eliminar canales\nbugs de alot fijo",
+                "pl": "dodać\nusunąć kanały\nalot bug",
+                "uk": "додано кілька попереджувачів\nдоданий варіант для видалення каналів\nвиправлені золотих помилок",
+                "zh-cn": "增加多重战争\n取消渠道的附加选择\na. 固定配量"
+            },
+            "0.2.6-alpha.0": {
+                "en": "added email, json, history\nadd more template key\nadd mulitple dwd warncells\nfixed alot bugs",
+                "de": "Hinzugefügt e-mail, json, verlauf\nweitere vorlagenschlüssel\nmulitple dwd warncells hinzufügen\nalot fehler behoben",
+                "ru": "добавлена электронная почта, json, история\nдобавить больше ключа шаблона\nдобавить mulitple dwd предупреждает\nисправлены ошибки alot",
+                "pt": "adicionado e-mail, json, história\nadicionar mais chave de modelo\nadicionar células de aviso de dwd\nbugs de lote fixos",
+                "nl": "e-mail, json, geschiedenis\nvoeg meer tempelsleutel\nvoeg mulitple dwd warncells toe\n_",
+                "fr": "e-mail ajouté, json, histoire\najouter plus de clé de gabarit\najouter les cellules d ' avertissement du dwd mulitple\ncorrection de bugs alot",
+                "it": "aggiunto email, json, storia\naggiungere più codice modello\naggiungere mulitple dwd avverti celle\nbug alot fissi",
+                "es": "email añadido, json, historia\nañadir más plantilla clave\nañadir mulitple dwd warncells\nbugs de alot fijo",
+                "pl": "e-mail, json, historia\ndodanie klucza szablonów\nzapytaj błogosławieństwo\nalot bug",
+                "uk": "додано електронну пошту, json, історія\nдодати більше ключ шаблону\nadd mulitple dwd попереджаєклітини\nвиправлені золотих помилок",
+                "zh-cn": "电子邮件: json,历史\n增加模板\n增加弹壳\na. 固定配量"
+            },
+            "0.2.5-alpha.0": {
+                "en": "added telegram, whatsapp, pushover\nadded remove all\nadded json/array output for all current warnings.",
+                "de": "telegramm hinzugefügt, whatsapp, pushover\nentfernen\njson/array ausgabe für alle aktuellen warnungen.",
+                "ru": "добавил telegram, whatsapp, pushover\nдобавлено удалить все\nдобавлено json/array выход для всех текущих предупреждений.",
+                "pt": "adicionado telegrama, whatsapp, pushover\nadicionado remover tudo\nadicionada saída json/array para todos os avisos atuais.",
+                "nl": "voegde telegram toe, watsapp, pushover\nverwijder alles\nvoegde json/array uitput toe voor alle huidige waarschuwingen.",
+                "fr": "télégramme ajouté, whatsapp, pushover\najouté supprimer tous\nsortie json/array pour tous les avertissements actuels.",
+                "it": "aggiunto telegramma, whatsapp, pushover\naggiunto rimuovere tutto\naggiunto json/array output per tutti gli avvisi correnti.",
+                "es": "telegrama añadido, whatsapp, pushover\nañadido eliminar todo\njson / salida de rayos para todas las advertencias actuales.",
+                "pl": "dodał telegram, cosapp, pushover\nusunąć\ndodano wyjście json/array dla wszystkich bieżących ostrzeżeń.",
+                "uk": "додано телеграму, whatsapp, pushover\nвидалити все\nдодано json/array вихід на всі поточні попередження.",
+                "zh-cn": "加电图、申请、推销\n增删\njson/array产出供所有现有警告使用。."
+            },
+            "0.2.4-alpha.0": {
+                "en": "add alerts",
+                "de": "Benachrichtigungsstates hinzufügen",
+                "ru": "добавить оповещения",
+                "pt": "adicionar alertas",
+                "nl": "vertaling:",
+                "fr": "ajouter des alertes",
+                "it": "aggiungere avvisi",
+                "es": "agregar alertas",
+                "pl": "dodać alarm",
+                "uk": "додати сповіщення",
+                "zh-cn": "增加警觉"
+            }
+        },
+        "titleLang": {
+            "en": "Weather Warnings",
+            "de": "Wetterwarnungen",
+            "ru": "Предупреждения о погоде",
+            "pt": "Avisos meteorológicos",
+            "nl": "Weerwaarschuwingen",
+            "fr": "Avertissements météorologiques",
+            "it": "Avvisi meteo",
+            "es": "Advertencias meteorológicas",
+            "pl": "Ostrzeżenia pogodowe",
+            "uk": "Попередження про погоду",
+            "zh-cn": "天气警告"
+        },
+        "desc": {
+            "en": "weather-warnings",
+            "de": "Wetterwarnungen",
+            "ru": "предупреждения о погоде",
+            "pt": "avisos meteorológicos",
+            "nl": "weerwaarschuwingen",
+            "fr": "avertissements météorologiques",
+            "it": "allerta meteo",
+            "es": "advertencias-meteorológicas",
+            "pl": "ostrzeżenia pogodowe",
+            "uk": "погодні попередження",
+            "zh-cn": "天气警报"
+        },
+        "authors": [
+            "ticaki <github@renopoint.de>"
+        ],
+        "keywords": [
+            "weather",
+            "dwd",
+            "uwz",
+            "zamg",
+            "warnings",
+            "push"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "build/main.js",
+        "icon": "weather-warnings.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
+        "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "weather",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "supportedMessages": {
+            "custom": true
+        },
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=5.0.12"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
     },
-    "titleLang": {
-      "en": "Weather Warnings",
-      "de": "Wetterwarnungen",
-      "ru": "Предупреждения о погоде",
-      "pt": "Avisos meteorológicos",
-      "nl": "Weerwaarschuwingen",
-      "fr": "Avertissements météorologiques",
-      "it": "Avvisi meteo",
-      "es": "Advertencias meteorológicas",
-      "pl": "Ostrzeżenia pogodowe",
-      "uk": "Попередження про погоду",
-      "zh-cn": "天气警告"
+    "native": {
+        "allowedDirs": [],
+        "useJsonHistory": false,
+        "dwdwarncellTable": [],
+        "uwzwarncellTable": [],
+        "zamgwarncellTable": [],
+        "useTestWarnings": false,
+        "dwdEnabled": false,
+        "uwzEnabled": false,
+        "zamgEnabled": false,
+        "dwdHourFilter": 0,
+        "uwzHourFilter": 0,
+        "zamgHourFilter": 0,
+        "notPushAtStart": true,
+        "refreshTime": 15,
+        "messageTemplate": [],
+        "templateTable": [
+            {
+                "templateKey": "NewMessage",
+                "template": "template.NewMessage"
+            },
+            {
+                "templateKey": "RemoveMessage",
+                "template": "template.RemoveMessage"
+            },
+            {
+                "templateKey": "RemoveAllMessage",
+                "template": "template.RemoveAllMessage"
+            },
+            {
+                "templateKey": "NewJson",
+                "template": "template.NewJson"
+            },
+            {
+                "templateKey": "RemoveJson",
+                "template": "template.RemoveJson"
+            },
+            {
+                "templateKey": "RemoveAllJson",
+                "template": "template.RemoveAllJson"
+            },
+            {
+                "templateKey": "NewMessageWithArray",
+                "template": "template.NewMessageWithArray"
+            },
+            {
+                "templateKey": "_CustomArray",
+                "template": "template._CustomArray"
+            }
+        ],
+        "dwdLanguage": "ger",
+        "uwzLanguage": "DE",
+        "zamgLanguage": "de",
+        "dwdTypeFilter": [],
+        "zamgTypeFilter": [],
+        "uwzTypeFilter": [],
+        "dwdLevelFilter": 0,
+        "uwzLevelFilter": 0,
+        "zamgLevelFilter": 0,
+        "telegram_DwdEnabled": true,
+        "telegram_UwzEnabled": true,
+        "telegram_ZamgEnabled": true,
+        "telegram_TypeFilter": [],
+        "telegram_LevelFilter": 0,
+        "telegram_Enabled": false,
+        "telegram_Adapter": "none",
+        "telegram_MessageNew": "NewMessage",
+        "telegram_MessageRemove": "RemoveMessage",
+        "telegram_MessageAllRemove": "RemoveAllMessage",
+        "whatsapp_DwdEnabled": true,
+        "whatsapp_UwzEnabled": true,
+        "whatsapp_ZamgEnabled": true,
+        "whatsapp_TypeFilter": [],
+        "whatsapp_LevelFilter": 0,
+        "whatsapp_Enabled": false,
+        "whatsapp_Adapter": "none",
+        "whatsapp_MessageNew": "NewMessage",
+        "whatsapp_MessageRemove": "RemoveMessage",
+        "whatsapp_MessageAllRemove": "RemoveAllMessage",
+        "pushover_DwdEnabled": true,
+        "pushover_UwzEnabled": true,
+        "pushover_ZamgEnabled": true,
+        "pushover_TypeFilter": [],
+        "pushover_LevelFilter": 0,
+        "pushover_Enabled": false,
+        "pushover_Adapter": "none",
+        "pushover_MessageNew": "NewMessage",
+        "pushover_MessageRemove": "RemoveMessage",
+        "pushover_MessageAllRemove": "RemoveAllMessage",
+        "json_DwdEnabled": true,
+        "json_UwzEnabled": true,
+        "json_ZamgEnabled": true,
+        "json_TypeFilter": [],
+        "json_LevelFilter": 0,
+        "json_Enabled": false,
+        "json_MessageAll": "NewJson",
+        "json_MessageAllRemove": "RemoveAllJson",
+        "json_parse": false,
+        "history_DwdEnabled": true,
+        "history_UwzEnabled": true,
+        "history_ZamgEnabled": true,
+        "history_TypeFilter": [],
+        "history_LevelFilter": 0,
+        "history_Enabled": false,
+        "history_MessageNew": "NewJson",
+        "history_MessageRemove": "RemoveAllJson",
+        "history_allinOne": false,
+        "email_Adapter": "none",
+        "email_line_break": "\n",
+        "email_DwdEnabled": true,
+        "email_UwzEnabled": true,
+        "email_ZamgEnabled": true,
+        "email_TypeFilter": [],
+        "email_LevelFilter": 0,
+        "email_Enabled": false,
+        "email_MessageNew": "NewMessage",
+        "email_MessageRemove": "RemoveMessage",
+        "email_Header": "none",
+        "email_Footer": "none",
+        "alexa2_Adapter": "none",
+        "alexa2_DwdEnabled": true,
+        "alexa2_UwzEnabled": true,
+        "alexa2_ZamgEnabled": true,
+        "alexa2_device_ids": [],
+        "alexa2_TypeFilter": [],
+        "alexa2_LevelFilter": 0,
+        "alexa2_Enabled": false,
+        "alexa2_MessageNew": "NewMessage",
+        "alexa2_MessageRemove": "RemoveMessage",
+        "alexa2_MessageAllRemove": "RemoveAllMessage",
+        "alexa2_volumen": 15
     },
-    "desc": {
-      "en": "weather-warnings",
-      "de": "Wetterwarnungen",
-      "ru": "предупреждения о погоде",
-      "pt": "avisos meteorológicos",
-      "nl": "weerwaarschuwingen",
-      "fr": "avertissements météorologiques",
-      "it": "allerta meteo",
-      "es": "advertencias-meteorológicas",
-      "pl": "ostrzeżenia pogodowe",
-      "uk": "погодні попередження",
-      "zh-cn": "天气警报"
-    },
-    "authors": [
-      "ticaki <github@renopoint.de>"
-    ],
-    "keywords": [
-      "weather",
-      "dwd",
-      "uwz",
-      "zamg",
-      "warnings",
-      "push"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "main": "build/main.js",
-    "icon": "weather-warnings.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
-    "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "weather",
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "supportedMessages": {
-      "custom": true
-    },
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=5.0.12"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=5.1.13"
-      }
-    ]
-  },
-  "native": {
-    "allowedDirs": [],
-    "useJsonHistory": false,
-    "dwdwarncellTable": [],
-    "uwzwarncellTable": [],
-    "zamgwarncellTable": [],
-    "useTestWarnings": false,
-    "dwdEnabled": false,
-    "uwzEnabled": false,
-    "zamgEnabled": false,
-    "dwdHourFilter": 0,
-    "uwzHourFilter": 0,
-    "zamgHourFilter": 0,
-    "notPushAtStart": true,
-    "refreshTime": 15,
-    "messageTemplate": [],
-    "templateTable": [
-      {
-        "templateKey": "NewMessage",
-        "template": "template.NewMessage"
-      },
-      {
-        "templateKey": "RemoveMessage",
-        "template": "template.RemoveMessage"
-      },
-      {
-        "templateKey": "RemoveAllMessage",
-        "template": "template.RemoveAllMessage"
-      },
-      {
-        "templateKey": "NewJson",
-        "template": "template.NewJson"
-      },
-      {
-        "templateKey": "RemoveJson",
-        "template": "template.RemoveJson"
-      },
-      {
-        "templateKey": "RemoveAllJson",
-        "template": "template.RemoveAllJson"
-      },
-      {
-        "templateKey": "NewMessageWithArray",
-        "template": "template.NewMessageWithArray"
-      },
-      {
-        "templateKey": "_CustomArray",
-        "template": "template._CustomArray"
-      }
-    ],
-    "dwdLanguage": "ger",
-    "uwzLanguage": "DE",
-    "zamgLanguage": "de",
-    "dwdTypeFilter": [],
-    "zamgTypeFilter": [],
-    "uwzTypeFilter": [],
-    "dwdLevelFilter": 0,
-    "uwzLevelFilter": 0,
-    "zamgLevelFilter": 0,
-    "telegram_DwdEnabled": true,
-    "telegram_UwzEnabled": true,
-    "telegram_ZamgEnabled": true,
-    "telegram_TypeFilter": [],
-    "telegram_LevelFilter": 0,
-    "telegram_Enabled": false,
-    "telegram_Adapter": "none",
-    "telegram_MessageNew": "NewMessage",
-    "telegram_MessageRemove": "RemoveMessage",
-    "telegram_MessageAllRemove": "RemoveAllMessage",
-    "whatsapp_DwdEnabled": true,
-    "whatsapp_UwzEnabled": true,
-    "whatsapp_ZamgEnabled": true,
-    "whatsapp_TypeFilter": [],
-    "whatsapp_LevelFilter": 0,
-    "whatsapp_Enabled": false,
-    "whatsapp_Adapter": "none",
-    "whatsapp_MessageNew": "NewMessage",
-    "whatsapp_MessageRemove": "RemoveMessage",
-    "whatsapp_MessageAllRemove": "RemoveAllMessage",
-    "pushover_DwdEnabled": true,
-    "pushover_UwzEnabled": true,
-    "pushover_ZamgEnabled": true,
-    "pushover_TypeFilter": [],
-    "pushover_LevelFilter": 0,
-    "pushover_Enabled": false,
-    "pushover_Adapter": "none",
-    "pushover_MessageNew": "NewMessage",
-    "pushover_MessageRemove": "RemoveMessage",
-    "pushover_MessageAllRemove": "RemoveAllMessage",
-    "json_DwdEnabled": true,
-    "json_UwzEnabled": true,
-    "json_ZamgEnabled": true,
-    "json_TypeFilter": [],
-    "json_LevelFilter": 0,
-    "json_Enabled": false,
-    "json_MessageAll": "NewJson",
-    "json_MessageAllRemove": "RemoveAllJson",
-    "json_parse": false,
-    "history_DwdEnabled": true,
-    "history_UwzEnabled": true,
-    "history_ZamgEnabled": true,
-    "history_TypeFilter": [],
-    "history_LevelFilter": 0,
-    "history_Enabled": false,
-    "history_MessageNew": "NewJson",
-    "history_MessageRemove": "RemoveAllJson",
-    "history_allinOne": false,
-    "email_Adapter": "none",
-    "email_line_break": "\n",
-    "email_DwdEnabled": true,
-    "email_UwzEnabled": true,
-    "email_ZamgEnabled": true,
-    "email_TypeFilter": [],
-    "email_LevelFilter": 0,
-    "email_Enabled": false,
-    "email_MessageNew": "NewMessage",
-    "email_MessageRemove": "RemoveMessage",
-    "email_Header": "none",
-    "email_Footer": "none",
-    "alexa2_Adapter": "none",
-    "alexa2_DwdEnabled": true,
-    "alexa2_UwzEnabled": true,
-    "alexa2_ZamgEnabled": true,
-    "alexa2_device_ids": [],
-    "alexa2_TypeFilter": [],
-    "alexa2_LevelFilter": 0,
-    "alexa2_Enabled": false,
-    "alexa2_MessageNew": "NewMessage",
-    "alexa2_MessageRemove": "RemoveMessage",
-    "alexa2_MessageAllRemove": "RemoveAllMessage",
-    "alexa2_volumen": 15
-  },
-  "objects": [],
-  "instanceObjects": []
+    "objects": [],
+    "instanceObjects": []
 }

@@ -571,7 +571,7 @@ class MessagesClass extends import_library.BaseClass {
       if (this.cache.messages[templateKey] !== void 0)
         return this.cache.messages[templateKey];
       if (this.formatedData) {
-        msg = await this.getTemplates(tempid, templates);
+        msg = await this.getTemplates(tempid);
         if (tempid == -1) {
           this.log.error(`No template for Key: ${templateKey}!`);
         } else {
@@ -582,8 +582,9 @@ class MessagesClass extends import_library.BaseClass {
     }
     return this.returnMessage(msg, this.starttime, templateKey);
   }
-  async getTemplates(tempid, templates) {
+  async getTemplates(tempid) {
     let msg = "";
+    const templates = this.adapter.config.templateTable;
     if (!this.formatedData)
       return msg;
     while (true) {
@@ -685,10 +686,7 @@ class MessagesClass extends import_library.BaseClass {
     for (let a = 0; a < this.adapter.config.templateTable.length; a++) {
       const t = this.adapter.config.templateTable[a];
       if (t.templateKey.startsWith("_")) {
-        this.formatedData[t.templateKey] = await this.getTemplates(
-          a,
-          this.adapter.config.templateTable
-        );
+        this.formatedData[t.templateKey] = await this.getTemplates(a);
       }
     }
     return this.formatedData;

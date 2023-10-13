@@ -79,6 +79,41 @@ export class Library extends BaseClass {
         } else {
             await this.setLanguage('en');
         }
+        /*setTimeout(async () => {
+            const file = await _fs.readFile(
+                `/home/tim/ioBroker.weather-warnings/admin/i18n/en/translations.json`,
+                'utf8',
+            );
+            const json = JSON.parse(file);
+            const test = genericStateObjects;
+            setValueToJson(test, 'genericStateObjects');
+            const test2 = statesObjectsWarnings;
+            setValueToJson(test2, 'statesObjectsWarnings');
+            const test3 = genericWarntypState;
+            setValueToJson(test3, 'genericWarntypState');
+
+            await _fs.writeFile(
+                `/home/tim/ioBroker.weather-warnings/admin/i18n/en/translations.json`,
+                JSON.stringify(json),
+            );
+            function setValueToJson(data: any, key: string, test = false): void {
+                for (const a in data) {
+                    if (typeof data[a] == 'object') {
+                        setValueToJson(data[a], a == 'common' ? key : `${key}.${a}`, a == 'common');
+                    } else {
+                        if (test && a == 'name') {
+                            if (key.includes('.alerts.')) {
+                                const c = key.split('.');
+                                c.splice(-2, 1);
+                                key = c.join('.');
+                            }
+                            json[key] = data[a];
+                            data[a] = key;
+                        }
+                    }
+                }
+            }
+        }, 3000);*/
         /*try {
             // optional module - test ts check fail
             const tools = await import('../../.dev-data/translations.ts');
@@ -222,6 +257,7 @@ export class Library extends BaseClass {
                 throw new Error('writedp try to create a state without object informations.');
             }
             obj._id = `${this.adapter.name}.${this.adapter.instance}.${dp}`;
+            if (typeof obj.common.name == 'string') obj.common.name = await this.getTranslationObj(obj.common.name);
             if (!del) await this.adapter.setObjectNotExistsAsync(dp, obj);
             const stateType = obj && obj.common && obj.common.type;
             node = this.setdb(dp, obj.type, undefined, stateType, true);
@@ -465,6 +501,23 @@ export class Library extends BaseClass {
         if (this.translation[key] !== undefined) return this.translation[key];
         return key;
     }
+
+    private async getTranslationObj(key: string): Promise<ioBroker.StringOrTranslated> {
+        //@ts-expect-error fix on the way
+        const language: ioBroker.Languages[] = ['en', 'de', 'ru', 'pt', 'nl', 'fr', 'it', 'es', 'pl', 'uk', 'zh-cn'];
+        const result: { [key: string]: string } = {};
+        for (const l of language) {
+            try {
+                const i = await import(`../../admin/i18n/${l}/translations.json`);
+                if (i[key] !== undefined) result[l as string] = i[key];
+            } catch (error) {
+                return key;
+            }
+        }
+        if (result['en'] == undefined) return key;
+        return result as ioBroker.StringOrTranslated;
+    }
+
     async setLanguage(language: string): Promise<boolean> {
         if (!language) language = 'en';
         if (this.language != language) {

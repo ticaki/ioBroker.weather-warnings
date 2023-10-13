@@ -600,8 +600,7 @@ export class MessagesClass extends BaseClass {
                 return this.cache.messages[templateKey as string];
 
             if (this.formatedData) {
-                msg = await this.getTemplates(tempid, templates);
-                //messages.push({ key: templates[a].templateKey, message: msg });
+                msg = await this.getTemplates(tempid);
                 if (tempid == -1) {
                     this.log.error(`No template for Key: ${templateKey}!`);
                 } else {
@@ -613,8 +612,10 @@ export class MessagesClass extends BaseClass {
         }
         return this.returnMessage(msg, this.starttime, templateKey);
     }
-    private async getTemplates(tempid: number, templates: any): Promise<string> {
+
+    private async getTemplates(tempid: number): Promise<string> {
         let msg = '';
+        const templates = this.adapter.config.templateTable;
         if (!this.formatedData) return msg;
         while (true) {
             if (tempid == -1) break;
@@ -741,10 +742,7 @@ export class MessagesClass extends BaseClass {
         for (let a = 0; a < this.adapter.config.templateTable.length; a++) {
             const t = this.adapter.config.templateTable[a];
             if (t.templateKey.startsWith('_')) {
-                this.formatedData[t.templateKey as keyof typeof this.formatedData] = await this.getTemplates(
-                    a,
-                    this.adapter.config.templateTable,
-                );
+                this.formatedData[t.templateKey as keyof typeof this.formatedData] = await this.getTemplates(a);
             }
         }
 

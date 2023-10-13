@@ -32,9 +32,6 @@ __export(definitionen_exports, {
 });
 module.exports = __toCommonJS(definitionen_exports);
 var messagesDef = __toESM(require("./messages-def"));
-function cloneObj(data) {
-  return JSON.parse(JSON.stringify(data));
-}
 const defaultChannel = {
   _id: "",
   type: "channel",
@@ -49,10 +46,7 @@ const genericStateObjects = {
       _id: "info",
       type: "channel",
       common: {
-        name: {
-          en: "Info",
-          de: "Info"
-        }
+        name: "genericStateObjects.info._channel"
       },
       native: {}
     },
@@ -60,7 +54,7 @@ const genericStateObjects = {
       _id: "connection",
       type: "state",
       common: {
-        name: "Last data retrieval was successful",
+        name: "genericStateObjects.info.connection",
         type: "boolean",
         role: "indicator.reachable",
         read: true,
@@ -72,7 +66,7 @@ const genericStateObjects = {
       _id: "testMode",
       type: "state",
       common: {
-        name: "If the adapter is running in test mode!",
+        name: "genericStateObjects.info.testMode",
         type: "boolean",
         role: "indicator",
         read: true,
@@ -85,7 +79,7 @@ const genericStateObjects = {
     _id: "No_definition",
     type: "state",
     common: {
-      name: "No definition",
+      name: "genericStateObjects.state",
       type: "string",
       role: "text",
       read: true,
@@ -97,7 +91,7 @@ const genericStateObjects = {
     _id: "User_State",
     type: "state",
     common: {
-      name: "User",
+      name: "genericStateObjects.customString",
       type: "string",
       role: "text",
       read: true,
@@ -109,7 +103,7 @@ const genericStateObjects = {
     _id: "warning",
     type: "channel",
     common: {
-      name: "Warnings from Server"
+      name: "genericStateObjects.warningDevice"
     },
     native: {}
   },
@@ -117,7 +111,7 @@ const genericStateObjects = {
     _id: "formatedKeys",
     type: "channel",
     common: {
-      name: "Variables that can be used in the admin settings to configure the messages."
+      name: "genericStateObjects.formatedKeysDevice"
     },
     native: {}
   },
@@ -126,7 +120,7 @@ const genericStateObjects = {
       _id: "messages",
       type: "channel",
       common: {
-        name: "Outgoing formated messages."
+        name: "genericStateObjects.messageStates._channel"
       },
       native: {}
     },
@@ -134,7 +128,7 @@ const genericStateObjects = {
       _id: "message",
       type: "state",
       common: {
-        name: "Outgoing formated message.",
+        name: "genericStateObjects.messageStates.message",
         type: "string",
         role: "text",
         read: true,
@@ -146,7 +140,7 @@ const genericStateObjects = {
       _id: "messageArray",
       type: "state",
       common: {
-        name: "All active warnings in a array.",
+        name: "genericStateObjects.messageStates.messageJson",
         type: "array",
         role: "list",
         read: true,
@@ -159,7 +153,7 @@ const genericStateObjects = {
     _id: "activWarnings",
     type: "state",
     common: {
-      name: "Number of warnings.",
+      name: "genericStateObjects.activeWarnings",
       type: "number",
       role: "value",
       read: true,
@@ -171,7 +165,7 @@ const genericStateObjects = {
     _id: "activeWarningsJson",
     type: "state",
     common: {
-      name: "All active warningmessages.",
+      name: "genericStateObjects.activeWarningsJson",
       type: "string",
       role: "json",
       read: true,
@@ -183,7 +177,7 @@ const genericStateObjects = {
     _id: "activeWarningsJson",
     type: "state",
     common: {
-      name: "History of warnings.",
+      name: "genericStateObjects.history",
       type: "string",
       role: "json",
       read: true,
@@ -195,7 +189,7 @@ const genericStateObjects = {
     _id: "activeWarningsJson",
     type: "state",
     common: {
-      name: "History of warnings.",
+      name: "genericStateObjects.warnings_json",
       type: "string",
       role: "json",
       read: true,
@@ -207,7 +201,7 @@ const genericStateObjects = {
     _id: "lastUpdate",
     type: "state",
     common: {
-      name: "Time stamp of the last data retrieval.",
+      name: "genericStateObjects.lastUpdate",
       type: "number",
       role: "value.time",
       read: true,
@@ -219,7 +213,7 @@ const genericStateObjects = {
     _id: "jsonHistory",
     type: "state",
     common: {
-      name: "Big and useless field with a lot raw data from provider.",
+      name: "genericStateObjects.jsonHistory",
       type: "string",
       role: "json",
       read: true,
@@ -234,10 +228,7 @@ const statesObjectsWarnings = {
       _id: "dwd",
       type: "device",
       common: {
-        name: {
-          en: "DWD Warnings",
-          de: "DWD Warnungen"
-        }
+        name: "statesObjectsWarnings.dwdService._channel"
       },
       native: {}
     },
@@ -246,9 +237,7 @@ const statesObjectsWarnings = {
         _id: "raw",
         type: "channel",
         common: {
-          name: {
-            en: "Unchanged data"
-          }
+          name: "statesObjectsWarnings.dwdService.raw._channel"
         },
         native: {}
       },
@@ -256,9 +245,9 @@ const statesObjectsWarnings = {
         _id: "AREADESC",
         type: "state",
         common: {
-          name: "area description",
+          name: "statesObjectsWarnings.dwdService.raw.AREADESC",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -268,9 +257,9 @@ const statesObjectsWarnings = {
         _id: "NAME",
         type: "state",
         common: {
-          name: "NAME",
+          name: "statesObjectsWarnings.dwdService.raw.NAME",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -280,7 +269,7 @@ const statesObjectsWarnings = {
         _id: "WARNCELLID",
         type: "state",
         common: {
-          name: "WARNCELLID",
+          name: "statesObjectsWarnings.dwdService.raw.WARNCELLID",
           type: "number",
           role: "",
           read: true,
@@ -292,9 +281,9 @@ const statesObjectsWarnings = {
         _id: "IDENTIFIER",
         type: "state",
         common: {
-          name: "IDENTIFIER",
+          name: "statesObjectsWarnings.dwdService.raw.IDENTIFIER",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -304,9 +293,9 @@ const statesObjectsWarnings = {
         _id: "SENDER",
         type: "state",
         common: {
-          name: "SENDER",
+          name: "statesObjectsWarnings.dwdService.raw.SENDER",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -316,9 +305,9 @@ const statesObjectsWarnings = {
         _id: "SENT",
         type: "state",
         common: {
-          name: "SENT",
+          name: "statesObjectsWarnings.dwdService.raw.SENT",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -328,9 +317,9 @@ const statesObjectsWarnings = {
         _id: "STATUS",
         type: "state",
         common: {
-          name: "STATUS",
+          name: "statesObjectsWarnings.dwdService.raw.STATUS",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -340,9 +329,9 @@ const statesObjectsWarnings = {
         _id: "MSGTYPE",
         type: "state",
         common: {
-          name: "MSGTYPE",
+          name: "statesObjectsWarnings.dwdService.raw.MSGTYPE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -352,9 +341,9 @@ const statesObjectsWarnings = {
         _id: "SOURCE",
         type: "state",
         common: {
-          name: "SOURCE",
+          name: "statesObjectsWarnings.dwdService.raw.SOURCE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -364,9 +353,9 @@ const statesObjectsWarnings = {
         _id: "SCOPE",
         type: "state",
         common: {
-          name: "SCOPE",
+          name: "statesObjectsWarnings.dwdService.raw.SCOPE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -376,9 +365,9 @@ const statesObjectsWarnings = {
         _id: "CODE",
         type: "state",
         common: {
-          name: "CODE",
+          name: "statesObjectsWarnings.dwdService.raw.CODE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -388,9 +377,9 @@ const statesObjectsWarnings = {
         _id: "LANGUAGE",
         type: "state",
         common: {
-          name: "Language of warning",
+          name: "statesObjectsWarnings.dwdService.raw.LANGUAGE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -400,9 +389,9 @@ const statesObjectsWarnings = {
         _id: "CATEGORY",
         type: "state",
         common: {
-          name: "CATEGORY",
+          name: "statesObjectsWarnings.dwdService.raw.CATEGORY",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -412,9 +401,9 @@ const statesObjectsWarnings = {
         _id: "REFERENCES",
         type: "state",
         common: {
-          name: "REFERENCES",
+          name: "statesObjectsWarnings.dwdService.raw.REFERENCES",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -424,9 +413,9 @@ const statesObjectsWarnings = {
         _id: "EVENT",
         type: "state",
         common: {
-          name: "EVENT",
+          name: "statesObjectsWarnings.dwdService.raw.EVENT",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -436,9 +425,9 @@ const statesObjectsWarnings = {
         _id: "RESPONSETYPE",
         type: "state",
         common: {
-          name: "RESPONSETYPE",
+          name: "statesObjectsWarnings.dwdService.raw.RESPONSETYPE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -448,9 +437,9 @@ const statesObjectsWarnings = {
         _id: "URGENCY",
         type: "state",
         common: {
-          name: "area description",
+          name: "statesObjectsWarnings.dwdService.raw.URGENCY",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -460,9 +449,9 @@ const statesObjectsWarnings = {
         _id: "SEVERITY",
         type: "state",
         common: {
-          name: "SEVERITY",
+          name: "statesObjectsWarnings.dwdService.raw.SEVERITY",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -472,9 +461,9 @@ const statesObjectsWarnings = {
         _id: "CERTAINTY",
         type: "state",
         common: {
-          name: "CERTAINTY",
+          name: "statesObjectsWarnings.dwdService.raw.CERTAINTY",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -484,9 +473,9 @@ const statesObjectsWarnings = {
         _id: "EC_PROFILE",
         type: "state",
         common: {
-          name: "EC_PROFILE",
+          name: "statesObjectsWarnings.dwdService.raw.EC_PROFILE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -496,9 +485,9 @@ const statesObjectsWarnings = {
         _id: "EC_LICENSE",
         type: "state",
         common: {
-          name: "EC_LICENSE",
+          name: "statesObjectsWarnings.dwdService.raw.EC_LICENSE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -508,9 +497,9 @@ const statesObjectsWarnings = {
         _id: "EC_II",
         type: "state",
         common: {
-          name: "EC_II",
+          name: "statesObjectsWarnings.dwdService.raw.EC_II",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -520,9 +509,9 @@ const statesObjectsWarnings = {
         _id: "EC_GROUP",
         type: "state",
         common: {
-          name: "EC_GROUP",
+          name: "statesObjectsWarnings.dwdService.raw.EC_GROUP",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -532,9 +521,9 @@ const statesObjectsWarnings = {
         _id: "EC_AREA_COLOR",
         type: "state",
         common: {
-          name: "EC_AREA_COLOR",
+          name: "statesObjectsWarnings.dwdService.raw.EC_AREA_COLOR",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -544,9 +533,9 @@ const statesObjectsWarnings = {
         _id: "EFFECTIVE",
         type: "state",
         common: {
-          name: "EFFECTIVE",
+          name: "statesObjectsWarnings.dwdService.raw.EFFECTIVE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -556,9 +545,9 @@ const statesObjectsWarnings = {
         _id: "ONSET",
         type: "state",
         common: {
-          name: "Start Time of warning",
+          name: "statesObjectsWarnings.dwdService.raw.ONSET",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -568,9 +557,9 @@ const statesObjectsWarnings = {
         _id: "EXPIRES",
         type: "state",
         common: {
-          name: "End Time of warning",
+          name: "statesObjectsWarnings.dwdService.raw.EXPIRES",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -580,9 +569,9 @@ const statesObjectsWarnings = {
         _id: "SENDERNAME",
         type: "state",
         common: {
-          name: "SENDERNAME",
+          name: "statesObjectsWarnings.dwdService.raw.SENDERNAME",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -592,9 +581,9 @@ const statesObjectsWarnings = {
         _id: "HEADLINE",
         type: "state",
         common: {
-          name: "HEADLINE",
+          name: "statesObjectsWarnings.dwdService.raw.HEADLINE",
           type: "string",
-          role: "",
+          role: "weather.title",
           read: true,
           write: false
         },
@@ -604,9 +593,9 @@ const statesObjectsWarnings = {
         _id: "DESCRIPTION",
         type: "state",
         common: {
-          name: "DESCRIPTION",
+          name: "statesObjectsWarnings.dwdService.raw.DESCRIPTION",
           type: "string",
-          role: "",
+          role: "weather.state",
           read: true,
           write: false
         },
@@ -616,9 +605,9 @@ const statesObjectsWarnings = {
         _id: "INSTRUCTION",
         type: "state",
         common: {
-          name: "INSTRUCTION",
+          name: "statesObjectsWarnings.dwdService.raw.INSTRUCTION",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -628,9 +617,9 @@ const statesObjectsWarnings = {
         _id: "WEB",
         type: "state",
         common: {
-          name: "WEB",
+          name: "statesObjectsWarnings.dwdService.raw.WEB",
           type: "string",
-          role: "",
+          role: "url",
           read: true,
           write: false
         },
@@ -640,9 +629,9 @@ const statesObjectsWarnings = {
         _id: "CONTACT",
         type: "state",
         common: {
-          name: "CONTACT",
+          name: "statesObjectsWarnings.dwdService.raw.CONTACT",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -652,7 +641,7 @@ const statesObjectsWarnings = {
         _id: "PARAMETERNAME",
         type: "state",
         common: {
-          name: "PARAMETERNAME",
+          name: "statesObjectsWarnings.dwdService.raw.PARAMETERNAME",
           type: "string",
           role: "json",
           read: true,
@@ -664,7 +653,7 @@ const statesObjectsWarnings = {
         _id: "PARAMETERVALUE",
         type: "state",
         common: {
-          name: "PARAMETERVALUE",
+          name: "statesObjectsWarnings.dwdService.raw.PARAMETERVALUE",
           type: "string",
           role: "json",
           read: true,
@@ -676,7 +665,7 @@ const statesObjectsWarnings = {
         _id: "ALTITUDE",
         type: "state",
         common: {
-          name: "Warning applies from a height of (in feet).",
+          name: "statesObjectsWarnings.dwdService.raw.ALTITUDE",
           type: "number",
           role: "",
           read: true,
@@ -688,7 +677,7 @@ const statesObjectsWarnings = {
         _id: "CEILING",
         type: "state",
         common: {
-          name: "Warning applies up to a height of (in feet)",
+          name: "statesObjectsWarnings.dwdService.raw.CEILING",
           type: "number",
           role: "",
           read: true,
@@ -700,9 +689,9 @@ const statesObjectsWarnings = {
         _id: "GC_STATE",
         type: "state",
         common: {
-          name: "GC_STATE",
+          name: "statesObjectsWarnings.dwdService.raw.GC_STATE",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -712,7 +701,7 @@ const statesObjectsWarnings = {
         _id: "GC_WARNCELLID",
         type: "state",
         common: {
-          name: "GC_WARNCELLID",
+          name: "statesObjectsWarnings.dwdService.raw.GC_WARNCELLID",
           type: "number",
           role: "",
           read: true,
@@ -724,9 +713,9 @@ const statesObjectsWarnings = {
         _id: "INFO_ID",
         type: "state",
         common: {
-          name: "INFO_ID",
+          name: "statesObjectsWarnings.dwdService.raw.INFO_ID",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -736,9 +725,9 @@ const statesObjectsWarnings = {
         _id: "PROCESSTIME",
         type: "state",
         common: {
-          name: "PROCESSTIME",
+          name: "statesObjectsWarnings.dwdService.raw.PROCESSTIME",
           type: "string",
-          role: "",
+          role: "text",
           read: true,
           write: false
         },
@@ -751,10 +740,7 @@ const statesObjectsWarnings = {
       _id: "uwz",
       type: "device",
       common: {
-        name: {
-          en: "UWZ Warnings",
-          de: "UWZ Warnungen"
-        }
+        name: "statesObjectsWarnings.uwzService._channel"
       },
       native: {}
     },
@@ -763,7 +749,7 @@ const statesObjectsWarnings = {
         _id: "raw",
         type: "channel",
         common: {
-          name: "Unchanged data"
+          name: "statesObjectsWarnings.uwzService.raw._channel"
         },
         native: {}
       },
@@ -771,9 +757,9 @@ const statesObjectsWarnings = {
         _id: "center",
         type: "state",
         common: {
-          name: "text",
+          name: "statesObjectsWarnings.uwzService.raw.center",
           type: "string",
-          role: "value",
+          role: "text",
           read: true,
           write: false
         },
@@ -783,9 +769,9 @@ const statesObjectsWarnings = {
         _id: "areaID",
         type: "state",
         common: {
-          name: "text",
+          name: "statesObjectsWarnings.uwzService.raw.areaID",
           type: "string",
-          role: "value",
+          role: "text",
           read: true,
           write: false
         },
@@ -795,7 +781,7 @@ const statesObjectsWarnings = {
         _id: "dtgEnd",
         type: "state",
         common: {
-          name: "End Time of warning",
+          name: "statesObjectsWarnings.uwzService.raw.dtgEnd",
           type: "number",
           role: "value",
           read: true,
@@ -807,9 +793,9 @@ const statesObjectsWarnings = {
         _id: "Warnid",
         type: "state",
         common: {
-          name: "text",
+          name: "statesObjectsWarnings.uwzService.raw.areaType",
           type: "string",
-          role: "value",
+          role: "text",
           read: true,
           write: false
         },
@@ -819,7 +805,7 @@ const statesObjectsWarnings = {
         _id: "Warnid",
         type: "state",
         common: {
-          name: "Start Time of warning",
+          name: "statesObjectsWarnings.uwzService.raw.dtgStart",
           type: "number",
           role: "value",
           read: true,
@@ -832,7 +818,7 @@ const statesObjectsWarnings = {
           _id: "payload",
           type: "channel",
           common: {
-            name: "Payload of warning."
+            name: "statesObjectsWarnings.uwzService.raw.payload._channel"
           },
           native: {}
         },
@@ -840,9 +826,9 @@ const statesObjectsWarnings = {
           _id: "Warnid",
           type: "state",
           common: {
-            name: "text",
+            name: "statesObjectsWarnings.uwzService.raw.payload.id",
             type: "string",
-            role: "value",
+            role: "text",
             read: true,
             write: false
           },
@@ -852,7 +838,7 @@ const statesObjectsWarnings = {
           _id: "Warnid",
           type: "state",
           common: {
-            name: "Id of Warning",
+            name: "statesObjectsWarnings.uwzService.raw.payload.creation",
             type: "number",
             role: "value",
             read: true,
@@ -864,9 +850,9 @@ const statesObjectsWarnings = {
           _id: "Warnid",
           type: "state",
           common: {
-            name: "Id of Warning",
+            name: "statesObjectsWarnings.uwzService.raw.payload.uwzLevel",
             type: "number",
-            role: "value",
+            role: "value.warning",
             read: true,
             write: false
           },
@@ -877,7 +863,7 @@ const statesObjectsWarnings = {
             _id: "raw",
             type: "channel",
             common: {
-              name: "Translation short"
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText._channel"
             },
             native: {}
           },
@@ -885,9 +871,9 @@ const statesObjectsWarnings = {
             _id: "FR",
             type: "state",
             common: {
-              name: "French",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText.FR",
               type: "string",
-              role: "value",
+              role: "weather.title.short",
               read: true,
               write: false
             },
@@ -897,9 +883,9 @@ const statesObjectsWarnings = {
             _id: "LU",
             type: "state",
             common: {
-              name: "Luxembourg",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText.LU",
               type: "string",
-              role: "value",
+              role: "weather.title.short",
               read: true,
               write: false
             },
@@ -909,9 +895,9 @@ const statesObjectsWarnings = {
             _id: "EN",
             type: "state",
             common: {
-              name: "English",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText.EN",
               type: "string",
-              role: "value",
+              role: "weather.title.short",
               read: true,
               write: false
             },
@@ -921,9 +907,9 @@ const statesObjectsWarnings = {
             _id: "Warnid",
             type: "state",
             common: {
-              name: "Spanish",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText.ES",
               type: "string",
-              role: "value",
+              role: "weather.title.short",
               read: true,
               write: false
             },
@@ -933,9 +919,9 @@ const statesObjectsWarnings = {
             _id: "Warnid",
             type: "state",
             common: {
-              name: "Netherlands",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText.NL",
               type: "string",
-              role: "value",
+              role: "weather.title.short",
               read: true,
               write: false
             },
@@ -945,9 +931,9 @@ const statesObjectsWarnings = {
             _id: "Warnid",
             type: "state",
             common: {
-              name: "German",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText.DE",
               type: "string",
-              role: "value",
+              role: "weather.title.short",
               read: true,
               write: false
             },
@@ -957,9 +943,9 @@ const statesObjectsWarnings = {
             _id: "Warnid",
             type: "state",
             common: {
-              name: "Italy",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText.IT",
               type: "string",
-              role: "value",
+              role: "weather.title.short",
               read: true,
               write: false
             },
@@ -969,9 +955,9 @@ const statesObjectsWarnings = {
             _id: "Warnid",
             type: "state",
             common: {
-              name: "Denmark",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsShortText.DK",
               type: "string",
-              role: "value",
+              role: "weather.title.short",
               read: true,
               write: false
             },
@@ -983,7 +969,7 @@ const statesObjectsWarnings = {
             _id: "raw",
             type: "channel",
             common: {
-              name: "Translation long"
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText._channel"
             },
             native: {}
           },
@@ -991,9 +977,9 @@ const statesObjectsWarnings = {
             _id: "FR",
             type: "state",
             common: {
-              name: "French",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText.FR",
               type: "string",
-              role: "value",
+              role: "weather.title",
               read: true,
               write: false
             },
@@ -1003,9 +989,9 @@ const statesObjectsWarnings = {
             _id: "LU",
             type: "state",
             common: {
-              name: "Luxembourg",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText.LU",
               type: "string",
-              role: "value",
+              role: "weather.title",
               read: true,
               write: false
             },
@@ -1015,9 +1001,9 @@ const statesObjectsWarnings = {
             _id: "EN",
             type: "state",
             common: {
-              name: "English",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText.EN",
               type: "string",
-              role: "value",
+              role: "weather.title",
               read: true,
               write: false
             },
@@ -1027,9 +1013,9 @@ const statesObjectsWarnings = {
             _id: "ES",
             type: "state",
             common: {
-              name: "Spanish",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText.ES",
               type: "string",
-              role: "value",
+              role: "weather.title",
               read: true,
               write: false
             },
@@ -1039,9 +1025,9 @@ const statesObjectsWarnings = {
             _id: "NL",
             type: "state",
             common: {
-              name: "Netherlands",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText.NL",
               type: "string",
-              role: "value",
+              role: "weather.title",
               read: true,
               write: false
             },
@@ -1051,9 +1037,9 @@ const statesObjectsWarnings = {
             _id: "DE",
             type: "state",
             common: {
-              name: "German",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText.DE",
               type: "string",
-              role: "value",
+              role: "weather.title",
               read: true,
               write: false
             },
@@ -1063,9 +1049,9 @@ const statesObjectsWarnings = {
             _id: "IT",
             type: "state",
             common: {
-              name: "Italy",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText.IT",
               type: "string",
-              role: "value",
+              role: "weather.title",
               read: true,
               write: false
             },
@@ -1075,9 +1061,9 @@ const statesObjectsWarnings = {
             _id: "DK",
             type: "state",
             common: {
-              name: "Denmark",
+              name: "statesObjectsWarnings.uwzService.raw.payload.translationsLongText.DK",
               type: "string",
-              role: "value",
+              role: "weather.title",
               read: true,
               write: false
             },
@@ -1088,9 +1074,9 @@ const statesObjectsWarnings = {
           _id: "filename",
           type: "state",
           common: {
-            name: "Name of the file at the data provider.",
+            name: "statesObjectsWarnings.uwzService.raw.payload.fileName",
             type: "string",
-            role: "value",
+            role: "text",
             read: true,
             write: false
           },
@@ -1100,9 +1086,9 @@ const statesObjectsWarnings = {
           _id: "Warnid",
           type: "state",
           common: {
-            name: "Name of the level.",
+            name: "statesObjectsWarnings.uwzService.raw.payload.levelName",
             type: "string",
-            role: "value",
+            role: "text",
             read: true,
             write: false
           },
@@ -1112,9 +1098,9 @@ const statesObjectsWarnings = {
           _id: "shortText",
           type: "state",
           common: {
-            name: "Short text in default language.",
+            name: "statesObjectsWarnings.uwzService.raw.payload.shortText",
             type: "string",
-            role: "value",
+            role: "weather.title.short",
             read: true,
             write: false
           },
@@ -1124,9 +1110,9 @@ const statesObjectsWarnings = {
           _id: "Warnid",
           type: "state",
           common: {
-            name: "Long text in default language.",
+            name: "statesObjectsWarnings.uwzService.raw.payload.longText",
             type: "string",
-            role: "value",
+            role: "weather.title",
             read: true,
             write: false
           },
@@ -1136,7 +1122,7 @@ const statesObjectsWarnings = {
           _id: "Warnid",
           type: "state",
           common: {
-            name: "Warning applies from a height of (in meter).",
+            name: "statesObjectsWarnings.uwzService.raw.payload.altMin",
             type: "number",
             role: "value",
             read: true,
@@ -1148,7 +1134,7 @@ const statesObjectsWarnings = {
           _id: "Warnid",
           type: "state",
           common: {
-            name: "Warning applies up to a height of (in meter).",
+            name: "statesObjectsWarnings.uwzService.raw.payload.altMax",
             type: "number",
             role: "value",
             read: true,
@@ -1161,9 +1147,9 @@ const statesObjectsWarnings = {
         _id: "Warnid",
         type: "state",
         common: {
-          name: "Severity of the warning",
+          name: "statesObjectsWarnings.uwzService.raw.severity",
           type: "number",
-          role: "value",
+          role: "value.warning",
           read: true,
           write: false
         },
@@ -1173,24 +1159,24 @@ const statesObjectsWarnings = {
         _id: "Type of warning.",
         type: "state",
         common: {
-          name: "Id of Warning",
+          name: "statesObjectsWarnings.uwzService.raw.type",
           type: "number",
           role: "value",
           read: true,
           write: false,
           states: {
-            0: `n_a`,
-            1: `unbekannt`,
-            2: `Sturm`,
-            3: `Schneefall`,
-            4: `Starkregen`,
-            5: `Extremfrost`,
-            6: `Waldbrandgefahr`,
-            7: `Gewitter`,
-            8: `Gl\xE4tte`,
-            9: `Hitze`,
-            10: `Glatteisregen`,
-            11: `Bodenfrost`
+            "0": "n_a",
+            "1": "unbekannt",
+            "2": "Sturm",
+            "3": "Schneefall",
+            "4": "Starkregen",
+            "5": "Extremfrost",
+            "6": "Waldbrandgefahr",
+            "7": "Gewitter",
+            "8": "Gl\xE4tte",
+            "9": "Hitze",
+            "10": "Glatteisregen",
+            "11": "Bodenfrost"
           }
         },
         native: {}
@@ -1202,10 +1188,7 @@ const statesObjectsWarnings = {
       _id: "zamg",
       type: "device",
       common: {
-        name: {
-          en: "ZAMG Warnings",
-          de: "ZAMG Warnungen"
-        }
+        name: "statesObjectsWarnings.zamgService._channel"
       },
       native: {}
     },
@@ -1214,7 +1197,7 @@ const statesObjectsWarnings = {
         _id: "raw",
         type: "channel",
         common: {
-          name: "Unchanged data"
+          name: "statesObjectsWarnings.zamgService.raw._channel"
         },
         native: {}
       },
@@ -1222,7 +1205,7 @@ const statesObjectsWarnings = {
         _id: "Warnid",
         type: "state",
         common: {
-          name: "Id of Warning",
+          name: "statesObjectsWarnings.zamgService.raw.warnid",
           type: "number",
           role: "value",
           read: true,
@@ -1234,7 +1217,7 @@ const statesObjectsWarnings = {
         _id: "chgid",
         type: "state",
         common: {
-          name: "no idea",
+          name: "statesObjectsWarnings.zamgService.raw.chgid",
           type: "number",
           role: "value",
           read: true,
@@ -1246,7 +1229,7 @@ const statesObjectsWarnings = {
         _id: "verlaufid",
         type: "state",
         common: {
-          name: "Course id",
+          name: "statesObjectsWarnings.zamgService.raw.verlaufid",
           type: "number",
           role: "value",
           read: true,
@@ -1258,7 +1241,7 @@ const statesObjectsWarnings = {
         _id: "warntypid",
         type: "state",
         common: {
-          name: "Type of Warning as ID",
+          name: "statesObjectsWarnings.zamgService.raw.warntypid",
           type: "number",
           role: "value",
           read: true,
@@ -1270,9 +1253,9 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Start Time fo Warning",
+          name: "statesObjectsWarnings.zamgService.raw.begin",
           type: "string",
-          role: "text",
+          role: "date.start",
           read: true,
           write: false
         },
@@ -1282,9 +1265,9 @@ const statesObjectsWarnings = {
         _id: "end",
         type: "state",
         common: {
-          name: "End Time of Warning",
+          name: "statesObjectsWarnings.zamgService.raw.end",
           type: "string",
-          role: "text",
+          role: "date.end",
           read: true,
           write: false
         },
@@ -1294,7 +1277,7 @@ const statesObjectsWarnings = {
         _id: "create",
         type: "state",
         common: {
-          name: "Create Time of Warning",
+          name: "statesObjectsWarnings.zamgService.raw.create",
           type: "string",
           role: "text",
           read: true,
@@ -1306,19 +1289,19 @@ const statesObjectsWarnings = {
         _id: "text",
         type: "state",
         common: {
-          name: "Short Text of Warning",
+          name: "statesObjectsWarnings.zamgService.raw.text",
           type: "string",
-          role: "text",
+          role: "weather.title",
           read: true,
           write: false
         },
         native: {}
       },
       auswirkungen: {
-        _id: "instruction",
+        _id: "auswirkungen",
         type: "state",
         common: {
-          name: "What happens",
+          name: "statesObjectsWarnings.zamgService.raw.auswirkungen",
           type: "string",
           role: "text",
           read: true,
@@ -1330,7 +1313,7 @@ const statesObjectsWarnings = {
         _id: "instruction",
         type: "state",
         common: {
-          name: "Recommendations for behaviour",
+          name: "statesObjectsWarnings.zamgService.raw.empfehlungen",
           type: "string",
           role: "text",
           read: true,
@@ -1342,7 +1325,7 @@ const statesObjectsWarnings = {
         _id: "nachrichtentyp",
         type: "state",
         common: {
-          name: "Messagetype",
+          name: "statesObjectsWarnings.zamgService.raw.nachrichtentyp",
           type: "string",
           role: "text",
           read: true,
@@ -1354,7 +1337,7 @@ const statesObjectsWarnings = {
         _id: "location",
         type: "state",
         common: {
-          name: "Location",
+          name: "statesObjectsWarnings.zamgService.raw.location",
           type: "string",
           role: "text",
           read: true,
@@ -1366,7 +1349,7 @@ const statesObjectsWarnings = {
         _id: "meteotext",
         type: "state",
         common: {
-          name: "Weather-related information",
+          name: "statesObjectsWarnings.zamgService.raw.meteotext",
           type: "string",
           role: "text",
           read: true,
@@ -1378,7 +1361,7 @@ const statesObjectsWarnings = {
         _id: "updategrund",
         type: "state",
         common: {
-          name: "Update reason",
+          name: "statesObjectsWarnings.zamgService.raw.updategrund",
           type: "string",
           role: "text",
           read: true,
@@ -1390,7 +1373,7 @@ const statesObjectsWarnings = {
         _id: "warnstufeid",
         type: "state",
         common: {
-          name: "Warnlevel id",
+          name: "statesObjectsWarnings.zamgService.raw.warnstufeid",
           type: "number",
           role: "value",
           read: true,
@@ -1403,9 +1386,7 @@ const statesObjectsWarnings = {
           _id: "rawinfo",
           type: "channel",
           common: {
-            name: {
-              en: "Raw Infos"
-            }
+            name: "statesObjectsWarnings.zamgService.raw.rawinfo._channel"
           },
           native: {}
         },
@@ -1413,7 +1394,7 @@ const statesObjectsWarnings = {
           _id: "wtype",
           type: "state",
           common: {
-            name: "Weather typ",
+            name: "statesObjectsWarnings.zamgService.raw.rawinfo.wtype",
             type: "number",
             role: "value",
             read: true,
@@ -1425,7 +1406,7 @@ const statesObjectsWarnings = {
           _id: "wlevel",
           type: "state",
           common: {
-            name: "Warning level",
+            name: "statesObjectsWarnings.zamgService.raw.rawinfo.wlevel",
             type: "number",
             role: "value.warning",
             read: true,
@@ -1437,7 +1418,7 @@ const statesObjectsWarnings = {
           _id: "start",
           type: "state",
           common: {
-            name: "Warning start time as unixtime",
+            name: "statesObjectsWarnings.zamgService.raw.rawinfo.start",
             type: "string",
             role: "text",
             read: true,
@@ -1449,7 +1430,7 @@ const statesObjectsWarnings = {
           _id: "instruction",
           type: "state",
           common: {
-            name: "Warning end time as unixtime",
+            name: "statesObjectsWarnings.zamgService.raw.rawinfo.end",
             type: "string",
             role: "text",
             read: true,
@@ -1466,9 +1447,7 @@ const statesObjectsWarnings = {
         _id: "raw",
         type: "channel",
         common: {
-          name: {
-            en: "Formated Datapoint"
-          }
+          name: "statesObjectsWarnings.allService.formatedkeys._channel"
         },
         native: {}
       },
@@ -1476,7 +1455,7 @@ const statesObjectsWarnings = {
         _id: "starttime",
         type: "state",
         common: {
-          name: "Time to/from start",
+          name: "statesObjectsWarnings.allService.formatedkeys.countdown",
           type: "string",
           role: "text",
           read: true,
@@ -1488,7 +1467,7 @@ const statesObjectsWarnings = {
         _id: "status",
         type: "state",
         common: {
-          name: "state of warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.status",
           type: "string",
           role: "text",
           read: true,
@@ -1500,7 +1479,7 @@ const statesObjectsWarnings = {
         _id: "starttime",
         type: "state",
         common: {
-          name: "Start Time HH:MM of Warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.starttime",
           type: "string",
           role: "text",
           read: true,
@@ -1512,7 +1491,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Start Date of Warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.startdate",
           type: "string",
           role: "text",
           read: true,
@@ -1524,7 +1503,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "End Time of Warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.endtime",
           type: "string",
           role: "text",
           read: true,
@@ -1536,7 +1515,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "End Date of Warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.enddate",
           type: "string",
           role: "text",
           read: true,
@@ -1548,7 +1527,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Start day of the week of Warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.startdayofweek",
           type: "string",
           role: "text",
           read: true,
@@ -1560,7 +1539,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "End day of the week of Warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.enddayofweek",
           type: "string",
           role: "text",
           read: true,
@@ -1572,7 +1551,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Start day of the week short",
+          name: "statesObjectsWarnings.allService.formatedkeys.startdayofweekshort",
           type: "string",
           role: "text",
           read: true,
@@ -1584,7 +1563,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "End day of the week short",
+          name: "statesObjectsWarnings.allService.formatedkeys.enddayofweekshort",
           type: "string",
           role: "text",
           read: true,
@@ -1596,7 +1575,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "headline of warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.headline",
           type: "string",
           role: "text",
           read: true,
@@ -1608,7 +1587,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Description of warning.",
+          name: "statesObjectsWarnings.allService.formatedkeys.description",
           type: "string",
           role: "text",
           read: true,
@@ -1620,7 +1599,7 @@ const statesObjectsWarnings = {
         _id: "instruction",
         type: "state",
         common: {
-          name: "Recommendations for action of the warning.",
+          name: "statesObjectsWarnings.allService.formatedkeys.instruction",
           type: "string",
           role: "text",
           read: true,
@@ -1632,7 +1611,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Weather description of warning.",
+          name: "statesObjectsWarnings.allService.formatedkeys.weathertext",
           type: "string",
           role: "text",
           read: true,
@@ -1644,7 +1623,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Start Time fo Warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.ceiling",
           type: "number",
           role: "text",
           read: true,
@@ -1656,7 +1635,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Start Time fo Warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.altitude",
           type: "number",
           role: "text",
           read: true,
@@ -1668,7 +1647,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Level of Warning as Levelname",
+          name: "statesObjectsWarnings.allService.formatedkeys.warnlevelname",
           type: "string",
           role: "text",
           read: true,
@@ -1680,7 +1659,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Level of Warning as Colorname",
+          name: "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname",
           type: "string",
           role: "text",
           read: true,
@@ -1692,7 +1671,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Level of Warning as Number",
+          name: "statesObjectsWarnings.allService.formatedkeys.warnlevelnumber",
           type: "number",
           role: "value.warning",
           read: true,
@@ -1704,7 +1683,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Level of Warning as Color(hex)",
+          name: "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorhex",
           type: "string",
           role: "text",
           read: true,
@@ -1716,7 +1695,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "The type of warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.warntypename",
           type: "string",
           role: "text",
           read: true,
@@ -1728,7 +1707,7 @@ const statesObjectsWarnings = {
         _id: "warntypegenericname",
         type: "state",
         common: {
-          name: "The generic type of warning",
+          name: "statesObjectsWarnings.allService.formatedkeys.warntypegenericname",
           type: "string",
           role: "text",
           read: true,
@@ -1740,7 +1719,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "Location",
+          name: "statesObjectsWarnings.allService.formatedkeys.location",
           type: "string",
           role: "text",
           read: true,
@@ -1752,7 +1731,7 @@ const statesObjectsWarnings = {
         _id: "provider",
         type: "state",
         common: {
-          name: "Data provider",
+          name: "statesObjectsWarnings.allService.formatedkeys.provider",
           type: "string",
           role: "text",
           read: true,
@@ -1764,7 +1743,7 @@ const statesObjectsWarnings = {
         _id: "locationcustom",
         type: "state",
         common: {
-          name: "User location from configuration.",
+          name: "statesObjectsWarnings.allService.formatedkeys.locationcustom",
           type: "string",
           role: "text",
           read: true,
@@ -1778,66 +1757,66 @@ const statesObjectsWarnings = {
         _id: "",
         type: "channel",
         common: {
-          name: "Most important warning per warntype."
+          name: "statesObjectsWarnings.allService.alerts"
         },
         native: {}
       },
       storm: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "Storm" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.storm" } }
       },
       hail: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "hail" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.hail" } }
       },
       thunderstorm: {
-        ...cloneObj(messagesDef.genericWarntypState),
+        ...messagesDef.genericWarntypState,
         _channel: {
           ...defaultChannel,
-          common: { name: "thunderstorm" }
+          common: { name: "statesObjectsWarnings.allService.alerts.thunderstorm" }
         }
       },
       rain: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "rain" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.rain" } }
       },
       black_ice_slippery: {
-        ...cloneObj(messagesDef.genericWarntypState),
+        ...messagesDef.genericWarntypState,
         _channel: {
           ...defaultChannel,
-          common: { name: "black ice/slippery" }
+          common: { name: "statesObjectsWarnings.allService.alerts.black_ice_slippery" }
         }
       },
       snowfall: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "snowfall" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.snowfall" } }
       },
       thaw: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "thaw" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.thaw" } }
       },
       unknown: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "unknown" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.unknown" } }
       },
       cold: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "cold" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.cold" } }
       },
       forest_fire: {
-        ...cloneObj(messagesDef.genericWarntypState),
+        ...messagesDef.genericWarntypState,
         _channel: {
           ...defaultChannel,
-          common: { name: "forest fire" }
+          common: { name: "statesObjectsWarnings.allService.alerts.forest_fire" }
         }
       },
       heat: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "heat" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.heat" } }
       },
       fog: {
-        ...cloneObj(messagesDef.genericWarntypState),
-        _channel: { ...defaultChannel, common: { name: "fog" } }
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.fog" } }
       }
     }
   }

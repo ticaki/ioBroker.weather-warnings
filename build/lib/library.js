@@ -185,6 +185,8 @@ class Library extends BaseClass {
         throw new Error("writedp try to create a state without object informations.");
       }
       obj._id = `${this.adapter.name}.${this.adapter.instance}.${dp}`;
+      if (typeof obj.common.name == "string")
+        obj.common.name = await this.getTranslationObj(obj.common.name);
       if (!del)
         await this.adapter.setObjectNotExistsAsync(dp, obj);
       const stateType = obj && obj.common && obj.common.type;
@@ -402,6 +404,22 @@ class Library extends BaseClass {
     if (this.translation[key] !== void 0)
       return this.translation[key];
     return key;
+  }
+  async getTranslationObj(key) {
+    const language = ["en", "de", "ru", "pt", "nl", "fr", "it", "es", "pl", "uk", "zh-cn"];
+    const result = {};
+    for (const l of language) {
+      try {
+        const i = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${l}/translations.json`)));
+        if (i[key] !== void 0)
+          result[l] = i[key];
+      } catch (error) {
+        return key;
+      }
+    }
+    if (result["en"] == void 0)
+      return key;
+    return result;
   }
   async setLanguage(language) {
     if (!language)

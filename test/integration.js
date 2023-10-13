@@ -36,7 +36,7 @@ tests.integration(path.join(__dirname,".."),{
                     obj.native.uwzEnabled=true;
                     obj.native.uwzSelectId=[{ uwzSelectId: 'DE55606', uwzCityname: 'test' }];
                     obj.native.zamgEnabled=true;
-                    obj.native.zamgSelectId=[{ zamgSelectId: '48.333444483766975#14.6258983209036', zamgCityname: 'test' }];
+                    obj.native.zamgSelectId=[{ zamgSelectId: '48.333444483766975/14.6258983209036', zamgCityname: 'test' }];
                     obj.native.zamgTypeFilter=[5,1];
                     obj.native.uwzTypeFilter=[5,1];
                     harness.objects.setObject(obj._id,obj)
@@ -75,7 +75,7 @@ tests.integration(path.join(__dirname,".."),{
                     obj.native.uwzEnabled=true;
                     obj.native.uwzwarncellTable=[{ uwzSelectId: 'DE55606', uwzCityname: 'test' }];
                     obj.native.zamgEnabled=true;
-                    obj.native.zamgwarncellTable=[{ zamgSelectId: '48.333444483766975#14.6258983209036', zamgCityname: 'test' }];
+                    obj.native.zamgwarncellTable=[{ zamgSelectId: '48.333444483766975/14.6258983209036', zamgCityname: 'test' }];
                     obj.native.refreshTime=1;
                     obj.native.zamgTypeFilter=[7];
                     obj.native.uwzTypeFilter=[];
