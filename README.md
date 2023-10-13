@@ -45,6 +45,7 @@ Zeichen mit besonderer Bedeutung:
 - `${[0,1,2,3,4]token}` Eine Zeichenkette mit Werten, token muß ein Zahlentoken sein. Index ist wie im Beispiel. 0 ist der erste Wert in der Liste
 - bei einer Vorlage für Jsons muß das abschließende `}` so geschrieben werden `\}`
 - siehe Beispiele im Adapter.
+- es ist ebenfalls sowas möglich: `${[0,🟢,🟡,🟠,🔴]warnlevelnumber}`
 
 **Restore Templates:** Setzt die Vorlagen auf die aktuelle Systemsprache zurück. Vorhandene Vorlagen gehen **verloren**. Anschließend speichern & schließen. Sollte ebenfalls verwendet werden, wenn die Systemsprache geändert wurde.
 
