@@ -154,8 +154,13 @@ class Library extends BaseClass {
   async getObjectDefFromJson(key, data) {
     let result = await (0, import_jsonata.default)(`${key}`).evaluate(data);
     if (result === null || result === void 0) {
-      this.log.warn(`No definition for ${key}!`);
-      result = import_definitionen.genericStateObjects.state;
+      const k = key.split(".");
+      if (k && k[k.length - 1].startsWith("_")) {
+        result = import_definitionen.genericStateObjects.customString;
+      } else {
+        this.log.warn(`No definition for ${key}!`);
+        result = import_definitionen.genericStateObjects.state;
+      }
     }
     return this.cloneObject(result);
   }

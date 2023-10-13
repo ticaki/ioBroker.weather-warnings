@@ -53,6 +53,7 @@ export const genericStateObjects: {
         testMode: ioBroker.StateObject;
     };
     state: ioBroker.StateObject;
+    customString: ioBroker.StateObject;
     warningDevice: ioBroker.ChannelObject;
     formatedKeysDevice: ioBroker.ChannelObject;
     messageStates: customChannelType & {
@@ -108,6 +109,19 @@ export const genericStateObjects: {
         type: 'state',
         common: {
             name: 'No definition',
+
+            type: 'string',
+            role: 'text',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
+    customString: {
+        _id: 'User_State',
+        type: 'state',
+        common: {
+            name: 'User',
 
             type: 'string',
             role: 'text',
@@ -1524,7 +1538,7 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 _id: 'starttime',
                 type: 'state',
                 common: {
-                    name: 'countdown',
+                    name: 'Time to/from start',
                     type: 'string',
                     role: 'text',
                     read: true,

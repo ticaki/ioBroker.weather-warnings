@@ -173,8 +173,13 @@ export class Library extends BaseClass {
     async getObjectDefFromJson(key: string, data: any): Promise<ioBroker.Object> {
         let result = await jsonata(`${key}`).evaluate(data);
         if (result === null || result === undefined) {
-            this.log.warn(`No definition for ${key}!`);
-            result = genericStateObjects.state;
+            const k = key.split('.');
+            if (k && k[k.length - 1].startsWith('_')) {
+                result = genericStateObjects.customString;
+            } else {
+                this.log.warn(`No definition for ${key}!`);
+                result = genericStateObjects.state;
+            }
         }
         return this.cloneObject(result);
     }

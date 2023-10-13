@@ -219,6 +219,7 @@ export class NotificationClass extends library.BaseClass {
                             if (Array.isArray(msg)) continue;
                             opt += `;${msg.text}`;
                         }
+                        this.log.debug(`Send to alexa2: ${opt}`);
                         if (opt != `${this.adapter.config.alexa2_volumen}`) {
                             await this.adapter.setForeignStateAsync(
                                 `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,

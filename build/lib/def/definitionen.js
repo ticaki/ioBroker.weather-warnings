@@ -93,6 +93,18 @@ const genericStateObjects = {
     },
     native: {}
   },
+  customString: {
+    _id: "User_State",
+    type: "state",
+    common: {
+      name: "User",
+      type: "string",
+      role: "text",
+      read: true,
+      write: false
+    },
+    native: {}
+  },
   warningDevice: {
     _id: "warning",
     type: "channel",
@@ -1464,7 +1476,7 @@ const statesObjectsWarnings = {
         _id: "starttime",
         type: "state",
         common: {
-          name: "countdown",
+          name: "Time to/from start",
           type: "string",
           role: "text",
           read: true,
