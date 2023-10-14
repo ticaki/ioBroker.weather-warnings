@@ -101,6 +101,9 @@ https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) add translation to common.name
+
 ### 0.3.3 (2023-10-13)
 * (ticaki) fixed: repeat message dwd
 * (ticaki) small bugfixes

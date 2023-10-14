@@ -238,7 +238,7 @@
     "genericStateObjects.activeWarnings": "Number of warnings.",
     "genericStateObjects.activeWarningsJson": "All active warningmessages.",
     "genericStateObjects.history": "History of warnings.",
-    "genericStateObjects.warnings_json": "History of warnings.",
+    "genericStateObjects.warnings_json": "Last received data as json.",
     "genericStateObjects.lastUpdate": "Time stamp of the last data retrieval.",
     "genericStateObjects.jsonHistory": "Big and useless field with a lot raw data from provider.",
     "statesObjectsWarnings.dwdService._channel": "DWD Warnings",
