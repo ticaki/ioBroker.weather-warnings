@@ -29,7 +29,7 @@ export class BaseClass {
         this.log = new CustomLog(adapter, this.name);
         this.adapter = adapter;
     }
-    delete(): void {
+    async delete(): Promise<void> {
         this.unload = true;
     }
 }
@@ -79,48 +79,6 @@ export class Library extends BaseClass {
         } else {
             await this.setLanguage('en');
         }
-        /*setTimeout(async () => {
-            const file = await _fs.readFile(
-                `/home/tim/ioBroker.weather-warnings/admin/i18n/en/translations.json`,
-                'utf8',
-            );
-            const json = JSON.parse(file);
-            const test = genericStateObjects;
-            setValueToJson(test, 'genericStateObjects');
-            const test2 = statesObjectsWarnings;
-            setValueToJson(test2, 'statesObjectsWarnings');
-            const test3 = genericWarntypState;
-            setValueToJson(test3, 'genericWarntypState');
-
-            await _fs.writeFile(
-                `/home/tim/ioBroker.weather-warnings/admin/i18n/en/translations.json`,
-                JSON.stringify(json),
-            );
-            function setValueToJson(data: any, key: string, test = false): void {
-                for (const a in data) {
-                    if (typeof data[a] == 'object') {
-                        setValueToJson(data[a], a == 'common' ? key : `${key}.${a}`, a == 'common');
-                    } else {
-                        if (test && a == 'name') {
-                            if (key.includes('.alerts.')) {
-                                const c = key.split('.');
-                                c.splice(-2, 1);
-                                key = c.join('.');
-                            }
-                            json[key] = data[a];
-                            data[a] = key;
-                        }
-                    }
-                }
-            }
-        }, 3000);*/
-        /*try {
-            // optional module - test ts check fail
-            const tools = await import('../../.dev-data/translations.ts');
-            if (tools) await tools.updateTranslations();
-        } catch {
-            // do nothing
-        }*/
     }
 
     /**
@@ -186,16 +144,6 @@ export class Library extends BaseClass {
             if (!objectDefinition) return;
             await this.writedp(prefix, data, objectDefinition);
         }
-        /**
-         * überlegungen zur Defintion von states
-         * const def : {id: objectdefinition...}
-         * bei objecten im State funktioniert es nicht gleichzeitig den channel und die darunter liegende States zu definieren
-         *
-         * bei def =  {id: Pfadname}
-         * gibts kein Problem mit channels... scheint mir die beste Lösung zu sein
-         * Pfade die als Erinnerungshilfe ohne name und instance
-         * provider.dwd.*warncellid*.warnung*1-5*
-         */
     }
 
     /**
@@ -297,7 +245,7 @@ export class Library extends BaseClass {
             del.push(dp.split('.').slice(0, deep).join('.'));
         }
         for (const a in del) {
-            this.adapter.delObjectAsync(del[a], { recursive: true });
+            await this.adapter.delObjectAsync(del[a], { recursive: true });
         }
     }
     /**
@@ -366,9 +314,11 @@ export class Library extends BaseClass {
         };
         return this.stateDataBase[dp];
     }
-    getdb(dp: string): LibraryStateVal | undefined {
-        return this.stateDataBase[dp];
+
+    async memberDeleteAsync(data: any[]): Promise<void> {
+        for (const d of data) await d.delete();
     }
+
     cloneObject(obj: ioBroker.Object): ioBroker.Object {
         if (typeof obj !== 'object') {
             this.log.error(`Error clone object target is type: ${typeof obj}`);
@@ -376,6 +326,7 @@ export class Library extends BaseClass {
         }
         return JSON.parse(JSON.stringify(obj));
     }
+
     cloneGenericObject(obj: object): object {
         if (typeof obj !== 'object') {
             this.log.error(`Error clone object target is type: ${typeof obj}`);
@@ -383,9 +334,11 @@ export class Library extends BaseClass {
         }
         return JSON.parse(JSON.stringify(obj));
     }
+
     readdp(dp: string): LibraryStateVal {
         return this.stateDataBase[this.cleandp(dp)];
     }
+
     async readWithJsonata(
         data: object,
         cmd: { [key: string]: string } | string,
@@ -414,6 +367,7 @@ export class Library extends BaseClass {
         }
         return result;
     }
+
     /**
      * Initialise the database with the states to prevent unnecessary creation and writing.
      * @param states States that are to be read into the database during initialisation.
@@ -531,6 +485,7 @@ export class Library extends BaseClass {
         }
         return false;
     }
+
     setForbiddenDirs(dirs: any[]): void {
         this.forbiddenDirs = this.forbiddenDirs.concat(dirs);
     }

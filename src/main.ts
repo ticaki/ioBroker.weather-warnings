@@ -346,13 +346,8 @@ class WeatherWarnings extends utils.Adapter {
     }
 
     /**
-     *  We need this later, dont remove
+     * Respond to language changes.
      */
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-    // /**
-    //  * Is called if a subscribed object changes
-    //  */
     private async onObjectChange(id: string, obj: ioBroker.Object | null | undefined): Promise<void> {
         if (obj) {
             // The object was changed
@@ -366,10 +361,12 @@ class WeatherWarnings extends utils.Adapter {
 
     /**
      * Is called if a subscribed state changes
+     * We need this later, dont remove
      */
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
         if (!state) return;
         if (state.ack) return;
+        // i fill this from 0.4.0 - 0.5.0
     }
 
     /**
@@ -519,7 +516,6 @@ class WeatherWarnings extends utils.Adapter {
                                     ' - / - ');
                         }
                         reply = reply.slice(0, -7);
-                        //this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                         this.sendTo(obj.from, obj.command, reply, obj.callback);
                     }
                     break;
@@ -617,7 +613,7 @@ class WeatherWarnings extends utils.Adapter {
                         'provider.zamg.info.connection',
                         'info.connection',
                     ].forEach((a) => {
-                        state = this.library.getdb(a);
+                        state = this.library.readdp(a);
                         if (state) connected = connected && !!state.val;
                     });
                     // connected === true is right
@@ -636,10 +632,10 @@ class WeatherWarnings extends utils.Adapter {
                         'provider.zamg.info.connection',
                         'info.connection',
                     ].forEach((a) => {
-                        state = this.library.getdb(a);
+                        state = this.library.readdp(a);
                         if (state) connected = connected || !!state.val;
                     });
-                    state = this.library.getdb('provider.activeWarnings');
+                    state = this.library.readdp('provider.activeWarnings');
                     if (state) connected = !!connected || !(state.val && Number(state.val) >= 4);
                     else connected = true; //error
                     // connected === false is right
@@ -685,7 +681,6 @@ class WeatherWarnings extends utils.Adapter {
                             value.startsWith('8') ||
                             value.startsWith('7'))
                     ) {
-                        //if (text) text.push(`${cityText} #${value}`);
                         if (text) text.push({ label: cityText, value: value.trim() });
                     }
                 });
@@ -714,7 +709,6 @@ class WeatherWarnings extends utils.Adapter {
                 if (obj.command == 'dwd.name') that.sendTo(obj.from, obj.command, result, obj.callback);
                 else if (obj.command == 'dwd.name.text' || obj.command == 'dwd.check')
                     that.sendTo(obj.from, obj.command, result.length == 1 ? result[0].label : '', obj.callback);
-                //that.log.debug(`ID is is: ${that.config.dwdSelectId}`);
             } else {
                 if (obj.command == 'dwd.name.text' || obj.command == 'dwd.check')
                     that.sendTo(obj.from, obj.command, '', obj.callback);

@@ -43,6 +43,7 @@ export class BaseProvider extends BaseClass {
     filter: providerDef.messageFilterType;
     customName: string = '';
     warncellIdString: string;
+
     constructor(adapter: WeatherWarnings, options: ProviderOptionsTypeInternal, name: string) {
         let warncell = typeof options.warncellId == 'string' ? options.warncellId : options.warncellId.join(DIV);
         warncell = warncell.replaceAll('.', '_');
@@ -84,9 +85,12 @@ export class BaseProvider extends BaseClass {
         this.setConnected(false);
     }
 
-    delete(): void {
+    async delete(): Promise<void> {
+        super.delete();
         this.rawData = null;
-        this.setConnected(false);
+        await this.library.memberDeleteAsync(this.messages);
+        this.messages = [];
+        await this.setConnected(false);
     }
 
     getService(): providerDef.providerServices {
@@ -129,19 +133,16 @@ export class BaseProvider extends BaseClass {
     }
     async setConnected(status: boolean): Promise<void> {
         this.providerController.connection = this.providerController.connection || status;
-        const objDef = await this.library.getObjectDefFromJson(`info.connection`, definitionen.genericStateObjects);
-        this.library.writedp(`${this.name}.info.connection`, !!status, objDef);
+        await this.library.writedp(
+            `${this.name}.info.connection`,
+            !!status,
+            definitionen.genericStateObjects.info.connection,
+        );
     }
-    async update(): Promise<void> {
-        // tue nichts
-    }
-    static async setAlerts(
-        that: BaseProvider | ProviderController,
-        prefix: string,
-        data: { [key: string]: string | number | boolean },
-    ): Promise<void> {
-        await that.library.writeFromJson(
-            prefix + '.alerts',
+
+    async setAlerts(data: { [key: string]: string | number | boolean }): Promise<void> {
+        await this.library.writeFromJson(
+            this.name + '.alerts',
             'allService.alerts',
             definitionen.statesObjectsWarnings,
             data,
@@ -180,7 +181,7 @@ export class BaseProvider extends BaseClass {
                 };
             }
         }
-        await BaseProvider.setAlerts(this, this.name, reply);
+        await this.setAlerts(reply);
         return reply;
     }
     // General function that retrieves data
@@ -197,8 +198,11 @@ export class BaseProvider extends BaseClass {
             }
 
             // show text mode in Info states
-            const objDef = await this.library.getObjectDefFromJson(`info.testMode`, definitionen.genericStateObjects);
-            this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
+            this.library.writedp(
+                `${this.name}.info.testMode`,
+                this.adapter.config.useTestWarnings,
+                definitionen.genericStateObjects.info.testMode,
+            );
             if (this.adapter.config.useTestWarnings) {
                 return this.library.cloneGenericObject(
                     getTestData(this.service, this.adapter) as object,
@@ -250,24 +254,17 @@ export class BaseProvider extends BaseClass {
                 return a.starttime - b.starttime;
             });
             await this.messages[m].writeFormatedKeys(m);
+        }
+        await this.library.garbageColleting(
+            `${this.name}.formatedKeys`,
+            (this.providerController.refreshTime || 600000) / 2,
+        );
+        await this.library.garbageColleting(
+            `${this.name}.warning`,
+            (this.providerController.refreshTime || 600000) / 2,
+        );
+    }
 
-            //await this.messages[m].formatMessages();
-        }
-        this.library.garbageColleting(`${this.name}.formatedKeys`, (this.providerController.refreshTime || 600000) / 2);
-    }
-    /**
-     * generic write function for flat Objects
-     * @param prefix {string}   prefix in datatree
-     * @param data              json object flat
-     * @returns                 void
-     */
-    async dumpData(prefix: string, data: providerDef.DataImportType): Promise<void> {
-        if (!prefix || !data || typeof data !== 'object') return;
-        for (const key in data) {
-            //@ts-expect-error write code for next line
-            this.adapter.library.writeState(`${prefix}`, key, data[key]);
-        }
-    }
     async updateData(data: any, counter: number): Promise<void> {
         if (!data) return;
         this.library.writedp(`${this.name}.warning`, undefined, definitionen.genericStateObjects.warningDevice);
@@ -338,8 +335,6 @@ export class DWDProvider extends BaseProvider {
                 await this.messages[index].updateData(w.properties);
             }
         }
-        this.library.garbageColleting(`${this.name}.warning`);
-
         for (let n = 0; n < this.messages.length; n++) {
             const newmsg = this.messages[n];
             if (!newmsg.newMessage) continue;
@@ -356,10 +351,6 @@ export class DWDProvider extends BaseProvider {
                 break;
             }
         }
-        /**
-         * Hier war ich dran
-         */
-        //this.library.writeJson('', '', this.rawData, this.getStatesObjectsWarnings('raw').false);
         await this.finishUpdateData();
     }
 }
@@ -411,7 +402,6 @@ export class ZAMGProvider extends BaseProvider {
                 await this.messages[index].updateData(result.properties.warnings[a].properties);
             }
         }
-        this.library.garbageColleting(`${this.name}.warning`);
         await this.finishUpdateData();
     }
 }
@@ -453,10 +443,8 @@ export class UWZProvider extends BaseProvider {
                 await this.messages[index].updateData(result.results[a]);
             }
         }
-
         this.log.debug(`Got ${result.results.length} warnings from server`);
 
-        this.library.garbageColleting(`${this.name}.warning`);
         await this.finishUpdateData();
     }
 }
@@ -584,12 +572,13 @@ export class ProviderController extends BaseClass {
         }
     }
 
-    delete(): void {
+    async delete(): Promise<void> {
         super.delete();
-        for (const p of this.providers) {
-            if (p) p.delete();
-        }
-        this.providers = [];
+        await this.library.memberDeleteAsync(this.providers);
+        await this.library.memberDeleteAsync(this.notificationServices);
+        this.notificationServices.forEach((p) => p.delete());
+        this.notificationServices = [];
+        await this.setConnected(false);
         if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);
         if (this.alertTimeoutRef) this.adapter.clearTimeout(this.alertTimeoutRef);
     }
@@ -669,11 +658,11 @@ export class ProviderController extends BaseClass {
         return this.providers.length > 0;
     }
     async setConnected(status: boolean = this.connection): Promise<void> {
-        const objDef = await this.adapter.library.getObjectDefFromJson(
+        await this.adapter.library.writedp(
             `info.connection`,
-            definitionen.genericStateObjects,
+            !!status,
+            definitionen.genericStateObjects.info.connection,
         );
-        this.adapter.library.writedp(`info.connection`, !!status, objDef);
     }
     setAllowedDirs(allowedDirs: any): void {
         const dirs = [];

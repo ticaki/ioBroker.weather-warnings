@@ -69,7 +69,7 @@ class NotificationClass extends library.BaseClass {
                   }
                   break;
               }
-              const state = this.adapter.library.getdb(dp);
+              const state = this.adapter.library.readdp(dp);
               if (state == void 0) {
                 await this.adapter.library.writedp(dp, "[]", def);
               }
@@ -212,7 +212,7 @@ class NotificationClass extends library.BaseClass {
             for (const a in targets) {
               try {
                 const dp = `${targets[a]}.history`;
-                const state = this.adapter.library.getdb(dp);
+                const state = this.adapter.library.readdp(dp);
                 let json = [];
                 if (state && state.val && typeof state.val == "string" && state.val != "")
                   json = JSON.parse(state.val);

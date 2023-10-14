@@ -87,9 +87,12 @@ class BaseProvider extends import_library.BaseClass {
     );
     this.setConnected(false);
   }
-  delete() {
+  async delete() {
+    super.delete();
     this.rawData = null;
-    this.setConnected(false);
+    await this.library.memberDeleteAsync(this.messages);
+    this.messages = [];
+    await this.setConnected(false);
   }
   getService() {
     if (!this.service) {
@@ -119,14 +122,15 @@ class BaseProvider extends import_library.BaseClass {
   }
   async setConnected(status) {
     this.providerController.connection = this.providerController.connection || status;
-    const objDef = await this.library.getObjectDefFromJson(`info.connection`, definitionen.genericStateObjects);
-    this.library.writedp(`${this.name}.info.connection`, !!status, objDef);
+    await this.library.writedp(
+      `${this.name}.info.connection`,
+      !!status,
+      definitionen.genericStateObjects.info.connection
+    );
   }
-  async update() {
-  }
-  static async setAlerts(that, prefix, data) {
-    await that.library.writeFromJson(
-      prefix + ".alerts",
+  async setAlerts(data) {
+    await this.library.writeFromJson(
+      this.name + ".alerts",
       "allService.alerts",
       definitionen.statesObjectsWarnings,
       data,
@@ -167,7 +171,7 @@ class BaseProvider extends import_library.BaseClass {
         };
       }
     }
-    await BaseProvider.setAlerts(this, this.name, reply);
+    await this.setAlerts(reply);
     return reply;
   }
   async getDataFromProvider() {
@@ -180,8 +184,11 @@ class BaseProvider extends import_library.BaseClass {
       if (this.unload) {
         return;
       }
-      const objDef = await this.library.getObjectDefFromJson(`info.testMode`, definitionen.genericStateObjects);
-      this.library.writedp(`${this.name}.info.testMode`, this.adapter.config.useTestWarnings, objDef);
+      this.library.writedp(
+        `${this.name}.info.testMode`,
+        this.adapter.config.useTestWarnings,
+        definitionen.genericStateObjects.info.testMode
+      );
       if (this.adapter.config.useTestWarnings) {
         return this.library.cloneGenericObject(
           (0, import_test_warnings.getTestData)(this.service, this.adapter)
@@ -232,14 +239,14 @@ class BaseProvider extends import_library.BaseClass {
       });
       await this.messages[m].writeFormatedKeys(m);
     }
-    this.library.garbageColleting(`${this.name}.formatedKeys`, (this.providerController.refreshTime || 6e5) / 2);
-  }
-  async dumpData(prefix, data) {
-    if (!prefix || !data || typeof data !== "object")
-      return;
-    for (const key in data) {
-      this.adapter.library.writeState(`${prefix}`, key, data[key]);
-    }
+    await this.library.garbageColleting(
+      `${this.name}.formatedKeys`,
+      (this.providerController.refreshTime || 6e5) / 2
+    );
+    await this.library.garbageColleting(
+      `${this.name}.warning`,
+      (this.providerController.refreshTime || 6e5) / 2
+    );
   }
   async updateData(data, counter) {
     if (!data)
@@ -301,7 +308,6 @@ class DWDProvider extends BaseProvider {
         await this.messages[index].updateData(w.properties);
       }
     }
-    this.library.garbageColleting(`${this.name}.warning`);
     for (let n = 0; n < this.messages.length; n++) {
       const newmsg = this.messages[n];
       if (!newmsg.newMessage)
@@ -370,7 +376,6 @@ class ZAMGProvider extends BaseProvider {
         await this.messages[index].updateData(result.properties.warnings[a].properties);
       }
     }
-    this.library.garbageColleting(`${this.name}.warning`);
     await this.finishUpdateData();
   }
 }
@@ -415,7 +420,6 @@ class UWZProvider extends BaseProvider {
       }
     }
     this.log.debug(`Got ${result.results.length} warnings from server`);
-    this.library.garbageColleting(`${this.name}.warning`);
     await this.finishUpdateData();
   }
 }
@@ -526,13 +530,13 @@ class ProviderController extends import_library.BaseClass {
       return this.providers[index];
     }
   }
-  delete() {
+  async delete() {
     super.delete();
-    for (const p of this.providers) {
-      if (p)
-        p.delete();
-    }
-    this.providers = [];
+    await this.library.memberDeleteAsync(this.providers);
+    await this.library.memberDeleteAsync(this.notificationServices);
+    this.notificationServices.forEach((p) => p.delete());
+    this.notificationServices = [];
+    await this.setConnected(false);
     if (this.refreshTimeRef)
       this.adapter.clearTimeout(this.refreshTimeRef);
     if (this.alertTimeoutRef)
@@ -610,11 +614,11 @@ class ProviderController extends import_library.BaseClass {
     return this.providers.length > 0;
   }
   async setConnected(status = this.connection) {
-    const objDef = await this.adapter.library.getObjectDefFromJson(
+    await this.adapter.library.writedp(
       `info.connection`,
-      definitionen.genericStateObjects
+      !!status,
+      definitionen.genericStateObjects.info.connection
     );
-    this.adapter.library.writedp(`info.connection`, !!status, objDef);
   }
   setAllowedDirs(allowedDirs) {
     const dirs = [];

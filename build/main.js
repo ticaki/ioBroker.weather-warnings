@@ -516,7 +516,7 @@ class WeatherWarnings extends utils.Adapter {
             "provider.zamg.info.connection",
             "info.connection"
           ].forEach((a) => {
-            state = this.library.getdb(a);
+            state = this.library.readdp(a);
             if (state)
               connected = connected && !!state.val;
           });
@@ -534,11 +534,11 @@ class WeatherWarnings extends utils.Adapter {
             "provider.zamg.info.connection",
             "info.connection"
           ].forEach((a) => {
-            state = this.library.getdb(a);
+            state = this.library.readdp(a);
             if (state)
               connected = connected || !!state.val;
           });
-          state = this.library.getdb("provider.activeWarnings");
+          state = this.library.readdp("provider.activeWarnings");
           if (state)
             connected = !!connected || !(state.val && Number(state.val) >= 4);
           else

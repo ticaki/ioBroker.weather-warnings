@@ -51,7 +51,7 @@ export class NotificationClass extends library.BaseClass {
                                     }
                                     break;
                             }
-                            const state = this.adapter.library.getdb(dp);
+                            const state = this.adapter.library.readdp(dp);
                             if (state == undefined) {
                                 await this.adapter.library.writedp(dp, '[]', def);
                             }
@@ -111,17 +111,11 @@ export class NotificationClass extends library.BaseClass {
                             msg.action = action;
                             msg.provider = providers[a];
                             msg.message = message;
-                            //if (this.config.notifications.includes('all'))
                             result.push(msg); // hier sammele die Nachrichten
-
-                            //else this.sendNotifications(msg, message, action); // hier versende die Nachrichten aber nicht an Dienste mit all
                         }
                     }
                 }
             }
-            //if (resultProvider.length > 0) await this.sendNotifications(resultProvider); // hier an alle
-
-            //if (this.config.notifications.includes('all')) result = result.concat(resultProvider); // hier sammele die Nachrichten
         }
         if (result.length > 0 && activeWarnings > 0) {
             await this.sendNotifications(result); // hier an alle
@@ -227,7 +221,7 @@ export class NotificationClass extends library.BaseClass {
                             );
                         }
                     }
-                    /*
+                    /* Alexa code ask Apollon later
                     const opt: any = {
                         // value
                         deviceSerialNumber: devices[0], // Serial number of one device to get Meta data which will be used if no device is pecified on the commands
@@ -271,7 +265,7 @@ export class NotificationClass extends library.BaseClass {
                         for (const a in targets) {
                             try {
                                 const dp = `${targets[a]}.history`;
-                                const state = this.adapter.library.getdb(dp);
+                                const state = this.adapter.library.readdp(dp);
                                 let json: object[] = [];
                                 if (state && state.val && typeof state.val == 'string' && state.val != '')
                                     json = JSON.parse(state.val);
@@ -410,7 +404,6 @@ export class NotificationClass extends library.BaseClass {
                 }
                 break;
         }
-
         return true;
     }
 }

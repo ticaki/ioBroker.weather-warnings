@@ -59,7 +59,7 @@ class BaseClass {
     this.log = new CustomLog(adapter, this.name);
     this.adapter = adapter;
   }
-  delete() {
+  async delete() {
     this.unload = true;
   }
 }
@@ -229,7 +229,7 @@ class Library extends BaseClass {
       del.push(dp.split(".").slice(0, deep).join("."));
     }
     for (const a in del) {
-      this.adapter.delObjectAsync(del[a], { recursive: true });
+      await this.adapter.delObjectAsync(del[a], { recursive: true });
     }
   }
   cleandp(string, lowerCase = false) {
@@ -277,8 +277,9 @@ class Library extends BaseClass {
     };
     return this.stateDataBase[dp];
   }
-  getdb(dp) {
-    return this.stateDataBase[dp];
+  async memberDeleteAsync(data) {
+    for (const d of data)
+      await d.delete();
   }
   cloneObject(obj) {
     if (typeof obj !== "object") {
