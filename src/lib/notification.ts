@@ -77,7 +77,7 @@ export class NotificationClass extends library.BaseClass {
         let activeWarnings = 0;
         const filter = manual && this.options.filter.manual ? this.options.filter.manual : this.options.filter.auto;
         const actions = this.options.actions;
-        const result: NotificationType.MessageType[] = [];
+        let result: NotificationType.MessageType[] = [];
         const notifications = this.config.notifications;
         for (const a in providers) {
             if (this.options.service.indexOf(providers[a].service) == -1) continue;
@@ -114,6 +114,9 @@ export class NotificationClass extends library.BaseClass {
                     }
                 }
             }
+        }
+        if (manual && result.findIndex((a) => a.action != 'removeAll') > -1) {
+            result = result.filter((a) => a.action != 'removeAll');
         }
         if (result.length > 0 && activeWarnings > 0) {
             await this.sendNotifications(result); // hier an alle

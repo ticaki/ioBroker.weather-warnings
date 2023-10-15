@@ -290,7 +290,7 @@ class DWDProvider extends BaseProvider {
       const w = result.features[a];
       if (w.properties.STATUS == "Test")
         continue;
-      if (this.filter.hours && new Date(w.properties.ONSET).getTime() > Date.now() + this.filter.hours * 36e5)
+      if (this.filter.hours > 0 && new Date(w.properties.ONSET).getTime() > Date.now() + this.filter.hours * 36e5)
         continue;
       await super.updateData(w.properties, a);
       const index = this.messages.findIndex((m) => m.rawWarning.IDENTIFIER == w.properties.IDENTIFIER);
@@ -354,7 +354,7 @@ class ZAMGProvider extends BaseProvider {
     });
     this.messages.forEach((a) => a.notDeleted = false);
     for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
-      if (this.filter.hours && Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() + this.filter.hours * 3600)
+      if (this.filter.hours > 0 && Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() + this.filter.hours * 3600)
         continue;
       result.properties.warnings[a].properties.location = result.properties.location.properties.name;
       result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
@@ -401,7 +401,7 @@ class UWZProvider extends BaseProvider {
     for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
       if (result.results[a] == null)
         continue;
-      if (this.filter.hours && result.results[a].dtgStart > Date.now() + this.filter.hours * 3600)
+      if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() + this.filter.hours * 3600)
         continue;
       await super.updateData(result.results[a], a);
       const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
@@ -634,7 +634,7 @@ class ProviderController extends import_library.BaseClass {
     }
     for (const push of this.notificationServices) {
       if (cmd == push.name && push.canManual())
-        await push.sendMessage(providers, NotificationType.manual, true);
+        await push.sendMessage(providers, [...NotificationType.manual, "removeAll"], true);
     }
   }
   async updateCommandStates() {
