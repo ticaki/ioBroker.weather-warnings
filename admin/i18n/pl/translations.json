@@ -388,5 +388,10 @@
     "genericWarntypState.end": "Koniec czasu",
     "genericWarntypState.headline": "Nagłówek",
     "genericWarntypState.type": "Typ ostrzeżenia",
-    "genericWarntypState.active": "Ostrzeżenie jest aktywne."
+    "genericWarntypState.active": "Ostrzeżenie jest aktywne.",
+    "manualAll": "Wybierz szablon, który będzie używany dla ostrzeżeń w przypadku powiadomień wyzwalanych ręcznie.",
+    "ManualTypeFilter": "Następujące typy ostrzeżeń są odfiltrowywane z ręcznie wyzwalanych powiadomień.",
+    "ManualLevelFilter": "Ostrzeżenia o niższych poziomach są filtrowane z powiadomień wyzwalanych ręcznie.",
+    "header_auto": "Opcje automatycznych powiadomień.",
+    "header_manual": "Opcje ręcznych powiadomień."
 }

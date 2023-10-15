@@ -388,5 +388,10 @@
     "genericWarntypState.end": "Tempo scaduto",
     "genericWarntypState.headline": "Titolo",
     "genericWarntypState.type": "Tipo di avviso",
-    "genericWarntypState.active": "L'avviso è attivo."
+    "genericWarntypState.active": "L'avviso è attivo.",
+    "manualAll": "Seleziona il modello da utilizzare per gli avvisi per le notifiche attivate manualmente.",
+    "ManualTypeFilter": "I seguenti tipi di avviso vengono esclusi dalle notifiche attivate manualmente.",
+    "ManualLevelFilter": "Gli avvisi con livelli inferiori vengono filtrati dalle notifiche attivate manualmente.",
+    "header_auto": "Opzioni per le notifiche automatiche.",
+    "header_manual": "Opzioni per le notifiche manuali."
 }

@@ -40,6 +40,7 @@ var import_library = require("./library");
 var import_messages = require("./messages");
 var NotificationClass = __toESM(require("./notification"));
 var import_test_warnings = require("./test-warnings");
+var NotificationType = __toESM(require("./def/notificationService-def"));
 var messagesDef = __toESM(require("./def/messages-def"));
 const DIV = "-";
 class BaseProvider extends import_library.BaseClass {
@@ -619,6 +620,50 @@ class ProviderController extends import_library.BaseClass {
       !!status,
       definitionen.genericStateObjects.info.connection
     );
+  }
+  async onStatePush(id) {
+    id = id.replace(`${this.adapter.namespace}.`, "");
+    const cmd = id.split(".").pop();
+    const service = id.split(".").slice(0, -2).join(".");
+    let index = -1;
+    let providers = [];
+    if ((index = this.providers.findIndex((a) => a.name == service)) > -1) {
+      providers.push(this.providers[index]);
+    } else {
+      providers = this.providers;
+    }
+    for (const push of this.notificationServices) {
+      if (cmd == push.name && push.canManual())
+        await push.sendMessage(providers, NotificationType.manual, true);
+    }
+  }
+  async updateCommandStates() {
+    for (const p of [...this.providers, this]) {
+      const channel = (p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`) + ".command";
+      const states = this.library.getStates(`${channel}.*`.replace(".", "\\."));
+      for (const n of this.notificationServices) {
+        if (n.config.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1)
+          continue;
+        if (!(p instanceof BaseProvider) || n.options.service.indexOf(p.service) != -1) {
+          await this.library.writedp(
+            channel,
+            void 0,
+            definitionen.statesObjectsWarnings.allService.command._channel
+          );
+          const dp = `${channel}.${n.name}`;
+          states[dp] = void 0;
+          await this.library.writedp(
+            dp,
+            false,
+            definitionen.statesObjectsWarnings.allService.command[n.name]
+          );
+        }
+      }
+      for (const dp in states)
+        if (states[dp] !== void 0)
+          await this.adapter.delObjectAsync(dp);
+      await this.adapter.subscribeStatesAsync(channel + ".*");
+    }
   }
   setAllowedDirs(allowedDirs) {
     const dirs = [];

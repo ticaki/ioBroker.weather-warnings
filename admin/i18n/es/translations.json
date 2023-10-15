@@ -388,5 +388,10 @@
     "genericWarntypState.end": "Hora de finalización",
     "genericWarntypState.headline": "Titular",
     "genericWarntypState.type": "Tipo de advertencia",
-    "genericWarntypState.active": "La advertencia está activa."
+    "genericWarntypState.active": "La advertencia está activa.",
+    "manualAll": "Seleccione la plantilla que se utilizará para las advertencias de notificaciones activadas manualmente.",
+    "ManualTypeFilter": "Los siguientes tipos de advertencia se excluyen de las notificaciones activadas manualmente.",
+    "ManualLevelFilter": "Las advertencias con niveles más bajos se filtran de las notificaciones activadas manualmente.",
+    "header_auto": "Opciones para notificaciones automáticas.",
+    "header_manual": "Opciones para notificaciones manuales."
 }

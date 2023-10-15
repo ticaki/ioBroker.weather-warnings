@@ -388,5 +388,10 @@
     "genericWarntypState.end": "Fim do tempo",
     "genericWarntypState.headline": "Título",
     "genericWarntypState.type": "Tipo de aviso",
-    "genericWarntypState.active": "O aviso está ativo."
+    "genericWarntypState.active": "O aviso está ativo.",
+    "manualAll": "Selecione o modelo a ser usado para avisos de notificações acionadas manualmente.",
+    "ManualTypeFilter": "Os seguintes tipos de aviso são filtrados das notificações acionadas manualmente.",
+    "ManualLevelFilter": "Os avisos com níveis mais baixos são filtrados das notificações acionadas manualmente.",
+    "header_auto": "Opções para notificações automáticas.",
+    "header_manual": "Opções para notificações manuais."
 }

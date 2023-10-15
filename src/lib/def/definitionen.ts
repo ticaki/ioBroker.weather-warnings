@@ -1,4 +1,5 @@
 import * as messagesDef from './messages-def';
+import * as notificationServiceDef from './notificationService-def';
 import * as providerDef from './provider-def';
 
 type ChangeTypeToChannelAndState<Obj> = Obj extends object
@@ -25,24 +26,42 @@ export const defaultChannel: ioBroker.ChannelObject = {
     native: {},
 };
 
-export type statesObjectsWarningsType =
-    | {
-          [key: string]:
-              | customChannelType
-              | {
-                    raw?:
-                        | ChangeTypeToChannelAndState<providerDef.dataImportDwdTypeProperties>
-                        | ChangeTypeToChannelAndState<providerDef.dataImportUwzTypeProperties>
-                        | ChangeTypeToChannelAndState<providerDef.dataImportZamgTypeProperties>;
-                };
-      }
-    | {
-          allService: {
-              formatedkeys: customChannelType &
-                  ChangeTypeOfKeys<Required<messagesDef.customFormatedKeysDef>, ioBroker.StateObject>;
-              alerts: customChannelType & messagesDef.genericWarntypStatesTree;
+export type statesObjectsWarningsType = {
+    dwdService:
+        | customChannelType
+        | {
+              raw?:
+                  | ChangeTypeToChannelAndState<providerDef.dataImportDwdTypeProperties>
+                  | ChangeTypeToChannelAndState<providerDef.dataImportUwzTypeProperties>
+                  | ChangeTypeToChannelAndState<providerDef.dataImportZamgTypeProperties>;
           };
-      };
+} & {
+    uwzService:
+        | customChannelType
+        | {
+              raw?:
+                  | ChangeTypeToChannelAndState<providerDef.dataImportDwdTypeProperties>
+                  | ChangeTypeToChannelAndState<providerDef.dataImportUwzTypeProperties>
+                  | ChangeTypeToChannelAndState<providerDef.dataImportZamgTypeProperties>;
+          };
+} & {
+    zamgService:
+        | customChannelType
+        | {
+              raw?:
+                  | ChangeTypeToChannelAndState<providerDef.dataImportDwdTypeProperties>
+                  | ChangeTypeToChannelAndState<providerDef.dataImportUwzTypeProperties>
+                  | ChangeTypeToChannelAndState<providerDef.dataImportZamgTypeProperties>;
+          };
+} & {
+    allService: {
+        formatedkeys: customChannelType &
+            ChangeTypeOfKeys<Required<messagesDef.customFormatedKeysDef>, ioBroker.StateObject>;
+        alerts: customChannelType & messagesDef.genericWarntypStatesTree;
+        command: customChannelType &
+            ChangeTypeOfKeys<Required<Record<notificationServiceDef.Type, string>>, ioBroker.StateObject>;
+    };
+};
 
 export const genericStateObjects: {
     info: customChannelType & {
@@ -1840,6 +1859,100 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             fog: {
                 ...messagesDef.genericWarntypState,
                 _channel: { ...defaultChannel, common: { name: 'statesObjectsWarnings.allService.alerts.fog' } },
+            },
+        },
+        command: {
+            _channel: {
+                _id: '',
+                type: 'channel',
+                common: {
+                    name: 'statesObjectsWarnings.allService.command',
+                },
+                native: {},
+            },
+            telegram: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'Telegram',
+                    type: 'boolean',
+                    role: 'button',
+                    read: false,
+                    write: true,
+                },
+                native: {},
+            },
+            pushover: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'Pushover',
+                    type: 'boolean',
+                    role: 'button',
+                    read: false,
+                    write: true,
+                },
+                native: {},
+            },
+            whatsapp: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'Whatsapp',
+                    type: 'boolean',
+                    role: 'button',
+                    read: false,
+                    write: true,
+                },
+                native: {},
+            },
+            email: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'Email',
+                    type: 'boolean',
+                    role: 'button',
+                    read: false,
+                    write: true,
+                },
+                native: {},
+            },
+            history: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'History',
+                    type: 'boolean',
+                    role: 'button',
+                    read: false,
+                    write: true,
+                },
+                native: {},
+            },
+            json: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'Json',
+                    type: 'boolean',
+                    role: 'button',
+                    read: false,
+                    write: true,
+                },
+                native: {},
+            },
+            alexa2: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'Alexa',
+                    type: 'boolean',
+                    role: 'button',
+                    read: false,
+                    write: true,
+                },
+                native: {},
             },
         },
     },

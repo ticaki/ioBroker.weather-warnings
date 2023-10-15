@@ -66,16 +66,19 @@ export class NotificationClass extends library.BaseClass {
      *  Send this message after filtering to services REWRITED
      * @param messages the message with MessageClassRef Ref can be null
      * @param action <string>
-     * @param override <boolean> override new/removeall handling
+     * @param manual <boolean> manual new/removeall handling
      * @returns
      */
     async sendMessage(
         providers: Provider.BaseProvider[],
         allowActions: NotificationType.ActionsUnionType[],
-        override: boolean = false,
+        manual: boolean = false,
     ): Promise<void> {
         let activeWarnings = 0;
+        const filter = manual && this.options.filter.manual ? this.options.filter.manual : this.options.filter.auto;
+        const actions = this.options.actions;
         const result: NotificationType.MessageType[] = [];
+        const notifications = this.config.notifications;
         for (const a in providers) {
             if (this.options.service.indexOf(providers[a].service) == -1) continue;
             //const resultProvider: NotificationType.MessageType[] = [];
@@ -83,29 +86,24 @@ export class NotificationClass extends library.BaseClass {
                 const message = providers[a].messages[b];
                 if (
                     message &&
-                    (this.options.filter.level === undefined || this.options.filter.level <= message.level) &&
-                    this.options.filter.type.indexOf(String(message.genericType)) == -1
+                    (filter.level === undefined || filter.level <= message.level) &&
+                    filter.type.indexOf(String(message.genericType)) == -1
                 ) {
                     if (message.notDeleted) activeWarnings++;
-                    for (const c in this.options.actions) {
+                    for (const c in actions) {
                         const action: keyof NotificationType.ActionsType = c as keyof NotificationType.ActionsType;
-                        if (
-                            this.options.actions[action] == 'none' ||
-                            this.options.actions[action] == '' ||
-                            action == undefined
-                        )
-                            continue;
+                        if (actions[action] == 'none' || actions[action] == '' || action == undefined) continue;
 
                         if (!allowActions.includes(action)) continue;
 
-                        if (!this.config.notifications.includes(action)) continue;
+                        if (!notifications.includes(action)) continue;
 
                         const msg = await this.getMessage(
                             message,
-                            this.config.notifications,
-                            this.options.actions[action as keyof typeof this.options.actions]!,
+                            notifications,
+                            actions[action as keyof typeof this.options.actions]!,
                             action,
-                            override,
+                            manual,
                         );
                         if (msg.text != '') {
                             msg.action = action;
@@ -126,7 +124,7 @@ export class NotificationClass extends library.BaseClass {
             if (
                 this.config.notifications.includes('removeAll') &&
                 this.options.actions['removeAll'] != 'none' &&
-                (override || (!this.removeAllSend && activeWarnings == 0))
+                (manual || (!this.removeAllSend && activeWarnings == 0))
             ) {
                 const templates = this.adapter.config.templateTable;
                 const tempid = templates.findIndex((a) => a.templateKey == this.options.actions['removeAll']);
@@ -144,14 +142,20 @@ export class NotificationClass extends library.BaseClass {
             }
         }
     }
+
+    canManual(): boolean {
+        if (this.config.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1) return true;
+        return false;
+    }
+
     async getMessage(
         message: MessagesClass,
         templateType: NotificationType.ActionsUnionType[],
         templateKey: string,
         action: NotificationType.ActionsUnionType,
-        override: boolean = false,
+        manual: boolean = false,
     ): Promise<NotificationType.MessageType> {
-        return await message.getMessage(templateType, templateKey, action, override);
+        return await message.getMessage(templateType, templateKey, action, manual);
     }
 
     async sendNotifications(messages: NotificationType.MessageType[]): Promise<boolean> {

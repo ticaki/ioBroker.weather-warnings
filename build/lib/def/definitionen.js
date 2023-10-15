@@ -1818,6 +1818,100 @@ const statesObjectsWarnings = {
         ...messagesDef.genericWarntypState,
         _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.fog" } }
       }
+    },
+    command: {
+      _channel: {
+        _id: "",
+        type: "channel",
+        common: {
+          name: "statesObjectsWarnings.allService.command"
+        },
+        native: {}
+      },
+      telegram: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "Telegram",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
+      },
+      pushover: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "Pushover",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
+      },
+      whatsapp: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "Whatsapp",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
+      },
+      email: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "Email",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
+      },
+      history: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "History",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
+      },
+      json: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "Json",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
+      },
+      alexa2: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "Alexa",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
+      }
     }
   }
 };

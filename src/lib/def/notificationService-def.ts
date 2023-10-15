@@ -2,7 +2,6 @@ import { MessagesClass } from '../messages';
 import { ProviderClassType, messageFilterType, providerServices } from './provider-def';
 
 export type Type = Required<keyof OptionsType>;
-
 export type OptionsType = {
     telegram?: {
         name: 'telegram';
@@ -28,7 +27,10 @@ export type OptionsType = {
 };
 export type BaseType = {
     service: providerServices[];
-    filter: messageFilterType;
+    filter: {
+        auto: messageFilterType;
+        manual?: messageFilterType;
+    };
     adapter: string;
     name: Type;
     actions: ActionsType;
@@ -44,6 +46,7 @@ export type ActionsType = {
     all: string;
     header?: string;
     footer?: string;
+    manualAll?: string;
 };
 
 export type ConfigType = {
@@ -56,10 +59,12 @@ export type ConfigType = {
  * removeAll: send remove all messages
  * remove: send a remove message for a removed warning
  */
-const push: ActionsUnionType[] = ['new', 'remove', 'removeAll'];
+export const manual: ActionsUnionType[] = ['manualAll'];
+
+const push: ActionsUnionType[] = [...manual, 'new', 'remove', 'removeAll'];
 const history: ActionsUnionType[] = ['new', 'remove'];
 const json: ActionsUnionType[] = ['all', 'removeAll'];
-const email: ActionsUnionType[] = ['new', 'all', 'removeAll', 'remove'];
+const email: ActionsUnionType[] = [...manual, 'new', 'all', 'removeAll', 'remove'];
 
 //const speak: ActionsUnionType[] = ['new', 'remove', 'removeAll'];
 export const serciceCapabilities: Record<Type, ConfigType> = {

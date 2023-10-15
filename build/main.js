@@ -141,7 +141,8 @@ class WeatherWarnings extends utils.Adapter {
               new: self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "",
               remove: self.config[notificationService + "_MessageRemove"],
               removeAll: self.config[notificationService + "_MessageAllRemove"],
-              all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : ""
+              all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : "",
+              manualAll: self.config[notificationService + "_manualAll"] !== void 0 ? self.config[notificationService + "_manualAll"] : ""
             };
             template.new = template.new ? template.new : "none";
             template.remove = template.remove ? template.remove : "none";
@@ -151,8 +152,14 @@ class WeatherWarnings extends utils.Adapter {
               ...import_notificationConfig_d.notificationServiceDefaults[notificationService],
               service,
               filter: {
-                level: self.config[notificationService + "_LevelFilter"],
-                type: self.config[notificationService + "_TypeFilter"].map((a2) => String(a2))
+                auto: {
+                  level: self.config[notificationService + "_LevelFilter"],
+                  type: self.config[notificationService + "_TypeFilter"].map((a2) => String(a2))
+                },
+                manual: {
+                  level: self.config[notificationService + "_ManualLevelFilter"] ? self.config[notificationService + "_ManualLevelFilter"] : -1,
+                  type: (self.config[notificationService + "_ManualTypeFilter"] ? self.config[notificationService + "_ManualTypeFilter"] : []).map((a2) => String(a2))
+                }
               },
               adapter: self.config[notificationService + "_Adapter"],
               name: notificationService,
@@ -273,6 +280,7 @@ class WeatherWarnings extends utils.Adapter {
           holdStates.push(self.providerController.providers[a].name);
         }
         await self.library.cleanUpTree(holdStates, 3);
+        self.providerController.updateCommandStates();
         self.providerController.updateEndless(self.providerController);
         self.providerController.updateAlertEndless(self.providerController);
       },
@@ -304,6 +312,8 @@ class WeatherWarnings extends utils.Adapter {
       return;
     if (state.ack)
       return;
+    if (this.providerController)
+      this.providerController.onStatePush(id);
   }
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {

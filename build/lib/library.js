@@ -218,6 +218,15 @@ class Library extends BaseClass {
     }
     return true;
   }
+  getStates(str) {
+    const result = {};
+    for (const dp in this.stateDataBase) {
+      if (dp.search(new RegExp(str, "g")) != -1) {
+        result[dp] = this.stateDataBase[dp];
+      }
+    }
+    return result;
+  }
   async cleanUpTree(hold, deep) {
     const del = [];
     for (const dp in this.stateDataBase) {

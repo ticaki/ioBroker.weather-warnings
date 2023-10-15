@@ -174,6 +174,13 @@ class WeatherWarnings extends utils.Adapter {
                                           (notificationService + '_MessageAll') as keyof ioBroker.AdapterConfig
                                       ] as string)
                                     : '',
+                            manualAll:
+                                self.config[(notificationService + '_manualAll') as keyof ioBroker.AdapterConfig] !==
+                                undefined
+                                    ? (self.config[
+                                          (notificationService + '_manualAll') as keyof ioBroker.AdapterConfig
+                                      ] as string)
+                                    : '',
                         };
                         template.new = template.new ? template.new : 'none';
                         template.remove = template.remove ? template.remove : 'none';
@@ -184,14 +191,35 @@ class WeatherWarnings extends utils.Adapter {
                             ...notificationServiceDefaults[notificationService],
                             service: service,
                             filter: {
-                                level: self.config[
-                                    (notificationService + '_LevelFilter') as keyof ioBroker.AdapterConfig
-                                ] as number,
-                                type: (
-                                    self.config[
-                                        (notificationService + '_TypeFilter') as keyof ioBroker.AdapterConfig
-                                    ] as string[]
-                                ).map((a) => String(a)),
+                                auto: {
+                                    level: self.config[
+                                        (notificationService + '_LevelFilter') as keyof ioBroker.AdapterConfig
+                                    ] as number,
+                                    type: (
+                                        self.config[
+                                            (notificationService + '_TypeFilter') as keyof ioBroker.AdapterConfig
+                                        ] as string[]
+                                    ).map((a) => String(a)),
+                                },
+                                manual: {
+                                    level: (self.config[
+                                        (notificationService + '_ManualLevelFilter') as keyof ioBroker.AdapterConfig
+                                    ] as number)
+                                        ? (self.config[
+                                              (notificationService +
+                                                  '_ManualLevelFilter') as keyof ioBroker.AdapterConfig
+                                          ] as number)
+                                        : -1,
+                                    type: ((self.config[
+                                        (notificationService + '_ManualTypeFilter') as keyof ioBroker.AdapterConfig
+                                    ] as string[])
+                                        ? (self.config[
+                                              (notificationService +
+                                                  '_ManualTypeFilter') as keyof ioBroker.AdapterConfig
+                                          ] as string[])
+                                        : []
+                                    ).map((a) => String(a)),
+                                },
                             },
                             adapter: self.config[
                                 (notificationService + '_Adapter') as keyof ioBroker.AdapterConfig
@@ -325,6 +353,8 @@ class WeatherWarnings extends utils.Adapter {
                 }
                 await self.library.cleanUpTree(holdStates, 3);
 
+                self.providerController.updateCommandStates();
+
                 self.providerController.updateEndless(self.providerController);
                 self.providerController.updateAlertEndless(self.providerController);
             },
@@ -366,7 +396,8 @@ class WeatherWarnings extends utils.Adapter {
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
         if (!state) return;
         if (state.ack) return;
-        // i fill this from 0.4.0 - 0.5.0
+
+        if (this.providerController) this.providerController.onStatePush(id);
     }
 
     /**

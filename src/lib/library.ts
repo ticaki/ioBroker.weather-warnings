@@ -235,6 +235,15 @@ export class Library extends BaseClass {
         }
         return true;
     }
+    getStates(str: string): { [key: string]: LibraryStateVal } {
+        const result: { [key: string]: LibraryStateVal } = {};
+        for (const dp in this.stateDataBase) {
+            if (dp.search(new RegExp(str, 'g')) != -1) {
+                result[dp] = this.stateDataBase[dp];
+            }
+        }
+        return result;
+    }
 
     async cleanUpTree(hold: string[], deep: number): Promise<void> {
         const del = [];

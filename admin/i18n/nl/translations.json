@@ -388,5 +388,10 @@
     "genericWarntypState.end": "Eindtijd",
     "genericWarntypState.headline": "Kop",
     "genericWarntypState.type": "Waarschuwingstype",
-    "genericWarntypState.active": "Waarschuwing is actief."
+    "genericWarntypState.active": "Waarschuwing is actief.",
+    "manualAll": "Selecteer de sjabloon die moet worden gebruikt voor waarschuwingen voor handmatig geactiveerde meldingen.",
+    "ManualTypeFilter": "De volgende waarschuwingstypen worden uit handmatig geactiveerde meldingen gefilterd.",
+    "ManualLevelFilter": "Waarschuwingen met lagere niveaus worden uit handmatig geactiveerde meldingen gefilterd.",
+    "header_auto": "Opties voor automatische meldingen.",
+    "header_manual": "Opties voor handmatige meldingen."
 }

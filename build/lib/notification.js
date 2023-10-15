@@ -79,31 +79,34 @@ class NotificationClass extends library.BaseClass {
         break;
     }
   }
-  async sendMessage(providers, allowActions, override = false) {
+  async sendMessage(providers, allowActions, manual = false) {
     let activeWarnings = 0;
+    const filter = manual && this.options.filter.manual ? this.options.filter.manual : this.options.filter.auto;
+    const actions = this.options.actions;
     const result = [];
+    const notifications = this.config.notifications;
     for (const a in providers) {
       if (this.options.service.indexOf(providers[a].service) == -1)
         continue;
       for (const b in providers[a].messages) {
         const message = providers[a].messages[b];
-        if (message && (this.options.filter.level === void 0 || this.options.filter.level <= message.level) && this.options.filter.type.indexOf(String(message.genericType)) == -1) {
+        if (message && (filter.level === void 0 || filter.level <= message.level) && filter.type.indexOf(String(message.genericType)) == -1) {
           if (message.notDeleted)
             activeWarnings++;
-          for (const c in this.options.actions) {
+          for (const c in actions) {
             const action = c;
-            if (this.options.actions[action] == "none" || this.options.actions[action] == "" || action == void 0)
+            if (actions[action] == "none" || actions[action] == "" || action == void 0)
               continue;
             if (!allowActions.includes(action))
               continue;
-            if (!this.config.notifications.includes(action))
+            if (!notifications.includes(action))
               continue;
             const msg = await this.getMessage(
               message,
-              this.config.notifications,
-              this.options.actions[action],
+              notifications,
+              actions[action],
               action,
-              override
+              manual
             );
             if (msg.text != "") {
               msg.action = action;
@@ -119,7 +122,7 @@ class NotificationClass extends library.BaseClass {
       await this.sendNotifications(result);
       this.removeAllSend = false;
     } else {
-      if (this.config.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && (override || !this.removeAllSend && activeWarnings == 0)) {
+      if (this.config.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && (manual || !this.removeAllSend && activeWarnings == 0)) {
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex((a) => a.templateKey == this.options.actions["removeAll"]);
         if (tempid != -1) {
@@ -136,8 +139,13 @@ class NotificationClass extends library.BaseClass {
       }
     }
   }
-  async getMessage(message, templateType, templateKey, action, override = false) {
-    return await message.getMessage(templateType, templateKey, action, override);
+  canManual() {
+    if (this.config.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1)
+      return true;
+    return false;
+  }
+  async getMessage(message, templateType, templateKey, action, manual = false) {
+    return await message.getMessage(templateType, templateKey, action, manual);
   }
   async sendNotifications(messages) {
     if (!Array.isArray(messages) || messages.length == 0) {

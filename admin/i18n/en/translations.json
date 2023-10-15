@@ -388,5 +388,10 @@
     "genericWarntypState.end": "Endtime",
     "genericWarntypState.headline": "Headline",
     "genericWarntypState.type": "Warntype",
-    "genericWarntypState.active": "Warning is active."
+    "genericWarntypState.active": "Warning is active.",
+    "manualAll": "Select the template to be used for warnings for manually triggered notifications.",
+    "ManualTypeFilter": "The following warning types are filtered out of manually triggered notifications.",
+    "ManualLevelFilter": "Warnings with lower levels are filtered out of manually triggered notifications.",
+    "header_auto": "Options for automatic notifications.",
+    "header_manual": "Options for manually notifications."
 }

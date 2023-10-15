@@ -388,5 +388,10 @@
     "genericWarntypState.end": "时间结束",
     "genericWarntypState.headline": "标题",
     "genericWarntypState.type": "警告类型",
-    "genericWarntypState.active": "警告已激活。"
+    "genericWarntypState.active": "警告已激活。",
+    "manualAll": "选择用于手动触发通知的警告的模板。",
+    "ManualTypeFilter": "以下警告类型将从手动触发的通知中过滤掉。",
+    "ManualLevelFilter": "较低级别的警告将从手动触发的通知中过滤掉。",
+    "header_auto": "自动通知的选项。",
+    "header_manual": "手动通知的选项。"
 }

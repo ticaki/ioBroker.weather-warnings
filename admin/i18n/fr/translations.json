@@ -388,5 +388,10 @@
     "genericWarntypState.end": "Heure de fin",
     "genericWarntypState.headline": "Gros titre",
     "genericWarntypState.type": "Type d'avertissement",
-    "genericWarntypState.active": "L'avertissement est actif."
+    "genericWarntypState.active": "L'avertissement est actif.",
+    "manualAll": "Sélectionnez le modèle à utiliser pour les avertissements pour les notifications déclenchées manuellement.",
+    "ManualTypeFilter": "Les types d'avertissement suivants sont filtrés des notifications déclenchées manuellement.",
+    "ManualLevelFilter": "Les avertissements de niveaux inférieurs sont filtrés des notifications déclenchées manuellement.",
+    "header_auto": "Options de notifications automatiques.",
+    "header_manual": "Options pour les notifications manuelles."
 }
