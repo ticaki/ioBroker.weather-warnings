@@ -501,43 +501,29 @@ export class MessagesClass extends BaseClass {
         return true;
     }
 
-    async getMessage(
-        templateActions: NotificationType.ActionsUnionType[],
-        templateKey: string,
-        action: NotificationType.ActionsUnionType,
-        override: boolean = false,
-    ): Promise<NotificationType.MessageType> {
+    async getMessage(templateKey: string): Promise<NotificationType.MessageType> {
         let msg: string = '';
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex((a) => a.templateKey == templateKey);
-        if (override) action = 'new';
-        if (
-            override || // get every message
-            (action == 'new' && this.newMessage) || // new message
-            (action == 'remove' && !this.notDeleted) || // remove message
-            (action == 'all' &&
-                templateActions.includes('all') &&
-                !templateActions.includes('new') &&
-                !templateActions.includes('remove')) // all without extension
-        ) {
-            // all messages with new/remove
-            if (this.cache.ts < Date.now() - 60000) {
-                this.updateFormated();
-            }
-            if (this.cache.messages[templateKey as string] !== undefined)
-                return this.cache.messages[templateKey as string];
+        //if (override) action = 'new';
 
-            if (this.formatedData) {
-                msg = await this.getTemplates(tempid);
-                if (tempid == -1) {
-                    this.log.error(`No template for Key: ${templateKey}!`);
-                } else {
-                    this.cache.messages[templates[tempid].templateKey as keyof typeof this.cache.messages] =
-                        this.returnMessage(msg, this.starttime, templateKey);
-                }
-                return this.returnMessage(msg, this.starttime, templateKey);
-            }
+        // all messages with new/remove
+        if (this.cache.ts < Date.now() - 60000) {
+            this.updateFormated();
         }
+        if (this.cache.messages[templateKey as string] !== undefined) return this.cache.messages[templateKey as string];
+
+        if (this.formatedData) {
+            msg = await this.getTemplates(tempid);
+            if (tempid == -1) {
+                this.log.error(`No template for Key: ${templateKey}!`);
+            } else {
+                this.cache.messages[templates[tempid].templateKey as keyof typeof this.cache.messages] =
+                    this.returnMessage(msg, this.starttime, templateKey);
+            }
+            return this.returnMessage(msg, this.starttime, templateKey);
+        }
+
         return this.returnMessage(msg, this.starttime, templateKey);
     }
 

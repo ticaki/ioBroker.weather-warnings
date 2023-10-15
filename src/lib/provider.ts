@@ -692,7 +692,7 @@ export class ProviderController extends BaseClass {
                 '.command';
             const states = this.library.getStates(`${channel}.*`.replace('.', '\\.'));
             for (const n of this.notificationServices) {
-                if (n.config.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1) continue;
+                if (n.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1) continue;
                 if (!(p instanceof BaseProvider) || n.options.service.indexOf(p.service) != -1) {
                     await this.library.writedp(
                         channel,

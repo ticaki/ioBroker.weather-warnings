@@ -486,7 +486,7 @@ class WeatherWarnings extends utils.Adapter {
                                     });
                                 }
                             }
-                            this.log.debug(obj.command + ': ' + JSON.stringify(reply));
+                            //this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                             this.sendTo(obj.from, obj.command, reply, obj.callback);
                         } else {
                             this.sendTo(obj.from, obj.command, [], obj.callback);
@@ -527,7 +527,7 @@ class WeatherWarnings extends utils.Adapter {
                                     value: `${obj.message.service}.${t}`,
                                 });
                             }
-                            this.log.debug(obj.command + ': ' + JSON.stringify(reply));
+                            //this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                             this.sendTo(obj.from, obj.command, reply, obj.callback);
                         }
                     }
@@ -563,7 +563,7 @@ class WeatherWarnings extends utils.Adapter {
                                 value: Number(a),
                             });
                         }
-                        this.log.debug(obj.command + ': ' + JSON.stringify(reply));
+                        //this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                         this.sendTo(obj.from, obj.command, reply, obj.callback);
                     }
                     break;
@@ -598,7 +598,7 @@ class WeatherWarnings extends utils.Adapter {
                                 });
                             }
                         }
-                        this.log.debug(obj.command + ': ' + JSON.stringify(reply));
+                        //this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                         this.sendTo(obj.from, obj.command, reply, obj.callback);
                     }
                     break;

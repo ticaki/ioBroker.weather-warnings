@@ -501,27 +501,23 @@ class MessagesClass extends import_library.BaseClass {
       return false;
     return true;
   }
-  async getMessage(templateActions, templateKey, action, override = false) {
+  async getMessage(templateKey) {
     let msg = "";
     const templates = this.adapter.config.templateTable;
     const tempid = templates.findIndex((a) => a.templateKey == templateKey);
-    if (override)
-      action = "new";
-    if (override || action == "new" && this.newMessage || action == "remove" && !this.notDeleted || action == "all" && templateActions.includes("all") && !templateActions.includes("new") && !templateActions.includes("remove")) {
-      if (this.cache.ts < Date.now() - 6e4) {
-        this.updateFormated();
+    if (this.cache.ts < Date.now() - 6e4) {
+      this.updateFormated();
+    }
+    if (this.cache.messages[templateKey] !== void 0)
+      return this.cache.messages[templateKey];
+    if (this.formatedData) {
+      msg = await this.getTemplates(tempid);
+      if (tempid == -1) {
+        this.log.error(`No template for Key: ${templateKey}!`);
+      } else {
+        this.cache.messages[templates[tempid].templateKey] = this.returnMessage(msg, this.starttime, templateKey);
       }
-      if (this.cache.messages[templateKey] !== void 0)
-        return this.cache.messages[templateKey];
-      if (this.formatedData) {
-        msg = await this.getTemplates(tempid);
-        if (tempid == -1) {
-          this.log.error(`No template for Key: ${templateKey}!`);
-        } else {
-          this.cache.messages[templates[tempid].templateKey] = this.returnMessage(msg, this.starttime, templateKey);
-        }
-        return this.returnMessage(msg, this.starttime, templateKey);
-      }
+      return this.returnMessage(msg, this.starttime, templateKey);
     }
     return this.returnMessage(msg, this.starttime, templateKey);
   }

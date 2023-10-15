@@ -3,12 +3,10 @@ import { genericStateObjects } from './def/definitionen';
 import * as NotificationType from './def/notificationService-def';
 import * as library from './library';
 import * as Provider from './def/provider-def';
-import { MessagesClass } from './messages';
 
 export class NotificationClass extends library.BaseClass {
     options: NotificationType.BaseType;
     takeThemAll = false;
-    config: NotificationType.ConfigType;
     providerDB: any;
     removeAllSend: boolean = true;
 
@@ -18,7 +16,7 @@ export class NotificationClass extends library.BaseClass {
         super(adapter, notifcationOptions.name);
         this.log.debug(`Create notification service ${this.name}`);
         this.options = notifcationOptions;
-        this.config = NotificationType.serciceCapabilities[notifcationOptions.name];
+        this.options = Object.assign(this.options, NotificationType.serciceCapabilities[notifcationOptions.name]);
     }
 
     /**
@@ -78,7 +76,7 @@ export class NotificationClass extends library.BaseClass {
         const filter = manual && this.options.filter.manual ? this.options.filter.manual : this.options.filter.auto;
         const actions = this.options.actions;
         let result: NotificationType.MessageType[] = [];
-        const notifications = this.config.notifications;
+        const notifications = this.options.notifications;
         for (const a in providers) {
             if (this.options.service.indexOf(providers[a].service) == -1) continue;
             //const resultProvider: NotificationType.MessageType[] = [];
@@ -92,24 +90,32 @@ export class NotificationClass extends library.BaseClass {
                     if (message.notDeleted) activeWarnings++;
                     for (const c in actions) {
                         const action: keyof NotificationType.ActionsType = c as keyof NotificationType.ActionsType;
-                        if (actions[action] == 'none' || actions[action] == '' || action == undefined) continue;
+                        if (manual && NotificationType.manual.indexOf(action) == -1) continue;
+                        if (action == undefined || actions[action] == 'none' || actions[action] == '') continue;
 
                         if (!allowActions.includes(action)) continue;
 
                         if (!notifications.includes(action)) continue;
 
-                        const msg = await this.getMessage(
-                            message,
-                            notifications,
-                            actions[action as keyof typeof this.options.actions]!,
-                            action,
-                            manual,
-                        );
-                        if (msg.text != '') {
-                            msg.action = action;
-                            msg.provider = providers[a];
-                            msg.message = message;
-                            result.push(msg); // hier sammele die Nachrichten
+                        const cAction = actions[action as keyof typeof this.options.actions];
+                        if (!cAction) continue;
+                        if (
+                            manual || // get every message
+                            (cAction == 'new' && message.newMessage) || // new message
+                            (cAction == 'remove' && !message.notDeleted) || // remove message
+                            cAction == 'manualAll' ||
+                            (cAction == 'all' &&
+                                notifications.includes('all') &&
+                                !notifications.includes('new') &&
+                                !notifications.includes('remove')) // all without extension
+                        ) {
+                            const msg = await message.getMessage(cAction);
+                            if (msg.text != '') {
+                                msg.action = action;
+                                msg.provider = providers[a];
+                                msg.message = message;
+                                result.push(msg); // hier sammele die Nachrichten
+                            }
                         }
                     }
                 }
@@ -125,7 +131,7 @@ export class NotificationClass extends library.BaseClass {
             // no active Warnings every where, notification filter dont care.
 
             if (
-                this.config.notifications.includes('removeAll') &&
+                this.options.notifications.includes('removeAll') &&
                 this.options.actions['removeAll'] != 'none' &&
                 (manual || (!this.removeAllSend && activeWarnings == 0))
             ) {
@@ -147,18 +153,8 @@ export class NotificationClass extends library.BaseClass {
     }
 
     canManual(): boolean {
-        if (this.config.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1) return true;
+        if (this.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1) return true;
         return false;
-    }
-
-    async getMessage(
-        message: MessagesClass,
-        templateType: NotificationType.ActionsUnionType[],
-        templateKey: string,
-        action: NotificationType.ActionsUnionType,
-        manual: boolean = false,
-    ): Promise<NotificationType.MessageType> {
-        return await message.getMessage(templateType, templateKey, action, manual);
     }
 
     async sendNotifications(messages: NotificationType.MessageType[]): Promise<boolean> {

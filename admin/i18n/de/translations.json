@@ -217,7 +217,7 @@
     "template.NewJson": "{ „action“: „${status}“, „start“: „${starttime}“, „ende“: „${endtime}“, type: „${warntypename}“ \\}",
     "template.RemoveJson": "{ „headline“: „${Headline}“, „status“: „${status}“\\}",
     "template.RemoveAllJson": "{ \"status\": \"Entwarnung!\"\\}",
-    "template.NewMessageWithArray": "Luke, wir haben eine neue Warnung ${Warntypename} ab ${starttime} erhalten, sieht aus wie ein ${_customArray}",
+    "template.NewMessageWithArray": "Luke, wir haben eine neue Warnung ${Warntypename} ab ${starttime} erhalten, sieht aus wie ein ${_CustomArray}",
     "template._CustomArray": "${[Keks,Sturmtrooper,Tie-Jäger,Imperialer Kreuzer,Todesstern]warnlevelnumber}",
     "restoreDefault": "Vorlagen wiederherstellen",
     "restoreDefaultToolTip": "Stellen Sie die Standardvorlagen in der aktuellen Sprache wieder her!",

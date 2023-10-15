@@ -35,6 +35,7 @@ export type BaseType = {
     name: Type;
     actions: ActionsType;
     useadapter: boolean;
+    notifications: ActionsUnionType[];
 };
 
 export type ActionsUnionType = keyof ActionsType;

@@ -33,14 +33,13 @@ var library = __toESM(require("./library"));
 class NotificationClass extends library.BaseClass {
   options;
   takeThemAll = false;
-  config;
   providerDB;
   removeAllSend = true;
   constructor(adapter, notifcationOptions) {
     super(adapter, notifcationOptions.name);
     this.log.debug(`Create notification service ${this.name}`);
     this.options = notifcationOptions;
-    this.config = NotificationType.serciceCapabilities[notifcationOptions.name];
+    this.options = Object.assign(this.options, NotificationType.serciceCapabilities[notifcationOptions.name]);
   }
   async init() {
     switch (this.name) {
@@ -84,7 +83,7 @@ class NotificationClass extends library.BaseClass {
     const filter = manual && this.options.filter.manual ? this.options.filter.manual : this.options.filter.auto;
     const actions = this.options.actions;
     let result = [];
-    const notifications = this.config.notifications;
+    const notifications = this.options.notifications;
     for (const a in providers) {
       if (this.options.service.indexOf(providers[a].service) == -1)
         continue;
@@ -95,24 +94,25 @@ class NotificationClass extends library.BaseClass {
             activeWarnings++;
           for (const c in actions) {
             const action = c;
-            if (actions[action] == "none" || actions[action] == "" || action == void 0)
+            if (manual && NotificationType.manual.indexOf(action) == -1)
+              continue;
+            if (action == void 0 || actions[action] == "none" || actions[action] == "")
               continue;
             if (!allowActions.includes(action))
               continue;
             if (!notifications.includes(action))
               continue;
-            const msg = await this.getMessage(
-              message,
-              notifications,
-              actions[action],
-              action,
-              manual
-            );
-            if (msg.text != "") {
-              msg.action = action;
-              msg.provider = providers[a];
-              msg.message = message;
-              result.push(msg);
+            const cAction = actions[action];
+            if (!cAction)
+              continue;
+            if (manual || cAction == "new" && message.newMessage || cAction == "remove" && !message.notDeleted || cAction == "manualAll" || cAction == "all" && notifications.includes("all") && !notifications.includes("new") && !notifications.includes("remove")) {
+              const msg = await message.getMessage(cAction);
+              if (msg.text != "") {
+                msg.action = action;
+                msg.provider = providers[a];
+                msg.message = message;
+                result.push(msg);
+              }
             }
           }
         }
@@ -125,7 +125,7 @@ class NotificationClass extends library.BaseClass {
       await this.sendNotifications(result);
       this.removeAllSend = false;
     } else {
-      if (this.config.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && (manual || !this.removeAllSend && activeWarnings == 0)) {
+      if (this.options.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && (manual || !this.removeAllSend && activeWarnings == 0)) {
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex((a) => a.templateKey == this.options.actions["removeAll"]);
         if (tempid != -1) {
@@ -143,12 +143,9 @@ class NotificationClass extends library.BaseClass {
     }
   }
   canManual() {
-    if (this.config.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1)
+    if (this.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1)
       return true;
     return false;
-  }
-  async getMessage(message, templateType, templateKey, action, manual = false) {
-    return await message.getMessage(templateType, templateKey, action, manual);
   }
   async sendNotifications(messages) {
     if (!Array.isArray(messages) || messages.length == 0) {
