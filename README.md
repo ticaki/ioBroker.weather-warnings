@@ -94,7 +94,9 @@ Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht meh
 
 
 ## Icons
-https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
+Creator: ![Adri Ansyah](https://www.youtube.com/channel/UChLOv1L-ftAFc2ZizdEAKgw?view_as=subscriber)
+Licence: ![CC BY 4.0 LEGAL CODE](https://creativecommons.org/licenses/by/4.0/legalcode)
+Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 
 ## Changelog
 <!--
