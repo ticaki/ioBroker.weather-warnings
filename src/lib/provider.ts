@@ -670,7 +670,7 @@ export class ProviderController extends BaseClass {
 
     async onStatePush(id: string): Promise<void> {
         id = id.replace(`${this.adapter.namespace}.`, '');
-        const cmd = id.split('.').pop();
+        const cmd = id.split('.').pop() as NotificationType.Type;
         const service = id.split('.').slice(0, -2).join('.');
         let index = -1;
         let providers = [];
@@ -683,6 +683,7 @@ export class ProviderController extends BaseClass {
             if (cmd == push.name && push.canManual())
                 await push.sendMessage(providers, [...NotificationType.manual, 'removeAll'], true);
         }
+        await this.library.writedp(id, false, definitionen.statesObjectsWarnings.allService.command[cmd]);
     }
 
     async updateCommandStates(): Promise<void> {

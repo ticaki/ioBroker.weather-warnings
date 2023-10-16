@@ -636,6 +636,7 @@ class ProviderController extends import_library.BaseClass {
       if (cmd == push.name && push.canManual())
         await push.sendMessage(providers, [...NotificationType.manual, "removeAll"], true);
     }
+    await this.library.writedp(id, false, definitionen.statesObjectsWarnings.allService.command[cmd]);
   }
   async updateCommandStates() {
     for (const p of [...this.providers, this]) {

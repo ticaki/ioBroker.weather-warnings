@@ -196,7 +196,7 @@ class Library extends BaseClass {
       return;
     if (node)
       this.setdb(dp, node.type, val, node.stateTyp, true);
-    if (node && node.val != val) {
+    if (node && (node.val != val || !node.ack)) {
       const typ = obj && obj.common && obj.common.type || node.stateTyp;
       if (typ && typ != typeof val && val !== void 0)
         val = this.convertToType(val, typ);
@@ -279,7 +279,7 @@ class Library extends BaseClass {
   setdb(dp, type, val, stateType, ack = true, ts = Date.now()) {
     this.stateDataBase[dp] = {
       type,
-      stateTyp: stateType,
+      stateTyp: stateType !== void 0 ? stateType : this.stateDataBase[dp] !== void 0 && this.stateDataBase[dp].stateTyp !== void 0 ? this.stateDataBase[dp].stateTyp : void 0,
       val,
       ack,
       ts: ts ? ts : Date.now()

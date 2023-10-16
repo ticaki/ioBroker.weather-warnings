@@ -118,15 +118,20 @@ class WeatherWarnings extends utils.Adapter {
             config.native.templateTable[0] &&
             config.native.templateTable[0].template == 'template.NewMessage'
         ) {
+            this.log.info(`First start after installation detected.`);
             const templateTable = this.library.cloneGenericObject(config.native.templateTable);
             for (const a in config.native.templateTable) {
                 //@ts-expect-error faulheit
                 templateTable[a as keyof typeof this.config.templateTable].template = await this.library.getTranslation(
                     config.native.templateTable[a].template,
                 );
-                this.log.debug(await this.library.getTranslation(config.native.templateTable[a].template));
+                this.log.debug(
+                    `Read default template from i18n: ${await this.library.getTranslation(
+                        config.native.templateTable[a].template,
+                    )}`,
+                );
             }
-            this.log.debug(`Write default templates to config for ${this.namespace}!`);
+            this.log.info(`Write default templates to config for ${this.namespace}!`);
             await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
                 native: { templateTable: templateTable },
             });
@@ -396,7 +401,7 @@ class WeatherWarnings extends utils.Adapter {
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
         if (!state) return;
         if (state.ack) return;
-
+        this.library.setdb(id.replace(`${this.namespace}.`, ''), 'state', state.val, undefined, state.ack, state.ts);
         if (this.providerController) this.providerController.onStatePush(id);
     }
 

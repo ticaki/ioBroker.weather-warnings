@@ -215,7 +215,7 @@ export class Library extends BaseClass {
 
         if (node) this.setdb(dp, node.type, val, node.stateTyp, true);
 
-        if (node && node.val != val) {
+        if (node && (node.val != val || !node.ack)) {
             const typ = (obj && obj.common && obj.common.type) || node.stateTyp;
             if (typ && typ != typeof val && val !== undefined) val = this.convertToType(val, typ);
             if (!del)
@@ -316,7 +316,12 @@ export class Library extends BaseClass {
     ): LibraryStateVal {
         this.stateDataBase[dp] = {
             type: type,
-            stateTyp: stateType,
+            stateTyp:
+                stateType !== undefined
+                    ? stateType
+                    : this.stateDataBase[dp] !== undefined && this.stateDataBase[dp]!.stateTyp !== undefined
+                    ? this.stateDataBase[dp]!.stateTyp
+                    : undefined,
             val: val,
             ack: ack,
             ts: ts ? ts : Date.now(),
