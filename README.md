@@ -101,7 +101,7 @@ https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.3.5 (2023-10-16)
 * (ticaki) added: Data points for manually triggering notifications.
 
 ### 0.3.4 (2023-10-14)
