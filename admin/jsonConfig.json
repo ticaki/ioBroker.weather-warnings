@@ -1510,6 +1510,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "default": "",
                     "label": "alexa2_Audio",
                     "newLine": true
                 },
