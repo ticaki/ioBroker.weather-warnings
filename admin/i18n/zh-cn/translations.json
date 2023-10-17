@@ -423,5 +423,7 @@
     "vibrate": "仅振动",
     "none": "无（无声）",
     "pushover_Device": "设备 ID（以 , 分隔）",
-    "pushover_Priority": "使用警告级别作为通知优先级。"
+    "pushover_Priority": "使用警告级别作为通知优先级。",
+    "alexa2_Audio_url": "打开亚马逊音频库的外部链接。",
+    "alexa2_Audio": "添加音频命令或空白。"
 }

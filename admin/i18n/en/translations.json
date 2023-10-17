@@ -423,6 +423,7 @@
     "vibrate": "Vibrate Only",
     "none": "None (silent)",
     "pushover_Device":"Device ID (separated by ,)",
-    "pushover_Priority":"Use warning level as notification priority. "
-
+    "pushover_Priority":"Use warning level as notification priority.",
+    "alexa2_Audio_url":"Open external link to Amazon Audio Library.",
+    "alexa2_Audio": "Add audio command or blank for nothing."
 }

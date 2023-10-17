@@ -1499,6 +1499,30 @@
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
+                "pushover_extras": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "notification_extras",
+                    "size": 1
+                },
+                "alexa2_Audio": {
+                    "type": "text",
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "alexa2_Audio",
+                    "newLine": true
+                },
+                "alexa2_Audio_url": {
+                    "type": "sendTo",
+                    "openUrl": true,
+                    "command": "alexa_audio",
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "alexa2_Audio_url",
+                    "newLine": false
+                },
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",

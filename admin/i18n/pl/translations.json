@@ -423,5 +423,7 @@
     "vibrate": "Tylko wibracje",
     "none": "Brak (cichy)",
     "pushover_Device": "Identyfikator urządzenia (oddzielone ,)",
-    "pushover_Priority": "Użyj poziomu ostrzeżenia jako priorytetu powiadomienia."
+    "pushover_Priority": "Użyj poziomu ostrzeżenia jako priorytetu powiadomienia.",
+    "alexa2_Audio_url": "Otwórz zewnętrzny link do biblioteki audio Amazon.",
+    "alexa2_Audio": "Dodaj polecenie audio lub puste za darmo."
 }

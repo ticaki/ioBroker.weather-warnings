@@ -424,5 +424,7 @@
     "vibrate": "Nur Vibration",
     "none": "Keine (still)",
     "pushover_Device": "Geräte-ID (getrennt durch ,)",
-    "pushover_Priority": "Verwendet die Warnstufe als Benachrichtigungspriorität."
+    "pushover_Priority": "Verwendet die Warnstufe als Benachrichtigungspriorität.",
+    "alexa2_Audio_url": "Externen Link zur Amazon Audio Library öffnen.",
+    "alexa2_Audio": "Fügen Sie einen Audiobefehl ein.(leer für nichts)"
 }

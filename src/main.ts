@@ -263,6 +263,10 @@ class WeatherWarnings extends utils.Adapter {
                     notificationServiceOpt.email.actions.footer = self.config.email_Footer;
                 }
                 if (self.config.alexa2_Enabled && notificationServiceOpt.alexa2 != undefined) {
+                    notificationServiceOpt.alexa2.volumen =
+                        self.config.alexa2_volumen > 0 ? String(self.config.alexa2_volumen) : '';
+                    notificationServiceOpt.alexa2.audio = self.config.alexa2_Audio;
+
                     if (self.config.alexa2_device_ids.length == 0 || !self.config.alexa2_device_ids[0]) {
                         self.log.error(`Missing devices for alexa - deactivated`);
                         delete notificationServiceOpt.alexa2;
@@ -422,6 +426,20 @@ class WeatherWarnings extends utils.Adapter {
             let connected = true;
             let state;
             switch (String(obj.command)) {
+                case 'alexa_audio':
+                    {
+                        this.sendTo(
+                            obj.from,
+                            obj.command,
+                            {
+                                openUrl:
+                                    'https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html',
+                                window: '_blank',
+                            },
+                            obj.callback,
+                        );
+                    }
+                    break;
                 case 'alexa2_device_ids':
                     {
                         const data: any[] = [];

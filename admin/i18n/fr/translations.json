@@ -423,5 +423,7 @@
     "vibrate": "Vibrer uniquement",
     "none": "Aucun (silencieux)",
     "pushover_Device": "ID de l'appareil (séparé par ,)",
-    "pushover_Priority": "Utilisez le niveau d'avertissement comme priorité de notification."
+    "pushover_Priority": "Utilisez le niveau d'avertissement comme priorité de notification.",
+    "alexa2_Audio_url": "Ouvrez le lien externe vers la bibliothèque audio Amazon.",
+    "alexa2_Audio": "Ajoutez une commande audio ou vide pour rien."
 }

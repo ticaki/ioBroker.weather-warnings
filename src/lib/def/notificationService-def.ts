@@ -55,6 +55,8 @@ export type BaseType =
       } & bBaseType)
     | ({
           name: 'alexa2';
+          volumen: string;
+          audio: string;
       } & bBaseType);
 
 type bBaseType = {

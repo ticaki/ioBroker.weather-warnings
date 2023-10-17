@@ -226,17 +226,18 @@ export class NotificationClass extends library.BaseClass {
 
                     if (devices.length == 0) break;
 
-                    let opt = `${this.adapter.config.alexa2_volumen}`;
+                    const prefix = `${this.options.volumen}` + (this.options.audio ? ';' : '') + this.options.audio;
+                    let opt = '';
                     for (const a in devices) {
                         for (const msg of messages) {
                             if (Array.isArray(msg)) continue;
                             opt += `;${msg.text}`;
                         }
-                        this.log.debug(`Send to alexa2: ${opt}`);
-                        if (opt != `${this.adapter.config.alexa2_volumen}`) {
+                        this.log.debug(`Send to alexa2: ${prefix + opt}`);
+                        if (opt != '') {
                             await this.adapter.setForeignStateAsync(
                                 `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
-                                opt,
+                                prefix + opt,
                             );
                         }
                     }
