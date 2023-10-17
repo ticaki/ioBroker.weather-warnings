@@ -153,6 +153,7 @@ class WeatherWarnings extends utils.Adapter {
             template.remove = template.remove ? template.remove : "none";
             template.removeAll = template.removeAll ? template.removeAll : "none";
             template.all = template.all ? template.all : "none";
+            template.manualAll = template.manualAll ? template.all : "none";
             notificationServiceOpt[notificationService] = {
               ...import_notificationConfig_d.notificationServiceDefaults[notificationService],
               service,
@@ -177,15 +178,21 @@ class WeatherWarnings extends utils.Adapter {
             );
           }
         }
-        if (self.config.telegram_Enabled) {
+        if (self.config.telegram_Enabled && notificationServiceOpt.telegram != void 0) {
+          notificationServiceOpt.telegram.withNoSound = self.config.telegram_withNoSound || false;
+          notificationServiceOpt.telegram.userid = self.config.telegram_UserId || "";
+          notificationServiceOpt.telegram.chatid = self.config.telegram_ChatID || "";
         }
-        if (self.config.whatsapp_Enabled) {
+        if (self.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != void 0) {
         }
-        if (self.config.pushover_Enabled) {
+        if (self.config.pushover_Enabled && notificationServiceOpt.pushover != void 0) {
+          notificationServiceOpt.pushover.sound = self.config.pushover_Sound || "none";
+          notificationServiceOpt.pushover.priority = self.config.pushover_Priority || false;
+          notificationServiceOpt.pushover.device = self.config.pushover_Device || "";
         }
-        if (self.config.json_Enabled) {
+        if (self.config.json_Enabled && notificationServiceOpt.json != void 0) {
         }
-        if (self.config.history_Enabled) {
+        if (self.config.history_Enabled && notificationServiceOpt.history != void 0) {
         }
         if (self.config.email_Enabled && notificationServiceOpt.email != void 0) {
           notificationServiceOpt.email.actions.header = self.config.email_Header;

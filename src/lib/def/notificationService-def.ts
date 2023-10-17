@@ -25,7 +25,39 @@ export type OptionsType = {
         name: 'alexa2';
     } & BaseType;
 };
-export type BaseType = {
+
+export type BaseType =
+    | ({
+          name: 'telegram';
+          userid: string;
+          chatid: string;
+          withNoSound: boolean;
+      } & bBaseType)
+    | ({
+          name: 'pushover';
+          headline: string;
+          sound: string;
+          priority: boolean;
+          device: string;
+      } & bBaseType)
+    | ({
+          name: 'whatsapp';
+          phonenumber: string;
+      } & bBaseType)
+    | ({
+          name: 'json';
+      } & bBaseType)
+    | ({
+          name: 'history';
+      } & bBaseType)
+    | ({
+          name: 'email';
+      } & bBaseType)
+    | ({
+          name: 'alexa2';
+      } & bBaseType);
+
+type bBaseType = {
     service: providerServices[];
     filter: {
         auto: messageFilterType;
@@ -87,4 +119,12 @@ export type MessageType = {
     action?: keyof ActionsType;
     provider?: ProviderClassType;
     message?: MessagesClass;
+};
+
+export type pushover_options = {
+    message: string;
+    title?: string;
+    device?: string;
+    sound?: string;
+    priority?: number;
 };

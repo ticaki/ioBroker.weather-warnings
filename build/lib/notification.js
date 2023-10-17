@@ -54,7 +54,7 @@ class NotificationClass extends library.BaseClass {
           if (this.adapter.providerController) {
             const targets = [...providers, this.adapter.providerController];
             for (const a in targets) {
-              switch (this.name) {
+              switch (this.options.name) {
                 case "history":
                   {
                     dp = `${targets[a].name}.history`;
@@ -152,12 +152,26 @@ class NotificationClass extends library.BaseClass {
       this.log.debug(`no messages`);
       return false;
     }
-    switch (this.name) {
+    switch (this.options.name) {
       case "telegram":
         {
           for (const msg of messages) {
-            const opt = { text: msg.text, disable_notification: true };
-            await this.adapter.sendToAsync(this.options.adapter, "send", opt);
+            const opt = { text: msg.text, disable_notification: this.options.withNoSound };
+            if (this.options.userid.length > 0 || this.options.chatid.length > 0) {
+              if (this.options.userid.length > 0)
+                opt.user = this.options.userid;
+              if (this.options.chatid.length > 0) {
+                const chatids = this.options.chatid.split(",");
+                for (const chatid of chatids)
+                  await this.adapter.sendToAsync(this.options.adapter, "send", {
+                    ...opt,
+                    chatid
+                  });
+              } else {
+                await this.adapter.sendToAsync(this.options.adapter, "send", opt);
+              }
+            } else
+              await this.adapter.sendToAsync(this.options.adapter, "send", opt);
             this.log.debug(`Send the message: ${msg.text}`);
           }
         }
@@ -165,7 +179,14 @@ class NotificationClass extends library.BaseClass {
       case "pushover":
         {
           for (const msg of messages) {
-            const opt = { message: msg.text };
+            const opt = {
+              message: msg.text,
+              sound: this.options.sound || "none"
+            };
+            if (this.options.priority)
+              opt.priority = msg.message ? msg.message.level - 2 : -1;
+            if (this.options.device.length > 0)
+              opt.device = this.options.device;
             await this.adapter.sendToAsync(this.options.adapter, "send", opt);
             this.log.debug(`Send the message: ${msg.text}`);
           }

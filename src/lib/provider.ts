@@ -579,7 +579,7 @@ export class ProviderController extends BaseClass {
         super.delete();
         await this.library.memberDeleteAsync(this.providers);
         await this.library.memberDeleteAsync(this.notificationServices);
-        this.notificationServices.forEach((p) => p.delete());
+        this.providers = [];
         this.notificationServices = [];
         await this.setConnected(false);
         if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);

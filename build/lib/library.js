@@ -208,6 +208,9 @@ class Library extends BaseClass {
         });
     }
   }
+  setForbiddenDirs(dirs) {
+    this.forbiddenDirs = this.forbiddenDirs.concat(dirs);
+  }
   isDirAllowed(dp) {
     if (dp && dp.split(".").length <= 2)
       return true;
@@ -233,8 +236,6 @@ class Library extends BaseClass {
       if (hold.filter((a) => dp.startsWith(a)).length > 0)
         continue;
       this.stateDataBase[dp] = void 0;
-      if (hold.filter((a) => dp.startsWith(a)).length > 0)
-        continue;
       del.push(dp.split(".").slice(0, deep).join("."));
     }
     for (const a in del) {
@@ -252,7 +253,7 @@ class Library extends BaseClass {
     if (value === null)
       return null;
     if (type === void 0) {
-      throw new Error("convertToType type undefifined not allowed!");
+      throw new Error("convertToType type undefined not allowed!");
     }
     if (value === void 0)
       value = "";
@@ -275,6 +276,9 @@ class Library extends BaseClass {
       }
     }
     return newValue;
+  }
+  readdp(dp) {
+    return this.stateDataBase[this.cleandp(dp)];
   }
   setdb(dp, type, val, stateType, ack = true, ts = Date.now()) {
     this.stateDataBase[dp] = {
@@ -303,9 +307,6 @@ class Library extends BaseClass {
       return obj;
     }
     return JSON.parse(JSON.stringify(obj));
-  }
-  readdp(dp) {
-    return this.stateDataBase[this.cleandp(dp)];
   }
   async readWithJsonata(data, cmd) {
     let result;
@@ -444,9 +445,6 @@ class Library extends BaseClass {
       }
     }
     return false;
-  }
-  setForbiddenDirs(dirs) {
-    this.forbiddenDirs = this.forbiddenDirs.concat(dirs);
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

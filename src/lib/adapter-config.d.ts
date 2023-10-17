@@ -53,6 +53,9 @@ declare global {
             telegram_MessageNew: string;
             telegram_MessageRemove: string;
             telegram_MessageAllRemove: string;
+            telegram_withNoSound: boolean;
+            telegram_UserId: string;
+            telegram_ChatID: string;
 
             whatsapp_DwdEnabled: boolean;
             whatsapp_UwzEnabled: boolean;
@@ -75,6 +78,9 @@ declare global {
             pushover_MessageNew: string;
             pushover_MessageRemove: string;
             pushover_MessageAllRemove: string;
+            pushover_Sound: string;
+            pushover_Priority: boolean;
+            pushover_Device: string;
 
             json_DwdEnabled: boolean;
             json_UwzEnabled: boolean;

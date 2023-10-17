@@ -226,6 +226,11 @@ export class Library extends BaseClass {
                 });
         }
     }
+
+    setForbiddenDirs(dirs: any[]): void {
+        this.forbiddenDirs = this.forbiddenDirs.concat(dirs);
+    }
+
     isDirAllowed(dp: string): boolean {
         if (dp && dp.split('.').length <= 2) return true;
         for (const a in this.forbiddenDirs) {
@@ -235,6 +240,7 @@ export class Library extends BaseClass {
         }
         return true;
     }
+
     getStates(str: string): { [key: string]: LibraryStateVal } {
         const result: { [key: string]: LibraryStateVal } = {};
         for (const dp in this.stateDataBase) {
@@ -250,13 +256,13 @@ export class Library extends BaseClass {
         for (const dp in this.stateDataBase) {
             if (hold.filter((a) => dp.startsWith(a)).length > 0) continue;
             this.stateDataBase[dp] = undefined;
-            if (hold.filter((a) => dp.startsWith(a)).length > 0) continue;
             del.push(dp.split('.').slice(0, deep).join('.'));
         }
         for (const a in del) {
             await this.adapter.delObjectAsync(del[a], { recursive: true });
         }
     }
+
     /**
      * Remove forbidden chars from datapoint string.
      * @param string Datapoint string to clean
@@ -271,6 +277,7 @@ export class Library extends BaseClass {
         string = string.replace(/[^0-9A-Za-z\._-]/gu, '_');
         return lowerCase ? string.toLowerCase() : string;
     }
+
     /* Convert a value to the given type
      * @param {string|boolean|number} value 	then value to convert
      * @param {string}   type  					the target type
@@ -279,7 +286,7 @@ export class Library extends BaseClass {
     convertToType(value: ioBroker.StateValue | Array<any> | JSON, type: string): ioBroker.StateValue {
         if (value === null) return null;
         if (type === undefined) {
-            throw new Error('convertToType type undefifined not allowed!');
+            throw new Error('convertToType type undefined not allowed!');
         }
         if (value === undefined) value = '';
 
@@ -306,6 +313,11 @@ export class Library extends BaseClass {
         // get a warning message when we try to convert a object/array.
         return newValue;
     }
+
+    readdp(dp: string): LibraryStateVal {
+        return this.stateDataBase[this.cleandp(dp)];
+    }
+
     setdb(
         dp: string,
         type: ioBroker.ObjectType,
@@ -347,10 +359,6 @@ export class Library extends BaseClass {
             return obj;
         }
         return JSON.parse(JSON.stringify(obj));
-    }
-
-    readdp(dp: string): LibraryStateVal {
-        return this.stateDataBase[this.cleandp(dp)];
     }
 
     async readWithJsonata(
@@ -498,9 +506,5 @@ export class Library extends BaseClass {
             }
         }
         return false;
-    }
-
-    setForbiddenDirs(dirs: any[]): void {
-        this.forbiddenDirs = this.forbiddenDirs.concat(dirs);
     }
 }

@@ -35,7 +35,7 @@ export class NotificationClass extends library.BaseClass {
                     if (this.adapter.providerController) {
                         const targets = [...providers, this.adapter.providerController];
                         for (const a in targets) {
-                            switch (this.name as NotificationType.Type) {
+                            switch (this.options.name as NotificationType.Type) {
                                 case 'history':
                                     {
                                         dp = `${targets[a].name}.history`;
@@ -163,7 +163,7 @@ export class NotificationClass extends library.BaseClass {
             return false;
         }
 
-        switch (this.name as NotificationType.Type) {
+        switch (this.options.name) {
             case 'telegram':
                 {
                     /*this.log.debug(
@@ -174,9 +174,20 @@ export class NotificationClass extends library.BaseClass {
                         ),
                     );*/
                     for (const msg of messages) {
-                        const opt = { text: msg.text, disable_notification: true };
-
-                        await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
+                        const opt: any = { text: msg.text, disable_notification: this.options.withNoSound };
+                        if (this.options.userid.length > 0 || this.options.chatid.length > 0) {
+                            if (this.options.userid.length > 0) opt.user = this.options.userid;
+                            if (this.options.chatid.length > 0) {
+                                const chatids = this.options.chatid.split(',');
+                                for (const chatid of chatids)
+                                    await this.adapter.sendToAsync(this.options.adapter, 'send', {
+                                        ...opt,
+                                        chatid: chatid,
+                                    });
+                            } else {
+                                await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
+                            }
+                        } else await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
                         this.log.debug(`Send the message: ${msg.text}`);
                     }
                 }
@@ -184,8 +195,13 @@ export class NotificationClass extends library.BaseClass {
             case 'pushover':
                 {
                     for (const msg of messages) {
-                        const opt = { message: msg.text };
-                        //newMsg.title = topic;newMsg.device sound = `none`
+                        const opt: NotificationType.pushover_options = {
+                            message: msg.text,
+                            sound: this.options.sound || 'none',
+                        };
+                        //newMsg.title = topic
+                        if (this.options.priority) opt.priority = msg.message ? msg.message.level - 2 : -1;
+                        if (this.options.device.length > 0) opt.device = this.options.device;
                         await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
                         this.log.debug(`Send the message: ${msg.text}`);
                     }

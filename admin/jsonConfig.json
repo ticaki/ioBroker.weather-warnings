@@ -823,6 +823,42 @@
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
+                "telegram_extras": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "notification_extras",
+                    "size": 1
+                },
+                "telegram_UserId": {
+                    "type": "text",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "default": "",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "label": "telegram_UserId",
+                    "newLine": true
+                },
+                "telegram_withNoSound": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "default": true,
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "label": "telegram_withNoSound",
+                    "newLine": false
+                },
+                "telegram_ChatId": {
+                    "type": "text",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "default": "",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "label": "telegram_ChatId",
+                    "newLine": true
+                },
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",
@@ -1191,6 +1227,69 @@
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
+                "pushover_extras": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "notification_extras",
+                    "size": 1
+                },
+                "pushover_Sound": {
+                    "type": "select",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "multiple": false,
+                    "manual": true,
+                    "default": "none",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "label": "pushover_Sound",
+                    "newLine": true,
+                    "options": [
+                        {"label": "default", "value": "pushover"},
+                        {"label": "bike", "value": "bike"},
+                        {"label": "bugle", "value": "bugle"},
+                        {"label": "cashregister", "value": "cashregister"},
+                        {"label": "classical", "value": "classical"},
+                        {"label": "cosmic", "value": "cosmic"},
+                        {"label": "falling", "value": "falling"},
+                        {"label": "gamelan", "value": "gamelan"},
+                        {"label": "incoming", "value": "incoming"},
+                        {"label": "intermission", "value": "intermission"},
+                        {"label": "magic", "value": "magic"},
+                        {"label": "mechanical", "value": "mechanical"},
+                        {"label": "pianobar", "value": "pianobar"},
+                        {"label": "siren", "value": "siren"},
+                        {"label": "spacealarm", "value": "spacealarm"},
+                        {"label": "tugboat", "value": "tugboat"},
+                        {"label": "alien", "value": "alien"},
+                        {"label": "climb", "value": "climb"},
+                        {"label": "persistent", "value": "persistent"},
+                        {"label": "echo", "value": "echo"},
+                        {"label": "updown", "value": "updown"},
+                        {"label": "vibrate", "value": "vibrate"},
+                        {"label": "none", "value": "none"}
+                        ]
+                },
+                "pushover_Priority": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "default": false,
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "label": "pushover_Priority",
+                    "newLine": false
+                },
+                "pushover_Device": {
+                    "type": "text",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "default": "",
+                    "disabled": "data.pushover_Adapter == 'none'",
+                    "label": "pushover_Device",
+                    "newLine": true
+                },    
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",
