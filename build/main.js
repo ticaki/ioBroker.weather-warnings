@@ -103,45 +103,43 @@ class WeatherWarnings extends utils.Adapter {
       this.log.error(`catch(1): init error while reading states! ${error}`);
     }
     const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
-    {
-      let sounds = config ? config.native.alexa2_sounds : [];
-      if (!sounds || !Array.isArray(sounds))
-        sounds = [];
-      for (const w in messagesDef.genericWarntyp) {
-        const index2 = sounds.findIndex(
-          (a) => a.warntypenumber == Number(w)
-        );
-        if (index2 != -1) {
-          sounds[index2].warntype = await this.library.getTranslation(
-            messagesDef.genericWarntyp[Number(w)].name
-          );
-        } else {
-          sounds.push({
-            warntypenumber: Number(w),
-            warntype: await this.library.getTranslation(
-              messagesDef.genericWarntyp[Number(w)].name
-            ),
-            sound: ""
-          });
-        }
-      }
-      const index = sounds.findIndex(
-        (a) => a.warntypenumber == Number(0)
+    let sounds = this.config.alexa2_sounds || [];
+    if (!sounds || !Array.isArray(sounds))
+      sounds = [];
+    for (const w in messagesDef.genericWarntyp) {
+      const index2 = sounds.findIndex(
+        (a) => a.warntypenumber == Number(w)
       );
-      if (index == -1) {
+      if (index2 != -1) {
+        sounds[index2].warntype = await this.library.getTranslation(
+          messagesDef.genericWarntyp[Number(w)].name
+        );
+      } else {
         sounds.push({
-          warntypenumber: Number(0),
-          warntype: await this.library.getTranslation("template.RemoveAllMessage"),
+          warntypenumber: Number(w),
+          warntype: await this.library.getTranslation(
+            messagesDef.genericWarntyp[Number(w)].name
+          ),
           sound: ""
         });
-      } else {
-        sounds[index].warntype = await this.library.getTranslation("template.RemoveAllMessage");
       }
-      this.config.alexa2_sounds = sounds;
-      await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-        native: { alexa2_sounds: sounds }
-      });
     }
+    const index = sounds.findIndex(
+      (a) => a.warntypenumber == Number(0)
+    );
+    if (index == -1) {
+      sounds.push({
+        warntypenumber: Number(0),
+        warntype: await this.library.getTranslation("template.RemoveAllMessage"),
+        sound: ""
+      });
+    } else {
+      sounds[index].warntype = await this.library.getTranslation("template.RemoveAllMessage");
+    }
+    this.config.alexa2_sounds = sounds;
+    await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+      native: { alexa2_sounds: sounds }
+    });
     if (config && config.native && config.native.templateTable[0] && config.native.templateTable[0].template == "template.NewMessage") {
       this.log.info(`First start after installation detected.`);
       const templateTable = this.library.cloneGenericObject(config.native.templateTable);
