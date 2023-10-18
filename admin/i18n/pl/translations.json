@@ -426,5 +426,11 @@
     "pushover_Priority": "Użyj poziomu ostrzeżenia jako priorytetu powiadomienia.",
     "alexa2_Audio_url": "Otwórz zewnętrzny link do biblioteki audio Amazon.",
     "alexa2_Audio": "Dodaj polecenie audio lub puste za darmo.",
-    "statesObjectsWarnings.allService.command": "Uruchom powiadomienia ręczne."
+    "statesObjectsWarnings.allService.command": "Uruchom powiadomienia ręczne.",
+    "imExpert": "Ekspert",
+    "alexa2_sounds_enabled": "Skorzystaj z tabeli dźwiękowej",
+    "alexa2_sounds": "Dźwięki dla typów ostrzeżeń",
+    "warntype": "Typ ostrzeżenia",
+    "sound": "Dźwięk",
+    "useTestCase": "Interwał skrócony, dane testowe na przemian aktywowane i dezaktywowane."
 }

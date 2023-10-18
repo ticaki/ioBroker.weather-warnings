@@ -426,5 +426,11 @@
     "pushover_Priority": "Utilice el nivel de advertencia como prioridad de notificación.",
     "alexa2_Audio_url": "Abra el enlace externo a la biblioteca de audio de Amazon.",
     "alexa2_Audio": "Agregue un comando de audio o déjelo en blanco para nada.",
-    "statesObjectsWarnings.allService.command": "Activar notificaciones manuales."
+    "statesObjectsWarnings.allService.command": "Activar notificaciones manuales.",
+    "imExpert": "Experto",
+    "alexa2_sounds_enabled": "Usar mesa de sonido",
+    "alexa2_sounds": "Sonidos para tipos de advertencia",
+    "warntype": "Tipo de advertencia",
+    "sound": "Sonido",
+    "useTestCase": "Intervalo reducido, datos de prueba activados y desactivados alternativamente."
 }

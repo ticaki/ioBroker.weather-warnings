@@ -426,5 +426,11 @@
     "pushover_Device":"Device ID (separated by ,)",
     "pushover_Priority":"Use warning level as notification priority.",
     "alexa2_Audio_url":"Open external link to Amazon Audio Library.",
-    "alexa2_Audio": "Add audio command or blank for nothing."
+    "alexa2_Audio": "Add audio command or blank for nothing.",
+    "imExpert": "Expert",
+    "alexa2_sounds_enabled": "Use sound table",
+    "alexa2_sounds": "Sounds for warntypes",
+    "warntype": "Warntype",
+    "sound": "Sound",
+    "useTestCase": "Interval reduced, test data alternately activated and deactivated."
 }

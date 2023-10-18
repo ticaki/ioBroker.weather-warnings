@@ -426,5 +426,11 @@
     "pushover_Priority": "Utilizza il livello di avviso come priorità di notifica.",
     "alexa2_Audio_url": "Apri un collegamento esterno alla libreria audio di Amazon.",
     "alexa2_Audio": "Aggiungi un comando audio o uno spazio vuoto per niente.",
-    "statesObjectsWarnings.allService.command": "Attiva notifiche manuali."
+    "statesObjectsWarnings.allService.command": "Attiva notifiche manuali.",
+    "imExpert": "Esperto",
+    "alexa2_sounds_enabled": "Usa la tavola sonora",
+    "alexa2_sounds": "Suoni per i tipi di avviso",
+    "warntype": "Tipo di avviso",
+    "sound": "Suono",
+    "useTestCase": "Intervallo ridotto, dati di test attivati ​​e disattivati ​​alternativamente."
 }

@@ -426,5 +426,11 @@
     "pushover_Priority": "Gebruik het waarschuwingsniveau als meldingsprioriteit.",
     "alexa2_Audio_url": "Open de externe link naar de Amazon Audio Library.",
     "alexa2_Audio": "Audioopdracht toevoegen of voor niets leegmaken.",
-    "statesObjectsWarnings.allService.command": "Activeer handmatige meldingen."
+    "statesObjectsWarnings.allService.command": "Activeer handmatige meldingen.",
+    "imExpert": "Deskundige",
+    "alexa2_sounds_enabled": "Gebruik een klanktafel",
+    "alexa2_sounds": "Geluiden voor waarschuwingstypes",
+    "warntype": "Waarschuwingstype",
+    "sound": "Geluid",
+    "useTestCase": "Interval verkort, testgegevens afwisselend geactiveerd en gedeactiveerd."
 }

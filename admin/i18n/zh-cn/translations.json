@@ -426,5 +426,11 @@
     "pushover_Priority": "使用警告级别作为通知优先级。",
     "alexa2_Audio_url": "打开亚马逊音频库的外部链接。",
     "alexa2_Audio": "添加音频命令或空白。",
-    "statesObjectsWarnings.allService.command": "触发手动通知。"
+    "statesObjectsWarnings.allService.command": "触发手动通知。",
+    "imExpert": "专家",
+    "alexa2_sounds_enabled": "使用声音表",
+    "alexa2_sounds": "警告类型的声音",
+    "warntype": "警告类型",
+    "sound": "声音",
+    "useTestCase": "间隔缩短，测试数据交替激活和停用。"
 }

@@ -225,7 +225,7 @@ class NotificationClass extends library.BaseClass {
                   index = this.options.sounds.findIndex((a2) => a2.warntypenumber == 0);
                 const sound = this.options.sounds[index].sound;
                 if (sound)
-                  opt += `;${sound};${msg.text}`;
+                  opt += `;${sound}${msg.text}`;
                 else
                   opt += `;${msg.text}`;
               }

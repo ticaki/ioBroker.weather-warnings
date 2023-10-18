@@ -239,7 +239,7 @@ export class NotificationClass extends library.BaseClass {
                                     );
                                 else index = this.options.sounds.findIndex((a) => a.warntypenumber == 0);
                                 const sound = this.options.sounds[index].sound;
-                                if (sound) opt += `;${sound};${msg.text}`;
+                                if (sound) opt += `;${sound}${msg.text}`;
                                 else opt += `;${msg.text}`;
                             }
                             this.log.debug(`Send to alexa2: ${prefix + opt}`);

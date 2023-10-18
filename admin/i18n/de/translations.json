@@ -427,5 +427,11 @@
     "pushover_Priority": "Verwendet die Warnstufe als Benachrichtigungspriorität.",
     "alexa2_Audio_url": "Externen Link zur Amazon Audio Library öffnen.",
     "alexa2_Audio": "Fügen Sie einen Audiobefehl ein.(leer für nichts)",
-    "statesObjectsWarnings.allService.command": "Manuelle Benachrichtigungen auslösen."
+    "statesObjectsWarnings.allService.command": "Manuelle Benachrichtigungen auslösen.",
+    "imExpert": "Experte",
+    "alexa2_sounds_enabled": "Verwende die Soundtabelle",
+    "alexa2_sounds": "Sounds für Warntypen",
+    "warntype": "Warntyp",
+    "sound": "Geräusch",
+    "useTestCase": "Intervall verkürzt, Testdaten abwechselnd aktiviert und deaktiviert."
 }
