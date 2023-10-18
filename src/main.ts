@@ -108,17 +108,23 @@ class WeatherWarnings extends utils.Adapter {
 
         //create alexa sound array
         {
-            let sounds = config ? config.native.alexa2_sounds : [];
+            let change = false;
+            let sounds = this.config.alexa2_sounds || [];
             if (!sounds || !Array.isArray(sounds)) sounds = [];
             for (const w in messagesDef.genericWarntyp) {
                 const index = sounds.findIndex(
                     (a: { warntype: string; sound: string; warntypenumber: number }) => a.warntypenumber == Number(w),
                 );
                 if (index != -1) {
-                    sounds[index].warntype = await this.library.getTranslation(
+                    const t = await this.library.getTranslation(
                         messagesDef.genericWarntyp[Number(w) as keyof messagesDef.genericWarntypeType].name,
                     );
+                    if (t != sounds[index].warntype) {
+                        change = true;
+                        sounds[index].warntype = t;
+                    }
                 } else {
+                    change = true;
                     sounds.push({
                         warntypenumber: Number(w),
                         warntype: await this.library.getTranslation(
@@ -128,23 +134,30 @@ class WeatherWarnings extends utils.Adapter {
                     });
                 }
             }
+
             const index = sounds.findIndex(
                 (a: { warntype: string; sound: string; warntypenumber: number }) => a.warntypenumber == Number(0),
             );
             if (index == -1) {
+                change = true;
                 sounds.push({
                     warntypenumber: Number(0),
                     warntype: await this.library.getTranslation('template.RemoveAllMessage'),
                     sound: '',
                 });
             } else {
-                sounds[index].warntype = await this.library.getTranslation('template.RemoveAllMessage');
+                const t = await this.library.getTranslation('template.RemoveAllMessage');
+                if (t != sounds[index].warntype) {
+                    change = true;
+                    sounds[index].warntype = t;
+                }
             }
             this.config.alexa2_sounds = sounds;
 
-            await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-                native: { alexa2_sounds: sounds },
-            });
+            if (change)
+                await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+                    native: { alexa2_sounds: sounds },
+                });
         }
 
         /** write default templates to config if template 0 == translation token */
@@ -172,8 +185,7 @@ class WeatherWarnings extends utils.Adapter {
                 native: { templateTable: templateTable },
             });
         }
-
-        setTimeout(
+        this.setTimeout(
             async function (that: any) {
                 const self = that as WeatherWarnings;
                 if (!self) return;

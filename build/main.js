@@ -104,7 +104,8 @@ class WeatherWarnings extends utils.Adapter {
     }
     const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
     {
-      let sounds = config ? config.native.alexa2_sounds : [];
+      let change2 = false;
+      let sounds = this.config.alexa2_sounds || [];
       if (!sounds || !Array.isArray(sounds))
         sounds = [];
       for (const w in messagesDef.genericWarntyp) {
@@ -112,10 +113,15 @@ class WeatherWarnings extends utils.Adapter {
           (a) => a.warntypenumber == Number(w)
         );
         if (index2 != -1) {
-          sounds[index2].warntype = await this.library.getTranslation(
+          const t = await this.library.getTranslation(
             messagesDef.genericWarntyp[Number(w)].name
           );
+          if (t != sounds[index2].warntype) {
+            change2 = true;
+            sounds[index2].warntype = t;
+          }
         } else {
+          change2 = true;
           sounds.push({
             warntypenumber: Number(w),
             warntype: await this.library.getTranslation(
@@ -129,18 +135,24 @@ class WeatherWarnings extends utils.Adapter {
         (a) => a.warntypenumber == Number(0)
       );
       if (index == -1) {
+        change2 = true;
         sounds.push({
           warntypenumber: Number(0),
           warntype: await this.library.getTranslation("template.RemoveAllMessage"),
           sound: ""
         });
       } else {
-        sounds[index].warntype = await this.library.getTranslation("template.RemoveAllMessage");
+        const t = await this.library.getTranslation("template.RemoveAllMessage");
+        if (t != sounds[index].warntype) {
+          change2 = true;
+          sounds[index].warntype = t;
+        }
       }
       this.config.alexa2_sounds = sounds;
-      await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-        native: { alexa2_sounds: sounds }
-      });
+      if (change2)
+        await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+          native: { alexa2_sounds: sounds }
+        });
     }
     if (config && config.native && config.native.templateTable[0] && config.native.templateTable[0].template == "template.NewMessage") {
       this.log.info(`First start after installation detected.`);
@@ -161,7 +173,7 @@ class WeatherWarnings extends utils.Adapter {
         native: { templateTable }
       });
     }
-    setTimeout(
+    this.setTimeout(
       async function(that) {
         const self = that;
         if (!self)
