@@ -305,7 +305,8 @@
         "alexa2_MessageRemove": "RemoveMessage",
         "alexa2_MessageAllRemove": "RemoveAllMessage",
         "alexa2_volumen": 15,
-        "alexa2_manualAll": "NewMessage"
+        "alexa2_manualAll": "NewMessage",
+        "alexa2_sounds": []
     },
     "objects": [],
     "instanceObjects": []
