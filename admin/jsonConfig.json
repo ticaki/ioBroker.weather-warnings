@@ -176,6 +176,14 @@
                     "disabled": "data.useTestWarnings",
                     "label": "useJsonHistory",
                     "newLine": false
+                },
+                "useTestCase": {
+                    "type": "checkbox",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "label": "useTestCase",
+                    "newLine": true
                 }
             }
         },

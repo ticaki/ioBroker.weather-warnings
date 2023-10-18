@@ -544,6 +544,10 @@ class ProviderController extends import_library.BaseClass {
       this.adapter.clearTimeout(this.alertTimeoutRef);
   }
   updateEndless(that) {
+    if (that.adapter.config.useTestCase) {
+      that.adapter.config.useTestWarnings = !that.adapter.config.useTestWarnings;
+      that.refreshTime = 6e4;
+    }
     that.connection = false;
     if (that.refreshTimeRef)
       that.adapter.clearTimeout(that.refreshTimeRef);

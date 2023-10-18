@@ -234,9 +234,9 @@ class NotificationClass extends library.BaseClass {
               return false;
             if (!msg || !msg.provider || !this.adapter.config.history_Enabled || !msg.message)
               return false;
-            let newMsg = msg.text;
+            let newMsg = { message: msg.text };
             if (this.adapter.config.history_allinOne) {
-              newMsg = JSON.stringify({ ...msg.message.formatedData, ts: Date.now() });
+              newMsg = { ...msg.message.formatedData, ts: Date.now() };
             }
             const targets = [msg.provider.name, msg.provider.providerController.name];
             for (const a in targets) {
@@ -246,7 +246,7 @@ class NotificationClass extends library.BaseClass {
                 let json = [];
                 if (state && state.val && typeof state.val == "string" && state.val != "")
                   json = JSON.parse(state.val);
-                json.unshift(typeof newMsg == "object" ? JSON.parse(newMsg) : newMsg);
+                json.unshift(newMsg);
                 json.splice(500);
                 await this.adapter.library.writedp(
                   dp,

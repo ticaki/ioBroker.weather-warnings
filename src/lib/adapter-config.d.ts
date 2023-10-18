@@ -14,6 +14,7 @@ declare global {
             }>;
             useJsonHistory: boolean;
             useTestWarnings: boolean;
+            useTestCase: boolean;
             notPushAtStart: boolean;
             dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
             uwzwarncellTable: { uwzSelectId: string; uwzCityname: string }[];

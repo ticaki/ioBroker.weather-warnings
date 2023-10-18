@@ -213,7 +213,7 @@
     "template.NewMessage": "${Warntypename} warning from ${starttime}, level: ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} all clear, level: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "All clear!",
-    "template.NewJson": "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", type:\"${warntypename}\" \\}",
+    "template.NewJson": "{ \"action\":\"${status}\", \"start\": \"${starttime}\", \"ende\": \"${endtime}\", \"type\":\"${warntypename}\" \\}",
     "template.RemoveJson": "{ \"headline\": \"${Headline}\", \"status\": \"${status}\"\\}",
     "template.RemoveAllJson": "{ \"status\": \"All clear!\"\\}",
     "template.NewMessageWithArray": "Luke we got a new warning ${Warntypename} from ${starttime}, looks like a ${_CustomArray}",

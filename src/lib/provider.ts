@@ -587,7 +587,10 @@ export class ProviderController extends BaseClass {
     }
 
     updateEndless(that: ProviderController): void {
-        //that.adapter.config.useTestWarnings = !that.adapter.config.useTestWarnings;
+        if (that.adapter.config.useTestCase) {
+            that.adapter.config.useTestWarnings = !that.adapter.config.useTestWarnings;
+            that.refreshTime = 60000;
+        }
         that.connection = false;
         if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);
         if (that.providers.length == 0) {
