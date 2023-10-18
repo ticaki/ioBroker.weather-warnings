@@ -97,19 +97,19 @@ export class NotificationClass extends library.BaseClass {
 
                         if (!notifications.includes(action)) continue;
 
-                        const cAction = actions[action as keyof typeof this.options.actions];
-                        if (!cAction) continue;
+                        const templateKey = actions[action as keyof typeof this.options.actions];
+                        if (!templateKey) continue;
                         if (
                             manual || // get every message
-                            (cAction == 'new' && message.newMessage) || // new message
-                            (cAction == 'remove' && !message.notDeleted) || // remove message
-                            cAction == 'manualAll' ||
-                            (cAction == 'all' &&
+                            (action == 'new' && message.newMessage) || // new message
+                            (action == 'remove' && !message.notDeleted) || // remove message
+                            action == 'manualAll' ||
+                            (action == 'all' &&
                                 notifications.includes('all') &&
                                 !notifications.includes('new') &&
                                 !notifications.includes('remove')) // all without extension
                         ) {
-                            const msg = await message.getMessage(cAction);
+                            const msg = await message.getMessage(templateKey);
                             if (msg.text != '') {
                                 msg.action = action;
                                 msg.provider = providers[a];

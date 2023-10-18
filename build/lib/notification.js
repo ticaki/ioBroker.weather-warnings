@@ -102,11 +102,11 @@ class NotificationClass extends library.BaseClass {
               continue;
             if (!notifications.includes(action))
               continue;
-            const cAction = actions[action];
-            if (!cAction)
+            const templateKey = actions[action];
+            if (!templateKey)
               continue;
-            if (manual || cAction == "new" && message.newMessage || cAction == "remove" && !message.notDeleted || cAction == "manualAll" || cAction == "all" && notifications.includes("all") && !notifications.includes("new") && !notifications.includes("remove")) {
-              const msg = await message.getMessage(cAction);
+            if (manual || action == "new" && message.newMessage || action == "remove" && !message.notDeleted || action == "manualAll" || action == "all" && notifications.includes("all") && !notifications.includes("new") && !notifications.includes("remove")) {
+              const msg = await message.getMessage(templateKey);
               if (msg.text != "") {
                 msg.action = action;
                 msg.provider = providers[a];
