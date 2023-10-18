@@ -57,6 +57,8 @@ export type BaseType =
           name: 'alexa2';
           volumen: string;
           audio: string;
+          sounds: { warntype: string; sound: string; warntypenumber: number }[];
+          sounds_enabled: boolean;
       } & bBaseType);
 
 type bBaseType = {

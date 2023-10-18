@@ -15,7 +15,11 @@ declare global {
             useJsonHistory: boolean;
             useTestWarnings: boolean;
             useTestCase: boolean;
+            imExpert: boolean;
             notPushAtStart: boolean;
+            alexa2_sounds: { warntype: string; sound: string; warntypenumber: number }[];
+            alexa2_sounds_enabled: boolean;
+
             dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
             uwzwarncellTable: { uwzSelectId: string; uwzCityname: string }[];
             zamgwarncellTable: { zamgSelectId: string; zamgCityname: string }[];

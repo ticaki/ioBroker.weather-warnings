@@ -425,5 +425,6 @@
     "pushover_Device": "Apparaat-ID (gescheiden door,)",
     "pushover_Priority": "Gebruik het waarschuwingsniveau als meldingsprioriteit.",
     "alexa2_Audio_url": "Open de externe link naar de Amazon Audio Library.",
-    "alexa2_Audio": "Audioopdracht toevoegen of voor niets leegmaken."
+    "alexa2_Audio": "Audioopdracht toevoegen of voor niets leegmaken.",
+    "statesObjectsWarnings.allService.command": "Activeer handmatige meldingen."
 }

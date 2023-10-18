@@ -11,13 +11,7 @@ import 'source-map-support/register';
 import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
-import {
-    customFormatedTokens,
-    customFormatedTokensJson,
-    genericWarntyp,
-    genericWarntypeType,
-    textLevels,
-} from './lib/def/messages-def';
+import * as messagesDef from './lib/def/messages-def';
 import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationConfig-d';
@@ -110,8 +104,50 @@ class WeatherWarnings extends utils.Adapter {
             this.log.error(`catch(1): init error while reading states! ${error}`);
         }
 
-        /** write default templates to config if template 0 == translation token */
         const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+
+        //create alexa sound array
+        {
+            let sounds = config ? config.native.alexa2_sounds : [];
+            if (!sounds || !Array.isArray(sounds)) sounds = [];
+            for (const w in messagesDef.genericWarntyp) {
+                const index = sounds.findIndex(
+                    (a: { warntype: string; sound: string; warntypenumber: number }) => a.warntypenumber == Number(w),
+                );
+                if (index != -1) {
+                    sounds[index].warntype = await this.library.getTranslation(
+                        messagesDef.genericWarntyp[Number(w) as keyof messagesDef.genericWarntypeType].name,
+                    );
+                } else {
+                    sounds.push({
+                        warntypenumber: Number(w),
+                        warntype: await this.library.getTranslation(
+                            messagesDef.genericWarntyp[Number(w) as keyof messagesDef.genericWarntypeType].name,
+                        ),
+                        sound: '',
+                    });
+                }
+            }
+            const index = sounds.findIndex(
+                (a: { warntype: string; sound: string; warntypenumber: number }) => a.warntypenumber == Number(0),
+            );
+            if (index == -1) {
+                sounds.push({
+                    warntypenumber: Number(0),
+                    warntype: await this.library.getTranslation('template.RemoveAllMessage'),
+                    sound: '',
+                });
+            } else {
+                sounds[index].warntype = await this.library.getTranslation('template.RemoveAllMessage');
+            }
+            this.config.alexa2_sounds = sounds;
+
+            await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+                native: { alexa2_sounds: sounds },
+            });
+        }
+
+        /** write default templates to config if template 0 == translation token */
         if (
             config &&
             config.native &&
@@ -119,9 +155,8 @@ class WeatherWarnings extends utils.Adapter {
             config.native.templateTable[0].template == 'template.NewMessage'
         ) {
             this.log.info(`First start after installation detected.`);
-            const templateTable = this.library.cloneGenericObject(config.native.templateTable);
+            const templateTable: any = this.library.cloneGenericObject(config.native.templateTable);
             for (const a in config.native.templateTable) {
-                //@ts-expect-error faulheit
                 templateTable[a as keyof typeof this.config.templateTable].template = await this.library.getTranslation(
                     config.native.templateTable[a].template,
                 );
@@ -131,6 +166,7 @@ class WeatherWarnings extends utils.Adapter {
                     )}`,
                 );
             }
+            this.config.templateTable = templateTable;
             this.log.info(`Write default templates to config for ${this.namespace}!`);
             await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
                 native: { templateTable: templateTable },
@@ -266,6 +302,8 @@ class WeatherWarnings extends utils.Adapter {
                     notificationServiceOpt.alexa2.volumen =
                         self.config.alexa2_volumen > 0 ? String(self.config.alexa2_volumen) : '';
                     notificationServiceOpt.alexa2.audio = self.config.alexa2_Audio;
+                    notificationServiceOpt.alexa2.sounds = self.config.alexa2_sounds;
+                    notificationServiceOpt.alexa2.sounds_enabled = self.config.alexa2_sounds_enabled;
 
                     if (self.config.alexa2_device_ids.length == 0 || !self.config.alexa2_device_ids[0]) {
                         self.log.error(`Missing devices for alexa - deactivated`);
@@ -566,13 +604,13 @@ class WeatherWarnings extends utils.Adapter {
                     if (obj.callback) {
                         let reply = 'Tokens: ';
 
-                        for (const a in customFormatedTokensJson) {
+                        for (const a in messagesDef.customFormatedTokensJson) {
                             reply +=
                                 '${' +
                                 a +
                                 '}: ' +
                                 ((await this.library.getTranslation(
-                                    customFormatedTokensJson[a as keyof customFormatedTokens],
+                                    messagesDef.customFormatedTokensJson[a as keyof messagesDef.customFormatedTokens],
                                 )) +
                                     ' - / - ');
                         }
@@ -583,12 +621,12 @@ class WeatherWarnings extends utils.Adapter {
                 case 'filterLevel':
                     if (obj.callback) {
                         const reply = [];
-                        const text = textLevels.textGeneric;
+                        const text = messagesDef.textLevels.textGeneric;
                         for (const a in text) {
                             if (Number(a) == 5) break;
                             reply.push({
                                 label: await this.library.getTranslation(
-                                    textLevels.textGeneric[a as keyof typeof text],
+                                    messagesDef.textLevels.textGeneric[a as keyof typeof text],
                                 ),
                                 value: Number(a),
                             });
@@ -606,11 +644,14 @@ class WeatherWarnings extends utils.Adapter {
                             providerServicesArray.indexOf(obj.message.service) != -1
                         ) {
                             const service = obj.message.service as 'dwdService' | 'uwzService' | 'zamgService';
-                            for (const b in genericWarntyp) {
-                                const a = Number(b) as keyof genericWarntypeType;
-                                if (genericWarntyp[a][service] !== undefined && genericWarntyp[a][service].length > 0) {
+                            for (const b in messagesDef.genericWarntyp) {
+                                const a = Number(b) as keyof messagesDef.genericWarntypeType;
+                                if (
+                                    messagesDef.genericWarntyp[a][service] !== undefined &&
+                                    messagesDef.genericWarntyp[a][service].length > 0
+                                ) {
                                     reply.push({
-                                        label: await this.library.getTranslation(genericWarntyp[a].name),
+                                        label: await this.library.getTranslation(messagesDef.genericWarntyp[a].name),
                                         value: a,
                                     });
                                 }
@@ -620,10 +661,10 @@ class WeatherWarnings extends utils.Adapter {
                             obj.message.service &&
                             NotificationType.Array.indexOf(obj.message.service) != -1
                         ) {
-                            for (const b in genericWarntyp) {
-                                const a = Number(b) as keyof genericWarntypeType;
+                            for (const b in messagesDef.genericWarntyp) {
+                                const a = Number(b) as keyof messagesDef.genericWarntypeType;
                                 reply.push({
-                                    label: await this.library.getTranslation(genericWarntyp[a].name),
+                                    label: await this.library.getTranslation(messagesDef.genericWarntyp[a].name),
                                     value: a,
                                 });
                             }

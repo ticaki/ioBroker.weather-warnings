@@ -226,19 +226,44 @@ export class NotificationClass extends library.BaseClass {
 
                     if (devices.length == 0) break;
 
-                    const prefix = `${this.options.volumen}` + (this.options.audio ? ';' : '') + this.options.audio;
                     let opt = '';
-                    for (const a in devices) {
-                        for (const msg of messages) {
-                            if (Array.isArray(msg)) continue;
-                            opt += `;${msg.text}`;
+                    if (this.options.sounds_enabled) {
+                        const prefix = `${this.options.volumen}`;
+                        for (const a in devices) {
+                            for (const msg of messages) {
+                                if (Array.isArray(msg)) continue;
+                                let index = -1;
+                                if (msg.message !== undefined && msg.message.notDeleted)
+                                    index = this.options.sounds.findIndex(
+                                        (a) => a.warntypenumber == Number(msg.message!.genericType),
+                                    );
+                                else index = this.options.sounds.findIndex((a) => a.warntypenumber == 0);
+                                const sound = this.options.sounds[index].sound;
+                                if (sound) opt += `;${sound};${msg.text}`;
+                                else opt += `;${msg.text}`;
+                            }
+                            this.log.debug(`Send to alexa2: ${prefix + opt}`);
+                            if (opt != '') {
+                                await this.adapter.setForeignStateAsync(
+                                    `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
+                                    prefix + opt,
+                                );
+                            }
                         }
-                        this.log.debug(`Send to alexa2: ${prefix + opt}`);
-                        if (opt != '') {
-                            await this.adapter.setForeignStateAsync(
-                                `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
-                                prefix + opt,
-                            );
+                    } else {
+                        const prefix = `${this.options.volumen}` + (this.options.audio ? ';' : '') + this.options.audio;
+                        for (const a in devices) {
+                            for (const msg of messages) {
+                                if (Array.isArray(msg)) continue;
+                                opt += `;${msg.text}`;
+                            }
+                            this.log.debug(`Send to alexa2: ${prefix + opt}`);
+                            if (opt != '') {
+                                await this.adapter.setForeignStateAsync(
+                                    `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
+                                    prefix + opt,
+                                );
+                            }
                         }
                     }
                     /* Alexa code ask Apollon later

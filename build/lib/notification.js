@@ -209,20 +209,49 @@ class NotificationClass extends library.BaseClass {
           const devices = this.adapter.config.alexa2_device_ids;
           if (devices.length == 0)
             break;
-          const prefix = `${this.options.volumen}` + (this.options.audio ? ";" : "") + this.options.audio;
           let opt = "";
-          for (const a in devices) {
-            for (const msg of messages) {
-              if (Array.isArray(msg))
-                continue;
-              opt += `;${msg.text}`;
+          if (this.options.sounds_enabled) {
+            const prefix = `${this.options.volumen}`;
+            for (const a in devices) {
+              for (const msg of messages) {
+                if (Array.isArray(msg))
+                  continue;
+                let index = -1;
+                if (msg.message !== void 0 && msg.message.notDeleted)
+                  index = this.options.sounds.findIndex(
+                    (a2) => a2.warntypenumber == Number(msg.message.genericType)
+                  );
+                else
+                  index = this.options.sounds.findIndex((a2) => a2.warntypenumber == 0);
+                const sound = this.options.sounds[index].sound;
+                if (sound)
+                  opt += `;${sound};${msg.text}`;
+                else
+                  opt += `;${msg.text}`;
+              }
+              this.log.debug(`Send to alexa2: ${prefix + opt}`);
+              if (opt != "") {
+                await this.adapter.setForeignStateAsync(
+                  `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
+                  prefix + opt
+                );
+              }
             }
-            this.log.debug(`Send to alexa2: ${prefix + opt}`);
-            if (opt != "") {
-              await this.adapter.setForeignStateAsync(
-                `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
-                prefix + opt
-              );
+          } else {
+            const prefix = `${this.options.volumen}` + (this.options.audio ? ";" : "") + this.options.audio;
+            for (const a in devices) {
+              for (const msg of messages) {
+                if (Array.isArray(msg))
+                  continue;
+                opt += `;${msg.text}`;
+              }
+              this.log.debug(`Send to alexa2: ${prefix + opt}`);
+              if (opt != "") {
+                await this.adapter.setForeignStateAsync(
+                  `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
+                  prefix + opt
+                );
+              }
             }
           }
         }

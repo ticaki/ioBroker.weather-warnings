@@ -24,7 +24,7 @@ var import_register = require("source-map-support/register");
 var import_dwdWarncellIdLong = require("./lib/def/dwdWarncellIdLong");
 var import_provider = require("./lib/provider.js");
 var import_library = require("./lib/library.js");
-var import_messages_def = require("./lib/def/messages-def");
+var messagesDef = __toESM(require("./lib/def/messages-def"));
 var import_provider_def = require("./lib/def/provider-def");
 var NotificationType = __toESM(require("./lib/def/notificationService-def"));
 var import_notificationConfig_d = require("./lib/def/notificationConfig-d");
@@ -103,6 +103,45 @@ class WeatherWarnings extends utils.Adapter {
       this.log.error(`catch(1): init error while reading states! ${error}`);
     }
     const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+    {
+      let sounds = config ? config.native.alexa2_sounds : [];
+      if (!sounds || !Array.isArray(sounds))
+        sounds = [];
+      for (const w in messagesDef.genericWarntyp) {
+        const index2 = sounds.findIndex(
+          (a) => a.warntypenumber == Number(w)
+        );
+        if (index2 != -1) {
+          sounds[index2].warntype = await this.library.getTranslation(
+            messagesDef.genericWarntyp[Number(w)].name
+          );
+        } else {
+          sounds.push({
+            warntypenumber: Number(w),
+            warntype: await this.library.getTranslation(
+              messagesDef.genericWarntyp[Number(w)].name
+            ),
+            sound: ""
+          });
+        }
+      }
+      const index = sounds.findIndex(
+        (a) => a.warntypenumber == Number(0)
+      );
+      if (index == -1) {
+        sounds.push({
+          warntypenumber: Number(0),
+          warntype: await this.library.getTranslation("template.RemoveAllMessage"),
+          sound: ""
+        });
+      } else {
+        sounds[index].warntype = await this.library.getTranslation("template.RemoveAllMessage");
+      }
+      this.config.alexa2_sounds = sounds;
+      await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+        native: { alexa2_sounds: sounds }
+      });
+    }
     if (config && config.native && config.native.templateTable[0] && config.native.templateTable[0].template == "template.NewMessage") {
       this.log.info(`First start after installation detected.`);
       const templateTable = this.library.cloneGenericObject(config.native.templateTable);
@@ -116,6 +155,7 @@ class WeatherWarnings extends utils.Adapter {
           )}`
         );
       }
+      this.config.templateTable = templateTable;
       this.log.info(`Write default templates to config for ${this.namespace}!`);
       await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
         native: { templateTable }
@@ -201,6 +241,8 @@ class WeatherWarnings extends utils.Adapter {
         if (self.config.alexa2_Enabled && notificationServiceOpt.alexa2 != void 0) {
           notificationServiceOpt.alexa2.volumen = self.config.alexa2_volumen > 0 ? String(self.config.alexa2_volumen) : "";
           notificationServiceOpt.alexa2.audio = self.config.alexa2_Audio;
+          notificationServiceOpt.alexa2.sounds = self.config.alexa2_sounds;
+          notificationServiceOpt.alexa2.sounds_enabled = self.config.alexa2_sounds_enabled;
           if (self.config.alexa2_device_ids.length == 0 || !self.config.alexa2_device_ids[0]) {
             self.log.error(`Missing devices for alexa - deactivated`);
             delete notificationServiceOpt.alexa2;
@@ -458,9 +500,9 @@ class WeatherWarnings extends utils.Adapter {
         case "templateHelp":
           if (obj.callback) {
             let reply = "Tokens: ";
-            for (const a in import_messages_def.customFormatedTokensJson) {
+            for (const a in messagesDef.customFormatedTokensJson) {
               reply += "${" + a + "}: " + (await this.library.getTranslation(
-                import_messages_def.customFormatedTokensJson[a]
+                messagesDef.customFormatedTokensJson[a]
               ) + " - / - ");
             }
             reply = reply.slice(0, -7);
@@ -470,13 +512,13 @@ class WeatherWarnings extends utils.Adapter {
         case "filterLevel":
           if (obj.callback) {
             const reply = [];
-            const text = import_messages_def.textLevels.textGeneric;
+            const text = messagesDef.textLevels.textGeneric;
             for (const a in text) {
               if (Number(a) == 5)
                 break;
               reply.push({
                 label: await this.library.getTranslation(
-                  import_messages_def.textLevels.textGeneric[a]
+                  messagesDef.textLevels.textGeneric[a]
                 ),
                 value: Number(a)
               });
@@ -489,20 +531,20 @@ class WeatherWarnings extends utils.Adapter {
             const reply = [];
             if (obj.message && obj.message.service && import_provider_def.providerServicesArray.indexOf(obj.message.service) != -1) {
               const service = obj.message.service;
-              for (const b in import_messages_def.genericWarntyp) {
+              for (const b in messagesDef.genericWarntyp) {
                 const a = Number(b);
-                if (import_messages_def.genericWarntyp[a][service] !== void 0 && import_messages_def.genericWarntyp[a][service].length > 0) {
+                if (messagesDef.genericWarntyp[a][service] !== void 0 && messagesDef.genericWarntyp[a][service].length > 0) {
                   reply.push({
-                    label: await this.library.getTranslation(import_messages_def.genericWarntyp[a].name),
+                    label: await this.library.getTranslation(messagesDef.genericWarntyp[a].name),
                     value: a
                   });
                 }
               }
             } else if (obj.message && obj.message.service && NotificationType.Array.indexOf(obj.message.service) != -1) {
-              for (const b in import_messages_def.genericWarntyp) {
+              for (const b in messagesDef.genericWarntyp) {
                 const a = Number(b);
                 reply.push({
-                  label: await this.library.getTranslation(import_messages_def.genericWarntyp[a].name),
+                  label: await this.library.getTranslation(messagesDef.genericWarntyp[a].name),
                   value: a
                 });
               }

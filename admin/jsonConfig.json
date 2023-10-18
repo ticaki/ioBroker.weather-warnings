@@ -36,6 +36,7 @@
                     "md": 4,
                     "lg": 2,
                     "label": "json_Enabled",
+                    "hidden": "data.imExpert != true",
                     "newLine": false
                 },
                 "uwzEnabled": {
@@ -104,10 +105,21 @@
                     "label": "notPushAtStart",
                     "newLine": true
                 },
+                "imExpert": {
+                    "type": "checkbox",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "disabled": "data.imExpert",
+                    "default": false,
+                    "label": "imExpert",
+                    "newLine": true
+                },
                 "dividerDirs": {
                     "newLine": true,
                     "type": "header",
                     "text": "dividerDirs",
+                    "hidden": "data.imExpert != true",
                     "size": 2
                 },
                 "allowedDirs": {
@@ -119,6 +131,7 @@
                     "lg": 12,
                     "titleAttr": "providerService",
                     "label": "allowedDirs",
+                    "hidden": "data.imExpert != true",
                     "items": [
                         {
                             "attr": "providerService",
@@ -158,6 +171,7 @@
                     "newLine": true,
                     "type": "header",
                     "text": "test_diver",
+                    "hidden": "data.imExpert != true",
                     "size": 2
                 },
                 "useTestWarnings": {
@@ -166,6 +180,8 @@
                     "md": 6,
                     "lg": 4,
                     "label": "useTestWarnings",
+                    "hidden": "data.imExpert != true",
+                    
                     "newLine": true
                 },
                 "useJsonHistory": {
@@ -175,6 +191,7 @@
                     "lg": 4,
                     "disabled": "data.useTestWarnings",
                     "label": "useJsonHistory",
+                    "hidden": "data.imExpert != true",
                     "newLine": false
                 },
                 "useTestCase": {
@@ -183,6 +200,7 @@
                     "md": 6,
                     "lg": 4,
                     "label": "useTestCase",
+                    "hidden": "data.imExpert != true",
                     "newLine": true
                 }
             }
@@ -1360,7 +1378,6 @@
                     "md": 4,
                     "lg": 2,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "disabled": "data.alexa2_Adapter == 'none'",
                     "label": "dwdEnabled",
                     "newLine": true
@@ -1507,10 +1524,11 @@
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
-                "pushover_extras": {
+                "alexa2_extras": {
                     "newLine": true,
                     "type": "header",
                     "text": "notification_extras",
+                    "hidden": "data.imExpert != true",
                     "size": 1
                 },
                 "alexa2_Audio": {
@@ -1520,6 +1538,7 @@
                     "lg": 4,
                     "default": "",
                     "label": "alexa2_Audio",
+                    "hidden": "data.imExpert != true",
                     "newLine": true
                 },
                 "alexa2_Audio_url": {
@@ -1530,7 +1549,57 @@
                     "md": 5,
                     "lg": 4,
                     "label": "alexa2_Audio_url",
+                    "hidden": "data.imExpert != true",
                     "newLine": false
+                },
+                "alexa2_sounds_enabled": {
+                    "type": "checkbox",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "data.imExpert != true",
+                    "default": false,
+                    "disabled": "data.alexa2_Adapter == 'none'",
+                    "label": "alexa2_sounds_enabled",
+                    "newLine": true
+                },
+                "alexa2_sounds": {
+                    "type": "accordion",
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 12,
+                    "noDelete": true,
+                    "lg": 12,
+                    "titleAttr": "warntype",
+                    "label": "alexa2_sounds",
+                    "hidden": "data.imExpert != true",
+                    
+                    "items": [
+                        {
+                            "attr": "warntypenumber",
+                            "type": "number",
+                            "readOnly": true,
+                            "sm": 1,
+                            "md": 1,
+                            "lg": 1
+                        },
+                        {
+                            "attr": "warntype",
+                            "type": "text",
+                            "readOnly": true,
+                            "sm": 2,
+                            "md": 2,
+                            "lg": 3
+                        },
+                        {
+                            "attr": "sound",
+                            "type": "text",
+                            "sm": 9,
+                            "md": 8,
+                            "lg": 8,
+                            "label": "alexa_sound_item"
+                        }
+                    ]
                 },
                 "restoreDefault": {
                     "type": "sendTo",
@@ -1649,6 +1718,7 @@
                     "hidden": "true",
                     "useNative": true
                 }
+                
             }
         },
         "_history": {
