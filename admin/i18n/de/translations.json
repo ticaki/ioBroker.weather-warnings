@@ -230,7 +230,7 @@
     "genericStateObjects.info.connection": "Der letzte Datenabruf war erfolgreich.",
     "genericStateObjects.info.testMode": "Läuft der Adapter im Testmodus?",
     "genericStateObjects.state": "Keine Definition",
-    "genericStateObjects.customString": "Brauch",
+    "genericStateObjects.customString": "Nutzerdefinierte Vorlage",
     "genericStateObjects.warningDevice": "Warnungen vom Server.",
     "genericStateObjects.formatedKeysDevice": "Variablen, die in den Admin-Einstellungen zum Konfigurieren der Nachrichten verwendet werden können.",
     "genericStateObjects.messageStates._channel": "Ausgehende formatierte Nachrichten",

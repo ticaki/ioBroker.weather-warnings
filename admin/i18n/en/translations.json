@@ -229,7 +229,7 @@
     "genericStateObjects.info.connection": "Last data retrieval was successful.",
     "genericStateObjects.info.testMode": "Is the adapter running in test mode!",
     "genericStateObjects.state": "No definition",
-    "genericStateObjects.customString": "Custom",
+    "genericStateObjects.customString": "User defined template",
     "genericStateObjects.warningDevice": "Warnings from Server.",
     "genericStateObjects.formatedKeysDevice": "Variables that can be used in the admin settings to configure the messages.",
     "genericStateObjects.messageStates._channel": "Outgoing formated messages",
