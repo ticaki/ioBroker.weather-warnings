@@ -159,7 +159,9 @@ class WeatherWarnings extends utils.Adapter {
         native: { templateTable }
       });
     }
-    setTimeout(
+    if (this.providerController)
+      this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 6e4} minutes`);
+    this.setTimeout(
       async function(that) {
         const self = that;
         if (!self)
