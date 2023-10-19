@@ -432,5 +432,10 @@
     "alexa2_sounds": "警告类型的声音",
     "warntype": "警告类型",
     "sound": "声音",
-    "useTestCase": "间隔缩短，测试数据交替激活和停用。"
+    "useTestCase": "间隔缩短，测试数据交替激活和停用。",
+    "customFormatedTokensJson.starttime.ms": "开始时间（毫秒）",
+    "customFormatedTokensJson.endtimems": "结束时间（毫秒）",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "天气图标的 URL。",
+    "statesObjectsWarnings.allService.formatedkeys.starttimems": "开始时间，单位为毫秒。",
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "结束时间（毫秒）"
 }

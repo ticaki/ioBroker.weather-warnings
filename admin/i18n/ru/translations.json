@@ -432,5 +432,10 @@
     "alexa2_sounds": "Звуки для типов предупреждений",
     "warntype": "Тип предупреждения",
     "sound": "Звук",
-    "useTestCase": "Интервал сокращен, тестовые данные попеременно активируются и деактивируются."
+    "useTestCase": "Интервал сокращен, тестовые данные попеременно активируются и деактивируются.",
+    "customFormatedTokensJson.starttime.ms": "Время начала в мс",
+    "customFormatedTokensJson.endtimems": "Время окончания в мс",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL-адрес значков погоды.",
+    "statesObjectsWarnings.allService.formatedkeys.starttimems": "Время начала в мс.",
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Время окончания в мс"
 }

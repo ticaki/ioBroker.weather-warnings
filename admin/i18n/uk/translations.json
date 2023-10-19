@@ -432,5 +432,10 @@
     "alexa2_sounds": "Звуки для типів попереджень",
     "warntype": "Тип попередження",
     "sound": "Звук",
-    "useTestCase": "Інтервал скорочений, тестові дані поперемінно активуються та деактивуються."
+    "useTestCase": "Інтервал скорочений, тестові дані поперемінно активуються та деактивуються.",
+    "customFormatedTokensJson.starttime.ms": "Час початку в мс",
+    "customFormatedTokensJson.endtimems": "Час завершення в мс",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL-адреса піктограм погоди.",
+    "statesObjectsWarnings.allService.formatedkeys.starttimems": "Час початку як мс.",
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Час завершення як мс"
 }

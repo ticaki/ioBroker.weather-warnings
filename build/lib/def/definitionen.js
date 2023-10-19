@@ -1471,6 +1471,18 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      iconurl: {
+        _id: "iconurl",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl",
+          type: "string",
+          role: "weather.icon",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       countdown: {
         _id: "starttime",
         type: "state",

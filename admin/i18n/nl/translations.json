@@ -432,5 +432,10 @@
     "alexa2_sounds": "Geluiden voor waarschuwingstypes",
     "warntype": "Waarschuwingstype",
     "sound": "Geluid",
-    "useTestCase": "Interval verkort, testgegevens afwisselend geactiveerd en gedeactiveerd."
+    "useTestCase": "Interval verkort, testgegevens afwisselend geactiveerd en gedeactiveerd.",
+    "customFormatedTokensJson.starttime.ms": "Starttijd in ms",
+    "customFormatedTokensJson.endtimems": "Eindtijd in ms",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL naar weerpictogrammen.",
+    "statesObjectsWarnings.allService.formatedkeys.starttimems": "Begintijd als ms.",
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Eindtijd als ms"
 }

@@ -33,6 +33,7 @@ export type customFormatedTokens = {
     status: string;
     starttimems: number;
     endtimems: number;
+    iconurl: string;
 };
 
 export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, string> = {
@@ -63,6 +64,7 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     status: 'Status of warning. new, hold, all clear',
     starttimems: 'Start time in ms',
     endtimems: 'End Time in ms',
+    iconurl: 'Url to Icon',
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;

@@ -432,5 +432,10 @@
     "alexa2_sounds": "Dźwięki dla typów ostrzeżeń",
     "warntype": "Typ ostrzeżenia",
     "sound": "Dźwięk",
-    "useTestCase": "Interwał skrócony, dane testowe na przemian aktywowane i dezaktywowane."
+    "useTestCase": "Interwał skrócony, dane testowe na przemian aktywowane i dezaktywowane.",
+    "customFormatedTokensJson.starttime.ms": "Czas rozpoczęcia w ms",
+    "customFormatedTokensJson.endtimems": "Czas zakończenia w ms",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "Adres URL ikon pogody.",
+    "statesObjectsWarnings.allService.formatedkeys.starttimems": "Czas rozpoczęcia jako ms.",
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Czas zakończenia jako ms"
 }

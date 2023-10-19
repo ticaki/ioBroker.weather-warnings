@@ -14,88 +14,88 @@
 
 ## weather-warnings adapter for ioBroker
 
-Dieser Adapter ruft Wetterwarnungen verschiedener optionaler Dienste ab und gibt diese als Textnachricht oder Sprachnachrichten aus. Zusätzlich werden nach Typ gruppierte States bereitgestellt, mit denen man auf aktuelle Warnlagen reagieren kann.
+[Deutsche Readme](https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README_DE.md)
+This adapter accesses weather warnings of different weather services and outputs them as text or voice messages. Additionally it creates States grouped by type, which can be used to react to current warnings.
 ## Installation
-Nach der Installation und dem automatischen öffnen der Konfigurationsseite diese **nochmals reloaden**. Damit werden die Vorlagen in der eingestellten Sprache angezeigt.
+After installation the configuration site will automatically open and will be needed to be **reloaded**. This will show the templates in the language that was set.
 
-## Konfiguration
+## Configuration
 ![Basicconfiguration](img/basic.png)
 
-- **Activate DWD/UWZ/ZAMG:** aktiviere den Datenabruf von diesen Dienstleistern
-- **Activate telegram/pushover,...:** aktiviere die Ausgabe von Nachrichten an diese installierten Adapter. 
-- **Activate email:** Schreibt alle aktuellen Warnungen in eine Email.
-- **Activate history:** schreibt in den State: .history einen Verlauf der bis zu 500 Einträgen beinhalten kann. Alle Daten oder ausgewählte.
-- **Activate json-array:** sehr speziel, schreibt die aktuellen Warnungen in ein Array oder nach Aktivierung ein benutzerdefiniertes Json in ein Array, das von Skripten ausgewertet werden kann.
+- **Activate DWD/UWZ/ZAMG:** activate the data retrieval of these service providers.
+- **Activate telegram/pushover,...:** activate the output of messages to these installed adapters. 
+- **Activate email:** Writes all current warnings in an E-Mail.
+- **Activate history:** writes the history, which can hold up to 500 entries, into the State: .history. All data or selected data.
+- **Activate json-array:** very special, puts the current warnings into an Array or - after activation - a user-specifc Json into an Array, which can be used by scripts.
 
-- **Update interval:** Abrufinterval in Minuten zu dem Daten geladen werden. (minimum: 5)
+- **Update interval:** the interval of data retrieval in minutes (minimum: 5)
 
-- **Incoming warnings...:** Nach dem Adapterstart werden die beim ersten Datenabruf erhaltenen Warnungen als bekannt angesehen und lösen keine Benachrichtigung aus.
+- **Incoming warnings...:** After starting the adapter the warnings of the first data retrieval will be treated as known and will not trigger a notification.
 
 - **Testing- Activate...:** Use testdata. Adapter is offline.
 
-- **Testing- Raw data history:** Für Debugging, nur nach Aufforderung.
+- **Testing- Raw data history:** For Debugging, only on request.
 
 
 
 ![Template](img/template.png)
 
-Hier kannst du eigenen Nachrichten erstellen, oder vorhandene anpassen. Unterhalb der Tabelle stehen alle verfügbare "Tokens" und was sie bedeuten. Der Unique identifier wird in den Pushdiensten verwendet, um einzustellen welche Vorlage mit welcher Meldungsart verwendet werden soll.
+Here you can create own messages or edit existing ones. All available „Tokens“ and their meanings are displayed below the table. The Unique identifier is used by push notification services in order to determine which template to use for which type of notification.
 
 Zeichen mit besonderer Bedeutung:
-- `${}` umfasst Tokens, die durch generierte Infomationen ersetzt werden. Der Vorlagenbezeichner kann hier ebenfalls eingesetzt werden.
-- Vorlagenbezeichner die mit `_` beginnen, werden bei Diensten nicht angeboten.
-- `${[0,1,2,3,4]token}` Eine Zeichenkette mit Werten, token muß ein Zahlentoken sein. Index ist wie im Beispiel. 0 ist der erste Wert in der Liste
-- bei einer Vorlage für Jsons muß das abschließende `}` so geschrieben werden `\}`
-- siehe Beispiele im Adapter.
-- es ist ebenfalls sowas möglich: `${[0,🟢,🟡,🟠,🔴]warnlevelnumber}`
+- `${}` contains tokens that are substituted by generated information. The template identifier is usable here as well.
+- Template identifier that start with `_` are not offered by services.
+- `${[0,1,2,3,4]token}` A string with values, token has to be a number token. The index is the same as shown in the example. 0 is the first value in the list.
+- for a Jsons template the closing bracket `}` has to be written in this way `\}`
+- see examples in the adapter
+- alternatively also possible: `${[0,🟢,🟡,🟠,🔴]warnlevelnumber}`
 
-**Restore Templates:** Setzt die Vorlagen auf die aktuelle Systemsprache zurück. Vorhandene Vorlagen gehen **verloren**. Anschließend speichern & schließen. Sollte ebenfalls verwendet werden, wenn die Systemsprache geändert wurde.
+**Restore Templates:** Resets the templates back to the current system language. Existing templates will be **lost**. Afterwards save & close. Should be used after changing system language.
 
 ![DWD](img/DWD.png)
 
-**DWD:** Die Auswahl erfolgt nach einer Liste von 10000 Orten, nach der Eingabe in ein anderes Feld klicken und wieder zurück gehen, die Liste ist zu groß und muß aktualisiert werden.
+**DWD:** Selection from a list of 10000 places, after entry click on another tab and then return, list is too big and has to be updated.
 
-**UWZ:** Eingabe erfolgt mit Landeskennzeichen DE AT (weitere möglich muß man ausprobieren) und der Postleitzahl, also DE12345
+**UWZ:** Entry using the country identifier DE AT (others possible, has to be tested) and the postal code, for example DE12345
 
-**ZAMG:** Nur für Österreich. Eingabe von Koordinaten die in Österreich liegen.
+**ZAMG:** Only for Austria. Entry of coordinates within Austria.
 
-**Place name:** benutzerdefinierte Ortsbezeichnung, kann in Warnungen verwendet werden. (Nützlich bei mehreren Warncellen)
+**Place name:** user-specific place name, can be used in warnings (useful with multiple warning cells)
 
 **Filter:** 
-- Filter Raw data: Filtert vor jeder weiteren Auswertung alles aus das X Stunden in der Zukunft liegt.
-- Type: alles mit diesem Type wird verworfen. 
-- Level: ales gleich oder kleiner dieses Levels wird verworfen.
+- Filter Raw data: Filters out everything within X hours into the future before every following handling.
+- Type: discards everything with this type.
+- Level: everything equal or lower than this level will be discarded. 
 
 ![telegram](img/telegram.png)
-**Adapter:** Wenn diese Möglichkeit aktiviert wurde und es ein Adapterfeld gibt muß dort einen gültige Auswahl getroffen werden. Eine Fehlermeldung im Log weißt auf fehlende Einstellungen hin. 
+**Adapter:** If this option was activated and there is an adapter field, a valid option has to be chosen. An error message in the log indicates missing settings. 
 
-**Activate ...:** Versende Warnungen von diesem Anbieter mit diesem Dienst.
+**Activate ...:** Send warnings by this provider with this service.
 
 **Filter:** 
-1) Ignoriere Warnungen mit diesem Type
-2) Ignoriere Warnungen mit einem gleichen oder geringeren Level
+1) Ignore warnings with this Type
+2) Ignore warnings with equal or lower level 
 
-**Messages:** verwende folgende Vorlagen für:
-1) Neue Warnungen oder bestehende Warnungen
-2) Eine Warnung wurde entfernt und es gibt **noch** weitere Aktive.
-3) Warnungen wurden entfernt und es gibt **keine** weiteren Aktiven.
 
-Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht mehrere Warnungen in Frage kommen.
+**Messages:** use the following templates for:
+1) New warnings or existing warnings
+2) A warning was removed and there are **other** active warnings.
+3) Warnings were removed and there are **no other** active warnings.
+
+Templates for 3) cannot contain `${}` Tokens.
 
 **Special features**
 
-**email:** Header wird vor die Mail gestellt, dann kommt wiederholt: 1,2 oder 3 +  Zeilenumbruch und anschließend Footer.(weitere Funktionen in Arbeit)
+**email:** Header is put before the Mail, followed by 1,2 or 3 + line break and then Footer. (additional features are being worked on)
 
-**alexa:** Zusätzlich muß hier noch ein/mehrere Geräte ausgewählt werden. Die Lautstärke wird nur für die Sprachnachrichten verändert und sollte anschließend wieder zurück gesetzt werden. Nachrichtengröße pro Warnung ist maximal 250 Zeichen.
-
+**alexa:** Additionally one or multiple devices has/have to be selected. The volume only changes for voice messages and should afterwards be reset to default. Message size per warning is limited to 250 characters.
 
 ## General Behaviour
 - No duplicate messages should be sent for one and the same thing. DWD is very particular about this.
 - If `none` is selected as the template, no notifications are sent for it.
-- States unter `.alerts` enthalten nach Warntypen guppierte Felder für Start, Ende, Warntyp, **jetzt** aktiv und Schlagzeile. Angezeigt wird 1 Warnung pro Gruppe gefiltert nach folgenden Kriterien: 
-  1) Warnung ist **jetzt** aktiv, die mit dem höchsten Level.
-  2) Warnung mit dem jüngsten Startzeitpunkt und bei mehreren mit gleicher Zeit, die mit dem höchsten Level.
-
+- States in .alerts contain arrays for start, end, warning type, now active and headline, grouped by warning type. One warning per group is displayed filtered by the following criteria: 
+  1) Warning is **now** active (the one with the highest level).
+  2) Warning with the earliest starting time and if multiple the one with the highest level. 
 
 ## Icons
 Creator: [Adri Ansyah](https://www.youtube.com/channel/UChLOv1L-ftAFc2ZizdEAKgw?view_as=subscriber)

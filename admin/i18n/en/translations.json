@@ -434,5 +434,8 @@
     "alexa2_sounds": "Sounds for warntypes",
     "warntype": "Warntype",
     "sound": "Sound",
-    "useTestCase": "Interval reduced, test data alternately activated and deactivated."
+    "useTestCase": "Interval reduced, test data alternately activated and deactivated.",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "Url to weather icons.",
+    "statesObjectsWarnings.allService.formatedkeys.starttimems": "Start time as ms.",
+    "statesObjectsWarnings.allService.formatedkeys.endtimems":"End time as ms"
 }

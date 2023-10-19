@@ -47,6 +47,7 @@ __export(library_exports, {
 });
 module.exports = __toCommonJS(library_exports);
 var import_jsonata = __toESM(require("jsonata"));
+var import_fs = __toESM(require("fs"));
 var import_definitionen = require("./def/definitionen");
 var _adapter, _prefix;
 class BaseClass {
@@ -308,6 +309,11 @@ class Library extends BaseClass {
     }
     return JSON.parse(JSON.stringify(obj));
   }
+  async fileExistAsync(file) {
+    if (await import_fs.default.existsSync(`./admin/${file}`))
+      return true;
+    return false;
+  }
   async readWithJsonata(data, cmd) {
     let result;
     if (typeof cmd === "string") {
@@ -445,6 +451,20 @@ class Library extends BaseClass {
       }
     }
     return false;
+  }
+  sortText(text) {
+    text.sort((a, b) => {
+      const nameA = a.toUpperCase();
+      const nameB = b.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+    return text;
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

@@ -235,11 +235,13 @@ class WeatherWarnings extends utils.Adapter {
                                       ] as string)
                                     : '',
                         };
+
                         template.new = template.new ? template.new : 'none';
                         template.remove = template.remove ? template.remove : 'none';
                         template.removeAll = template.removeAll ? template.removeAll : 'none';
                         template.all = template.all ? template.all : 'none';
                         template.manualAll = template.manualAll ? template.manualAll : 'none';
+
                         // @ts-expect-error keine ahnung :)
                         notificationServiceOpt[notificationService] = {
                             ...notificationServiceDefaults[notificationService],

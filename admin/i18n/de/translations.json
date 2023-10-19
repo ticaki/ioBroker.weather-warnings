@@ -433,5 +433,10 @@
     "alexa2_sounds": "Sounds für Warntypen",
     "warntype": "Warntyp",
     "sound": "Geräusch",
-    "useTestCase": "Intervall verkürzt, Testdaten abwechselnd aktiviert und deaktiviert."
+    "useTestCase": "Intervall verkürzt, Testdaten abwechselnd aktiviert und deaktiviert.",
+    "customFormatedTokensJson.starttime.ms": "Startzeit in ms",
+    "customFormatedTokensJson.endtimems": "Endzeit in ms",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL zu Wettersymbolen.",
+    "statesObjectsWarnings.allService.formatedkeys.starttimems": "Startzeit als ms.",
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Endzeit als ms"
 }

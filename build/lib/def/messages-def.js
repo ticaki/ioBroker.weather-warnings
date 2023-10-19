@@ -58,7 +58,8 @@ const customFormatedTokensJson = {
   countdown: "Remaining time until the start of the warning.",
   status: "Status of warning. new, hold, all clear",
   starttimems: "Start time in ms",
-  endtimems: "End Time in ms"
+  endtimems: "End Time in ms",
+  iconurl: "Url to Icon"
 };
 const textLevels = {
   textGeneric: {

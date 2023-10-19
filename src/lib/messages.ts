@@ -17,7 +17,7 @@ export type customFormatedKInit =
 export type customFormatedKR = ChangeTypeOfKeys<MessageType.customFormatedKeysDef, string | number | undefined>;
 
 type customFormatedKDefSub = { cmd?: messageCmdType; node: string };
-type messageCmdType = 'dayoftheweek' | 'translate' | 'dayoftheweekshort' | 'countdown';
+type messageCmdType = 'dayoftheweek' | 'translate' | 'dayoftheweekshort' | 'countdown' | 'geticon';
 /**
  * bla
  */
@@ -143,6 +143,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            iconurl: {
+                cmd: 'geticon',
+                node: '',
+            },
         },
 
         uwzService: {
@@ -240,6 +244,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            iconurl: {
+                cmd: 'geticon',
+                node: '',
+            },
         },
         zamgService: {
             starttime: {
@@ -324,6 +332,10 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            iconurl: {
+                cmd: 'geticon',
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -377,6 +389,10 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             endtimems: {
+                cmd: undefined,
+                node: '',
+            },
+            iconurl: {
                 cmd: undefined,
                 node: '',
             },
@@ -723,6 +739,13 @@ export class MessagesClass extends BaseClass {
             }
             case 'countdown': {
                 return this.getCountdown(data);
+            }
+            case 'geticon': {
+                const id = MessageType.genericWarntyp[this.genericType].id;
+                if (await this.library.fileExistAsync(`icons/blue/${id}.png`)) {
+                    return `adapter/${this.adapter.name}/icons/blue/${id}.png`;
+                }
+                return '';
             }
         }
         return '';

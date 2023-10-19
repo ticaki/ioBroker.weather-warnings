@@ -432,5 +432,10 @@
     "alexa2_sounds": "Sons para warningtypes",
     "warntype": "Tipo de aviso",
     "sound": "Som",
-    "useTestCase": "Intervalo reduzido, dados de teste ativados e desativados alternadamente."
+    "useTestCase": "Intervalo reduzido, dados de teste ativados e desativados alternadamente.",
+    "customFormatedTokensJson.starttime.ms": "Hora de início em ms",
+    "customFormatedTokensJson.endtimems": "Hora de término em ms",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL para ícones meteorológicos.",
+    "statesObjectsWarnings.allService.formatedkeys.starttimems": "Hora de início como ms.",
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Hora de término como ms"
 }

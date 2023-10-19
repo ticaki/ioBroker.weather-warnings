@@ -146,6 +146,10 @@ class MessagesClass extends import_library.BaseClass {
       endtimems: {
         cmd: void 0,
         node: ""
+      },
+      iconurl: {
+        cmd: "geticon",
+        node: ""
       }
     },
     uwzService: {
@@ -242,6 +246,10 @@ class MessagesClass extends import_library.BaseClass {
       endtimems: {
         cmd: void 0,
         node: ""
+      },
+      iconurl: {
+        cmd: "geticon",
+        node: ""
       }
     },
     zamgService: {
@@ -325,6 +333,10 @@ class MessagesClass extends import_library.BaseClass {
       endtimems: {
         cmd: void 0,
         node: ""
+      },
+      iconurl: {
+        cmd: "geticon",
+        node: ""
       }
     },
     default: {
@@ -379,6 +391,10 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       endtimems: {
+        cmd: void 0,
+        node: ""
+      },
+      iconurl: {
         cmd: void 0,
         node: ""
       }
@@ -689,6 +705,13 @@ class MessagesClass extends import_library.BaseClass {
       }
       case "countdown": {
         return this.getCountdown(data);
+      }
+      case "geticon": {
+        const id = MessageType.genericWarntyp[this.genericType].id;
+        if (await this.library.fileExistAsync(`icons/blue/${id}.png`)) {
+          return `adapter/${this.adapter.name}/icons/blue/${id}.png`;
+        }
+        return "";
       }
     }
     return "";

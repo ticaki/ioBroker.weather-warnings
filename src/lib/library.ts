@@ -1,4 +1,5 @@
 import jsonata from 'jsonata';
+import _fs from 'fs';
 import { genericStateObjects, statesObjectsWarningsType } from './def/definitionen';
 import WeatherWarnings from '../main';
 
@@ -361,6 +362,10 @@ export class Library extends BaseClass {
         return JSON.parse(JSON.stringify(obj));
     }
 
+    async fileExistAsync(file: string): Promise<boolean> {
+        if (await _fs.existsSync(`./admin/${file}`)) return true;
+        return false;
+    }
     async readWithJsonata(
         data: object,
         cmd: { [key: string]: string } | string,
@@ -506,5 +511,20 @@ export class Library extends BaseClass {
             }
         }
         return false;
+    }
+    sortText(text: string[]): string[] {
+        text.sort((a, b) => {
+            const nameA = a.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+
+            return 0;
+        });
+        return text;
     }
 }
