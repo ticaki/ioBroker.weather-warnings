@@ -138,6 +138,14 @@ class MessagesClass extends import_library.BaseClass {
       status: {
         cmd: void 0,
         node: ""
+      },
+      starttimems: {
+        cmd: void 0,
+        node: ""
+      },
+      endtimems: {
+        cmd: void 0,
+        node: ""
       }
     },
     uwzService: {
@@ -226,6 +234,14 @@ class MessagesClass extends import_library.BaseClass {
       status: {
         cmd: void 0,
         node: ""
+      },
+      starttimems: {
+        cmd: void 0,
+        node: ""
+      },
+      endtimems: {
+        cmd: void 0,
+        node: ""
       }
     },
     zamgService: {
@@ -301,6 +317,14 @@ class MessagesClass extends import_library.BaseClass {
       status: {
         cmd: void 0,
         node: ""
+      },
+      starttimems: {
+        cmd: void 0,
+        node: ""
+      },
+      endtimems: {
+        cmd: void 0,
+        node: ""
       }
     },
     default: {
@@ -347,6 +371,14 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       status: {
+        cmd: void 0,
+        node: ""
+      },
+      starttimems: {
+        cmd: void 0,
+        node: ""
+      },
+      endtimems: {
         cmd: void 0,
         node: ""
       }
@@ -491,13 +523,18 @@ class MessagesClass extends import_library.BaseClass {
     let hit = false;
     if (filter.level && filter.level > this.level)
       return false;
+    let howOften = 0;
+    for (const f in MessageType.genericWarntyp) {
+      if (MessageType.genericWarntyp[f][this.provider.service].indexOf(this.type) != -1)
+        howOften++;
+    }
     for (const f in filter.type) {
       if (MessageType.genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1) {
         hit = true;
-        break;
+        howOften--;
       }
     }
-    if (hit)
+    if (hit && howOften == 0)
       return false;
     return true;
   }
@@ -620,6 +657,8 @@ class MessagesClass extends import_library.BaseClass {
     if (!this.formatedData) {
       throw new Error(`${this.log.getName()} formatedDate is empty!`);
     }
+    this.formatedData.starttimems = this.starttime;
+    this.formatedData.endtimems = this.endtime;
     this.cache.ts = Date.now();
     this.cache.messages = {};
     for (let a = 0; a < this.adapter.config.templateTable.length; a++) {

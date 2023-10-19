@@ -220,6 +220,26 @@ const genericStateObjects = {
       write: false
     },
     native: {}
+  },
+  summary: {
+    _channel: {
+      _id: "",
+      type: "channel",
+      common: { name: "" },
+      native: {}
+    },
+    warntypes: {
+      _id: "",
+      type: "state",
+      common: {
+        name: "",
+        type: "string",
+        role: "text",
+        read: true,
+        write: false
+      },
+      native: {}
+    }
   }
 };
 const statesObjectsWarnings = {
@@ -1487,6 +1507,18 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      starttimems: {
+        _id: "starttimems",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.starttimems",
+          type: "number",
+          role: "value.time",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       startdate: {
         _id: "begin",
         type: "state",
@@ -1506,6 +1538,18 @@ const statesObjectsWarnings = {
           name: "statesObjectsWarnings.allService.formatedkeys.endtime",
           type: "string",
           role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      endtimems: {
+        _id: "endtimems",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.endtimems",
+          type: "number",
+          role: "value.time",
           read: true,
           write: false
         },

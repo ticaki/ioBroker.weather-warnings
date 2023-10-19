@@ -120,7 +120,7 @@
                     "type": "header",
                     "text": "dividerDirs",
                     "hidden": "data.imExpert != true",
-                    "size": 2
+                    "size": 3
                 },
                 "allowedDirs": {
                     "type": "accordion",
@@ -172,7 +172,7 @@
                     "type": "header",
                     "text": "test_diver",
                     "hidden": "data.imExpert != true",
-                    "size": 2
+                    "size": 3
                 },
                 "useTestWarnings": {
                     "type": "checkbox",
@@ -853,7 +853,7 @@
                     "newLine": true,
                     "type": "header",
                     "text": "notification_extras",
-                    "size": 1
+                    "size": 3
                 },
                 "telegram_UserId": {
                     "type": "text",
@@ -1257,7 +1257,7 @@
                     "newLine": true,
                     "type": "header",
                     "text": "notification_extras",
-                    "size": 1
+                    "size": 3
                 },
                 "pushover_Sound": {
                     "type": "select",
@@ -1529,7 +1529,7 @@
                     "type": "header",
                     "text": "notification_extras",
                     "hidden": "data.imExpert != true",
-                    "size": 1
+                    "size": 3
                 },
                 "alexa2_Audio": {
                     "type": "text",
@@ -1579,6 +1579,7 @@
                             "attr": "warntypenumber",
                             "type": "number",
                             "readOnly": true,
+                            "hidden": true,
                             "sm": 1,
                             "md": 1,
                             "lg": 1

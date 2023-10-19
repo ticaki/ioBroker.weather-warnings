@@ -239,7 +239,7 @@ class WeatherWarnings extends utils.Adapter {
                         template.remove = template.remove ? template.remove : 'none';
                         template.removeAll = template.removeAll ? template.removeAll : 'none';
                         template.all = template.all ? template.all : 'none';
-                        template.manualAll = template.manualAll ? template.all : 'none';
+                        template.manualAll = template.manualAll ? template.manualAll : 'none';
                         // @ts-expect-error keine ahnung :)
                         notificationServiceOpt[notificationService] = {
                             ...notificationServiceDefaults[notificationService],

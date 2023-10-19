@@ -170,7 +170,7 @@ export class BaseProvider extends BaseClass {
             if (reply[name] === undefined) continue;
             if (m.endtime < Date.now()) continue;
 
-            if (m.starttime < Date.now() && reply[name].level < m.level) {
+            if (m.starttime <= Date.now() && reply[name].level < m.level) {
                 reply[name] = {
                     level: m.level,
                     start: m.starttime,
@@ -284,6 +284,18 @@ export class BaseProvider extends BaseClass {
                 this.messages.splice(Number(m--), 1);
             }
         }
+    }
+    async finishTurn(): Promise<void> {
+        this.adapter.library.writedp(
+            `${this.name}.summary`,
+            undefined,
+            definitionen.genericStateObjects.summary._channel,
+        );
+        this.adapter.library.writedp(
+            `${this.name}.summary.warntypes`,
+            this.messages.map((a) => (a.formatedData ? a.formatedData.warntypegenericname : '')).join(', '),
+            definitionen.genericStateObjects.summary.warntypes,
+        );
     }
 }
 
@@ -483,6 +495,60 @@ export class ProviderController extends BaseClass {
     async init(): Promise<void> {
         this.pushOn = !this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
         this.refreshTime = this.adapter.config.refreshTime * 60000;
+
+        /*
+        // this code ist to swap genericWarntyp to ids with a array of warntypes
+        const warntyp = messagesDef.genericWarntyp;
+        const mixedWarntyp: any = {};
+        Object.entries(warntyp).forEach((element) => {
+            mixedWarntyp.dwdService = mixedWarntyp.dwdService || {};
+            mixedWarntyp.uwzService = mixedWarntyp.uwzService || {};
+            mixedWarntyp.zamgService = mixedWarntyp.zamgService || {};
+            element[1].dwdService.forEach(
+                (a) => (mixedWarntyp.dwdService[`${a}`] = [...(mixedWarntyp.dwdService[`${a}`] || []), element[1].id]),
+            );
+            element[1].uwzService.forEach(
+                (a) => (mixedWarntyp.uwzService[`${a}`] = [...(mixedWarntyp.uwzService[`${a}`] || []), element[1].id]),
+            );
+            element[1].zamgService.forEach(
+                (a) =>
+                    (mixedWarntyp.zamgService[`${a}`] = [...(mixedWarntyp.zamgService[`${a}`] || []), element[1].id]),
+            );
+        });
+        const resultWarntyp: any = [];
+        for (const a in mixedWarntyp) {
+            if (!resultWarntyp[a]) resultWarntyp[a] = [];
+            for (const b in mixedWarntyp[a]) {
+                let add = true;
+                for (const c in resultWarntyp) {
+                    if (resultWarntyp[c].type) {
+                        if (
+                            mixedWarntyp[a][b].every((x: any) => resultWarntyp[c].type.includes(x)) &&
+                            resultWarntyp[c].type.every((x: any) => mixedWarntyp[a][b].includes(x))
+                        ) {
+                            add = false;
+                            if (resultWarntyp[c][a] == undefined) resultWarntyp[c][a] = [];
+                            resultWarntyp[c][a].push(b);
+                            break;
+                        }
+                    }
+                }
+                if (add) {
+                    const t: any = { type: mixedWarntyp[a][b] };
+                    t[a] = [b];
+                    resultWarntyp.push(t);
+                }
+            }
+        }
+        const result: any = {};
+        for (const a in resultWarntyp) {
+            if (!resultWarntyp[a].type) continue;
+            result[a] = resultWarntyp[a];
+            result[a].id = resultWarntyp[a].type.join(', ');
+            result[a].name = 'noname';
+            delete result[a].type;
+        }
+        this.log.debug(JSON.stringify(result));*/
     }
     /**
      * Create a notificationService
@@ -657,7 +723,7 @@ export class ProviderController extends BaseClass {
             definitionen.genericStateObjects.activeWarnings,
         );
         this.providers.forEach((a) => a.clearMessages());
-
+        this.providers.forEach((a) => a.finishTurn());
         this.log.debug(`We have ${activMessages} active messages.`);
     }
     providersExist(): boolean {

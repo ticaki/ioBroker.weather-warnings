@@ -21,6 +21,7 @@ __export(messages_def_exports, {
   color: () => color,
   customFormatedTokensJson: () => customFormatedTokensJson,
   dwdLevel: () => dwdLevel,
+  genericCombinedWarntype: () => genericCombinedWarntype,
   genericWarntyp: () => genericWarntyp,
   genericWarntypState: () => genericWarntypState,
   isKeyOfObject: () => isKeyOfObject,
@@ -55,7 +56,9 @@ const customFormatedTokensJson = {
   provider: "Provider",
   locationcustom: "Location from admin configuration",
   countdown: "Remaining time until the start of the warning.",
-  status: "Status of warning. new, hold, all clear"
+  status: "Status of warning. new, hold, all clear",
+  starttimems: "Start time in ms",
+  endtimems: "End Time in ms"
 };
 const textLevels = {
   textGeneric: {
@@ -169,6 +172,54 @@ const genericWarntypState = {
 function isKeyOfObject(key, obj) {
   return key in obj;
 }
+const genericCombinedWarntype = {
+  "0": { dwdService: ["22", "82"], uwzService: ["5", "10", "11"], zamgService: ["7"], id: "cold", name: "noname" },
+  "1": {
+    dwdService: ["24", "84", "85", "87"],
+    uwzService: ["8"],
+    zamgService: ["4"],
+    id: "black_ice_slippery",
+    name: "noname"
+  },
+  "2": {
+    dwdService: ["31", "33", "34", "36", "38", "90", "91", "92", "93"],
+    uwzService: ["7"],
+    zamgService: ["5"],
+    id: "thunderstorm",
+    name: "noname"
+  },
+  "3": { dwdService: ["40", "41"], id: "storm, thunderstorm", name: "noname" },
+  "4": { dwdService: ["42"], id: "rain, thunderstorm", name: "noname" },
+  "5": { dwdService: ["44", "45"], id: "storm, rain, thunderstorm", name: "noname" },
+  "6": { dwdService: ["46", "95"], id: "rain, thunderstorm, hail", name: "noname" },
+  "7": { dwdService: ["48", "49", "96"], id: "storm, rain, thunderstorm, hail", name: "noname" },
+  "8": {
+    dwdService: ["51", "52", "53", "54", "55", "56", "57", "58", "79"],
+    uwzService: ["2"],
+    zamgService: ["1"],
+    id: "storm",
+    name: "noname"
+  },
+  "9": { dwdService: ["59"], id: "fog", name: "noname" },
+  "10": {
+    dwdService: ["61", "62", "63", "64", "65", "66"],
+    uwzService: ["4"],
+    zamgService: ["2"],
+    id: "rain",
+    name: "noname"
+  },
+  "11": {
+    dwdService: ["70", "71", "72", "73", "74", "75", "76"],
+    uwzService: ["3"],
+    zamgService: ["3"],
+    id: "snowfall",
+    name: "noname"
+  },
+  "12": { dwdService: ["88", "89"], id: "thaw", name: "noname" },
+  "13": { dwdService: ["247", "248"], uwzService: ["9"], zamgService: ["6"], id: "heat", name: "noname" },
+  "14": { uwzService: ["0", "1"], zamgService: ["0", "8"], id: "unknown", name: "noname" },
+  "15": { uwzService: ["6"], id: "forest_fire", name: "noname" }
+};
 const genericWarntyp = {
   "1": { name: "genericWarntyp.1.name", id: "unknown", dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
   "2": {
@@ -188,7 +239,7 @@ const genericWarntyp = {
   "4": {
     name: "genericWarntyp.4.name",
     id: "rain",
-    dwdService: [96, 95, 66, 65, 64, 63, 62, 61, 59, 49, 48, 46, 45, 44, 42],
+    dwdService: [96, 95, 66, 65, 64, 63, 62, 61, 49, 48, 46, 45, 44, 42],
     uwzService: [4],
     zamgService: [2]
   },
@@ -212,7 +263,7 @@ const genericWarntyp = {
   "10": {
     name: "genericWarntyp.10.name",
     id: "hail",
-    dwdService: [95, 96, 45, 46, 48, 49],
+    dwdService: [95, 96, 46, 48, 49],
     uwzService: [],
     zamgService: []
   },
@@ -316,6 +367,7 @@ const status = {
   color,
   customFormatedTokensJson,
   dwdLevel,
+  genericCombinedWarntype,
   genericWarntyp,
   genericWarntypState,
   isKeyOfObject,

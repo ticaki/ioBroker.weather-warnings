@@ -25,7 +25,7 @@ Nach der Installation und dem automatischen öffnen der Konfigurationsseite dies
 - **Activate telegram/pushover,...:** aktiviere die Ausgabe von Nachrichten an diese installierten Adapter. 
 - **Activate email:** Schreibt alle aktuellen Warnungen in eine Email.
 - **Activate history:** schreibt in den State: .history einen Verlauf der bis zu 500 Einträgen beinhalten kann. Alle Daten oder ausgewählte.
-- **Activate json-array:** sehr spezielle, schreibt die aktuellen Warnungen in ein Array oder nach Aktivierung ein benutzerdefiniertes Json in ein Array, das von Skripten ausgewertet werden kann.
+- **Activate json-array:** sehr speziel, schreibt die aktuellen Warnungen in ein Array oder nach Aktivierung ein benutzerdefiniertes Json in ein Array, das von Skripten ausgewertet werden kann.
 
 - **Update interval:** Abrufinterval in Minuten zu dem Daten geladen werden. (minimum: 5)
 
@@ -42,7 +42,7 @@ Nach der Installation und dem automatischen öffnen der Konfigurationsseite dies
 Hier kannst du eigenen Nachrichten erstellen, oder vorhandene anpassen. Unterhalb der Tabelle stehen alle verfügbare "Tokens" und was sie bedeuten. Der Unique identifier wird in den Pushdiensten verwendet, um einzustellen welche Vorlage mit welcher Meldungsart verwendet werden soll.
 
 Zeichen mit besonderer Bedeutung:
-- `${}` umfasst Tokens die aufgelöst werden. Der Vorlagenbezeichner kann hier ebenfalls eingesetzt werden.
+- `${}` umfasst Tokens, die durch generierte Infomationen ersetzt werden. Der Vorlagenbezeichner kann hier ebenfalls eingesetzt werden.
 - Vorlagenbezeichner die mit `_` beginnen, werden bei Diensten nicht angeboten.
 - `${[0,1,2,3,4]token}` Eine Zeichenkette mit Werten, token muß ein Zahlentoken sein. Index ist wie im Beispiel. 0 ist der erste Wert in der Liste
 - bei einer Vorlage für Jsons muß das abschließende `}` so geschrieben werden `\}`
@@ -80,13 +80,15 @@ Zeichen mit besonderer Bedeutung:
 2) Eine Warnung wurde entfernt und es gibt **noch** weitere Aktive.
 3) Warnungen wurden entfernt und es gibt **keine** weiteren Aktiven.
 
+Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht mehrere Warnungen in Frage kommen.
+
 **Special features**
 
 **email:** Header wird vor die Mail gestellt, dann kommt wiederholt: 1,2 oder 3 +  Zeilenumbruch und anschließend Footer.(weitere Funktionen in Arbeit)
 
 **alexa:** Zusätzlich muß hier noch ein/mehrere Geräte ausgewählt werden. Die Lautstärke wird nur für die Sprachnachrichten verändert und sollte anschließend wieder zurück gesetzt werden. Nachrichtengröße pro Warnung ist maximal 250 Zeichen.
 
-Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht mehrere Warnungen in Frage kommen.
+
 ## General Behaviour
 - No duplicate messages should be sent for one and the same thing. DWD is very particular about this.
 - If `none` is selected as the template, no notifications are sent for it.

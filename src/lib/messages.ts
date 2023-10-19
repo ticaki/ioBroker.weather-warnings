@@ -135,6 +135,14 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            starttimems: {
+                cmd: undefined,
+                node: '',
+            },
+            endtimems: {
+                cmd: undefined,
+                node: '',
+            },
         },
 
         uwzService: {
@@ -224,6 +232,14 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            starttimems: {
+                cmd: undefined,
+                node: '',
+            },
+            endtimems: {
+                cmd: undefined,
+                node: '',
+            },
         },
         zamgService: {
             starttime: {
@@ -300,6 +316,14 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            starttimems: {
+                cmd: undefined,
+                node: '',
+            },
+            endtimems: {
+                cmd: undefined,
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -345,6 +369,14 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             status: {
+                cmd: undefined,
+                node: '',
+            },
+            starttimems: {
+                cmd: undefined,
+                node: '',
+            },
+            endtimems: {
                 cmd: undefined,
                 node: '',
             },
@@ -488,16 +520,22 @@ export class MessagesClass extends BaseClass {
         this.type;
         let hit = false;
         if (filter.level && filter.level > this.level) return false;
+        let howOften = 0;
+        for (const f in MessageType.genericWarntyp) {
+            //@ts-expect-error dann ebenso
+            if (MessageType.genericWarntyp[f][this.provider.service].indexOf(this.type) != -1) howOften++;
+        }
+
         for (const f in filter.type) {
             if (
                 //@ts-expect-error dann ebenso
                 MessageType.genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1
             ) {
                 hit = true;
-                break;
+                howOften--;
             }
         }
-        if (hit) return false;
+        if (hit && howOften == 0) return false;
         return true;
     }
 
@@ -651,6 +689,8 @@ export class MessagesClass extends BaseClass {
         if (!this.formatedData) {
             throw new Error(`${this.log.getName()} formatedDate is empty!`);
         }
+        this.formatedData.starttimems = this.starttime;
+        this.formatedData.endtimems = this.endtime;
         this.cache.ts = Date.now();
         this.cache.messages = {};
         for (let a = 0; a < this.adapter.config.templateTable.length; a++) {

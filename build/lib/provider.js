@@ -161,7 +161,7 @@ class BaseProvider extends import_library.BaseClass {
         continue;
       if (m.endtime < Date.now())
         continue;
-      if (m.starttime < Date.now() && reply[name].level < m.level) {
+      if (m.starttime <= Date.now() && reply[name].level < m.level) {
         reply[name] = {
           level: m.level,
           start: m.starttime,
@@ -268,6 +268,18 @@ class BaseProvider extends import_library.BaseClass {
         this.messages.splice(Number(m--), 1);
       }
     }
+  }
+  async finishTurn() {
+    this.adapter.library.writedp(
+      `${this.name}.summary`,
+      void 0,
+      definitionen.genericStateObjects.summary._channel
+    );
+    this.adapter.library.writedp(
+      `${this.name}.summary.warntypes`,
+      this.messages.map((a) => a.formatedData ? a.formatedData.warntypegenericname : "").join(", "),
+      definitionen.genericStateObjects.summary.warntypes
+    );
   }
 }
 class DWDProvider extends BaseProvider {
@@ -613,6 +625,7 @@ class ProviderController extends import_library.BaseClass {
       definitionen.genericStateObjects.activeWarnings
     );
     this.providers.forEach((a) => a.clearMessages());
+    this.providers.forEach((a) => a.finishTurn());
     this.log.debug(`We have ${activMessages} active messages.`);
   }
   providersExist() {
