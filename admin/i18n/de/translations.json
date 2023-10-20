@@ -443,7 +443,6 @@
     "template.emailHeader": "<table border=\"1\" cellpadding=\"0\" cellpacing=\"0\" width=\"100%\">",
     "templates": "Vorlagen",
     "basicconfig": "Allgemein",
-    "iconColor": "Farbe der Symbole",
     "blue": "Blau",
     "black": "Schwarz",
     "icon_color": "Farbe der Symbole"
