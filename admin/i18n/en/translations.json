@@ -227,6 +227,7 @@
     "restoreDefaultToolTip": "Restore the default templates in the current language!",
     "HourFilter": "Filter raw data: Start time (0 = off)",
     "HourFilterTip": "Filter raw data whose start time is further in the future than X (in hours).",
+    "templates":"Templates",
     "templateTitle": "Template text",
     "templateTitleTip": "Enter your template text here.",
     "requestReload": "Reload browser or push the buttom!",
@@ -440,5 +441,9 @@
     "useTestCase": "Interval reduced, test data alternately activated and deactivated.",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "Url to weather icons.",
     "statesObjectsWarnings.allService.formatedkeys.starttimems": "Start time as ms.",
-    "statesObjectsWarnings.allService.formatedkeys.endtimems":"End time as ms"
+    "statesObjectsWarnings.allService.formatedkeys.endtimems":"End time as ms",
+    "basicconfig": "General",
+    "icon_color": "Color of icons",
+    "blue":"blue",
+    "black":"black"
 }

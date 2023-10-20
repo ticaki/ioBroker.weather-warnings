@@ -440,5 +440,11 @@
     "useTestCase": "间隔缩短，测试数据交替激活和停用。",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "天气图标的 URL。",
     "statesObjectsWarnings.allService.formatedkeys.starttimems": "开始时间，单位为毫秒。",
-    "statesObjectsWarnings.allService.formatedkeys.endtimems": "结束时间（毫秒）"
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "结束时间（毫秒）",
+    "templates": "模板",
+    "basicconfig": "一般的",
+    "iconColor": "图标的颜色",
+    "blue": "蓝色的",
+    "black": "黑色的",
+    "icon_color": "图标的颜色"
 }

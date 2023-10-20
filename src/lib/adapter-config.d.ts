@@ -15,6 +15,7 @@ declare global {
             useJsonHistory: boolean;
             useTestWarnings: boolean;
             useTestCase: boolean;
+            icon_color: string;
             imExpert: boolean;
             notPushAtStart: boolean;
             alexa2_sounds: { warntype: string; sound: string; warntypenumber: number }[];
