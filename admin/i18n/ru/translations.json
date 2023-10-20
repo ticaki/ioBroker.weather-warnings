@@ -450,5 +450,6 @@
     "statesObjectsWarnings.allService.formatedkeys.startmonth": "Месяц начала предупреждения",
     "statesObjectsWarnings.allService.formatedkeys.endday": "День окончания предупреждения",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Месяц окончания предупреждения",
-    "iobrokerUrl": "Префикс для Iconurl (пример http://192.168.1.1:8081)"
+    "iobrokerUrl": "Префикс для Iconurl (пример http://192.168.1.1:8081)",
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Общий тип предупреждения в виде числа."
 }

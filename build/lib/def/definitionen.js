@@ -1819,6 +1819,18 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      warntypegeneric: {
+        _id: "warntypegeneric",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.warntypegeneric",
+          type: "number",
+          role: "value",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       location: {
         _id: "begin",
         type: "state",

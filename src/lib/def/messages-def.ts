@@ -29,6 +29,7 @@ export type customFormatedTokens = {
     warnlevelcolorhex: string; // RGB im Hexformat
     warntypename: string; // gelieferter Warntype
     warntypegenericname: string; // vereinheitlichter Warntyp
+    warntypegeneric: string;
     location: string; // gelieferte Location (meinst Unsinn)
     instruction: string; // Anweisungen
     provider: string;
@@ -63,7 +64,8 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     warnlevelcolorname: 'Textname of level color', // Farbbezeichnung des Levels
     warnlevelcolorhex: 'Hexnumber of level color', // RGB im Hexformat
     warntypename: 'Warning type retrieved from the provider', // gelieferter Warntype
-    warntypegenericname: 'Warntype generic', // vereinheitlichter Warntyp
+    warntypegenericname: 'Warntype name generic', // vereinheitlichter Warntyp
+    warntypegeneric: 'Warntype number generic',
     location: 'Location retrieved from the provider', // gelieferte Location (meinst Unsinn)
     instruction: 'Instructions', // Anweisungen
     provider: 'Provider',

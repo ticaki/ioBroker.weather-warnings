@@ -450,5 +450,6 @@
     "statesObjectsWarnings.allService.formatedkeys.startmonth": "Maand van de waarschuwingsstart",
     "statesObjectsWarnings.allService.formatedkeys.endday": "Dag van het einde van de waarschuwing",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Maand waarin de waarschuwing eindigt",
-    "iobrokerUrl": "Voorvoegsel voor Iconurl (bijvoorbeeld http://192.168.1.1:8081)"
+    "iobrokerUrl": "Voorvoegsel voor Iconurl (bijvoorbeeld http://192.168.1.1:8081)",
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Generiek waarschuwingstype als nummer."
 }

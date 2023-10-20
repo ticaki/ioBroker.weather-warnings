@@ -450,5 +450,6 @@
     "statesObjectsWarnings.allService.formatedkeys.startmonth": "警告开始月份",
     "statesObjectsWarnings.allService.formatedkeys.endday": "警告结束日",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "警告结束月份",
-    "iobrokerUrl": "Iconurl 的前缀（例如 http://192.168.1.1:8081）"
+    "iobrokerUrl": "Iconurl 的前缀（例如 http://192.168.1.1:8081）",
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "通用警告类型为数字。"
 }

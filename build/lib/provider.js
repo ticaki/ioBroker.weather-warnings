@@ -464,6 +464,11 @@ class ProviderController extends import_library.BaseClass {
   async init() {
     this.pushOn = !this.adapter.config.notPushAtStart;
     this.refreshTime = this.adapter.config.refreshTime * 6e4;
+    const states = [];
+    for (const a in messagesDef.genericWarntyp) {
+      states[a] = await this.library.getTranslation(messagesDef.genericWarntyp[a].name);
+    }
+    definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
   }
   async createNotificationService(optionList) {
     for (const a in optionList) {

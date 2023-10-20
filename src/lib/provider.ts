@@ -496,6 +496,12 @@ export class ProviderController extends BaseClass {
         this.pushOn = !this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
         this.refreshTime = this.adapter.config.refreshTime * 60000;
 
+        const states: string[] = [];
+        for (const a in messagesDef.genericWarntyp) {
+            //@ts-expect-error dann so
+            states[a] = await this.library.getTranslation(messagesDef.genericWarntyp[a].name);
+        }
+        definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
         /*
         // this code ist to swap genericWarntyp to ids with a array of warntypes
         const warntyp = messagesDef.genericWarntyp;

@@ -450,5 +450,6 @@
     "statesObjectsWarnings.allService.formatedkeys.startmonth": "Mese dell'inizio dell'avvertimento",
     "statesObjectsWarnings.allService.formatedkeys.endday": "Il giorno dell'avvertimento finisce",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Mese della fine dell'avvertimento",
-    "iobrokerUrl": "Prefisso per Iconurl (esempio http://192.168.1.1:8081)"
+    "iobrokerUrl": "Prefisso per Iconurl (esempio http://192.168.1.1:8081)",
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Tipo di avviso generico come numero."
 }

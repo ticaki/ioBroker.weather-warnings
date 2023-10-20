@@ -166,6 +166,10 @@ class MessagesClass extends import_library.BaseClass {
       endmonth: {
         cmd: void 0,
         node: `$fromMillis($toMillis(EXPIRES),"[M01]","\${this.timeOffset}")`
+      },
+      warntypegeneric: {
+        cmd: void 0,
+        node: ""
       }
     },
     uwzService: {
@@ -282,6 +286,10 @@ class MessagesClass extends import_library.BaseClass {
       endmonth: {
         cmd: void 0,
         node: `$fromMillis(dtgEnd * 1000,"[M01]","\${this.timeOffset}")`
+      },
+      warntypegeneric: {
+        cmd: void 0,
+        node: ""
       }
     },
     zamgService: {
@@ -385,6 +393,10 @@ class MessagesClass extends import_library.BaseClass {
       endmonth: {
         cmd: void 0,
         node: `$fromMillis($number(rawinfo.end)*1000,"[M01]","\${this.timeOffset}")`
+      },
+      warntypegeneric: {
+        cmd: void 0,
+        node: ""
       }
     },
     default: {
@@ -459,6 +471,10 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       endmonth: {
+        cmd: void 0,
+        node: ""
+      },
+      warntypegeneric: {
         cmd: void 0,
         node: ""
       }
@@ -728,6 +744,7 @@ class MessagesClass extends import_library.BaseClass {
       this.formatedData.warntypegenericname = await this.library.getTranslation(
         MessageType.genericWarntyp[this.genericType].name
       );
+      this.formatedData.warntypegeneric = this.genericType;
       this.formatedData.locationcustom = this.provider ? this.provider.customName : "";
       this.formatedData.provider = this.provider ? this.provider.service.replace("Service", "").toUpperCase() : "unknown";
       this.updated = false;
@@ -772,7 +789,7 @@ class MessagesClass extends import_library.BaseClass {
         const id = MessageType.genericWarntyp[this.genericType].id;
         const color = this.adapter.config.icon_color || "blue";
         if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
-          return `${this.adapter.config.iobrokerUrl ? this.adapter.config.iobrokerUrl + "/" : ""}adapter/${this.adapter.name}/icons/${color}/${id}.png`;
+          return `${this.adapter.config.iobrokerUrl || ""}/adapter/${this.adapter.name}/icons/${color}/${id}.png`;
         }
         return "";
       }
