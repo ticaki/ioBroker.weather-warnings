@@ -178,7 +178,7 @@
     "customFormatedTokensJson.enddayofweek": "End Tag der Woche",
     "customFormatedTokensJson.headline": "Überschrift",
     "customFormatedTokensJson.description": "Beschreibung",
-    "customFormatedTokensJson.weathertext": "Wettertext",
+    "customFormatedTokensJson.impact": "Auswirkungen Text",
     "customFormatedTokensJson.ceiling": "Maximale Gültigkeitshöhe",
     "customFormatedTokensJson.altitude": "Mindestgültigkeitshöhe",
     "customFormatedTokensJson.warnlevelname": "Textname des Gefahrenlevels",
@@ -358,7 +358,7 @@
     "statesObjectsWarnings.allService.formatedkeys.headline": "Überschrift der Warnung",
     "statesObjectsWarnings.allService.formatedkeys.description": "Beschreibung der Warnung.",
     "statesObjectsWarnings.allService.formatedkeys.instruction": "Handlungsempfehlungen der Warnung.",
-    "statesObjectsWarnings.allService.formatedkeys.weathertext": "Wetterbeschreibung der Warnung.",
+    "statesObjectsWarnings.allService.formatedkeys.impact": "Auswirkungen der Warnung.",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelname": "Warnstufe als Levelname",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname": "Warnstufe als Farbname",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelnumber": "Warnstufe als Zahl",
@@ -438,5 +438,8 @@
     "customFormatedTokensJson.endtimems": "Endzeit in ms",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL zu Wettersymbolen.",
     "statesObjectsWarnings.allService.formatedkeys.starttimems": "Startzeit als ms.",
-    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Endzeit als ms"
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Endzeit als ms",
+    "template.emailMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"${warnlevelcolorhex}\"><b><font color=#000000>${headline}</font></b></td></tr><tr><td style=\"padding: 5px 0 20px 0;\">${description}</td></tr>",
+    "template.emailFooter": "</table>",
+    "template.emailHeader": "<table border=\"1\" cellpadding=\"0\" cellpacing=\"0\" width=\"100%\">"
 }

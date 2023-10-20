@@ -77,7 +77,7 @@ class MessagesClass extends import_library.BaseClass {
       },
       headline: { node: `HEADLINE` },
       description: { node: `DESCRIPTION` },
-      weathertext: { node: `` },
+      impact: { node: `` },
       ceiling: { node: `$floor(CEILING * 0.3048)` },
       altitude: { node: `$floor(ALTITUDE * 0.3048)` },
       warnlevelcolorhex: {
@@ -175,7 +175,7 @@ class MessagesClass extends import_library.BaseClass {
       },
       headline: { node: `payload.translationsShortText` },
       description: { node: `payload.translationsLongText` },
-      weathertext: { node: `` },
+      impact: { node: `` },
       ceiling: { node: `payload.altMax` },
       altitude: { node: `payload.altMin` },
       warnlevelcolorname: {
@@ -274,8 +274,8 @@ class MessagesClass extends import_library.BaseClass {
         cmd: "dayoftheweek"
       },
       headline: { node: `text` },
-      description: { node: `auswirkungen` },
-      weathertext: { node: `meteotext` },
+      description: { node: `meteotext` },
+      impact: { node: `auswirkungen` },
       ceiling: { node: `` },
       altitude: { node: `` },
       warnlevelcolorname: {
@@ -348,7 +348,7 @@ class MessagesClass extends import_library.BaseClass {
       enddayofweek: { node: `` },
       headline: { node: `` },
       description: { node: `` },
-      weathertext: { node: `` },
+      impact: { node: `` },
       ceiling: { node: `` },
       altitude: { node: `` },
       warnlevelname: { node: `` },
@@ -433,7 +433,7 @@ class MessagesClass extends import_library.BaseClass {
           enddayofweek: { node: `` },
           headline: { node: `` },
           description: { node: `` },
-          weathertext: { node: `` },
+          impact: { node: `` },
           ceiling: { node: `` },
           altitude: { node: `` },
           warnlevelname: { node: `` },

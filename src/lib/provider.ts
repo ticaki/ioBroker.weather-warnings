@@ -177,7 +177,7 @@ export class BaseProvider extends BaseClass {
                     end: m.endtime,
                     headline: m.formatedData !== undefined ? String(m.formatedData.headline) : '',
                     active: m.starttime <= Date.now() && m.endtime >= Date.now(),
-                    type: -1,
+                    type: m.genericType,
                 };
             }
         }

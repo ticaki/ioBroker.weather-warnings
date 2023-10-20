@@ -42,7 +42,7 @@ const customFormatedTokensJson = {
   enddayofweekshort: "End day of the week short",
   headline: "Headline",
   description: "Description",
-  weathertext: "Weathertext",
+  impact: "Impact text",
   ceiling: "Maximum validity height",
   altitude: "Minimum validity height",
   warnlevelname: "Textname of level",

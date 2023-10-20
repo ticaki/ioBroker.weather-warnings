@@ -102,6 +102,8 @@ Templates for 3) cannot contain `${}` Tokens.
 ## Icons
 Creator: [Adri Ansyah](https://www.youtube.com/channel/UChLOv1L-ftAFc2ZizdEAKgw?view_as=subscriber)
 
+Changes: In the original they are blue, other colours are changes to the original. 
+
 Licence: [CC BY 4.0 LEGAL CODE](https://creativecommons.org/licenses/by/4.0/legalcode)
 
 Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105

@@ -16,7 +16,7 @@ export type customFormatedTokens = {
     enddayofweekshort: string; // End Tag der Woche (kurz)
     headline: string; // Schlagzeile
     description: string; // Beschreibung
-    weathertext: string; // nur Zamg wetterbeschreibender Text
+    impact: string; // nur Zamg Auswirkungen
     ceiling: string; // max höhe
     altitude: string; // min höhe
     warnlevelname: string; // Textbezeichnung des Levels
@@ -47,7 +47,7 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     enddayofweekshort: 'End day of the week short', // End Tag der Woche (kurz)
     headline: 'Headline', // Schlagzeile
     description: 'Description', // Beschreibung
-    weathertext: 'Weathertext', // nur Zamg wetterbeschreibender Text
+    impact: 'Impact text', // nur Zamg wetterbeschreibender Text
     ceiling: 'Maximum validity height', // max höhe
     altitude: 'Minimum validity height', // min höhe
     warnlevelname: 'Textname of level', // Textbezeichnung des Levels

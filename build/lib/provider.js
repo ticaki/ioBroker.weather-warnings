@@ -168,7 +168,7 @@ class BaseProvider extends import_library.BaseClass {
           end: m.endtime,
           headline: m.formatedData !== void 0 ? String(m.formatedData.headline) : "",
           active: m.starttime <= Date.now() && m.endtime >= Date.now(),
-          type: -1
+          type: m.genericType
         };
       }
     }

@@ -1708,11 +1708,11 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
-            weathertext: {
+            impact: {
                 _id: 'begin',
                 type: 'state',
                 common: {
-                    name: 'statesObjectsWarnings.allService.formatedkeys.weathertext',
+                    name: 'statesObjectsWarnings.allService.formatedkeys.impact',
                     type: 'string',
                     role: 'text',
                     read: true,
