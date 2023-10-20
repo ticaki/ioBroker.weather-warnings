@@ -495,10 +495,10 @@ export class MessagesClass extends BaseClass {
                 break;
             case 'zamgService':
                 {
-                    this.starttime = Number(
-                        await this.library.readWithJsonata(this.rawWarning, `$number(rawinfo.start)`),
-                    );
-                    this.endtime = Number(await this.library.readWithJsonata(this.rawWarning, `$number(rawinfo.end)`));
+                    this.starttime =
+                        Number(await this.library.readWithJsonata(this.rawWarning, `$number(rawinfo.start)`)) * 1000;
+                    this.endtime =
+                        Number(await this.library.readWithJsonata(this.rawWarning, `$number(rawinfo.end)`)) * 1000;
                     this.ceiling = -1;
                     this.altitude = -1;
                     this.level = Number(await this.library.readWithJsonata(this.rawWarning, `rawinfo.wlevel`));
