@@ -380,10 +380,10 @@ class NotificationClass extends library.BaseClass {
           opt.html = result.map((a) => a.text).join(this.adapter.config.email_line_break);
           const templates = this.adapter.config.templateTable;
           this.log.info(`Email message: ${messages.length} warnings`);
-          let token = "notification.warning";
+          let token = "message.status.new";
           if (messages[0].action == "removeAll")
-            token = "notification.allclear";
-          opt.topic = await this.adapter.library.getTranslation(token);
+            token = "message.status.clear";
+          opt.subject = await this.adapter.library.getTranslation(token);
           if (this.adapter.config.email_Header !== "none") {
             const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Header);
             if (tempid != -1) {
@@ -397,7 +397,7 @@ class NotificationClass extends library.BaseClass {
           if (this.adapter.config.email_Footer !== "none") {
             const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Footer);
             if (tempid != -1) {
-              opt.html = opt.html + templates[tempid];
+              opt.html = opt.html + templates[tempid].template;
             }
           }
           this.log.debug(`start email sending! Messagecount: ${result.length}`);
