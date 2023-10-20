@@ -787,13 +787,13 @@ export class ProviderController extends BaseClass {
         const dirs = [];
         for (const a in allowedDirs) {
             if (!allowedDirs[a].dpWarning)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.warning`);
-            if (!allowedDirs[a].dpMessage)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.alerts`);
-            /*if (!allowedDirs[a].dpFormated)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.messages`);*/
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9\-_]+\\.warning`);
             if (!allowedDirs[a].dpAlerts)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.formatedKeys`);
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9\-_]+\\.alerts`);
+            /*if (!allowedDirs[a].dpMessage)
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9\-_]+\\.messages`);*/
+            if (!allowedDirs[a].dpFormated)
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9\-_]+\\.formatedKeys`);
 
             this.library.setForbiddenDirs(dirs);
         }

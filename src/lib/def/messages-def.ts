@@ -91,8 +91,8 @@ export const color = {
     },
     zamgColor: {
         0: `#00ff00`,
-        1: `#00ff00`,
-        2: `#01DF3A`,
+        1: `#01DF3A`,
+        2: `#fffc04`,
         3: `#ffc400`,
         4: `#ff0404`,
     },

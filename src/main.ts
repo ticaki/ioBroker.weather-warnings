@@ -98,8 +98,8 @@ class WeatherWarnings extends utils.Adapter {
         try {
             //const states = await self.getStatesAsync('*');
             await this.library.init();
+            this.providerController.setAllowedDirs(allowedDirsConfig);
             await this.library.initStates(await this.getStatesAsync('*'));
-            await this.library.initStates((await this.getChannelsAsync()) as any);
         } catch (error) {
             this.log.error(`catch(1): init error while reading states! ${error}`);
         }
@@ -190,7 +190,6 @@ class WeatherWarnings extends utils.Adapter {
                 const self = that as WeatherWarnings;
                 if (!self) return;
                 if (!self.providerController) return;
-                self.providerController.setAllowedDirs(allowedDirsConfig);
 
                 self.providerController.init();
                 self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 60000} minutes`);

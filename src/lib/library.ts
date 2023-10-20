@@ -402,6 +402,7 @@ export class Library extends BaseClass {
      */
     async initStates(states: { [key: string]: { val: ioBroker.StateValue; ts: number; ack: boolean } }): Promise<void> {
         if (!states) return;
+        const removedChannels: string[] = [];
         for (const state in states) {
             const dp = state.replace(`${this.adapter.name}.${this.adapter.instance}.`, '');
             const del = !this.isDirAllowed(dp);
@@ -409,7 +410,7 @@ export class Library extends BaseClass {
                 const obj = await this.adapter.getObjectAsync(dp);
                 if (!this.adapter.config.useJsonHistory && dp.endsWith('.warning.jsonHistory')) {
                     this.log.debug('delete state: ' + dp);
-                    await this.adapter.delStateAsync(dp);
+                    await this.adapter.delObjectAsync(dp);
                     continue;
                 }
                 this.setdb(
@@ -421,8 +422,11 @@ export class Library extends BaseClass {
                     states[state] && states[state].ts ? states[state].ts : Date.now(),
                 );
             } else {
-                this.adapter.log.debug('Delete State: ' + dp);
-                await this.adapter.delStateAsync(dp);
+                if (!removedChannels.every((a) => !dp.startsWith(a))) continue;
+                const channel = dp.split('.').slice(0, 4).join('.');
+                removedChannels.push(channel);
+                await this.adapter.delObjectAsync(channel, { recursive: true });
+                this.log.debug('Delete channel with dp:' + channel);
             }
         }
     }
