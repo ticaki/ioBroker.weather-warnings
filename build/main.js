@@ -251,9 +251,9 @@ class WeatherWarnings extends utils.Adapter {
         }
         if (self.config.alexa2_Enabled && notificationServiceOpt.alexa2 != void 0) {
           notificationServiceOpt.alexa2.volumen = self.config.alexa2_volumen > 0 ? String(self.config.alexa2_volumen) : "";
-          notificationServiceOpt.alexa2.audio = self.config.alexa2_Audio;
-          notificationServiceOpt.alexa2.sounds = self.config.alexa2_sounds;
-          notificationServiceOpt.alexa2.sounds_enabled = self.config.alexa2_sounds_enabled;
+          notificationServiceOpt.alexa2.audio = self.config.alexa2_Audio || "";
+          notificationServiceOpt.alexa2.sounds = self.config.alexa2_sounds || [];
+          notificationServiceOpt.alexa2.sounds_enabled = self.config.alexa2_sounds_enabled || false;
           if (self.config.alexa2_device_ids.length == 0 || !self.config.alexa2_device_ids[0]) {
             self.log.error(`Missing devices for alexa - deactivated`);
             delete notificationServiceOpt.alexa2;

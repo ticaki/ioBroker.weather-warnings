@@ -251,7 +251,7 @@ export class NotificationClass extends library.BaseClass {
                             }
                         }
                     } else {
-                        const prefix = `${this.options.volumen}` + (this.options.audio ? ';' : '') + this.options.audio;
+                        const prefix = `${this.options.volumen}${this.options.audio ? `;${this.options.audio}` : ''}`;
                         for (const a in devices) {
                             for (const msg of messages) {
                                 if (Array.isArray(msg)) continue;
