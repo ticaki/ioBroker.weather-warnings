@@ -445,5 +445,10 @@
     "basicconfig": "Загальний",
     "blue": "блакитний",
     "black": "чорний",
-    "icon_color": "Колір іконок"
+    "icon_color": "Колір іконок",
+    "statesObjectsWarnings.allService.formatedkeys.startday": "День початку попередження",
+    "statesObjectsWarnings.allService.formatedkeys.startmonth": "Місяць початку попередження",
+    "statesObjectsWarnings.allService.formatedkeys.endday": "День закінчення попередження",
+    "statesObjectsWarnings.allService.formatedkeys.endmonth": "Місяць закінчення попередження",
+    "iobrokerUrl": "Префікс для Iconurl (приклад http://192.168.1.1:8081)"
 }

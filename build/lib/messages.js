@@ -150,6 +150,22 @@ class MessagesClass extends import_library.BaseClass {
       iconurl: {
         cmd: "geticon",
         node: ""
+      },
+      startday: {
+        cmd: void 0,
+        node: `$fromMillis($toMillis(ONSET),"[D01]","\${this.timeOffset}")`
+      },
+      startmonth: {
+        cmd: void 0,
+        node: `$fromMillis($toMillis(ONSET),"[M01]","\${this.timeOffset}")`
+      },
+      endday: {
+        cmd: void 0,
+        node: `$fromMillis($toMillis(EXPIRES),"[D01]","\${this.timeOffset}")`
+      },
+      endmonth: {
+        cmd: void 0,
+        node: `$fromMillis($toMillis(EXPIRES),"[M01]","\${this.timeOffset}")`
       }
     },
     uwzService: {
@@ -250,6 +266,22 @@ class MessagesClass extends import_library.BaseClass {
       iconurl: {
         cmd: "geticon",
         node: ""
+      },
+      startday: {
+        cmd: void 0,
+        node: `$fromMillis(dtgStart * 1000,"[D01]","\${this.timeOffset}")`
+      },
+      startmonth: {
+        cmd: void 0,
+        node: `$fromMillis(dtgStart * 1000,"[M01]","\${this.timeOffset}")`
+      },
+      endday: {
+        cmd: void 0,
+        node: `$fromMillis(dtgEnd * 1000,"[D01]","\${this.timeOffset}")`
+      },
+      endmonth: {
+        cmd: void 0,
+        node: `$fromMillis(dtgEnd * 1000,"[M01]","\${this.timeOffset}")`
       }
     },
     zamgService: {
@@ -337,6 +369,22 @@ class MessagesClass extends import_library.BaseClass {
       iconurl: {
         cmd: "geticon",
         node: ""
+      },
+      startday: {
+        cmd: void 0,
+        node: `$fromMillis($number(rawinfo.start)*1000,"[D01]","\${this.timeOffset}")`
+      },
+      startmonth: {
+        cmd: void 0,
+        node: `$fromMillis($number(rawinfo.start)*1000,"[M01]","\${this.timeOffset}")`
+      },
+      endday: {
+        cmd: void 0,
+        node: `$fromMillis($number(rawinfo.end)*1000,"[D01]","\${this.timeOffset}")`
+      },
+      endmonth: {
+        cmd: void 0,
+        node: `$fromMillis($number(rawinfo.end)*1000,"[M01]","\${this.timeOffset}")`
       }
     },
     default: {
@@ -395,6 +443,22 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       iconurl: {
+        cmd: void 0,
+        node: ""
+      },
+      startday: {
+        cmd: void 0,
+        node: ""
+      },
+      startmonth: {
+        cmd: void 0,
+        node: ""
+      },
+      endday: {
+        cmd: void 0,
+        node: ""
+      },
+      endmonth: {
         cmd: void 0,
         node: ""
       }
@@ -708,7 +772,7 @@ class MessagesClass extends import_library.BaseClass {
         const id = MessageType.genericWarntyp[this.genericType].id;
         const color = this.adapter.config.icon_color || "blue";
         if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
-          return `adapter/${this.adapter.name}/icons/${color}/${id}.png`;
+          return `${this.adapter.config.iobrokerUrl ? this.adapter.config.iobrokerUrl + "/" : ""}adapter/${this.adapter.name}/icons/${color}/${id}.png`;
         }
         return "";
       }

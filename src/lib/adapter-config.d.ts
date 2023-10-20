@@ -16,6 +16,8 @@ declare global {
             useTestWarnings: boolean;
             useTestCase: boolean;
             icon_color: string;
+            iobrokerUrl: string;
+
             imExpert: boolean;
             notPushAtStart: boolean;
             alexa2_sounds: { warntype: string; sound: string; warntypenumber: number }[];

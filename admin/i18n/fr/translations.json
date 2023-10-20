@@ -445,5 +445,10 @@
     "basicconfig": "Général",
     "blue": "bleu",
     "black": "noir",
-    "icon_color": "Couleur des icônes"
+    "icon_color": "Couleur des icônes",
+    "statesObjectsWarnings.allService.formatedkeys.startday": "Jour du début de l'avertissement",
+    "statesObjectsWarnings.allService.formatedkeys.startmonth": "Mois du début de l'avertissement",
+    "statesObjectsWarnings.allService.formatedkeys.endday": "Jour de fin d'avertissement",
+    "statesObjectsWarnings.allService.formatedkeys.endmonth": "Mois de fin d'avertissement",
+    "iobrokerUrl": "Préfixe pour Iconurl (exemple http://192.168.1.1:8081)"
 }

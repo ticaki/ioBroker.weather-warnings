@@ -1543,6 +1543,54 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      startday: {
+        _id: "begin",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.startday",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      startmonth: {
+        _id: "begin",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.startmonth",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      endday: {
+        _id: "begin",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.endday",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      endmonth: {
+        _id: "begin",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.endmonth",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       endtime: {
         _id: "begin",
         type: "state",

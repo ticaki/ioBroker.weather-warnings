@@ -34,8 +34,12 @@ module.exports = __toCommonJS(messages_def_exports);
 const customFormatedTokensJson = {
   starttime: "Start time",
   startdate: "Start date",
-  endtime: "End time",
+  startday: "Start Day",
+  startmonth: "Start Month",
+  endtime: "End Time",
   enddate: "End Date",
+  endday: "End Day",
+  endmonth: "End Month",
   startdayofweek: "Start day of the week",
   enddayofweek: "End day of the week",
   startdayofweekshort: "Start day of the week short",
