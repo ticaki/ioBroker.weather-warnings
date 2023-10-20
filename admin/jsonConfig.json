@@ -87,6 +87,25 @@
                     "label": "email_Enabled",
                     "newLine": false
                 },
+                "icon_color": {
+                    "type": "select",
+                    "disabled": "data.test == '' ",
+                    "label": "icon_color",
+                    "options": [
+                        {
+                            "label": "black",
+                            "value": "black"
+                        },{
+                            "label": "blue",
+                            "value": "blue"
+                        }
+                    ],
+                    "default":"blue",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "newLine": true
+                },
                 "refreshTime": {
                     "type": "number",
                     "label": "refreshTime",
@@ -207,7 +226,7 @@
         },
         "_templates": {
             "type": "panel",
-            "label": "Templates",
+            "label": "templates",
             "items": {
                 "templateTable": {
                     "type": "table",

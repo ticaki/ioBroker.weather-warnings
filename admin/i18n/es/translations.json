@@ -440,5 +440,11 @@
     "useTestCase": "Intervalo reducido, datos de prueba activados y desactivados alternativamente.",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL a iconos meteorológicos.",
     "statesObjectsWarnings.allService.formatedkeys.starttimems": "Hora de inicio como ms.",
-    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Hora de finalización como ms"
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Hora de finalización como ms",
+    "templates": "Plantillas",
+    "basicconfig": "General",
+    "iconColor": "Color de iconos",
+    "blue": "azul",
+    "black": "negro",
+    "icon_color": "Color de iconos"
 }

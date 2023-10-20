@@ -5,6 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.weather-warnings.svg)](https://www.npmjs.com/package/iobroker.weather-warnings)
 ![Number of Installations](https://iobroker.live/badges/weather-warnings-installed.svg)
 ![Current version in stable repository](https://iobroker.live/badges/weather-warnings-stable.svg)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/weather-warnings/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 [![NPM](https://nodei.co/npm/iobroker.weather-warnings.png?downloads=true)](https://nodei.co/npm/iobroker.weather-warnings/)
 

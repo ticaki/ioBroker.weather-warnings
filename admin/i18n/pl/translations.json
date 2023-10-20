@@ -440,5 +440,11 @@
     "useTestCase": "Interwał skrócony, dane testowe na przemian aktywowane i dezaktywowane.",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "Adres URL ikon pogody.",
     "statesObjectsWarnings.allService.formatedkeys.starttimems": "Czas rozpoczęcia jako ms.",
-    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Czas zakończenia jako ms"
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Czas zakończenia jako ms",
+    "templates": "Szablony",
+    "basicconfig": "Ogólny",
+    "iconColor": "Kolor ikon",
+    "blue": "niebieski",
+    "black": "czarny",
+    "icon_color": "Kolor ikon"
 }

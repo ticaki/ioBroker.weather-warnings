@@ -440,5 +440,11 @@
     "useTestCase": "Interval verkort, testgegevens afwisselend geactiveerd en gedeactiveerd.",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL naar weerpictogrammen.",
     "statesObjectsWarnings.allService.formatedkeys.starttimems": "Begintijd als ms.",
-    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Eindtijd als ms"
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Eindtijd als ms",
+    "templates": "Sjablonen",
+    "basicconfig": "Algemeen",
+    "iconColor": "Kleur van pictogrammen",
+    "blue": "blauw",
+    "black": "zwart",
+    "icon_color": "Kleur van pictogrammen"
 }

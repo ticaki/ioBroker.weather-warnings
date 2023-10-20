@@ -742,8 +742,9 @@ export class MessagesClass extends BaseClass {
             }
             case 'geticon': {
                 const id = MessageType.genericWarntyp[this.genericType].id;
-                if (await this.library.fileExistAsync(`icons/black/${id}.png`)) {
-                    return `adapter/${this.adapter.name}/icons/black/${id}.png`;
+                const color = this.adapter.config.icon_color || 'blue';
+                if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
+                    return `adapter/${this.adapter.name}/icons/${color}/${id}.png`;
                 }
                 return '';
             }

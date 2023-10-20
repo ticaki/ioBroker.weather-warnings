@@ -440,5 +440,11 @@
     "useTestCase": "Інтервал скорочений, тестові дані поперемінно активуються та деактивуються.",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL-адреса піктограм погоди.",
     "statesObjectsWarnings.allService.formatedkeys.starttimems": "Час початку як мс.",
-    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Час завершення як мс"
+    "statesObjectsWarnings.allService.formatedkeys.endtimems": "Час завершення як мс",
+    "templates": "Шаблони",
+    "basicconfig": "Загальний",
+    "iconColor": "Колір іконок",
+    "blue": "блакитний",
+    "black": "чорний",
+    "icon_color": "Колір іконок"
 }
