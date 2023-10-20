@@ -106,6 +106,15 @@
                     "lg": 2,
                     "newLine": true
                 },
+                "iobrokerUrl": {
+                    "type": "text",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "label": "iobrokerUrl",
+                    "default": "",
+                    "newLine": false
+                },
                 "refreshTime": {
                     "type": "number",
                     "label": "refreshTime",

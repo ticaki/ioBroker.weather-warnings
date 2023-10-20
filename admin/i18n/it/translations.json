@@ -446,5 +446,10 @@
     "iconColor": "Colore delle icone",
     "blue": "blu",
     "black": "nero",
-    "icon_color": "Colore delle icone"
+    "icon_color": "Colore delle icone",
+    "statesObjectsWarnings.allService.formatedkeys.startday": "Inizio del giorno dell'avvertimento",
+    "statesObjectsWarnings.allService.formatedkeys.startmonth": "Mese dell'inizio dell'avvertimento",
+    "statesObjectsWarnings.allService.formatedkeys.endday": "Il giorno dell'avvertimento finisce",
+    "statesObjectsWarnings.allService.formatedkeys.endmonth": "Mese della fine dell'avvertimento",
+    "iobrokerUrl": "Prefisso per Iconurl (esempio http://192.168.1.1:8081)"
 }

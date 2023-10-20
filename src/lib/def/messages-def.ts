@@ -8,8 +8,12 @@ import { customChannelType } from './definitionen';
 export type customFormatedTokens = {
     starttime: string; // Start Uhrzeit HH:MM
     startdate: string; // Start Datum DD.MM
+    startday: string;
+    startmonth: string;
     endtime: string; // Endzeitpunkt
     enddate: string; // Enddatum
+    endday: string;
+    endmonth: string;
     startdayofweek: string; // Start Tag der Woche
     enddayofweek: string; // End Tag der Woche
     startdayofweekshort: string; // Start Tag der Woche (kurz)
@@ -39,8 +43,12 @@ export type customFormatedTokens = {
 export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, string> = {
     starttime: 'Start time', // Start Uhrzeit HH:MM
     startdate: 'Start date', // Start Datum DD.MM
-    endtime: 'End time', // Endzeitpunkt
+    startday: 'Start Day',
+    startmonth: 'Start Month',
+    endtime: 'End Time', // Endzeitpunkt
     enddate: 'End Date', // Enddatum
+    endday: 'End Day',
+    endmonth: 'End Month',
     startdayofweek: 'Start day of the week', // Start Tag der Woche
     enddayofweek: 'End day of the week', // End Tag der Woche
     startdayofweekshort: 'Start day of the week short', // Start Tag der Woche (kurz)

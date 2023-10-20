@@ -147,6 +147,22 @@ export class MessagesClass extends BaseClass {
                 cmd: 'geticon',
                 node: '',
             },
+            startday: {
+                cmd: undefined,
+                node: `$fromMillis($toMillis(ONSET),"[D01]","\${this.timeOffset}")`,
+            },
+            startmonth: {
+                cmd: undefined,
+                node: `$fromMillis($toMillis(ONSET),"[M01]","\${this.timeOffset}")`,
+            },
+            endday: {
+                cmd: undefined,
+                node: `$fromMillis($toMillis(EXPIRES),"[D01]","\${this.timeOffset}")`,
+            },
+            endmonth: {
+                cmd: undefined,
+                node: `$fromMillis($toMillis(EXPIRES),"[M01]","\${this.timeOffset}")`,
+            },
         },
 
         uwzService: {
@@ -248,6 +264,22 @@ export class MessagesClass extends BaseClass {
                 cmd: 'geticon',
                 node: '',
             },
+            startday: {
+                cmd: undefined,
+                node: `$fromMillis(dtgStart * 1000,"[D01]","\${this.timeOffset}")`,
+            },
+            startmonth: {
+                cmd: undefined,
+                node: `$fromMillis(dtgStart * 1000,"[M01]","\${this.timeOffset}")`,
+            },
+            endday: {
+                cmd: undefined,
+                node: `$fromMillis(dtgEnd * 1000,"[D01]","\${this.timeOffset}")`,
+            },
+            endmonth: {
+                cmd: undefined,
+                node: `$fromMillis(dtgEnd * 1000,"[M01]","\${this.timeOffset}")`,
+            },
         },
         zamgService: {
             starttime: {
@@ -336,6 +368,22 @@ export class MessagesClass extends BaseClass {
                 cmd: 'geticon',
                 node: '',
             },
+            startday: {
+                cmd: undefined,
+                node: `$fromMillis($number(rawinfo.start)*1000,"[D01]","\${this.timeOffset}")`,
+            },
+            startmonth: {
+                cmd: undefined,
+                node: `$fromMillis($number(rawinfo.start)*1000,"[M01]","\${this.timeOffset}")`,
+            },
+            endday: {
+                cmd: undefined,
+                node: `$fromMillis($number(rawinfo.end)*1000,"[D01]","\${this.timeOffset}")`,
+            },
+            endmonth: {
+                cmd: undefined,
+                node: `$fromMillis($number(rawinfo.end)*1000,"[M01]","\${this.timeOffset}")`,
+            },
         },
         default: {
             starttime: { node: `` },
@@ -393,6 +441,22 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             iconurl: {
+                cmd: undefined,
+                node: '',
+            },
+            startday: {
+                cmd: undefined,
+                node: '',
+            },
+            startmonth: {
+                cmd: undefined,
+                node: '',
+            },
+            endday: {
+                cmd: undefined,
+                node: '',
+            },
+            endmonth: {
                 cmd: undefined,
                 node: '',
             },
@@ -744,7 +808,9 @@ export class MessagesClass extends BaseClass {
                 const id = MessageType.genericWarntyp[this.genericType].id;
                 const color = this.adapter.config.icon_color || 'blue';
                 if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
-                    return `adapter/${this.adapter.name}/icons/${color}/${id}.png`;
+                    return `${this.adapter.config.iobrokerUrl ? this.adapter.config.iobrokerUrl + '/' : ''}adapter/${
+                        this.adapter.name
+                    }/icons/${color}/${id}.png`;
                 }
                 return '';
             }
