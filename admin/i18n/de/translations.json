@@ -67,7 +67,6 @@
     "useTestWarnings": "Testwarnungen aktivieren",
     "uwzEnabled": "UWZ aktivieren",
     "uwzSelectDescription": "UWZ-ID, diese besteht aus Ländercode und Postleitzahl (DE12345, AT54321)",
-    "uwzSelectID": "Schreiben Sie die UWZ-ID.",
     "uwzTypeFilter": "Filtere die folgenden Warnungstypen aus dem Ergebnis.",
     "warnTypeName.dwdService.22": "Frost",
     "warnTypeName.dwdService.24": "geringfügige Glätte",
