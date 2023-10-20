@@ -420,32 +420,32 @@ export class NotificationClass extends library.BaseClass {
                     });
                     this.log.info(`first filter! Messagecount: ${result.length}`);
                     result.sort((a, b) => a.startts - b.startts);
-                    const flat: string[] = result.map((a) => a.text);
-
-                    let message = flat.join(this.adapter.config.email_line_break);
+                    const opt: any = {};
+                    opt.html = result.map((a) => a.text).join(this.adapter.config.email_line_break);
                     const templates = this.adapter.config.templateTable;
-                    this.log.info(`Email message: ${message.length}`);
+                    this.log.info(`Email message: ${messages.length} warnings`);
+                    let token = 'notification.warning';
+                    if (messages[0].action == 'removeAll') token = 'notification.allclear';
+                    opt.topic = await this.adapter.library.getTranslation(token);
                     if (this.adapter.config.email_Header !== 'none') {
                         const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Header);
                         if (tempid != -1) {
-                            let token = 'notification.warning';
-                            if (messages[0].action == 'removeAll') token = 'notification.allclear';
                             const temp = templates[tempid].template.replace(
                                 '${emailheader}',
                                 await this.adapter.library.getTranslation(token),
                             );
-                            message = temp + message;
+                            opt.html = temp + opt.html;
                         }
                     }
                     if (this.adapter.config.email_Footer !== 'none') {
-                        const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Header);
+                        const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Footer);
                         if (tempid != -1) {
-                            message = message + templates[tempid];
+                            opt.html = opt.html + templates[tempid];
                         }
                     }
                     this.log.debug(`start email sending! Messagecount: ${result.length}`);
-                    await this.adapter.sendToAsync(this.options.adapter, 'send', message);
-                    this.log.debug(`Send the message: ${message}`);
+                    await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
+                    this.log.debug(`Send the message: ${JSON.stringify(opt)}`);
                 }
                 break;
         }

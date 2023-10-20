@@ -1,4 +1,5 @@
 import { MessagesClass } from '../messages';
+import * as NotificationType from './notificationService-def';
 import { ProviderClassType, messageFilterType, providerServices } from './provider-def';
 
 export type Type = Required<keyof OptionsType>;
@@ -131,4 +132,27 @@ export type pushover_options = {
     device?: string;
     sound?: string;
     priority?: number;
+};
+export const notificationServiceDefaults: Record<NotificationType.Type, Partial<NotificationType.BaseType>> = {
+    telegram: {
+        useadapter: true,
+    },
+    pushover: {
+        useadapter: true,
+    },
+    whatsapp: {
+        useadapter: true,
+    },
+    json: {
+        useadapter: false,
+    },
+    history: {
+        useadapter: false,
+    },
+    email: {
+        useadapter: true,
+    },
+    alexa2: {
+        useadapter: true,
+    },
 };

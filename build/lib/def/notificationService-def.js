@@ -20,6 +20,7 @@ var notificationService_def_exports = {};
 __export(notificationService_def_exports, {
   Array: () => Array,
   manual: () => manual,
+  notificationServiceDefaults: () => notificationServiceDefaults,
   serciceCapabilities: () => serciceCapabilities
 });
 module.exports = __toCommonJS(notificationService_def_exports);
@@ -38,10 +39,34 @@ const serciceCapabilities = {
   alexa2: { notifications: push }
 };
 const Array = ["telegram", "pushover", "whatsapp", "json", "history", "email", "alexa2"];
+const notificationServiceDefaults = {
+  telegram: {
+    useadapter: true
+  },
+  pushover: {
+    useadapter: true
+  },
+  whatsapp: {
+    useadapter: true
+  },
+  json: {
+    useadapter: false
+  },
+  history: {
+    useadapter: false
+  },
+  email: {
+    useadapter: true
+  },
+  alexa2: {
+    useadapter: true
+  }
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Array,
   manual,
+  notificationServiceDefaults,
   serciceCapabilities
 });
 //# sourceMappingURL=notificationService-def.js.map

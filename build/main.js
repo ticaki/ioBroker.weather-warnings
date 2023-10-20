@@ -27,7 +27,7 @@ var import_library = require("./lib/library.js");
 var messagesDef = __toESM(require("./lib/def/messages-def"));
 var import_provider_def = require("./lib/def/provider-def");
 var NotificationType = __toESM(require("./lib/def/notificationService-def"));
-var import_notificationConfig_d = require("./lib/def/notificationConfig-d");
+var import_notificationService_def = require("./lib/def/notificationService-def.js");
 import_axios.default.defaults.timeout = 8e3;
 class WeatherWarnings extends utils.Adapter {
   library;
@@ -206,7 +206,7 @@ class WeatherWarnings extends utils.Adapter {
             template.all = template.all ? template.all : "none";
             template.manualAll = template.manualAll ? template.manualAll : "none";
             notificationServiceOpt[notificationService] = {
-              ...import_notificationConfig_d.notificationServiceDefaults[notificationService],
+              ...import_notificationService_def.notificationServiceDefaults[notificationService],
               service,
               filter: {
                 auto: {
@@ -225,7 +225,7 @@ class WeatherWarnings extends utils.Adapter {
             };
             Object.assign(
               notificationServiceOpt[notificationService],
-              import_notificationConfig_d.notificationServiceDefaults[notificationService]
+              import_notificationService_def.notificationServiceDefaults[notificationService]
             );
           }
         }
@@ -408,14 +408,16 @@ class WeatherWarnings extends utils.Adapter {
             if (obj.message.adapter != "none") {
               const objs = await this.getForeignObjectsAsync(obj.message.adapter + ".Echo-Devices.*");
               for (const a in objs) {
-                if (a.endsWith(".Commands.announcement")) {
+                if (a.endsWith(".Commands.speak")) {
                   const channel = await this.getForeignObjectAsync(
                     a.split(".").slice(0, 4).join(".")
                   );
-                  data.push({
-                    value: a.split(".")[3],
-                    label: channel ? channel.common.name : ""
-                  });
+                  if (channel) {
+                    data.push({
+                      value: a.split(".")[3],
+                      label: channel.common.name
+                    });
+                  }
                 }
               }
             }

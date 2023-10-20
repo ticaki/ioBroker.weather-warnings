@@ -14,7 +14,7 @@ import { Library } from './lib/library.js';
 import * as messagesDef from './lib/def/messages-def';
 import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
-import { notificationServiceDefaults } from './lib/def/notificationConfig-d';
+import { notificationServiceDefaults } from './lib/def/notificationService-def.js';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -503,18 +503,19 @@ class WeatherWarnings extends utils.Adapter {
                             */
                             const objs = await this.getForeignObjectsAsync(obj.message.adapter + '.Echo-Devices.*');
                             for (const a in objs) {
-                                if (a.endsWith('.Commands.announcement')) {
+                                if (a.endsWith('.Commands.speak')) {
                                     const channel = await this.getForeignObjectAsync(
                                         a.split('.').slice(0, 4).join('.'),
                                     );
-                                    data.push({
-                                        value: a.split('.')[3],
-                                        label: channel ? channel.common.name : '',
-                                    });
+                                    if (channel) {
+                                        data.push({
+                                            value: a.split('.')[3],
+                                            label: channel.common.name,
+                                        });
+                                    }
                                 }
                             }
                         }
-
                         this.sendTo(obj.from, obj.command, data, obj.callback);
                     }
                     break;
