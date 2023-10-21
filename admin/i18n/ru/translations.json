@@ -455,5 +455,13 @@
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Оставшееся время часть часов. До 30*24 часов",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Оставшаяся часть минут времени.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Предупреждение об обратном отсчете впереди.",
-    "telegram_parse_mode": "Режим анализа"
+    "telegram_parse_mode": "Режим анализа",
+    "morning": "утро",
+    "forenoon": "до полудня",
+    "noon": "полдень",
+    "afternoon": "полдень",
+    "evening": "вечер",
+    "night": "ночь",
+    "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Начало: Время суток.",
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Конец: Время суток."
 }

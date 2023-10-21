@@ -455,5 +455,13 @@
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Pozostały czas część godzin. Do 30 * 24 godzin",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Część pozostałego czasu w minutach.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Nadchodzi ostrzeżenie dotyczące odliczania.",
-    "telegram_parse_mode": "Tryb analizy"
+    "telegram_parse_mode": "Tryb analizy",
+    "morning": "Poranek",
+    "forenoon": "przedpołudnie",
+    "noon": "południe",
+    "afternoon": "popołudnie",
+    "evening": "wieczór",
+    "night": "noc",
+    "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Początek: Pora dnia.",
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Koniec: Pora dnia."
 }

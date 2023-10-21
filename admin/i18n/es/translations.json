@@ -455,5 +455,13 @@
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Tiempo restante horas parte. Hasta 30 * 24 horas",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Tiempo restante minutos parte.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Se avecina una advertencia de cuenta regresiva.",
-    "telegram_parse_mode": "Modo de análisis"
+    "telegram_parse_mode": "Modo de análisis",
+    "morning": "mañana",
+    "forenoon": "la mañana",
+    "noon": "mediodía",
+    "afternoon": "tarde",
+    "evening": "noche",
+    "night": "noche",
+    "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Inicio: Hora del día.",
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Fin: Hora del día."
 }

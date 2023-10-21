@@ -182,6 +182,14 @@ class MessagesClass extends import_library.BaseClass {
       cdfuture: {
         cmd: "countdownfuture",
         node: "$toMillis(ONSET)"
+      },
+      startdaytime: {
+        cmd: "daytime",
+        node: "ONSET"
+      },
+      enddaytime: {
+        cmd: "daytime",
+        node: "EXPIRES"
       }
     },
     uwzService: {
@@ -314,6 +322,14 @@ class MessagesClass extends import_library.BaseClass {
       cdfuture: {
         cmd: "countdownfuture",
         node: "dtgStart * 1000"
+      },
+      startdaytime: {
+        cmd: "daytime",
+        node: "dtgStart * 1000"
+      },
+      enddaytime: {
+        cmd: "daytime",
+        node: "dtgEnd * 1000"
       }
     },
     zamgService: {
@@ -433,6 +449,14 @@ class MessagesClass extends import_library.BaseClass {
       cdfuture: {
         cmd: "countdownfuture",
         node: "$number(rawinfo.start)*1000"
+      },
+      startdaytime: {
+        cmd: "daytime",
+        node: "$number(rawinfo.start)*1000"
+      },
+      enddaytime: {
+        cmd: "daytime",
+        node: "$number(rawinfo.end)*1000"
       }
     },
     default: {
@@ -523,6 +547,14 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       cdfuture: {
+        cmd: void 0,
+        node: ""
+      },
+      startdaytime: {
+        cmd: void 0,
+        node: ""
+      },
+      enddaytime: {
         cmd: void 0,
         node: ""
       }
@@ -892,6 +924,22 @@ class MessagesClass extends import_library.BaseClass {
           return `${this.adapter.config.iobrokerUrl || ""}/adapter/${this.adapter.name}/icons/${color}/${id}.png`;
         }
         return "";
+      }
+      case "daytime": {
+        const hour = new Date(data).getHours();
+        let daytime = "noon";
+        for (const a in MessageType.daytimes) {
+          daytime = a;
+          const opt = MessageType.daytimes[daytime];
+          if (opt.start < opt.end) {
+            if (opt.start <= hour && opt.end > hour)
+              break;
+          } else {
+            if (opt.start <= hour || opt.end > hour)
+              break;
+          }
+        }
+        return this.library.getTranslation(daytime);
       }
     }
     return "";

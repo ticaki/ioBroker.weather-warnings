@@ -25,7 +25,8 @@ type messageCmdType =
     | 'geticon'
     | 'countdownhours'
     | 'countdownminutes'
-    | 'countdownfuture';
+    | 'countdownfuture'
+    | 'daytime';
 /**
  * MessageClass
  */
@@ -187,6 +188,14 @@ export class MessagesClass extends BaseClass {
                 cmd: 'countdownfuture',
                 node: '$toMillis(ONSET)',
             },
+            startdaytime: {
+                cmd: 'daytime',
+                node: 'ONSET',
+            },
+            enddaytime: {
+                cmd: 'daytime',
+                node: 'EXPIRES',
+            },
         },
 
         uwzService: {
@@ -320,6 +329,14 @@ export class MessagesClass extends BaseClass {
                 cmd: 'countdownfuture',
                 node: 'dtgStart * 1000',
             },
+            startdaytime: {
+                cmd: 'daytime',
+                node: 'dtgStart * 1000',
+            },
+            enddaytime: {
+                cmd: 'daytime',
+                node: 'dtgEnd * 1000',
+            },
         },
         zamgService: {
             starttime: {
@@ -440,6 +457,14 @@ export class MessagesClass extends BaseClass {
                 cmd: 'countdownfuture',
                 node: '$number(rawinfo.start)*1000',
             },
+            startdaytime: {
+                cmd: 'daytime',
+                node: '$number(rawinfo.start)*1000',
+            },
+            enddaytime: {
+                cmd: 'daytime',
+                node: '$number(rawinfo.end)*1000',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -529,6 +554,14 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             cdfuture: {
+                cmd: undefined,
+                node: '',
+            },
+            startdaytime: {
+                cmd: undefined,
+                node: '',
+            },
+            enddaytime: {
                 cmd: undefined,
                 node: '',
             },
@@ -934,6 +967,20 @@ export class MessagesClass extends BaseClass {
                     }/icons/${color}/${id}.png`;
                 }
                 return '';
+            }
+            case 'daytime': {
+                const hour = new Date(data).getHours();
+                let daytime: MessageType.daytimesType = 'noon';
+                for (const a in MessageType.daytimes) {
+                    daytime = a as MessageType.daytimesType;
+                    const opt = MessageType.daytimes[daytime];
+                    if (opt.start < opt.end) {
+                        if (opt.start <= hour && opt.end > hour) break;
+                    } else {
+                        if (opt.start <= hour || opt.end > hour) break;
+                    }
+                }
+                return this.library.getTranslation(daytime);
             }
         }
         return '';

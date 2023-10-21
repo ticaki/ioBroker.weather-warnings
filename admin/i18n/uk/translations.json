@@ -455,5 +455,13 @@
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Частина години, що залишився. До 30*24 годин",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Частина хвилин, що залишилася.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Попереду попередження зворотного відліку.",
-    "telegram_parse_mode": "Режим аналізу"
+    "telegram_parse_mode": "Режим аналізу",
+    "morning": "ранок",
+    "forenoon": "перед обідом",
+    "noon": "полудень",
+    "afternoon": "полудень",
+    "evening": "вечір",
+    "night": "ніч",
+    "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Початок: Час доби.",
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Кінець: Час доби."
 }

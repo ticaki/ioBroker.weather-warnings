@@ -455,5 +455,13 @@
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Restzeit-Stunden-Teil. Bis zu 30 * 24 Stunden",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Restzeit-Minuten-Teil.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Countdown, Warnung steht bevor.",
-    "telegram_parse_mode": "Parse-Modus"
+    "telegram_parse_mode": "Parse-Modus",
+    "morning": "morgens",
+    "forenoon": "vormittags",
+    "noon": "mittags",
+    "afternoon": "nachmittags",
+    "evening": "abends",
+    "night": "nachts",
+    "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Beginn: Tageszeit.",
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Ende: Tageszeit."
 }

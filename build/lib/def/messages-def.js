@@ -20,6 +20,7 @@ var messages_def_exports = {};
 __export(messages_def_exports, {
   color: () => color,
   customFormatedTokensJson: () => customFormatedTokensJson,
+  daytimes: () => daytimes,
   dwdLevel: () => dwdLevel,
   filterWarntype: () => filterWarntype,
   genericWarntyp: () => genericWarntyp,
@@ -36,10 +37,12 @@ const customFormatedTokensJson = {
   startdate: "Start date",
   startday: "Start Day",
   startmonth: "Start Month",
+  startdaytime: "Start: Time of day.",
   endtime: "End Time",
   enddate: "End Date",
   endday: "End Day",
   endmonth: "End Month",
+  enddaytime: "End: Time of the day.",
   startdayofweek: "Start day of the week",
   enddayofweek: "End day of the week",
   startdayofweekshort: "Start day of the week short",
@@ -337,10 +340,19 @@ const status = {
   hold: "message.status.hold",
   clear: "message.status.clear"
 };
+const daytimes = {
+  morning: { start: 6, end: 10 },
+  forenoon: { start: 10, end: 12 },
+  noon: { start: 12, end: 14 },
+  afternoon: { start: 14, end: 17 },
+  evening: { start: 17, end: 21 },
+  night: { start: 21, end: 6 }
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   color,
   customFormatedTokensJson,
+  daytimes,
   dwdLevel,
   filterWarntype,
   genericWarntyp,

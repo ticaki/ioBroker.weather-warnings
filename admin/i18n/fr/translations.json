@@ -455,5 +455,13 @@
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Partie heures restantes. Jusqu'à 30 * 24 heures",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Temps restant minutes partie.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Un avertissement de compte à rebours nous attend.",
-    "telegram_parse_mode": "Mode analyse"
+    "telegram_parse_mode": "Mode analyse",
+    "morning": "matin",
+    "forenoon": "matinée",
+    "noon": "midi",
+    "afternoon": "après-midi",
+    "evening": "soirée",
+    "night": "nuit",
+    "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Début : heure de la journée.",
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Fin : heure de la journée."
 }

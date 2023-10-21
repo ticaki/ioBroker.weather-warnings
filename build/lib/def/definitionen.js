@@ -1591,6 +1591,18 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      startdaytime: {
+        _id: "startdaytime",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.startdaytime",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       startmonth: {
         _id: "begin",
         type: "state",
@@ -1608,6 +1620,18 @@ const statesObjectsWarnings = {
         type: "state",
         common: {
           name: "statesObjectsWarnings.allService.formatedkeys.endday",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      enddaytime: {
+        _id: "enddaytime",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.enddaytime",
           type: "string",
           role: "text",
           read: true,

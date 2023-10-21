@@ -11,10 +11,12 @@ export type customFormatedTokens = {
     startdate: string; // Start Datum DD.MM
     startday: string;
     startmonth: string;
+    startdaytime: string;
     endtime: string; // Endzeitpunkt
     enddate: string; // Enddatum
     endday: string;
     endmonth: string;
+    enddaytime: string;
     startdayofweek: string; // Start Tag der Woche
     enddayofweek: string; // End Tag der Woche
     startdayofweekshort: string; // Start Tag der Woche (kurz)
@@ -50,10 +52,12 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     startdate: 'Start date', // Start Datum DD.MM
     startday: 'Start Day',
     startmonth: 'Start Month',
+    startdaytime: 'Start: Time of day.',
     endtime: 'End Time', // Endzeitpunkt
     enddate: 'End Date', // Enddatum
     endday: 'End Day',
     endmonth: 'End Month',
+    enddaytime: 'End: Time of the day.',
     startdayofweek: 'Start day of the week', // Start Tag der Woche
     enddayofweek: 'End day of the week', // End Tag der Woche
     startdayofweekshort: 'Start day of the week short', // Start Tag der Woche (kurz)
@@ -526,4 +530,13 @@ export const status = {
     new: 'message.status.new',
     hold: 'message.status.hold',
     clear: 'message.status.clear',
+};
+export type daytimesType = keyof typeof daytimes;
+export const daytimes = {
+    morning: { start: 6, end: 10 },
+    forenoon: { start: 10, end: 12 },
+    noon: { start: 12, end: 14 },
+    afternoon: { start: 14, end: 17 },
+    evening: { start: 17, end: 21 },
+    night: { start: 21, end: 6 },
 };

@@ -455,5 +455,13 @@
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Resterende tijd uren deel. Tot 30 * 24 uur",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Resterende tijd minuten deel.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Er ligt een aftelwaarschuwing in het verschiet.",
-    "telegram_parse_mode": "Parseermodus"
+    "telegram_parse_mode": "Parseermodus",
+    "morning": "ochtend",
+    "forenoon": "voormiddag",
+    "noon": "middag",
+    "afternoon": "middag",
+    "evening": "avond",
+    "night": "nacht",
+    "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Begin: tijdstip van de dag.",
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Einde: Tijd van de dag."
 }

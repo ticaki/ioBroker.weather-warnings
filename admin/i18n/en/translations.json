@@ -455,5 +455,13 @@
     "statesObjectsWarnings.allService.formatedkeys.cdhour":"Remaining time hours part. Up to 30 * 24 hours",
     "statesObjectsWarnings.allService.formatedkeys.cdminute":"Remaining time minutes part.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture":"Countdown warning lies ahead.",
-    "telegram_parse_mode":"Parse mode"
+    "telegram_parse_mode":"Parse mode",
+    "morning":"morning",
+    "forenoon":"forenoon",
+    "noon":"noon",
+    "afternoon":"afternoon",
+    "evening":"evening",
+    "night": "night",
+    "statesObjectsWarnings.allService.formatedkeys.startdaytime":"Start: Time of the day.",
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime":"End: Time of the day."
 }
