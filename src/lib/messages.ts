@@ -27,7 +27,7 @@ type messageCmdType =
     | 'countdownminutes'
     | 'countdownfuture';
 /**
- * bla
+ * MessageClass
  */
 export class MessagesClass extends BaseClass {
     provider: Provider.ProviderClassType | null;
@@ -668,26 +668,10 @@ export class MessagesClass extends BaseClass {
 
         return await this.updateFormatedData(true);
     }
+    /** return true not filter message */
     filter(filter: messageFilterType): boolean {
-        this.type;
-        let hit = false;
         if (filter.level && filter.level > this.level) return false;
-        let howOften = 0;
-        for (const f in MessageType.genericWarntyp) {
-            //@ts-expect-error dann ebenso
-            if (MessageType.genericWarntyp[f][this.provider.service].indexOf(this.type) != -1) howOften++;
-        }
-
-        for (const f in filter.type) {
-            if (
-                //@ts-expect-error dann ebenso
-                MessageType.genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1
-            ) {
-                hit = true;
-                howOften--;
-            }
-        }
-        if (hit && howOften == 0) return false;
+        if (this.provider && MessageType.filterWarntype(this.provider.service, filter.type, this.type)) return false;
         return true;
     }
 
@@ -695,9 +679,7 @@ export class MessagesClass extends BaseClass {
         let msg: string = '';
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex((a) => a.templateKey == templateKey);
-        //if (override) action = 'new';
 
-        // all messages with new/remove
         if (this.cache.ts < Date.now() - 60000) {
             this.updateFormated();
         }

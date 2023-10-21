@@ -1,5 +1,6 @@
 import { MessagesClass } from '../messages';
 import { customChannelType } from './definitionen';
+import { providerServices } from './provider-def';
 
 /** Bezeichnungen die in Template verwendet werden können ohne "?:string;""
  * Erste Buchstabe großgeschrieben erzeugt auch im Ergebnis, das der erste Buchstabe großgeschrieben ist.
@@ -232,7 +233,6 @@ type genericWarntypeTypeSub = {
     ninaService?: number[];
     id: keyof genericWarnTypNameJsonType;
 };
-//type genericWarnTypNumberType = keyof genericWarntypeType;
 
 type genericWarnTypNameJsonType = {
     unknown: string;
@@ -265,55 +265,6 @@ export type notificationMessageType = {
     | 'hail'
     | 'fog'
     | 'thaw';*/
-
-export const genericCombinedWarntype = {
-    '0': { dwdService: ['22', '82'], uwzService: ['5', '10', '11'], zamgService: ['7'], id: 'cold', name: 'noname' },
-    '1': {
-        dwdService: ['24', '84', '85', '87'],
-        uwzService: ['8'],
-        zamgService: ['4'],
-        id: 'black_ice_slippery',
-        name: 'noname',
-    },
-    '2': {
-        dwdService: ['31', '33', '34', '36', '38', '90', '91', '92', '93'],
-        uwzService: ['7'],
-        zamgService: ['5'],
-        id: 'thunderstorm',
-        name: 'noname',
-    },
-    '3': { dwdService: ['40', '41'], id: 'storm, thunderstorm', name: 'noname' },
-    '4': { dwdService: ['42'], id: 'rain, thunderstorm', name: 'noname' },
-    '5': { dwdService: ['44', '45'], id: 'storm, rain, thunderstorm', name: 'noname' },
-    '6': { dwdService: ['46', '95'], id: 'rain, thunderstorm, hail', name: 'noname' },
-    '7': { dwdService: ['48', '49', '96'], id: 'storm, rain, thunderstorm, hail', name: 'noname' },
-    '8': {
-        dwdService: ['51', '52', '53', '54', '55', '56', '57', '58', '79'],
-        uwzService: ['2'],
-        zamgService: ['1'],
-        id: 'storm',
-        name: 'noname',
-    },
-    '9': { dwdService: ['59'], id: 'fog', name: 'noname' },
-    '10': {
-        dwdService: ['61', '62', '63', '64', '65', '66'],
-        uwzService: ['4'],
-        zamgService: ['2'],
-        id: 'rain',
-        name: 'noname',
-    },
-    '11': {
-        dwdService: ['70', '71', '72', '73', '74', '75', '76'],
-        uwzService: ['3'],
-        zamgService: ['3'],
-        id: 'snowfall',
-        name: 'noname',
-    },
-    '12': { dwdService: ['88', '89'], id: 'thaw', name: 'noname' },
-    '13': { dwdService: ['247', '248'], uwzService: ['9'], zamgService: ['6'], id: 'heat', name: 'noname' },
-    '14': { uwzService: ['0', '1'], zamgService: ['0', '8'], id: 'unknown', name: 'noname' },
-    '15': { uwzService: ['6'], id: 'forest_fire', name: 'noname' },
-};
 
 export const genericWarntyp: genericWarntypeType = {
     '1': { name: 'genericWarntyp.1.name', id: 'unknown', dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
@@ -365,7 +316,23 @@ export const genericWarntyp: genericWarntypeType = {
     '11': { name: 'genericWarntyp.11.name', id: 'fog', dwdService: [59], uwzService: [], zamgService: [] },
     '12': { name: 'genericWarntyp.12.name', id: 'thaw', dwdService: [88, 89], uwzService: [], zamgService: [] },
 };
-export const warnTypeName = {
+
+export function filterWarntype(p: providerServices, f: string[], o: number): boolean {
+    for (const i in genericWarntyp) {
+        const id = i as unknown as keyof genericWarntypeType;
+        const w = genericWarntyp[id];
+        if (w[p] == undefined) return false;
+        //@ts-expect-error ist definiert
+        if (Array.isArray(w[p]) && w[p].indexOf(o) != -1) {
+            if (f.indexOf(String(id)) == -1) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+export const warnTypeName: warnTypeNameType = {
     uwzService: {
         '0': 'warnTypeName.uwzService.0',
         '1': 'warnTypeName.uwzService.1',
@@ -448,6 +415,96 @@ export const warnTypeName = {
         '248': 'warnTypeName.dwdService.248',
     },
 };
+
+type warnTypeNameType = {
+    uwzService: UwzService;
+    zamgService: ZamgService;
+    dwdService: DwdService;
+};
+
+interface UwzService {
+    '0': string;
+    '1': string;
+    '2': string;
+    '3': string;
+    '4': string;
+    '5': string;
+    '6': string;
+    '7': string;
+    '8': string;
+    '9': string;
+    '10': string;
+    '11': string;
+}
+
+interface ZamgService {
+    '0': string;
+    '1': string;
+    '2': string;
+    '3': string;
+    '4': string;
+    '5': string;
+    '6': string;
+    '7': string;
+    '8': string;
+}
+
+interface DwdService {
+    '22': string;
+    '24': string;
+    '31': string;
+    '33': string;
+    '34': string;
+    '36': string;
+    '38': string;
+    '40': string;
+    '41': string;
+    '42': string;
+    '44': string;
+    '45': string;
+    '46': string;
+    '48': string;
+    '49': string;
+    '51': string;
+    '52': string;
+    '53': string;
+    '54': string;
+    '55': string;
+    '56': string;
+    '57': string;
+    '58': string;
+    '59': string;
+    '61': string;
+    '62': string;
+    '63': string;
+    '64': string;
+    '65': string;
+    '66': string;
+    '70': string;
+    '71': string;
+    '72': string;
+    '73': string;
+    '74': string;
+    '75': string;
+    '76': string;
+    '79': string;
+    '82': string;
+    '84': string;
+    '85': string;
+    '87': string;
+    '88': string;
+    '89': string;
+    '90': string;
+    '91': string;
+    '92': string;
+    '93': string;
+    '95': string;
+    '96': string;
+    '98': string;
+    '99': string;
+    '247': string;
+    '248': string;
+}
 /*const genericWarnType = {
     WIND:
 }*/

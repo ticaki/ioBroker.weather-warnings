@@ -3,6 +3,7 @@ import { genericStateObjects } from './def/definitionen';
 import * as NotificationType from './def/notificationService-def';
 import * as library from './library';
 import * as Provider from './def/provider-def';
+import { filterWarntype } from './def/messages-def';
 
 export class NotificationClass extends library.BaseClass {
     options: NotificationType.BaseType;
@@ -79,13 +80,13 @@ export class NotificationClass extends library.BaseClass {
         const notifications = this.options.notifications;
         for (const a in providers) {
             if (this.options.service.indexOf(providers[a].service) == -1) continue;
-            //const resultProvider: NotificationType.MessageType[] = [];
+
             for (const b in providers[a].messages) {
                 const message = providers[a].messages[b];
                 if (
                     message &&
                     (filter.level === undefined || filter.level <= message.level) &&
-                    filter.type.indexOf(String(message.genericType)) == -1
+                    !filterWarntype(providers[a].service, filter.type, message.type)
                 ) {
                     if (message.notDeleted) activeWarnings++;
                     for (const c in actions) {

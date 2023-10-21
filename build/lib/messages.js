@@ -661,22 +661,9 @@ class MessagesClass extends import_library.BaseClass {
     return await this.updateFormatedData(true);
   }
   filter(filter) {
-    this.type;
-    let hit = false;
     if (filter.level && filter.level > this.level)
       return false;
-    let howOften = 0;
-    for (const f in MessageType.genericWarntyp) {
-      if (MessageType.genericWarntyp[f][this.provider.service].indexOf(this.type) != -1)
-        howOften++;
-    }
-    for (const f in filter.type) {
-      if (MessageType.genericWarntyp[filter.type[f]][this.provider.service].indexOf(this.type) != -1) {
-        hit = true;
-        howOften--;
-      }
-    }
-    if (hit && howOften == 0)
+    if (this.provider && MessageType.filterWarntype(this.provider.service, filter.type, this.type))
       return false;
     return true;
   }

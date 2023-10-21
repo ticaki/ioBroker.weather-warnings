@@ -30,6 +30,7 @@ module.exports = __toCommonJS(notification_exports);
 var import_definitionen = require("./def/definitionen");
 var NotificationType = __toESM(require("./def/notificationService-def"));
 var library = __toESM(require("./library"));
+var import_messages_def = require("./def/messages-def");
 class NotificationClass extends library.BaseClass {
   options;
   takeThemAll = false;
@@ -89,7 +90,7 @@ class NotificationClass extends library.BaseClass {
         continue;
       for (const b in providers[a].messages) {
         const message = providers[a].messages[b];
-        if (message && (filter.level === void 0 || filter.level <= message.level) && filter.type.indexOf(String(message.genericType)) == -1) {
+        if (message && (filter.level === void 0 || filter.level <= message.level) && !(0, import_messages_def.filterWarntype)(providers[a].service, filter.type, message.type)) {
           if (message.notDeleted)
             activeWarnings++;
           for (const c in actions) {
