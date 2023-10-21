@@ -809,7 +809,7 @@ class MessagesClass extends import_library.BaseClass {
     return msg;
   }
   returnMessage = (msg, time, template) => {
-    return { startts: time, text: msg.replaceAll("\\}", "}"), template };
+    return { startts: time, text: msg.replaceAll("\\}", "}").replaceAll("\\n", "\n"), template };
   };
   async updateFormatedData(update = false) {
     if (!this.rawWarning && !this.formatedData) {

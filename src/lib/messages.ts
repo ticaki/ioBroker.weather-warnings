@@ -836,7 +836,7 @@ export class MessagesClass extends BaseClass {
         return msg;
     }
     private returnMessage = (msg: string, time: number, template: string): NotificationType.MessageType => {
-        return { startts: time, text: msg.replaceAll('\\}', '}'), template: template };
+        return { startts: time, text: msg.replaceAll('\\}', '}').replaceAll('\\n', '\n'), template: template };
     };
 
     async updateFormatedData(update: boolean = false): Promise<customFormatedKR> {

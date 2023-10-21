@@ -140,7 +140,7 @@ export class NotificationClass extends library.BaseClass {
                 if (tempid != -1) {
                     this.sendNotifications([
                         {
-                            text: templates[tempid].template.replaceAll('\\', ''),
+                            text: templates[tempid].template.replaceAll('\\}', '}'),
                             startts: 1,
                             template: templates[tempid].template,
                             action: 'removeAll',

@@ -626,7 +626,7 @@ class WeatherWarnings extends utils.Adapter {
                                 ((await this.library.getTranslation(
                                     messagesDef.customFormatedTokensJson[a as keyof messagesDef.customFormatedTokens],
                                 )) +
-                                    ' - / - ');
+                                    ' - / - \n');
                         }
                         reply = reply.slice(0, -7);
                         this.sendTo(obj.from, obj.command, reply, obj.callback);
