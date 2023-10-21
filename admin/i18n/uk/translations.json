@@ -451,5 +451,8 @@
     "statesObjectsWarnings.allService.formatedkeys.endday": "День закінчення попередження",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Місяць закінчення попередження",
     "iobrokerUrl": "Префікс для Iconurl (приклад http://192.168.1.1:8081)",
-    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Тип загального попередження як число."
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Тип загального попередження як число.",
+    "statesObjectsWarnings.allService.formatedkeys.cdhour": "Частина години, що залишився. До 30*24 годин",
+    "statesObjectsWarnings.allService.formatedkeys.cdminute": "Частина хвилин, що залишилася.",
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Попереду попередження зворотного відліку."
 }

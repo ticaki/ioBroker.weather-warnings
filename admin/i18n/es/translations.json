@@ -451,5 +451,8 @@
     "statesObjectsWarnings.allService.formatedkeys.endday": "Día del fin de la advertencia.",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Mes del fin del aviso",
     "iobrokerUrl": "Prefijo para Iconurl (ejemplo http://192.168.1.1:8081)",
-    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Tipo de advertencia genérica como número."
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Tipo de advertencia genérica como número.",
+    "statesObjectsWarnings.allService.formatedkeys.cdhour": "Tiempo restante horas parte. Hasta 30 * 24 horas",
+    "statesObjectsWarnings.allService.formatedkeys.cdminute": "Tiempo restante minutos parte.",
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Se avecina una advertencia de cuenta regresiva."
 }

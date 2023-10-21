@@ -17,7 +17,15 @@ export type customFormatedKInit =
 export type customFormatedKR = ChangeTypeOfKeys<MessageType.customFormatedKeysDef, string | number | undefined>;
 
 type customFormatedKDefSub = { cmd?: messageCmdType; node: string };
-type messageCmdType = 'dayoftheweek' | 'translate' | 'dayoftheweekshort' | 'countdown' | 'geticon';
+type messageCmdType =
+    | 'dayoftheweek'
+    | 'translate'
+    | 'dayoftheweekshort'
+    | 'countdown'
+    | 'geticon'
+    | 'countdownhours'
+    | 'countdownminutes'
+    | 'countdownfuture';
 /**
  * bla
  */
@@ -167,6 +175,18 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            cdminute: {
+                cmd: 'countdownminutes',
+                node: '$toMillis(ONSET)',
+            },
+            cdhour: {
+                cmd: 'countdownhours',
+                node: '$toMillis(ONSET)',
+            },
+            cdfuture: {
+                cmd: 'countdownfuture',
+                node: '$toMillis(ONSET)',
+            },
         },
 
         uwzService: {
@@ -288,6 +308,18 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            cdminute: {
+                cmd: 'countdownminutes',
+                node: 'dtgStart * 1000',
+            },
+            cdhour: {
+                cmd: 'countdownhours',
+                node: 'dtgStart * 1000',
+            },
+            cdfuture: {
+                cmd: 'countdownfuture',
+                node: 'dtgStart * 1000',
+            },
         },
         zamgService: {
             starttime: {
@@ -396,6 +428,18 @@ export class MessagesClass extends BaseClass {
                 cmd: undefined,
                 node: '',
             },
+            cdminute: {
+                cmd: 'countdownminutes',
+                node: '$number(rawinfo.start)*1000',
+            },
+            cdhour: {
+                cmd: 'countdownhours',
+                node: '$number(rawinfo.start)*1000',
+            },
+            cdfuture: {
+                cmd: 'countdownfuture',
+                node: '$number(rawinfo.start)*1000',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -473,6 +517,18 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             warntypegeneric: {
+                cmd: undefined,
+                node: '',
+            },
+            cdminute: {
+                cmd: undefined,
+                node: '',
+            },
+            cdhour: {
+                cmd: undefined,
+                node: '',
+            },
+            cdfuture: {
                 cmd: undefined,
                 node: '',
             },
@@ -665,7 +721,9 @@ export class MessagesClass extends BaseClass {
         let msg = '';
         const templates = this.adapter.config.templateTable;
         if (!this.formatedData) return msg;
-        while (true) {
+        // catch endless cylce
+        let count = 0;
+        while (count++ < 100) {
             if (tempid == -1) break;
             let rerun = false;
             const template = msg === '' ? templates[tempid].template : msg;
@@ -676,6 +734,7 @@ export class MessagesClass extends BaseClass {
                 const t = temp[b].split(/(?<!\\)}/g);
                 const key = t[0] as keyof MessageType.customFormatedKeysDef;
                 const configTemplate = this.adapter.config.templateTable.filter((a) => a.templateKey == key);
+                /** [a,b,c]templatekey */
                 if (key[0] == '[') {
                     const arraykey = key.split(']');
                     arraykey[0] = arraykey[0].slice(1);
@@ -686,16 +745,70 @@ export class MessagesClass extends BaseClass {
                         const n = this.formatedData[arraykey[1] as keyof MessageType.customFormatedKeysDef];
 
                         if (n != '' && !Number.isNaN(n)) {
-                            msg += arraykey[0]
-                                .split(',')
-                                [
-                                    this.formatedData[arraykey[1] as keyof MessageType.customFormatedKeysDef] as number
-                                ].trim();
+                            try {
+                                msg += arraykey[0]
+                                    .split(',')
+                                    [
+                                        this.formatedData[
+                                            arraykey[1] as keyof MessageType.customFormatedKeysDef
+                                        ] as number
+                                    ].trim();
+                            } catch (error) {
+                                this.log.error(`Array is not an array ${arraykey[0]} or index out of range ${n}.`);
+                            }
                         }
                     } else {
                         this.log.error(
-                            `Unknown or not a number key ${arraykey[1]}  in template ${templates[tempid].templateKey}!`,
+                            `Unknown or not a number key ${arraykey[1]} in template ${templates[tempid].templateKey}!`,
                         );
+                    }
+                    /** (2<templatekey)true#false */
+                } else if (key[0] == '(') {
+                    const arraykey = key.split(')');
+                    arraykey[0] = arraykey[0].slice(1);
+                    for (const a of ['<', '>', '=', '!=']) {
+                        if (arraykey[0].indexOf(a) == -1) continue;
+                        const funcarray = arraykey[0].split(a);
+                        const n = this.formatedData[funcarray[1].trim() as keyof MessageType.customFormatedKeysDef];
+                        if (n !== undefined) {
+                            let result = false;
+                            switch (a) {
+                                case '>':
+                                    {
+                                        result = funcarray[0].trim() > n;
+                                    }
+                                    break;
+                                case '<':
+                                    {
+                                        result = funcarray[0].trim() < n;
+                                    }
+                                    break;
+                                case '=':
+                                    {
+                                        result = funcarray[0].trim() == n;
+                                    }
+                                    break;
+                                case '!=':
+                                    {
+                                        result = funcarray[0].trim() != n;
+                                    }
+                                    break;
+                            }
+                            let temp = '';
+                            if (arraykey[1].indexOf('#') != -1) {
+                                if (result) temp = arraykey[1].split('#')[0];
+                                else temp = arraykey[1].split('#')[1] !== undefined ? arraykey[1].split('#')[1] : '';
+                            } else if (result) temp = arraykey[1];
+                            if (temp.indexOf('\\${') != -1) {
+                                temp = temp.replaceAll('\\${', '${');
+                                temp = temp.replaceAll('\\}', '}');
+                                rerun = true;
+                            }
+                            msg += temp;
+                        } else {
+                            this.log.error(`Unknown key ${funcarray[1]} in template ${templates[tempid].templateKey}!`);
+                            break;
+                        }
                     }
                 } else if (configTemplate.length == 1) {
                     msg += configTemplate[0].template;
@@ -819,7 +932,16 @@ export class MessagesClass extends BaseClass {
                 return this.library.getTranslation(data);
             }
             case 'countdown': {
-                return this.getCountdown(data);
+                return this.getCountdown(data, 'full');
+            }
+            case 'countdownhours': {
+                return this.getCountdown(data, 'hours');
+            }
+            case 'countdownminutes': {
+                return this.getCountdown(data, 'minutes');
+            }
+            case 'countdownfuture': {
+                return this.getCountdown(data, 'future');
             }
             case 'geticon': {
                 const id = MessageType.genericWarntyp[this.genericType].id;
@@ -848,14 +970,24 @@ export class MessagesClass extends BaseClass {
         this.notDeleted = true;
     }
 
-    getCountdown(time: number): string {
+    getCountdown(time: number, typ: 'minutes' | 'hours' | 'full' | 'future'): string {
         const diff = time - Date.now();
         const remain = new Date(Math.abs(diff));
         const d = remain.getUTCDate() - 1;
-        const h = d > 0 ? ('00' + String(remain.getUTCHours())).slice(2) : String(remain.getUTCHours());
-        return `${diff < 0 ? '-' : ''}${d > 0 ? `${String(d)}:` : ''}${h}:${(
-            '00' + String(remain.getUTCMinutes())
-        ).slice(-2)}`;
+
+        switch (typ) {
+            case 'future':
+                return diff < 0 ? '-1' : '1';
+            case 'minutes':
+                return String(remain.getUTCMinutes());
+            case 'hours':
+                return String(d * 24 + remain.getUTCHours());
+            case 'full':
+                const h = d > 0 ? ('00' + String(remain.getUTCHours())).slice(2) : String(remain.getUTCHours());
+                return `${diff < 0 ? '-' : ''}${d > 0 ? `${String(d)}:` : ''}${h}:${(
+                    '00' + String(remain.getUTCMinutes())
+                ).slice(-2)}`;
+        }
     }
     async delete(): Promise<void> {
         super.delete();

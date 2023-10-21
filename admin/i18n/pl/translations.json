@@ -451,5 +451,8 @@
     "statesObjectsWarnings.allService.formatedkeys.endday": "Dzień końca ostrzeżenia",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Miesiąc zakończenia ostrzeżenia",
     "iobrokerUrl": "Przedrostek Iconurl (przykład http://192.168.1.1:8081)",
-    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Ogólny typ ostrzeżenia jako liczba."
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Ogólny typ ostrzeżenia jako liczba.",
+    "statesObjectsWarnings.allService.formatedkeys.cdhour": "Pozostały czas część godzin. Do 30 * 24 godzin",
+    "statesObjectsWarnings.allService.formatedkeys.cdminute": "Część pozostałego czasu w minutach.",
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Nadchodzi ostrzeżenie dotyczące odliczania."
 }

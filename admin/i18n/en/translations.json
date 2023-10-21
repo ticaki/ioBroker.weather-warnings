@@ -451,5 +451,8 @@
     "statesObjectsWarnings.allService.formatedkeys.endday":"Day of the warning end",
     "statesObjectsWarnings.allService.formatedkeys.endmonth":"Month of the warning end",
     "statesObjectsWarnings.allService.formatedkeys.warntypegeneric":"Generic warning type as number.",
-    "iobrokerUrl": "Prefix for Iconurl (example http://192.168.1.1:8081)"
+    "iobrokerUrl": "Prefix for Iconurl (example http://192.168.1.1:8081)",
+    "statesObjectsWarnings.allService.formatedkeys.cdhour":"Remaining time hours part. Up to 30 * 24 hours",
+    "statesObjectsWarnings.allService.formatedkeys.cdminute":"Remaining time minutes part.",
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture":"Countdown warning lies ahead."
 }

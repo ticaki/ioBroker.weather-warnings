@@ -1495,6 +1495,42 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      cdhour: {
+        _id: "cdhour",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.cdhour",
+          type: "number",
+          role: "value",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      cdminute: {
+        _id: "cdminute",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.cdminute",
+          type: "number",
+          role: "value",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      cdfuture: {
+        _id: "cdminute",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.cdfuture",
+          type: "number",
+          role: "value",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       status: {
         _id: "status",
         type: "state",

@@ -451,5 +451,8 @@
     "statesObjectsWarnings.allService.formatedkeys.endday": "Il giorno dell'avvertimento finisce",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Mese della fine dell'avvertimento",
     "iobrokerUrl": "Prefisso per Iconurl (esempio http://192.168.1.1:8081)",
-    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Tipo di avviso generico come numero."
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Tipo di avviso generico come numero.",
+    "statesObjectsWarnings.allService.formatedkeys.cdhour": "Tempo rimanente ore parte. Fino a 30 * 24 ore",
+    "statesObjectsWarnings.allService.formatedkeys.cdminute": "Parte dei minuti rimanenti.",
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "L'avviso del conto alla rovescia è in arrivo."
 }

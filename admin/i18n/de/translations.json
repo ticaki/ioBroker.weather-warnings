@@ -451,5 +451,8 @@
     "statesObjectsWarnings.allService.formatedkeys.endday": "Tag des Warnungsendes",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Monat des Warnungsendes",
     "iobrokerUrl": "Präfix für Iconurl (Beispiel http://192.168.1.1:8081)",
-    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Generischer Warnungstyp als Nummer."
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Generischer Warnungstyp als Nummer.",
+    "statesObjectsWarnings.allService.formatedkeys.cdhour": "Restzeit-Stunden-Teil. Bis zu 30 * 24 Stunden",
+    "statesObjectsWarnings.allService.formatedkeys.cdminute": "Restzeit-Minuten-Teil.",
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Countdown, Warnung steht bevor."
 }

@@ -451,5 +451,8 @@
     "statesObjectsWarnings.allService.formatedkeys.endday": "警告结束日",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "警告结束月份",
     "iobrokerUrl": "Iconurl 的前缀（例如 http://192.168.1.1:8081）",
-    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "通用警告类型为数字。"
+    "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "通用警告类型为数字。",
+    "statesObjectsWarnings.allService.formatedkeys.cdhour": "剩余时间小时部分。长达30*24小时",
+    "statesObjectsWarnings.allService.formatedkeys.cdminute": "剩余时间分钟部分。",
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "倒计时警告即将到来。"
 }

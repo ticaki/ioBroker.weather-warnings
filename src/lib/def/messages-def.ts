@@ -35,6 +35,9 @@ export type customFormatedTokens = {
     provider: string;
     locationcustom: string;
     countdown: string;
+    cdminute: string;
+    cdhour: string;
+    cdfuture: string;
     status: string;
     starttimems: number;
     endtimems: number;
@@ -71,6 +74,9 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     provider: 'Provider',
     locationcustom: 'Location from admin configuration',
     countdown: 'Remaining time until the start of the warning.',
+    cdhour: 'Remaining time hours part. Up to 30 * 24 hours.',
+    cdminute: 'Remaining time minutes part.',
+    cdfuture: 'Countdown warning lies ahead.',
     status: 'Status of warning. new, hold, all clear',
     starttimems: 'Start time in ms',
     endtimems: 'End Time in ms',

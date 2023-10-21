@@ -170,6 +170,18 @@ class MessagesClass extends import_library.BaseClass {
       warntypegeneric: {
         cmd: void 0,
         node: ""
+      },
+      cdminute: {
+        cmd: "countdownminutes",
+        node: "$toMillis(ONSET)"
+      },
+      cdhour: {
+        cmd: "countdownhours",
+        node: "$toMillis(ONSET)"
+      },
+      cdfuture: {
+        cmd: "countdownfuture",
+        node: "$toMillis(ONSET)"
       }
     },
     uwzService: {
@@ -290,6 +302,18 @@ class MessagesClass extends import_library.BaseClass {
       warntypegeneric: {
         cmd: void 0,
         node: ""
+      },
+      cdminute: {
+        cmd: "countdownminutes",
+        node: "dtgStart * 1000"
+      },
+      cdhour: {
+        cmd: "countdownhours",
+        node: "dtgStart * 1000"
+      },
+      cdfuture: {
+        cmd: "countdownfuture",
+        node: "dtgStart * 1000"
       }
     },
     zamgService: {
@@ -397,6 +421,18 @@ class MessagesClass extends import_library.BaseClass {
       warntypegeneric: {
         cmd: void 0,
         node: ""
+      },
+      cdminute: {
+        cmd: "countdownminutes",
+        node: "$number(rawinfo.start)*1000"
+      },
+      cdhour: {
+        cmd: "countdownhours",
+        node: "$number(rawinfo.start)*1000"
+      },
+      cdfuture: {
+        cmd: "countdownfuture",
+        node: "$number(rawinfo.start)*1000"
       }
     },
     default: {
@@ -475,6 +511,18 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       warntypegeneric: {
+        cmd: void 0,
+        node: ""
+      },
+      cdminute: {
+        cmd: void 0,
+        node: ""
+      },
+      cdhour: {
+        cmd: void 0,
+        node: ""
+      },
+      cdfuture: {
         cmd: void 0,
         node: ""
       }
@@ -657,7 +705,8 @@ class MessagesClass extends import_library.BaseClass {
     const templates = this.adapter.config.templateTable;
     if (!this.formatedData)
       return msg;
-    while (true) {
+    let count = 0;
+    while (count++ < 100) {
       if (tempid == -1)
         break;
       let rerun = false;
@@ -676,12 +725,67 @@ class MessagesClass extends import_library.BaseClass {
           if (arraykey[1] && this.formatedData[arraykey[1]] !== void 0) {
             const n = this.formatedData[arraykey[1]];
             if (n != "" && !Number.isNaN(n)) {
-              msg += arraykey[0].split(",")[this.formatedData[arraykey[1]]].trim();
+              try {
+                msg += arraykey[0].split(",")[this.formatedData[arraykey[1]]].trim();
+              } catch (error) {
+                this.log.error(`Array is not an array ${arraykey[0]} or index out of range ${n}.`);
+              }
             }
           } else {
             this.log.error(
-              `Unknown or not a number key ${arraykey[1]}  in template ${templates[tempid].templateKey}!`
+              `Unknown or not a number key ${arraykey[1]} in template ${templates[tempid].templateKey}!`
             );
+          }
+        } else if (key[0] == "(") {
+          const arraykey = key.split(")");
+          arraykey[0] = arraykey[0].slice(1);
+          for (const a of ["<", ">", "=", "!="]) {
+            if (arraykey[0].indexOf(a) == -1)
+              continue;
+            const funcarray = arraykey[0].split(a);
+            const n = this.formatedData[funcarray[1].trim()];
+            if (n !== void 0) {
+              let result = false;
+              switch (a) {
+                case ">":
+                  {
+                    result = funcarray[0].trim() > n;
+                  }
+                  break;
+                case "<":
+                  {
+                    result = funcarray[0].trim() < n;
+                  }
+                  break;
+                case "=":
+                  {
+                    result = funcarray[0].trim() == n;
+                  }
+                  break;
+                case "!=":
+                  {
+                    result = funcarray[0].trim() != n;
+                  }
+                  break;
+              }
+              let temp2 = "";
+              if (arraykey[1].indexOf("#") != -1) {
+                if (result)
+                  temp2 = arraykey[1].split("#")[0];
+                else
+                  temp2 = arraykey[1].split("#")[1] !== void 0 ? arraykey[1].split("#")[1] : "";
+              } else if (result)
+                temp2 = arraykey[1];
+              if (temp2.indexOf("\\${") != -1) {
+                temp2 = temp2.replaceAll("\\${", "${");
+                temp2 = temp2.replaceAll("\\}", "}");
+                rerun = true;
+              }
+              msg += temp2;
+            } else {
+              this.log.error(`Unknown key ${funcarray[1]} in template ${templates[tempid].templateKey}!`);
+              break;
+            }
           }
         } else if (configTemplate.length == 1) {
           msg += configTemplate[0].template;
@@ -783,7 +887,16 @@ class MessagesClass extends import_library.BaseClass {
         return this.library.getTranslation(data);
       }
       case "countdown": {
-        return this.getCountdown(data);
+        return this.getCountdown(data, "full");
+      }
+      case "countdownhours": {
+        return this.getCountdown(data, "hours");
+      }
+      case "countdownminutes": {
+        return this.getCountdown(data, "minutes");
+      }
+      case "countdownfuture": {
+        return this.getCountdown(data, "future");
       }
       case "geticon": {
         const id = MessageType.genericWarntyp[this.genericType].id;
@@ -805,12 +918,21 @@ class MessagesClass extends import_library.BaseClass {
     this.newMessage = false;
     this.notDeleted = true;
   }
-  getCountdown(time) {
+  getCountdown(time, typ) {
     const diff = time - Date.now();
     const remain = new Date(Math.abs(diff));
     const d = remain.getUTCDate() - 1;
-    const h = d > 0 ? ("00" + String(remain.getUTCHours())).slice(2) : String(remain.getUTCHours());
-    return `${diff < 0 ? "-" : ""}${d > 0 ? `${String(d)}:` : ""}${h}:${("00" + String(remain.getUTCMinutes())).slice(-2)}`;
+    switch (typ) {
+      case "future":
+        return diff < 0 ? "-1" : "1";
+      case "minutes":
+        return String(remain.getUTCMinutes());
+      case "hours":
+        return String(d * 24 + remain.getUTCHours());
+      case "full":
+        const h = d > 0 ? ("00" + String(remain.getUTCHours())).slice(2) : String(remain.getUTCHours());
+        return `${diff < 0 ? "-" : ""}${d > 0 ? `${String(d)}:` : ""}${h}:${("00" + String(remain.getUTCMinutes())).slice(-2)}`;
+    }
   }
   async delete() {
     super.delete();
