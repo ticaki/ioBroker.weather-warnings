@@ -903,6 +903,24 @@
                     "label": "telegram_withNoSound",
                     "newLine": false
                 },
+                "telegram_parse_mode": {
+                    "type": "select",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "multiple": false,
+                    "manual": false,
+                    "default": "none",
+                    "disabled": "data.telegram_Adapter == 'none'",
+                    "hidden": "data.imExpert != true",
+                    "label": "telegram_parse_mode",
+                    "newLine": false,
+                    "options": [
+                        {"label": "none", "value": "none"},
+                        {"label": "Html", "value": "HTML"},
+                        {"label": "Markdown V2", "value": "MarkdownV2 "}
+                        ]
+                },
                 "telegram_ChatId": {
                     "type": "text",
                     "sm": 6,
@@ -910,6 +928,7 @@
                     "lg": 2,
                     "default": "",
                     "disabled": "data.telegram_Adapter == 'none'",
+                    "hidden": "data.imExpert != true",
                     "label": "telegram_ChatId",
                     "newLine": true
                 },
@@ -1344,6 +1363,8 @@
                     "label": "pushover_Device",
                     "newLine": true
                 },    
+
+                "hidden": "data.imExpert != true",
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",

@@ -33,6 +33,7 @@ export type BaseType =
           userid: string;
           chatid: string;
           withNoSound: boolean;
+          parse_mode: string;
       } & bBaseType)
     | ({
           name: 'pushover';

@@ -454,5 +454,6 @@
     "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Тип загального попередження як число.",
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Частина години, що залишився. До 30*24 годин",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Частина хвилин, що залишилася.",
-    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Попереду попередження зворотного відліку."
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Попереду попередження зворотного відліку.",
+    "telegram_parse_mode": "Режим аналізу"
 }

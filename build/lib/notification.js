@@ -158,6 +158,8 @@ class NotificationClass extends library.BaseClass {
         {
           for (const msg of messages) {
             const opt = { text: msg.text, disable_notification: this.options.withNoSound };
+            if (this.options.parse_mode != "none")
+              opt.parse_mode = this.options.parse_mode;
             if (this.options.userid.length > 0 || this.options.chatid.length > 0) {
               if (this.options.userid.length > 0)
                 opt.user = this.options.userid;

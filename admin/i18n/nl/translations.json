@@ -454,5 +454,6 @@
     "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Generiek waarschuwingstype als nummer.",
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Resterende tijd uren deel. Tot 30 * 24 uur",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Resterende tijd minuten deel.",
-    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Er ligt een aftelwaarschuwing in het verschiet."
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Er ligt een aftelwaarschuwing in het verschiet.",
+    "telegram_parse_mode": "Parseermodus"
 }

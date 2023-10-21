@@ -454,5 +454,6 @@
     "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Tipo de advertencia genérica como número.",
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Tiempo restante horas parte. Hasta 30 * 24 horas",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Tiempo restante minutos parte.",
-    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Se avecina una advertencia de cuenta regresiva."
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Se avecina una advertencia de cuenta regresiva.",
+    "telegram_parse_mode": "Modo de análisis"
 }

@@ -66,6 +66,7 @@ declare global {
             telegram_withNoSound: boolean;
             telegram_UserId: string;
             telegram_ChatID: string;
+            telegram_parse_mode: string;
 
             whatsapp_DwdEnabled: boolean;
             whatsapp_UwzEnabled: boolean;

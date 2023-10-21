@@ -114,6 +114,12 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) Alexa Sounds for warntypes
+* (ticaki) more options for pushover, telegram, alexa, email html
+* (ticaki) Usable urls for icons
+* (ticaki) fixed error in type filter
+
 ### 0.3.6 (2023-10-20)
 * (ticaki) added: icons
 

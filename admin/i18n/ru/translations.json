@@ -454,5 +454,6 @@
     "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Общий тип предупреждения в виде числа.",
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Оставшееся время часть часов. До 30*24 часов",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Оставшаяся часть минут времени.",
-    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Предупреждение об обратном отсчете впереди."
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Предупреждение об обратном отсчете впереди.",
+    "telegram_parse_mode": "Режим анализа"
 }

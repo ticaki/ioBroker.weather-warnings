@@ -320,6 +320,7 @@ class WeatherWarnings extends utils.Adapter {
                     notificationServiceOpt.telegram.withNoSound = self.config.telegram_withNoSound || false;
                     notificationServiceOpt.telegram.userid = self.config.telegram_UserId || '';
                     notificationServiceOpt.telegram.chatid = self.config.telegram_ChatID || '';
+                    notificationServiceOpt.telegram.parse_mode = self.config.telegram_parse_mode || 'none';
                 }
                 if (self.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != undefined) {
                 }

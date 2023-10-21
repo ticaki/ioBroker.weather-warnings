@@ -454,5 +454,6 @@
     "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Tipo di avviso generico come numero.",
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Tempo rimanente ore parte. Fino a 30 * 24 ore",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Parte dei minuti rimanenti.",
-    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "L'avviso del conto alla rovescia è in arrivo."
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture": "L'avviso del conto alla rovescia è in arrivo.",
+    "telegram_parse_mode": "Modalità di analisi"
 }

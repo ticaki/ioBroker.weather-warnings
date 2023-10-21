@@ -454,5 +454,6 @@
     "iobrokerUrl": "Prefix for Iconurl (example http://192.168.1.1:8081)",
     "statesObjectsWarnings.allService.formatedkeys.cdhour":"Remaining time hours part. Up to 30 * 24 hours",
     "statesObjectsWarnings.allService.formatedkeys.cdminute":"Remaining time minutes part.",
-    "statesObjectsWarnings.allService.formatedkeys.cdfuture":"Countdown warning lies ahead."
+    "statesObjectsWarnings.allService.formatedkeys.cdfuture":"Countdown warning lies ahead.",
+    "telegram_parse_mode":"Parse mode"
 }
