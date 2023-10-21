@@ -35,6 +35,8 @@ declare global {
                 templateKey: string;
                 template: string;
             }[];
+            templateHelp: string;
+
             dwdLanguage: string;
             uwzLanguage: string;
             zamgLanguage: string;

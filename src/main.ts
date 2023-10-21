@@ -105,10 +105,28 @@ class WeatherWarnings extends utils.Adapter {
         }
 
         const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
-
         //create alexa sound array
+        let native: any = undefined;
         {
-            let change = false;
+            let reply = 'Tokens:\n';
+
+            for (const a in messagesDef.customFormatedTokensJson) {
+                reply +=
+                    '${' +
+                    a +
+                    '}: ' +
+                    ((await this.library.getTranslation(
+                        messagesDef.customFormatedTokensJson[a as keyof messagesDef.customFormatedTokens],
+                    )) +
+                        '\n');
+            }
+            reply = reply.slice(0, -2);
+            if (this.config.templateHelp !== reply) {
+                native = native || {};
+                native = { ...native, templateHelp: reply };
+            }
+        }
+        {
             let sounds = this.config.alexa2_sounds || [];
             if (!sounds || !Array.isArray(sounds)) sounds = [];
             for (const w in messagesDef.genericWarntyp) {
@@ -154,10 +172,13 @@ class WeatherWarnings extends utils.Adapter {
             }
             this.config.alexa2_sounds = sounds;
 
-            if (change)
-                await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-                    native: { alexa2_sounds: sounds },
-                });
+            if (change) {
+                native = native || {};
+                native = { ...native, alexa2_sounds: sounds };
+            }
+            /*await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+                native: { alexa2_sounds: sounds },
+            });*/
         }
 
         /** write default templates to config if template 0 == translation token */
@@ -181,8 +202,12 @@ class WeatherWarnings extends utils.Adapter {
             }
             this.config.templateTable = templateTable;
             this.log.info(`Write default templates to config for ${this.namespace}!`);
+            native = native || {};
+            native = { ...native, templateTable: templateTable };
+        }
+        if (native !== undefined) {
             await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-                native: { templateTable: templateTable },
+                native: native,
             });
         }
         this.setTimeout(
@@ -612,24 +637,6 @@ class WeatherWarnings extends utils.Adapter {
                             //this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                             this.sendTo(obj.from, obj.command, reply, obj.callback);
                         }
-                    }
-                    break;
-                case 'templateHelp':
-                    if (obj.callback) {
-                        let reply = 'Tokens: ';
-
-                        for (const a in messagesDef.customFormatedTokensJson) {
-                            reply +=
-                                '${' +
-                                a +
-                                '}: ' +
-                                ((await this.library.getTranslation(
-                                    messagesDef.customFormatedTokensJson[a as keyof messagesDef.customFormatedTokens],
-                                )) +
-                                    ' - / - \n');
-                        }
-                        reply = reply.slice(0, -7);
-                        this.sendTo(obj.from, obj.command, reply, obj.callback);
                     }
                     break;
                 case 'filterLevel':

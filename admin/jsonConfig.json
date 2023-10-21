@@ -281,14 +281,13 @@
                     "newLine": true
                 },
                 "templateHelp": {
-                    "type": "textSendTo",
-                    "command": "templateHelp",
+                    "type": "text",
                     "hidden": "data.templateTable[0].template == 'template.NewMessage'",
-                    "multiline": true,
+                    
                     "minRows": 2,
                     "maxRows": 50,
                     "text": "",
-                    "jsonData": "{ \"service\": \"${data.templateHelp}\" }",
+                    "readOnly": true,
                     "sm": 12,
                     "md": 12,
                     "lg": 12,

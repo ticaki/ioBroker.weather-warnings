@@ -103,8 +103,21 @@ class WeatherWarnings extends utils.Adapter {
       this.log.error(`catch(1): init error while reading states! ${error}`);
     }
     const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+    let native = void 0;
     {
-      let change2 = false;
+      let reply = "Tokens:\n";
+      for (const a in messagesDef.customFormatedTokensJson) {
+        reply += "${" + a + "}: " + (await this.library.getTranslation(
+          messagesDef.customFormatedTokensJson[a]
+        ) + "\n");
+      }
+      reply = reply.slice(0, -2);
+      if (this.config.templateHelp !== reply) {
+        native = native || {};
+        native = { ...native, templateHelp: reply };
+      }
+    }
+    {
       let sounds = this.config.alexa2_sounds || [];
       if (!sounds || !Array.isArray(sounds))
         sounds = [];
@@ -117,11 +130,11 @@ class WeatherWarnings extends utils.Adapter {
             messagesDef.genericWarntyp[Number(w)].name
           );
           if (t != sounds[index2].warntype) {
-            change2 = true;
+            change = true;
             sounds[index2].warntype = t;
           }
         } else {
-          change2 = true;
+          change = true;
           sounds.push({
             warntypenumber: Number(w),
             warntype: await this.library.getTranslation(
@@ -135,7 +148,7 @@ class WeatherWarnings extends utils.Adapter {
         (a) => a.warntypenumber == Number(0)
       );
       if (index == -1) {
-        change2 = true;
+        change = true;
         sounds.push({
           warntypenumber: Number(0),
           warntype: await this.library.getTranslation("template.RemoveAllMessage"),
@@ -144,15 +157,15 @@ class WeatherWarnings extends utils.Adapter {
       } else {
         const t = await this.library.getTranslation("template.RemoveAllMessage");
         if (t != sounds[index].warntype) {
-          change2 = true;
+          change = true;
           sounds[index].warntype = t;
         }
       }
       this.config.alexa2_sounds = sounds;
-      if (change2)
-        await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-          native: { alexa2_sounds: sounds }
-        });
+      if (change) {
+        native = native || {};
+        native = { ...native, alexa2_sounds: sounds };
+      }
     }
     if (config && config.native && config.native.templateTable[0] && config.native.templateTable[0].template == "template.NewMessage") {
       this.log.info(`First start after installation detected.`);
@@ -169,8 +182,12 @@ class WeatherWarnings extends utils.Adapter {
       }
       this.config.templateTable = templateTable;
       this.log.info(`Write default templates to config for ${this.namespace}!`);
+      native = native || {};
+      native = { ...native, templateTable };
+    }
+    if (native !== void 0) {
       await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-        native: { templateTable }
+        native
       });
     }
     this.setTimeout(
@@ -508,18 +525,6 @@ class WeatherWarnings extends utils.Adapter {
               }
               this.sendTo(obj.from, obj.command, reply, obj.callback);
             }
-          }
-          break;
-        case "templateHelp":
-          if (obj.callback) {
-            let reply = "Tokens: ";
-            for (const a in messagesDef.customFormatedTokensJson) {
-              reply += "${" + a + "}: " + (await this.library.getTranslation(
-                messagesDef.customFormatedTokensJson[a]
-              ) + " - / - \n");
-            }
-            reply = reply.slice(0, -7);
-            this.sendTo(obj.from, obj.command, reply, obj.callback);
           }
           break;
         case "filterLevel":
