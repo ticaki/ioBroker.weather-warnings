@@ -463,5 +463,10 @@
     "evening": "wieczór",
     "night": "noc",
     "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Początek: Pora dnia.",
-    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Koniec: Pora dnia."
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Koniec: Pora dnia.",
+    "statesObjectsWarnings.allService.formatedkeys.startadverb": "Początek: przysłówek czasowy.",
+    "yesterday": "Wczoraj",
+    "today": "Dzisiaj",
+    "tomorrow": "jutro",
+    "tomorrow2": "pojutrze"
 }

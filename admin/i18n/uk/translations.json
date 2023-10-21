@@ -463,5 +463,10 @@
     "evening": "вечір",
     "night": "ніч",
     "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Початок: Час доби.",
-    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Кінець: Час доби."
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Кінець: Час доби.",
+    "statesObjectsWarnings.allService.formatedkeys.startadverb": "Початок: часовий прислівник.",
+    "yesterday": "вчора",
+    "today": "сьогодні",
+    "tomorrow": "завтра",
+    "tomorrow2": "післязавтра"
 }

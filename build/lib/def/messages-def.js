@@ -28,6 +28,7 @@ __export(messages_def_exports, {
   isKeyOfObject: () => isKeyOfObject,
   level: () => level,
   status: () => status,
+  temporalAdverbs: () => temporalAdverbs,
   textLevels: () => textLevels,
   warnTypeName: () => warnTypeName
 });
@@ -38,6 +39,7 @@ const customFormatedTokensJson = {
   startday: "Start Day",
   startmonth: "Start Month",
   startdaytime: "Start: Time of day.",
+  startadverb: "Start: temporal adverb",
   endtime: "End Time",
   enddate: "End Date",
   endday: "End Day",
@@ -348,6 +350,12 @@ const daytimes = {
   evening: { start: 17, end: 21 },
   night: { start: 21, end: 6 }
 };
+const temporalAdverbs = {
+  yesterday: -1,
+  today: 0,
+  tomorrow: 1,
+  tomorrow2: 2
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   color,
@@ -360,6 +368,7 @@ const daytimes = {
   isKeyOfObject,
   level,
   status,
+  temporalAdverbs,
   textLevels,
   warnTypeName
 });

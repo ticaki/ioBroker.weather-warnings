@@ -12,6 +12,7 @@ export type customFormatedTokens = {
     startday: string;
     startmonth: string;
     startdaytime: string;
+    startadverb: string;
     endtime: string; // Endzeitpunkt
     enddate: string; // Enddatum
     endday: string;
@@ -53,6 +54,7 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     startday: 'Start Day',
     startmonth: 'Start Month',
     startdaytime: 'Start: Time of day.',
+    startadverb: 'Start: temporal adverb',
     endtime: 'End Time', // Endzeitpunkt
     enddate: 'End Date', // Enddatum
     endday: 'End Day',
@@ -539,4 +541,11 @@ export const daytimes = {
     afternoon: { start: 14, end: 17 },
     evening: { start: 17, end: 21 },
     night: { start: 21, end: 6 },
+};
+
+export const temporalAdverbs = {
+    yesterday: -1,
+    today: 0,
+    tomorrow: 1,
+    tomorrow2: 2,
 };

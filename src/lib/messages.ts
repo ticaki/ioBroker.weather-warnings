@@ -26,7 +26,8 @@ type messageCmdType =
     | 'countdownhours'
     | 'countdownminutes'
     | 'countdownfuture'
-    | 'daytime';
+    | 'daytime'
+    | 'adverb';
 /**
  * MessageClass
  */
@@ -196,6 +197,10 @@ export class MessagesClass extends BaseClass {
                 cmd: 'daytime',
                 node: 'EXPIRES',
             },
+            startadverb: {
+                cmd: 'adverb',
+                node: 'ONSET',
+            },
         },
 
         uwzService: {
@@ -337,6 +342,10 @@ export class MessagesClass extends BaseClass {
                 cmd: 'daytime',
                 node: 'dtgEnd * 1000',
             },
+            startadverb: {
+                cmd: 'adverb',
+                node: 'dtgStart * 1000',
+            },
         },
         zamgService: {
             starttime: {
@@ -465,6 +474,10 @@ export class MessagesClass extends BaseClass {
                 cmd: 'daytime',
                 node: '$number(rawinfo.end)*1000',
             },
+            startadverb: {
+                cmd: 'adverb',
+                node: '$number(rawinfo.start)*1000',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -562,6 +575,10 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             enddaytime: {
+                cmd: undefined,
+                node: '',
+            },
+            startadverb: {
                 cmd: undefined,
                 node: '',
             },
@@ -981,6 +998,16 @@ export class MessagesClass extends BaseClass {
                     }
                 }
                 return this.library.getTranslation(daytime);
+            }
+            case 'adverb': {
+                const day = new Date(new Date(Date.now()).setHours(0, 0, 0, 0)).getTime(); //86400000;
+                let rest = (new Date(data).getTime() - day) / 86400000;
+                rest = Math.floor(rest);
+                for (const a in MessageType.temporalAdverbs) {
+                    const o = MessageType.temporalAdverbs[a as keyof typeof MessageType.temporalAdverbs];
+                    if (o == rest) return this.library.getTranslation(a);
+                }
+                return '';
             }
         }
         return '';

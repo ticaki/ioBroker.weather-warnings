@@ -463,5 +463,10 @@
     "evening": "noite",
     "night": "noite",
     "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Início: Hora do dia.",
-    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Fim: Hora do dia."
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Fim: Hora do dia.",
+    "statesObjectsWarnings.allService.formatedkeys.startadverb": "Início: advérbio temporal.",
+    "yesterday": "ontem",
+    "today": "hoje",
+    "tomorrow": "amanhã",
+    "tomorrow2": "o dia Depois de Amanhã"
 }

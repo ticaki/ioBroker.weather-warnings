@@ -1615,6 +1615,18 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      startadverb: {
+        _id: "startadverb",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.startadverb",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       endday: {
         _id: "begin",
         type: "state",

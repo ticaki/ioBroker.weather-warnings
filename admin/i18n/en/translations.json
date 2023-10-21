@@ -463,5 +463,10 @@
     "evening":"evening",
     "night": "night",
     "statesObjectsWarnings.allService.formatedkeys.startdaytime":"Start: Time of the day.",
-    "statesObjectsWarnings.allService.formatedkeys.enddaytime":"End: Time of the day."
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime":"End: Time of the day.",
+    "statesObjectsWarnings.allService.formatedkeys.startadverb": "Start: temporal adverb.",
+    "yesterday":"yesterday",
+    "today":"today",
+    "tomorrow":"tomorrow",
+    "tomorrow2":"the day after tomorrow"
 }

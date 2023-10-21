@@ -190,6 +190,10 @@ class MessagesClass extends import_library.BaseClass {
       enddaytime: {
         cmd: "daytime",
         node: "EXPIRES"
+      },
+      startadverb: {
+        cmd: "adverb",
+        node: "ONSET"
       }
     },
     uwzService: {
@@ -330,6 +334,10 @@ class MessagesClass extends import_library.BaseClass {
       enddaytime: {
         cmd: "daytime",
         node: "dtgEnd * 1000"
+      },
+      startadverb: {
+        cmd: "adverb",
+        node: "dtgStart * 1000"
       }
     },
     zamgService: {
@@ -457,6 +465,10 @@ class MessagesClass extends import_library.BaseClass {
       enddaytime: {
         cmd: "daytime",
         node: "$number(rawinfo.end)*1000"
+      },
+      startadverb: {
+        cmd: "adverb",
+        node: "$number(rawinfo.start)*1000"
       }
     },
     default: {
@@ -555,6 +567,10 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       enddaytime: {
+        cmd: void 0,
+        node: ""
+      },
+      startadverb: {
         cmd: void 0,
         node: ""
       }
@@ -940,6 +956,17 @@ class MessagesClass extends import_library.BaseClass {
           }
         }
         return this.library.getTranslation(daytime);
+      }
+      case "adverb": {
+        const day = new Date(new Date(Date.now()).setHours(0, 0, 0, 0)).getTime();
+        let rest = (new Date(data).getTime() - day) / 864e5;
+        rest = Math.floor(rest);
+        for (const a in MessageType.temporalAdverbs) {
+          const o = MessageType.temporalAdverbs[a];
+          if (o == rest)
+            return this.library.getTranslation(a);
+        }
+        return "";
       }
     }
     return "";

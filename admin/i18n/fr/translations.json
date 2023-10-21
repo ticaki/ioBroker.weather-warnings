@@ -463,5 +463,10 @@
     "evening": "soirée",
     "night": "nuit",
     "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Début : heure de la journée.",
-    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Fin : heure de la journée."
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Fin : heure de la journée.",
+    "statesObjectsWarnings.allService.formatedkeys.startadverb": "Début : adverbe temporel.",
+    "yesterday": "hier",
+    "today": "aujourd'hui",
+    "tomorrow": "demain",
+    "tomorrow2": "le surlendemain"
 }

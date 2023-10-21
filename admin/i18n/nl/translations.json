@@ -463,5 +463,10 @@
     "evening": "avond",
     "night": "nacht",
     "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Begin: tijdstip van de dag.",
-    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Einde: Tijd van de dag."
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Einde: Tijd van de dag.",
+    "statesObjectsWarnings.allService.formatedkeys.startadverb": "Begin: tijdelijk bijwoord.",
+    "yesterday": "gisteren",
+    "today": "Vandaag",
+    "tomorrow": "morgen",
+    "tomorrow2": "overmorgen"
 }

@@ -463,5 +463,10 @@
     "evening": "晚上",
     "night": "夜晚",
     "statesObjectsWarnings.allService.formatedkeys.startdaytime": "开始：一天中的时间。",
-    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "结束：一天中的时间。"
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "结束：一天中的时间。",
+    "statesObjectsWarnings.allService.formatedkeys.startadverb": "开始：时间副词。",
+    "yesterday": "昨天",
+    "today": "今天",
+    "tomorrow": "明天",
+    "tomorrow2": "后天"
 }

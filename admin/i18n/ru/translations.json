@@ -463,5 +463,10 @@
     "evening": "вечер",
     "night": "ночь",
     "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Начало: Время суток.",
-    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Конец: Время суток."
+    "statesObjectsWarnings.allService.formatedkeys.enddaytime": "Конец: Время суток.",
+    "statesObjectsWarnings.allService.formatedkeys.startadverb": "Начало: временное наречие.",
+    "yesterday": "вчера",
+    "today": "сегодня",
+    "tomorrow": "завтра",
+    "tomorrow2": "послезавтра"
 }
