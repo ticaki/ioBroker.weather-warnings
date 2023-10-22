@@ -73,7 +73,7 @@ Signs with special meaning:
 **Filter:** 
 - Filter Raw data: Filters out everything within X hours into the future before every following handling.
 - Type: discards everything with this type.
-- Level: everything equal or lower than this level will be discarded. 
+- Level: everything lower than this level will be discarded. 
 
 ![telegram](img/telegram.png)
 **Adapter:** If this option was activated and there is an adapter field, a valid option has to be chosen. An error message in the log indicates missing settings. 
@@ -123,6 +123,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.4.1 (2023-10-22)
+* (ticaki) update german translation for alexa
+
 ### 0.4.0 (2023-10-22)
 * (ticaki) Welcome to latest.
 * (ticaki) zamg date convert for alexa

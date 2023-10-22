@@ -64,7 +64,7 @@ Zeichen mit besonderer Bedeutung:
 **Filter:** 
 - Filter Raw data: Filtert vor jeder weiteren Auswertung alles aus das X Stunden in der Zukunft liegt.
 - Type: alles mit diesem Type wird verworfen. 
-- Level: ales gleich oder kleiner dieses Levels wird verworfen.
+- Level: alles kleiner dieses Levels wird verworfen.
 
 ![telegram](img/telegram.png)
 **Adapter:** Wenn diese Möglichkeit aktiviert wurde und es ein Adapterfeld gibt muß dort einen gültige Auswahl getroffen werden. Eine Fehlermeldung im Log weißt auf fehlende Einstellungen hin. 

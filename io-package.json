@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "news": {
+      "0.4.1": {
+        "en": "update german translation for alexa",
+        "de": "Deutsche übersetzung für Alexa aktualisieren",
+        "ru": "обновить немецкий перевод для alexa",
+        "pt": "atualização alemão tradução para alexa",
+        "nl": "vertaling:",
+        "fr": "mise à jour traduction allemande pour alexa",
+        "it": "aggiornamento traduzione tedesca per alexa",
+        "es": "actualización traducción alemana para alexa",
+        "pl": "uaktualnianie germannego tłumaczenia na alexa",
+        "uk": "оновлення німецького перекладу для alexa",
+        "zh-cn": "四. 更新法文本"
+      },
       "0.4.0": {
         "en": "Welcome to latest.\nzamg date convert for alexa.",
         "de": "Herzlich willkommen im Beta :).\nZamg date konvertieren für alexa.",
@@ -80,19 +93,6 @@
         "pl": "data: repeat message dwd\nmałe trąbki",
         "uk": "фіксована: повторне повідомлення dwd\nмаленькі багфікси",
         "zh-cn": "固定:重复信息\n小型配件"
-      },
-      "0.3.2": {
-        "en": "add alexa volumen",
-        "de": "alexa volumen hinzufügen",
-        "ru": "добавить alexa volumen",
-        "pt": "adicionar volume de alexa",
-        "nl": "voeg alexa volume toe",
-        "fr": "ajouter alexa volumen",
-        "it": "aggiungere alexa volume",
-        "es": "añadir alexa volumen",
-        "pl": "dodać aleksję",
-        "uk": "додати alexa об'єм",
-        "zh-cn": "增 编"
       }
     },
     "titleLang": {
