@@ -159,6 +159,7 @@ export class NotificationClass extends library.BaseClass {
     }
     cleanupMessage(messages: NotificationType.MessageType[]): NotificationType.MessageType[] {
         for (const message of messages) {
+            if (message === null || message == undefined) continue;
             switch (this.options.name) {
                 case 'telegram':
                 case 'pushover':
@@ -181,31 +182,27 @@ export class NotificationClass extends library.BaseClass {
                         case 'uk':
                         case 'de':
                             {
-                                try {
-                                    message.text = message.text.replace(/\([0-9]+.m\/s, [0-9]+.kn, Bft.[0-9]+../g, '');
-                                    message.text = message.text.replace(/\°C/g, this.library.getTranslation('celsius'));
-                                    message.text = message.text.replace(/km\/h/g, this.library.getTranslation('kmh'));
-                                    message.text = message.text.replace(/l\/m\²/g, this.library.getTranslation('lm'));
-                                    message.text = message.text.replace(
-                                        / [a-zA-Z][a-zA-Z], \d{1,2}\.\d{1,2}\.\d{4} /g,
-                                        (x) => this.library.convertSpeakDate(x, true),
-                                    );
-                                    /* message.text = message.text.replace(/\d{1,2}\.\d{1,2}\... /gi, (x) =>
+                                message.text = message.text.replace(/\([0-9]+.m\/s, [0-9]+.kn, Bft.[0-9]+../g, '');
+                                message.text = message.text.replace(/\°C/g, this.library.getTranslation('celsius'));
+                                message.text = message.text.replace(/km\/h/g, this.library.getTranslation('kmh'));
+                                message.text = message.text.replace(/l\/m\²/g, this.library.getTranslation('lm'));
+                                message.text = message.text.replace(
+                                    / [a-zA-Z][a-zA-Z], \d{1,2}\.\d{1,2}\.\d{4} /g,
+                                    (x) => this.library.convertSpeakDate(x, true),
+                                );
+                                /* message.text = message.text.replace(/\d{1,2}\.\d{1,2}\... /gi, (x) =>
                                         this.library.convertSpeakDate(x),
                                     );*/
-                                    // insert ;
-                                    // with endless protection
-                                    let count = 0;
-                                    let pos = 250;
-                                    while (pos <= message.text.length && count++ < 100) {
-                                        const oldpos = pos;
-                                        pos = message.text.lastIndexOf('.', pos);
-                                        if (oldpos == pos || pos == -1) pos = message.text.lastIndexOf(' ', pos);
-                                        message.text = message.text.slice(0, pos) + ';' + message.text.slice(pos + 1);
-                                        pos += 250;
-                                    }
-                                } catch (e) {
-                                    this.log.error('Error(231)');
+                                // insert ;
+                                // with endless protection
+                                let count = 0;
+                                let pos = 250;
+                                while (pos <= message.text.length && count++ < 50) {
+                                    const oldpos = pos;
+                                    pos = message.text.lastIndexOf('.', pos);
+                                    if (oldpos == pos || pos == -1) pos = message.text.lastIndexOf(' ', pos);
+                                    message.text = message.text.slice(0, pos) + ';' + message.text.slice(pos + 1);
+                                    pos += 250;
                                 }
                             }
                             break;
