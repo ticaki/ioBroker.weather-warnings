@@ -330,7 +330,7 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
         for (const i in testData.dwdService.features) {
             const f = testData.dwdService.features[i];
             const start = Date.now() + Math.random() * 12000000 + 60000;
-            if (new Date(f.properties.EXPIRES).getTime() + 3600000 < start) {
+            if (new Date(f.properties.EXPIRES).getTime() + 14000000 < start) {
                 f.properties.ONSET = new Date(start).toJSON();
                 f.properties.EXPIRES = new Date(start + Math.random() * 2400000 + 300000).toJSON();
             }

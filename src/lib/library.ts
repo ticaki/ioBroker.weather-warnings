@@ -24,11 +24,13 @@ export class BaseClass {
     unload: boolean = false;
     log: CustomLog;
     adapter: AdapterClassDefinition;
+    library: Library;
     name: string = ``;
     constructor(adapter: AdapterClassDefinition, name: string = '') {
         this.name = name;
         this.log = new CustomLog(adapter, this.name);
         this.adapter = adapter;
+        this.library = adapter.library;
     }
     async delete(): Promise<void> {
         this.unload = true;
@@ -64,7 +66,7 @@ class CustomLog {
 
 export class Library extends BaseClass {
     stateDataBase: { [key: string]: LibraryStateVal } = {};
-    language: string = 'no language';
+    language: ioBroker.Languages | 'uk' = 'en';
     forbiddenDirs: string[] = [];
     translation: { [key: string]: string } = {};
 
@@ -78,7 +80,7 @@ export class Library extends BaseClass {
         if (obj) {
             await this.setLanguage(obj.common.language);
         } else {
-            await this.setLanguage('en');
+            await this.setLanguage('en', true);
         }
     }
 
@@ -482,14 +484,25 @@ export class Library extends BaseClass {
         if (this.language) return this.language;
         return 'en-En';
     }
-    async getTranslation(key: string): Promise<string> {
+    getTranslation(key: string): string {
         if (this.translation[key] !== undefined) return this.translation[key];
         return key;
     }
 
     private async getTranslationObj(key: string): Promise<ioBroker.StringOrTranslated> {
-        //@ts-expect-error fix on the way
-        const language: ioBroker.Languages[] = ['en', 'de', 'ru', 'pt', 'nl', 'fr', 'it', 'es', 'pl', 'uk', 'zh-cn'];
+        const language: (ioBroker.Languages | 'uk')[] = [
+            'en',
+            'de',
+            'ru',
+            'pt',
+            'nl',
+            'fr',
+            'it',
+            'es',
+            'pl',
+            'uk',
+            'zh-cn',
+        ];
         const result: { [key: string]: string } = {};
         for (const l of language) {
             try {
@@ -503,9 +516,9 @@ export class Library extends BaseClass {
         return result as ioBroker.StringOrTranslated;
     }
 
-    async setLanguage(language: string): Promise<boolean> {
+    async setLanguage(language: ioBroker.Languages | 'uk', force = false): Promise<boolean> {
         if (!language) language = 'en';
-        if (this.language != language) {
+        if (force || this.language != language) {
             try {
                 this.translation = await import(`../../admin/i18n/${language}/translations.json`);
                 this.language = language;
@@ -530,5 +543,23 @@ export class Library extends BaseClass {
             return 0;
         });
         return text;
+    }
+    convertSpeakDate(text: string, day = false): string {
+        if (!text || typeof text !== `string`) return ``;
+        const b = text.split(`.`);
+        if (day) {
+            b[0] = b[0].split(' ')[2];
+        }
+        return (
+            ' ' +
+            (
+                new Date(`${b[1]}/${b[0]}/2020`).toLocaleString(this.language, {
+                    weekday: day ? 'long' : undefined,
+                    day: 'numeric',
+                    month: `long`,
+                    timeZone: 'UTC',
+                }) + ' '
+            ).replace(/([0-9]+\.)/gu, (x) => this.getTranslation(x))
+        );
     }
 }

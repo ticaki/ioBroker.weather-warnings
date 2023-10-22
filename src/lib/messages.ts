@@ -918,7 +918,7 @@ export class MessagesClass extends BaseClass {
                 }
             }
             this.formatedData = temp as MessageType.customFormatedKeysDef;
-            this.formatedData.warntypegenericname = await this.library.getTranslation(
+            this.formatedData.warntypegenericname = this.library.getTranslation(
                 MessageType.genericWarntyp[this.genericType].name,
             );
             this.formatedData.warntypegeneric = this.genericType;

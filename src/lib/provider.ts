@@ -499,7 +499,7 @@ export class ProviderController extends BaseClass {
         const states: string[] = [];
         for (const a in messagesDef.genericWarntyp) {
             //@ts-expect-error dann so
-            states[a] = await this.library.getTranslation(messagesDef.genericWarntyp[a].name);
+            states[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
         }
         definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
         /*
