@@ -200,7 +200,8 @@ export class NotificationClass extends library.BaseClass {
                                 while (pos <= message.text.length && count++ < 50) {
                                     const oldpos = pos;
                                     pos = message.text.lastIndexOf('.', pos);
-                                    if (oldpos == pos || pos == -1) pos = message.text.lastIndexOf(' ', pos);
+                                    if (pos == -1) pos = message.text.lastIndexOf(' ', oldpos);
+                                    if (pos == -1) break;
                                     message.text = message.text.slice(0, pos) + ';' + message.text.slice(pos + 1);
                                     pos += 250;
                                 }
