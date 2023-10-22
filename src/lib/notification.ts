@@ -157,12 +157,61 @@ export class NotificationClass extends library.BaseClass {
         if (this.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1) return true;
         return false;
     }
+    cleanupMessage(messages: NotificationType.MessageType[]): NotificationType.MessageType[] {
+        for (const message of messages) {
+            switch (this.options.name) {
+                case 'telegram':
+                case 'pushover':
+                case 'whatsapp':
+                case 'json':
+                case 'history':
+                case 'email':
+                    break;
+                case 'alexa2': {
+                    switch (this.library.language) {
+                        case 'en':
+                        case 'ru':
+                        case 'pt':
+                        case 'nl':
+                        case 'fr':
+                        case 'it':
+                        case 'es':
+                        case 'pl':
+                        case 'zh-cn':
+                        case 'uk':
+                        case 'de':
+                            {
+                                try {
+                                    message.text = message.text.replace(/\([0-9]+.m\/s..[0-9]+kn..Bft.[0-9]+../g, '');
+                                    message.text = message.text.replace(/\°C/g, this.library.getTranslation('celsius'));
+                                    message.text = message.text.replace(/km\/h/g, this.library.getTranslation('kmh'));
+                                    message.text = message.text.replace(/l\/m\²/g, this.library.getTranslation('lm'));
+                                    message.text = message.text.replace(
+                                        / [a-zA-Z][a-zA-Z], \d{1,2}\.\d{1,2}\.\d{4} /gi,
+                                        (x) => this.library.convertSpeakDate(x, true),
+                                    );
+                                    /* message.text = message.text.replace(/\d{1,2}\.\d{1,2}\... /gi, (x) =>
+                                        this.library.convertSpeakDate(x),
+                                    );*/
+                                } catch (e) {
+                                    this.log.error('Error(231)');
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+        return messages;
+    }
 
     async sendNotifications(messages: NotificationType.MessageType[]): Promise<boolean> {
         if (!Array.isArray(messages) || messages.length == 0) {
             this.log.debug(`no messages`);
             return false;
         }
+        // own function
+        messages = this.cleanupMessage(Object.assign([], messages) as NotificationType.MessageType[]);
 
         switch (this.options.name) {
             case 'telegram':

@@ -339,7 +339,7 @@ function getTestData(service, _that) {
     for (const i in testData.dwdService.features) {
       const f = testData.dwdService.features[i];
       const start = Date.now() + Math.random() * 12e6 + 6e4;
-      if (new Date(f.properties.EXPIRES).getTime() + 36e5 < start) {
+      if (new Date(f.properties.EXPIRES).getTime() + 14e6 < start) {
         f.properties.ONSET = new Date(start).toJSON();
         f.properties.EXPIRES = new Date(start + Math.random() * 24e5 + 3e5).toJSON();
       }

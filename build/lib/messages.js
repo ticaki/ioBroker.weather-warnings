@@ -880,7 +880,7 @@ class MessagesClass extends import_library.BaseClass {
         }
       }
       this.formatedData = temp;
-      this.formatedData.warntypegenericname = await this.library.getTranslation(
+      this.formatedData.warntypegenericname = this.library.getTranslation(
         MessageType.genericWarntyp[this.genericType].name
       );
       this.formatedData.warntypegeneric = this.genericType;

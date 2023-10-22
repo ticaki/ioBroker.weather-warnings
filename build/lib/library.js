@@ -54,11 +54,13 @@ class BaseClass {
   unload = false;
   log;
   adapter;
+  library;
   name = ``;
   constructor(adapter, name = "") {
     this.name = name;
     this.log = new CustomLog(adapter, this.name);
     this.adapter = adapter;
+    this.library = adapter.library;
   }
   async delete() {
     this.unload = true;
@@ -94,7 +96,7 @@ _adapter = new WeakMap();
 _prefix = new WeakMap();
 class Library extends BaseClass {
   stateDataBase = {};
-  language = "no language";
+  language = "en";
   forbiddenDirs = [];
   translation = {};
   constructor(adapter, _options = null) {
@@ -106,7 +108,7 @@ class Library extends BaseClass {
     if (obj) {
       await this.setLanguage(obj.common.language);
     } else {
-      await this.setLanguage("en");
+      await this.setLanguage("en", true);
     }
   }
   async writeFromJson(prefix, objNode, def, data, expandTree = false) {
@@ -422,13 +424,25 @@ class Library extends BaseClass {
       return this.language;
     return "en-En";
   }
-  async getTranslation(key) {
+  getTranslation(key) {
     if (this.translation[key] !== void 0)
       return this.translation[key];
     return key;
   }
   async getTranslationObj(key) {
-    const language = ["en", "de", "ru", "pt", "nl", "fr", "it", "es", "pl", "uk", "zh-cn"];
+    const language = [
+      "en",
+      "de",
+      "ru",
+      "pt",
+      "nl",
+      "fr",
+      "it",
+      "es",
+      "pl",
+      "uk",
+      "zh-cn"
+    ];
     const result = {};
     for (const l of language) {
       try {
@@ -443,10 +457,10 @@ class Library extends BaseClass {
       return key;
     return result;
   }
-  async setLanguage(language) {
+  async setLanguage(language, force = false) {
     if (!language)
       language = "en";
-    if (this.language != language) {
+    if (force || this.language != language) {
       try {
         this.translation = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${language}/translations.json`)));
         this.language = language;
@@ -470,6 +484,20 @@ class Library extends BaseClass {
       return 0;
     });
     return text;
+  }
+  convertSpeakDate(text, day = false) {
+    if (!text || typeof text !== `string`)
+      return ``;
+    const b = text.split(`.`);
+    if (day) {
+      b[0] = b[0].split(" ")[2];
+    }
+    return " " + (new Date(`${b[1]}/${b[0]}/2020`).toLocaleString(this.language, {
+      weekday: day ? "long" : void 0,
+      day: "numeric",
+      month: `long`,
+      timeZone: "UTC"
+    }) + " ").replace(/([0-9]+\.)/gu, (x) => this.getTranslation(x));
   }
 }
 // Annotate the CommonJS export names for ESM import in node:
