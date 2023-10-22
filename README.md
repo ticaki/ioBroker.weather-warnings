@@ -35,6 +35,8 @@ After installation the configuration site will automatically open and will be ne
 
 - **Incoming warnings...:** After starting the adapter the warnings of the first data retrieval will be treated as known and will not trigger a notification.
 
+- **Expert**: Activates additional optional settings 
+
 - **Testing- Activate...:** Use testdata. Adapter is offline.
 
 - **Testing- Raw data history:** For Debugging, only on request.
@@ -45,10 +47,13 @@ After installation the configuration site will automatically open and will be ne
 
 Here you can create own messages or edit existing ones. All available „Tokens“ and their meanings are displayed below the table. The Unique identifier is used by push notification services in order to determine which template to use for which type of notification.
 
-Zeichen mit besonderer Bedeutung:
+Save and close after adding or deleting templates.
+
+Signs with special meaning:
 - `${}` contains tokens that are substituted by generated information. The template identifier is usable here as well.
 - Template identifier that start with `_` are not offered by services.
 - `${[0,1,2,3,4]token}` A string with values, token has to be a number token. The index is the same as shown in the example. 0 is the first value in the list.
+- `${(value=token)result1#result2}` or `${(value=token)result1}` is the same as a javascript command: `if (value == token) result1 else result2` possible comparisons: `= < > != `
 - for a Jsons template the closing bracket `}` has to be written in this way `\}`
 - see examples in the adapter
 - alternatively also possible: `${[0,🟢,🟡,🟠,🔴]warnlevelnumber}`
@@ -81,17 +86,22 @@ Zeichen mit besonderer Bedeutung:
 
 
 **Messages:** use the following templates for:
+Column 1:
 1) New warnings or existing warnings
 2) A warning was removed and there are **other** active warnings.
 3) Warnings were removed and there are **no other** active warnings.
+
+Column 2:
+1) Manually triggered notifications
+2) Use for no warning 1.3
 
 Templates for 3) cannot contain `${}` Tokens.
 
 **Special features**
 
-**email:** Header is put before the Mail, followed by 1,2 or 3 + line break and then Footer. (additional features are being worked on)
+**email:** Header is put before the Mail, followed by 1,2 or 3 + line break and then Footer. The email is sent in html format, so you can add any htmp tag you like. (additional features are being worked on, not ready yet)
 
-**alexa:** Additionally one or multiple devices has/have to be selected. The volume only changes for voice messages and should afterwards be reset to default. Message size per warning is limited to 250 characters.
+**alexa:** Additionally one or multiple devices has/have to be selected. The volume only changes for voice messages and should afterwards be reset to default. Message size per warning is limited to 250 characters. Sounds are possible, activate Expert to display the options.
 
 ## General Behaviour
 - No duplicate messages should be sent for one and the same thing. DWD is very particular about this.
