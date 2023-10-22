@@ -108,8 +108,7 @@ Templates for 3) cannot contain `${}` Tokens.
 - If `none` is selected as the template, no notifications are sent for it.
 - States in .alerts contain arrays for start, end, warning type, now active and headline, grouped by warning type. One warning per group is displayed filtered by the following criteria: 
   1) Warning is **now** active (the one with the highest level).
-  2) Warning with the earliest starting time and if multiple the one with the highest level. 
-
+  
 ## Icons
 Creator: [Adri Ansyah](https://www.youtube.com/channel/UChLOv1L-ftAFc2ZizdEAKgw?view_as=subscriber)
 

@@ -94,8 +94,7 @@ Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht meh
 - If `none` is selected as the template, no notifications are sent for it.
 - States unter `.alerts` enthalten nach Warntypen guppierte Felder für Start, Ende, Warntyp, **jetzt** aktiv und Schlagzeile. Angezeigt wird 1 Warnung pro Gruppe gefiltert nach folgenden Kriterien: 
   1) Warnung ist **jetzt** aktiv, die mit dem höchsten Level.
-  2) Warnung mit dem jüngsten Startzeitpunkt und bei mehreren mit gleicher Zeit, die mit dem höchsten Level.
-
+ 
 
 ## Icons
 Creator: [Adri Ansyah](https://www.youtube.com/channel/UChLOv1L-ftAFc2ZizdEAKgw?view_as=subscriber)
