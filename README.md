@@ -114,6 +114,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.4.0 (2023-10-22)
+* (ticaki) Welcome to latest.
+* (ticaki) zamg date convert for alexa
+
 ### 0.3.7 (2023-10-21)
 * (ticaki) Alexa Sounds for warntypes
 * (ticaki) more options for pushover, telegram, alexa, email html
