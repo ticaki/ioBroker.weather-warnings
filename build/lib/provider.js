@@ -455,10 +455,12 @@ class ProviderController extends import_library.BaseClass {
   refreshTime = 3e5;
   library;
   notificationServices = [];
+  noWarning;
   pushOn = false;
   constructor(adapter) {
     super(adapter, "provider");
     this.library = this.adapter.library;
+    this.noWarning = new import_messages.MessagesClass(this.adapter, this.name, null, {}, this);
     this.doEndOfUpdater.bind(this);
   }
   async init() {

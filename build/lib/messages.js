@@ -591,34 +591,21 @@ class MessagesClass extends import_library.BaseClass {
       case `uwzService`:
       case `zamgService`:
         if (provider && provider.service) {
-          const json = this.formatedKeyCommand[provider.service];
-          for (const k in json) {
+          const json2 = this.formatedKeyCommand[provider.service];
+          for (const k in json2) {
             const key = k;
-            const data2 = this.formatedKeyCommand[provider.service][key];
+            const data2 = json2[key];
             this.addFormatedDefinition(key, data2);
           }
         }
         break;
       default:
-        this.formatedKeysJsonataDefinition = {
-          starttime: { node: `` },
-          startdate: { node: `` },
-          endtime: { node: `` },
-          enddate: { node: `` },
-          startdayofweek: { node: `` },
-          enddayofweek: { node: `` },
-          headline: { node: `` },
-          description: { node: `` },
-          impact: { node: `` },
-          ceiling: { node: `` },
-          altitude: { node: `` },
-          warnlevelname: { node: `` },
-          warnlevelnumber: { node: `` },
-          warnlevelcolorhex: { node: `` },
-          warnlevelcolorname: { node: `` },
-          warntypename: { node: `` },
-          location: { node: `` }
-        };
+        const json = this.formatedKeyCommand["default"];
+        for (const k in json) {
+          const key = k;
+          const data2 = json[key];
+          this.addFormatedDefinition(key, data2);
+        }
     }
   }
   async updateFormated() {
@@ -680,6 +667,8 @@ class MessagesClass extends import_library.BaseClass {
         this.altitude = -1;
         this.level = -1;
         this.type = 0;
+        this.newMessage = false;
+        this.notDeleted = false;
       }
     }
     const sortedWarntypes = [
@@ -720,7 +709,7 @@ class MessagesClass extends import_library.BaseClass {
     const templates = this.adapter.config.templateTable;
     const tempid = templates.findIndex((a) => a.templateKey == templateKey);
     if (this.cache.ts < Date.now() - 6e4) {
-      this.updateFormated();
+      await this.updateFormated();
     }
     if (this.cache.messages[templateKey] !== void 0)
       return this.cache.messages[templateKey];
@@ -853,11 +842,11 @@ class MessagesClass extends import_library.BaseClass {
     if (!this.formatedData || this.updated || update) {
       const timeOffset = (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0 ? "+" : "-") + ("00" + Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))).slice(-2) + ("00" + Math.abs(new Date().getTimezoneOffset() % 60)).slice(-2);
       const status = this.newMessage ? MessageType.status.new : this.notDeleted ? MessageType.status.hold : MessageType.status.clear;
-      const temp = { status: this.library.getTranslation(status) };
+      const temp = {};
       for (const key in this.formatedKeysJsonataDefinition) {
         const obj = this.formatedKeysJsonataDefinition[key];
-        if (obj !== void 0 && obj.node !== void 0) {
-          const cmd = obj.node.replace(`\${this.timeOffset}`, timeOffset);
+        if (obj !== void 0) {
+          const cmd = obj.node !== void 0 ? obj.node.replace(`\${this.timeOffset}`, timeOffset) : "";
           let result = cmd != "" ? await this.library.readWithJsonata(
             this.rawWarning,
             cmd
@@ -879,7 +868,10 @@ class MessagesClass extends import_library.BaseClass {
             temp[key] = result;
         }
       }
-      this.formatedData = temp;
+      this.formatedData = {
+        ...temp,
+        status: this.library.getTranslation(status)
+      };
       this.formatedData.warntypegenericname = this.library.getTranslation(
         MessageType.genericWarntyp[this.genericType].name
       );

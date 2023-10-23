@@ -609,31 +609,18 @@ export class MessagesClass extends BaseClass {
                     const json = this.formatedKeyCommand[provider.service];
                     for (const k in json) {
                         const key = k as keyof MessageType.customFormatedKeysDef;
-                        const data = this.formatedKeyCommand[provider.service][key];
+                        const data = json[key];
                         this.addFormatedDefinition(key, data);
                     }
                 }
                 break;
             default:
-                this.formatedKeysJsonataDefinition = {
-                    starttime: { node: `` },
-                    startdate: { node: `` },
-                    endtime: { node: `` },
-                    enddate: { node: `` },
-                    startdayofweek: { node: `` },
-                    enddayofweek: { node: `` },
-                    headline: { node: `` },
-                    description: { node: `` },
-                    impact: { node: `` },
-                    ceiling: { node: `` }, // max höhe
-                    altitude: { node: `` }, // min höhe
-                    warnlevelname: { node: `` },
-                    warnlevelnumber: { node: `` },
-                    warnlevelcolorhex: { node: `` },
-                    warnlevelcolorname: { node: `` },
-                    warntypename: { node: `` },
-                    location: { node: `` },
-                };
+                const json = this.formatedKeyCommand['default'];
+                for (const k in json) {
+                    const key = k as keyof MessageType.customFormatedKeysDef;
+                    const data = json[key];
+                    this.addFormatedDefinition(key, data);
+                }
         }
     }
     async updateFormated(): Promise<customFormatedKR> {
@@ -698,6 +685,8 @@ export class MessagesClass extends BaseClass {
                 this.altitude = -1;
                 this.level = -1;
                 this.type = 0;
+                this.newMessage = false;
+                this.notDeleted = false;
             }
         }
 
@@ -731,7 +720,7 @@ export class MessagesClass extends BaseClass {
         const tempid = templates.findIndex((a) => a.templateKey == templateKey);
 
         if (this.cache.ts < Date.now() - 60000) {
-            this.updateFormated();
+            await this.updateFormated();
         }
         if (this.cache.messages[templateKey as string] !== undefined) return this.cache.messages[templateKey as string];
 
@@ -888,12 +877,12 @@ export class MessagesClass extends BaseClass {
                 : this.notDeleted
                 ? MessageType.status.hold
                 : MessageType.status.clear;
-            const temp: any = { status: this.library.getTranslation(status) };
+            const temp: any = {};
             for (const key in this.formatedKeysJsonataDefinition) {
                 const obj = this.formatedKeysJsonataDefinition[key as keyof MessageType.customFormatedKeysDef];
-                if (obj !== undefined && obj.node !== undefined) {
+                if (obj !== undefined) {
                     // reset the offset because of daylight saving time
-                    const cmd = obj.node.replace(`\${this.timeOffset}`, timeOffset);
+                    const cmd = obj.node !== undefined ? obj.node.replace(`\${this.timeOffset}`, timeOffset) : '';
 
                     let result =
                         cmd != ''
@@ -917,7 +906,11 @@ export class MessagesClass extends BaseClass {
                     } else temp[key] = result;
                 }
             }
-            this.formatedData = temp as MessageType.customFormatedKeysDef;
+
+            this.formatedData = {
+                ...temp,
+                status: this.library.getTranslation(status),
+            } as MessageType.customFormatedKeysDef;
             this.formatedData.warntypegenericname = this.library.getTranslation(
                 MessageType.genericWarntyp[this.genericType].name,
             );

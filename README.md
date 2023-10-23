@@ -124,6 +124,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) optimise german 22. & 28. for alexa
+* (ticaki) 
+
 ### 0.4.1 (2023-10-22)
 * (ticaki) update german translation for alexa
 

@@ -483,13 +483,13 @@ export class ProviderController extends BaseClass {
     refreshTime: number = 300000;
     library: Library;
     notificationServices: NotificationClass.NotificationClass[] = [];
-
+    noWarning: MessagesClass;
     pushOn = false;
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
         this.library = this.adapter.library;
-
+        this.noWarning = new MessagesClass(this.adapter, this.name, null, {}, this);
         this.doEndOfUpdater.bind(this);
     }
     async init(): Promise<void> {

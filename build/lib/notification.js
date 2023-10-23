@@ -130,12 +130,15 @@ class NotificationClass extends library.BaseClass {
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex((a) => a.templateKey == this.options.actions["removeAll"]);
         if (tempid != -1) {
+          const result2 = await this.adapter.providerController.noWarning.getMessage(
+            this.options.actions["removeAll"]
+          );
           this.sendNotifications([
             {
-              text: templates[tempid].template.replaceAll("\\}", "}"),
-              startts: 1,
-              template: templates[tempid].template,
-              action: "removeAll"
+              text: result2.text,
+              startts: result2.startts,
+              template: result2.template,
+              action: result2.action
             }
           ]);
         }
@@ -424,7 +427,6 @@ class NotificationClass extends library.BaseClass {
         break;
       case "email":
         {
-          this.log.info(`start email sending! Messagecount: ${messages.length}`);
           const result = messages.filter((i, p) => {
             if (i.text != "" && i.provider) {
               if (messages.findIndex((i2) => i2.text == i.text) == p)
@@ -432,12 +434,10 @@ class NotificationClass extends library.BaseClass {
             }
             return false;
           });
-          this.log.info(`first filter! Messagecount: ${result.length}`);
           result.sort((a, b) => a.startts - b.startts);
           const opt = {};
           opt.html = result.map((a) => a.text).join(this.adapter.config.email_line_break);
           const templates = this.adapter.config.templateTable;
-          this.log.info(`Email message: ${messages.length} warnings`);
           let token = "message.status.new";
           if (messages[0].action == "removeAll")
             token = "message.status.clear";
