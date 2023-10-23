@@ -81,7 +81,6 @@
     "warnTypeName.dwdService.248": "сильна спека",
     "warnTypeName.dwdService.31": "гроза",
     "warnTypeName.dwdService.33": "сильна гроза",
-    "warnTypeName.dwdService.36": "сильна гроза",
     "warnTypeName.dwdService.40": "сильна гроза зі шквалистим вітром",
     "warnTypeName.dwdService.41": "сильна гроза з сильним штормовим вітром",
     "warnTypeName.dwdService.42": "сильна гроза з сильним дощем",
@@ -119,7 +118,6 @@
     "warnTypeName.dwdService.87": "поширена слизькість",
     "warnTypeName.dwdService.88": "Відлига",
     "warnTypeName.dwdService.89": "сильна відлига",
-    "warnTypeName.dwdService.91": "сильна гроза",
     "warnTypeName.dwdService.93": "сильна гроза",
     "warnTypeName.dwdService.95": "сильна гроза з надзвичайно сильним дощем і градом",
     "warnTypeName.dwdService.96": "сильна гроза зі шквалистим вітром, надзвичайно сильний дощ і град",
@@ -499,7 +497,6 @@
     "7.": "сьоме",
     "8.": "восьме",
     "9.": "дев'ятий",
-    "28.alexa": "двадцять восьме",
     "22.alexa2": "Двадцять другий",
     "28.alexa2": "двадцять восьме"
 }
