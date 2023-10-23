@@ -502,5 +502,9 @@
     "6.": "szósty",
     "7.": "siódmy",
     "8.": "ósma",
-    "9.": "dziewiąty"
+    "9.": "dziewiąty",
+    "22.alexa": "dwadzieścia sekund",
+    "28.alexa": "dwudziesty ósmy",
+    "22.alexa2": "dwadzieścia sekund",
+    "28.alexa2": "dwudziesty ósmy"
 }

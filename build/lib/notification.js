@@ -180,7 +180,7 @@ class NotificationClass extends library.BaseClass {
                 message.text = message.text.replace(/l\/m\²/g, this.library.getTranslation("lm"));
                 message.text = message.text.replace(
                   / [a-zA-Z][a-zA-Z], \d{1,2}\.\d{1,2}\.\d{4} /g,
-                  (x) => this.library.convertSpeakDate(x, true)
+                  (x) => this.library.convertSpeakDate(x, this.options.name, true)
                 );
                 let count = 0;
                 let pos = 250;
