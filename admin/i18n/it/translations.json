@@ -502,5 +502,9 @@
     "6.": "sesto",
     "7.": "settimo",
     "8.": "ottavo",
-    "9.": "nono"
+    "9.": "nono",
+    "22.alexa": "ventiduesima",
+    "28.alexa": "ventotto",
+    "22.alexa2": "ventiduesima",
+    "28.alexa2": "ventotto"
 }

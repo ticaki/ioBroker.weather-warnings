@@ -485,7 +485,7 @@ class Library extends BaseClass {
     });
     return text;
   }
-  convertSpeakDate(text, day = false) {
+  convertSpeakDate(text, noti = "", day = false) {
     if (!text || typeof text !== `string`)
       return ``;
     const b = text.split(`.`);
@@ -495,9 +495,13 @@ class Library extends BaseClass {
     return " " + (new Date(`${b[1]}/${b[0]}/2020`).toLocaleString(this.language, {
       weekday: day ? "long" : void 0,
       day: "numeric",
-      month: `long`,
-      timeZone: "UTC"
-    }) + " ").replace(/([0-9]+\.)/gu, (x) => this.getTranslation(x));
+      month: `long`
+    }) + " ").replace(/([0-9]+\.)/gu, (x) => {
+      const result = this.getTranslation(x + noti);
+      if (result != x + noti)
+        return result;
+      return this.getTranslation(x);
+    });
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

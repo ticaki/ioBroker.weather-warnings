@@ -544,7 +544,14 @@ export class Library extends BaseClass {
         });
         return text;
     }
-    convertSpeakDate(text: string, day = false): string {
+    /**
+     *
+     * @param text string to replace a Date
+     * @param noti appendix to translation key
+     * @param day true = Mo, 12.05 - false = 12.05
+     * @returns Monday first March
+     */
+    convertSpeakDate(text: string, noti: string = '', day = false): string {
         if (!text || typeof text !== `string`) return ``;
         const b = text.split(`.`);
         if (day) {
@@ -557,9 +564,12 @@ export class Library extends BaseClass {
                     weekday: day ? 'long' : undefined,
                     day: 'numeric',
                     month: `long`,
-                    timeZone: 'UTC',
                 }) + ' '
-            ).replace(/([0-9]+\.)/gu, (x) => this.getTranslation(x))
+            ).replace(/([0-9]+\.)/gu, (x) => {
+                const result = this.getTranslation(x + noti);
+                if (result != x + noti) return result;
+                return this.getTranslation(x);
+            })
         );
     }
 }
