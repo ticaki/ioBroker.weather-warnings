@@ -81,7 +81,6 @@
     "warnTypeName.dwdService.248": "ekstremalne ciepło",
     "warnTypeName.dwdService.31": "burza z piorunami",
     "warnTypeName.dwdService.33": "Ciężka burza",
-    "warnTypeName.dwdService.36": "Ciężka burza",
     "warnTypeName.dwdService.40": "silna burza z porywistym wiatrem",
     "warnTypeName.dwdService.41": "potężna burza z ekstremalnymi wichurami",
     "warnTypeName.dwdService.42": "silna burza z ulewnymi opadami deszczu",
@@ -119,7 +118,6 @@
     "warnTypeName.dwdService.87": "powszechna śliskość",
     "warnTypeName.dwdService.88": "Odwilż",
     "warnTypeName.dwdService.89": "silna odwilż",
-    "warnTypeName.dwdService.91": "Ciężka burza",
     "warnTypeName.dwdService.93": "ekstremalna burza",
     "warnTypeName.dwdService.95": "potężna burza z niezwykle intensywnymi opadami deszczu i gradu",
     "warnTypeName.dwdService.96": "ekstremalna burza z wichurami, niezwykle ulewnymi deszczami i gradem",
@@ -499,7 +497,6 @@
     "7.": "siódmy",
     "8.": "ósma",
     "9.": "dziewiąty",
-    "28.alexa": "dwudziesty ósmy",
     "22.alexa2": "dwadzieścia sekund",
     "28.alexa2": "dwudziesty ósmy"
 }

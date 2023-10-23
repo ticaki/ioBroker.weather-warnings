@@ -81,7 +81,6 @@
     "warnTypeName.dwdService.248": "calore estremo",
     "warnTypeName.dwdService.31": "temporale",
     "warnTypeName.dwdService.33": "forte temporale",
-    "warnTypeName.dwdService.36": "forte temporale",
     "warnTypeName.dwdService.40": "forte temporale con venti di burrasca",
     "warnTypeName.dwdService.41": "forte temporale con venti di forte burrasca",
     "warnTypeName.dwdService.42": "forte temporale con forti piogge",
@@ -119,7 +118,6 @@
     "warnTypeName.dwdService.87": "scivolosità diffusa",
     "warnTypeName.dwdService.88": "Scongelare",
     "warnTypeName.dwdService.89": "forte disgelo",
-    "warnTypeName.dwdService.91": "forte temporale",
     "warnTypeName.dwdService.93": "temporale estremo",
     "warnTypeName.dwdService.95": "forte temporale con pioggia molto forte e grandine",
     "warnTypeName.dwdService.96": "temporale intenso con venti di burrasca, pioggia estremamente forte e grandine",
@@ -499,7 +497,6 @@
     "7.": "settimo",
     "8.": "ottavo",
     "9.": "nono",
-    "28.alexa": "ventotto",
     "22.alexa2": "ventiduesima",
     "28.alexa2": "ventotto"
 }
