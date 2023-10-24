@@ -253,37 +253,11 @@
                     "label": "speakSilentTime",
                     "items": [
                         {
-                            "type": "select",
-                            "options": [
-                                {
-                                    "label": "Monday",
-                                    "value": "1"
-                                },
-                                {
-                                    "label": "Tuesday",
-                                    "value": "2"
-                                },
-                                {
-                                    "label": "Wednesday",
-                                    "value": "3"
-                                },
-                                {
-                                    "label": "Thursday",
-                                    "value": "4"
-                                },
-                                {
-                                    "label": "Friday",
-                                    "value": "5"
-                                },
-                                {
-                                    "label": "Saturday",
-                                    "value": "6"
-                                },
-                                {
-                                    "label": "Sunday",
-                                    "value": "0"
-                                }
-                            ],
+                            "type": "selectSendTo",
+                            "command": "weekdays",
+                            "jsonData": "{ \"service\": \"dwdService\" }",
+                            "manual": false,
+                            "multiple": true,
                             "attr": "day",
                             "width": "30% ",
                             "title": "dayoftheweak",

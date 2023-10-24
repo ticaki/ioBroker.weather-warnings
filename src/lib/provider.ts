@@ -485,7 +485,7 @@ export class ProviderController extends BaseClass {
     notificationServices: NotificationClass.NotificationClass[] = [];
     noWarning: MessagesClass;
     pushOn = false;
-    globalSpeakSilentTime: ({ day: number; start: number; end: number } | null)[] = [];
+    globalSpeakSilentTime: ({ day: number[]; start: number; end: number } | null)[] = [];
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
@@ -506,7 +506,7 @@ export class ProviderController extends BaseClass {
 
         if (this.adapter.config.silentTime !== undefined) {
             this.globalSpeakSilentTime = (this.adapter.config.silentTime || []).map((item) => {
-                const result: { day: number; start: number; end: number } = { day: -1, start: 0, end: 0 };
+                const result: { day: number[]; start: number; end: number } = { day: [], start: 0, end: 0 };
 
                 for (const a in item) {
                     const b = a as keyof typeof item;
@@ -518,9 +518,11 @@ export class ProviderController extends BaseClass {
                             item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
                         } else item[b] = t[0];
                     }
-                    result[b as keyof typeof result] = b == 'day' ? item[b] : parseFloat(item[b]);
+                    if (b == 'day') result.day = item.day;
+                    else if (b == 'end') result.end = parseFloat(item.end);
+                    else result.start = parseFloat(item.start);
                 }
-                return result.day == -1 ? null : result;
+                return result;
             });
         }
 

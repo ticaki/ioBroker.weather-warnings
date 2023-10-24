@@ -176,7 +176,7 @@ export class NotificationClass extends library.BaseClass {
                     const day = new Date().getDay();
                     for (const t of this.adapter.providerController!.globalSpeakSilentTime) {
                         if (t === null) continue;
-                        if (day != t.day) continue;
+                        if (t.day.indexOf(day) == -1) continue;
                         if (t.start < t.end) {
                             if (t.start <= now && t.end > now) return false;
                         } else {

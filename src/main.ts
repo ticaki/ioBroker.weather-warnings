@@ -502,6 +502,45 @@ class WeatherWarnings extends utils.Adapter {
             let connected = true;
             let state;
             switch (String(obj.command)) {
+                case 'weekdays':
+                    {
+                        this.sendTo(
+                            obj.from,
+                            obj.command,
+                            [
+                                {
+                                    label: 'Monday',
+                                    value: '1',
+                                },
+                                {
+                                    label: 'Tuesday',
+                                    value: '2',
+                                },
+                                {
+                                    label: 'Wednesday',
+                                    value: '3',
+                                },
+                                {
+                                    label: 'Thursday',
+                                    value: '4',
+                                },
+                                {
+                                    label: 'Friday',
+                                    value: '5',
+                                },
+                                {
+                                    label: 'Saturday',
+                                    value: '6',
+                                },
+                                {
+                                    label: 'Sunday',
+                                    value: '0',
+                                },
+                            ],
+                            obj.callback,
+                        );
+                    }
+                    break;
                 case 'alexa_audio':
                     {
                         this.sendTo(
