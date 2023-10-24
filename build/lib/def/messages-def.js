@@ -107,6 +107,13 @@ const color = {
     "3": "color.textGeneric.3",
     "4": "color.textGeneric.4",
     "5": "color.textGeneric.5"
+  },
+  textdwd: {
+    "0": "color.textGeneric.0",
+    "1": "color.textGeneric.2",
+    "2": "color.textGeneric.3",
+    "3": "color.textGeneric.4",
+    "4": "color.textGeneric.5"
   }
 };
 const genericWarntypState = {

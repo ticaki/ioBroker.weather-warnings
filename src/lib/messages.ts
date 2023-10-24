@@ -1006,7 +1006,12 @@ export class MessagesClass extends BaseClass {
                 {
                     const rgb = data.split(' ');
                     if (rgb && rgb.length == 3) {
-                        return `#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`;
+                        return (
+                            '#' +
+                            `00${Number(rgb[0]).toString(16)}`.slice(-2) +
+                            `00${Number(rgb[1]).toString(16)}`.slice(-2) +
+                            `00${Number(rgb[2]).toString(16)}`.slice(-2)
+                        );
                     }
                 }
                 break;

@@ -224,7 +224,9 @@ class NotificationClass extends library.BaseClass {
                 let pos = 250;
                 while (pos <= message.text.length && count++ < 50) {
                   const oldpos = pos;
-                  pos = message.text.lastIndexOf(".", pos);
+                  pos = message.text.lastIndexOf(";", oldpos);
+                  if (pos == -1 || pos == oldpos - 250)
+                    pos = message.text.lastIndexOf(".", oldpos);
                   if (pos == -1)
                     pos = message.text.lastIndexOf(" ", oldpos);
                   if (pos == -1)

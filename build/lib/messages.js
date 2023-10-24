@@ -81,14 +81,13 @@ class MessagesClass extends import_library.BaseClass {
       ceiling: { node: `$floor(CEILING * 0.3048)` },
       altitude: { node: `$floor(ALTITUDE * 0.3048)` },
       warnlevelcolorhex: {
-        node: `($temp := $lookup(${JSON.stringify(
-          MessageType.dwdLevel
-        )},$lowercase(SEVERITY));$lookup(${JSON.stringify(MessageType.color.generic)},$string($temp)))`
+        node: `EC_AREA_COLOR`,
+        cmd: `dwdcolor`
       },
       warnlevelcolorname: {
         node: `($temp := $lookup(${JSON.stringify(
           MessageType.dwdLevel
-        )},$lowercase(SEVERITY));$lookup(${JSON.stringify(MessageType.color.textGeneric)},$string($temp)))`,
+        )},$lowercase(SEVERITY));$lookup(${JSON.stringify(MessageType.color.textdwd)},$string($temp)))`,
         cmd: "translate"
       },
       warnlevelname: {
@@ -960,6 +959,14 @@ class MessagesClass extends import_library.BaseClass {
         }
         return "";
       }
+      case "dwdcolor":
+        {
+          const rgb = data.split(" ");
+          if (rgb && rgb.length == 3) {
+            return "#" + `00${Number(rgb[0]).toString(16)}`.slice(-2) + `00${Number(rgb[1]).toString(16)}`.slice(-2) + `00${Number(rgb[2]).toString(16)}`.slice(-2);
+          }
+        }
+        break;
     }
     return "";
   }
