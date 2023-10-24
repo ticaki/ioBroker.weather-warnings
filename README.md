@@ -124,7 +124,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.2 (2023-10-24)
 * (ticaki) optimise german 22. & 28. for alexa.
 * (ticaki) Quiet times for voice notifications.
 * (ticaki) bugfix: now the English translation is loaded. Alexa uses the correct day of the week with DWD heading.
