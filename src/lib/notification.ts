@@ -73,7 +73,10 @@ export class NotificationClass extends library.BaseClass {
         allowActions: NotificationType.ActionsUnionType[],
         manual: boolean = false,
     ): Promise<void> {
-        if (!manual && !this.allowSending()) return;
+        if (!manual && !this.allowSending()) {
+            this.log.debug('Sending the notification is not allowed.');
+            return;
+        }
         let activeWarnings = 0;
         const filter = manual && this.options.filter.manual ? this.options.filter.manual : this.options.filter.auto;
         const actions = this.options.actions;
@@ -169,7 +172,7 @@ export class NotificationClass extends library.BaseClass {
             case 'alexa2': {
                 // silentTime
                 if (this.adapter.providerController!.globalSpeakSilentTime !== undefined) {
-                    const now = new Date().getHours() + 60 / new Date().getMinutes();
+                    const now = new Date().getHours() + new Date().getMinutes() / 60;
                     const day = new Date().getDay();
                     for (const t of this.adapter.providerController!.globalSpeakSilentTime) {
                         if (t === null) continue;

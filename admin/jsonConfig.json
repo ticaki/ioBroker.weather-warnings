@@ -302,7 +302,7 @@
                         },
                         {
                             "type": "text",
-                            "attr": "templateKey",
+                            "attr": "end",
                             "width": "30% ",
                             "title": "speakEnd",
                             "filter": false,

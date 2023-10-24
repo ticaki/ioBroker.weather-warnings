@@ -560,7 +560,7 @@ export class Library extends BaseClass {
         return (
             ' ' +
             (
-                new Date(`${b[1]}/${b[0]}/2020`).toLocaleString(this.language, {
+                new Date(`${b[1]}/${b[0]}/${new Date().getFullYear()}`).toLocaleString(this.language, {
                     weekday: day ? 'long' : undefined,
                     day: 'numeric',
                     month: `long`,

@@ -482,12 +482,12 @@ class ProviderController extends import_library.BaseClass {
             if (Number.isNaN(t[0]))
               return null;
             if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
-              t[1] = String(60 / parseInt(t[1]));
-              item[b] = t.join(".");
+              t[1] = String(parseInt(t[1]) / 60);
+              item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
             } else
               item[b] = t[0];
           }
-          result[b] = b == "day" ? item[b] : parseInt(item[b]);
+          result[b] = b == "day" ? item[b] : parseFloat(item[b]);
         }
         return result.day == -1 ? null : result;
       });

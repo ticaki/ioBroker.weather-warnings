@@ -492,7 +492,7 @@ class Library extends BaseClass {
     if (day) {
       b[0] = b[0].split(" ")[2];
     }
-    return " " + (new Date(`${b[1]}/${b[0]}/2020`).toLocaleString(this.language, {
+    return " " + (new Date(`${b[1]}/${b[0]}/${new Date().getFullYear()}`).toLocaleString(this.language, {
       weekday: day ? "long" : void 0,
       day: "numeric",
       month: `long`
