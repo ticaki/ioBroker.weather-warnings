@@ -498,5 +498,18 @@
     "8.": "第八",
     "9.": "第九",
     "22.alexa2": "二十分",
-    "28.alexa2": "第二十八"
+    "28.alexa2": "第二十八",
+    "Monday": "周一",
+    "Tuesday": "周二",
+    "Wednesday": "周三",
+    "Thursday": "周四",
+    "Friday": "星期五",
+    "Saturday": "周六",
+    "Sunday": "星期日",
+    "Additional_settings": "其他设置",
+    "Speak_settings": "朗读设置",
+    "dayoftheweak": "一周中的天",
+    "speakStart": "开始时间",
+    "speakEnd": "时间结束",
+    "speakSilentTime": "语音输出的安静时间（时间为 HH:MM 或 HH."
 }

@@ -78,7 +78,7 @@ export class Library extends BaseClass {
     async init(): Promise<void> {
         const obj = await this.adapter.getForeignObjectAsync('system.config');
         if (obj) {
-            await this.setLanguage(obj.common.language);
+            await this.setLanguage(obj.common.language, true);
         } else {
             await this.setLanguage('en', true);
         }

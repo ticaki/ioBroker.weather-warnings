@@ -73,6 +73,7 @@ export class NotificationClass extends library.BaseClass {
         allowActions: NotificationType.ActionsUnionType[],
         manual: boolean = false,
     ): Promise<void> {
+        if (!manual && !this.allowSending()) return;
         let activeWarnings = 0;
         const filter = manual && this.options.filter.manual ? this.options.filter.manual : this.options.filter.auto;
         const actions = this.options.actions;
@@ -154,6 +155,35 @@ export class NotificationClass extends library.BaseClass {
                 this.removeAllSend = true;
             }
         }
+    }
+
+    allowSending(): boolean {
+        switch (this.options.name) {
+            case 'telegram':
+            case 'pushover':
+            case 'whatsapp':
+            case 'json':
+            case 'history':
+            case 'email':
+                break;
+            case 'alexa2': {
+                // silentTime
+                if (this.adapter.providerController!.globalSpeakSilentTime !== undefined) {
+                    const now = new Date().getHours() + 60 / new Date().getMinutes();
+                    const day = new Date().getDay();
+                    for (const t of this.adapter.providerController!.globalSpeakSilentTime) {
+                        if (t === null) continue;
+                        if (day != t.day) continue;
+                        if (t.start < t.end) {
+                            if (t.start <= now && t.end > now) return false;
+                        } else {
+                            if (t.start <= now || t.end > now) return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     canManual(): boolean {

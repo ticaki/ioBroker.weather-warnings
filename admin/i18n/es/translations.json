@@ -498,5 +498,18 @@
     "8.": "octavo",
     "9.": "noveno",
     "22.alexa2": "vigesimo segundo",
-    "28.alexa2": "veintiocho"
+    "28.alexa2": "veintiocho",
+    "Monday": "Lunes",
+    "Tuesday": "Martes",
+    "Wednesday": "Miércoles",
+    "Thursday": "jueves",
+    "Friday": "Viernes",
+    "Saturday": "Sábado",
+    "Sunday": "Domingo",
+    "Additional_settings": "Ajustes adicionales",
+    "Speak_settings": "Configuración de voz",
+    "dayoftheweak": "Día de la semana",
+    "speakStart": "Hora de inicio",
+    "speakEnd": "Hora de finalización",
+    "speakSilentTime": "Tiempos de silencio para la salida de voz (tiempo como HH:MM o HH."
 }

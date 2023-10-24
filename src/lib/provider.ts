@@ -485,6 +485,7 @@ export class ProviderController extends BaseClass {
     notificationServices: NotificationClass.NotificationClass[] = [];
     noWarning: MessagesClass;
     pushOn = false;
+    globalSpeakSilentTime: ({ day: number; start: number; end: number } | null)[] = [];
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
@@ -502,6 +503,27 @@ export class ProviderController extends BaseClass {
             states[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
         }
         definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
+
+        if (this.adapter.config.silentTime !== undefined) {
+            this.globalSpeakSilentTime = (this.adapter.config.silentTime || []).map((item) => {
+                const result: { day: number; start: number; end: number } = { day: -1, start: 0, end: 0 };
+
+                for (const a in item) {
+                    const b = a as keyof typeof item;
+                    if (b != 'day' && item[b].indexOf(':') != -1) {
+                        const t = item[b].split(':');
+                        if (Number.isNaN(t[0])) return null;
+                        if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
+                            t[1] = String(60 / parseInt(t[1]));
+                            item[b] = t.join('.');
+                        } else item[b] = t[0];
+                    }
+                    result[b as keyof typeof result] = b == 'day' ? item[b] : parseInt(item[b]);
+                }
+                return result.day == -1 ? null : result;
+            });
+        }
+
         /*
         // this code ist to swap genericWarntyp to ids with a array of warntypes
         const warntyp = messagesDef.genericWarntyp;

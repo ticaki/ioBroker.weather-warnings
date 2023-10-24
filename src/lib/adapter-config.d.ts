@@ -22,7 +22,7 @@ declare global {
             notPushAtStart: boolean;
             alexa2_sounds: { warntype: string; sound: string; warntypenumber: number }[];
             alexa2_sounds_enabled: boolean;
-
+            silentTime: { day: number; start: string; end: string }[];
             dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
             uwzwarncellTable: { uwzSelectId: string; uwzCityname: string }[];
             zamgwarncellTable: { zamgSelectId: string; zamgCityname: string }[];

@@ -80,6 +80,8 @@ class NotificationClass extends library.BaseClass {
     }
   }
   async sendMessage(providers, allowActions, manual = false) {
+    if (!manual && !this.allowSending())
+      return;
     let activeWarnings = 0;
     const filter = manual && this.options.filter.manual ? this.options.filter.manual : this.options.filter.auto;
     const actions = this.options.actions;
@@ -145,6 +147,37 @@ class NotificationClass extends library.BaseClass {
         this.removeAllSend = true;
       }
     }
+  }
+  allowSending() {
+    switch (this.options.name) {
+      case "telegram":
+      case "pushover":
+      case "whatsapp":
+      case "json":
+      case "history":
+      case "email":
+        break;
+      case "alexa2": {
+        if (this.adapter.providerController.globalSpeakSilentTime !== void 0) {
+          const now = new Date().getHours() + 60 / new Date().getMinutes();
+          const day = new Date().getDay();
+          for (const t of this.adapter.providerController.globalSpeakSilentTime) {
+            if (t === null)
+              continue;
+            if (day != t.day)
+              continue;
+            if (t.start < t.end) {
+              if (t.start <= now && t.end > now)
+                return false;
+            } else {
+              if (t.start <= now || t.end > now)
+                return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
   }
   canManual() {
     if (this.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1)
