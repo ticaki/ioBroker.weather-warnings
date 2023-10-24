@@ -95,12 +95,13 @@
                         {
                             "label": "black",
                             "value": "black"
-                        },{
+                        },
+                        {
                             "label": "blue",
                             "value": "blue"
                         }
                     ],
-                    "default":"blue",
+                    "default": "blue",
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
@@ -209,7 +210,6 @@
                     "lg": 4,
                     "label": "useTestWarnings",
                     "hidden": "data.imExpert != true",
-                    
                     "newLine": true
                 },
                 "useJsonHistory": {
@@ -230,6 +230,86 @@
                     "label": "useTestCase",
                     "hidden": "data.imExpert != true",
                     "newLine": true
+                }
+            }
+        },
+        "_Additional_settings": {
+            "type": "panel",
+            "label": "Additional_settings",
+            "items": {
+                "dividerHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Speak_settings",
+                    "size": 3
+                },
+                "silentTime": {
+                    "type": "table",
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 8,
+                    "lg": 8,
+                    "default": [],
+                    "label": "speakSilentTime",
+                    "items": [
+                        {
+                            "type": "select",
+                            "options": [
+                                {
+                                    "label": "Monday",
+                                    "value": "1"
+                                },
+                                {
+                                    "label": "Tuesday",
+                                    "value": "2"
+                                },
+                                {
+                                    "label": "Wednesday",
+                                    "value": "3"
+                                },
+                                {
+                                    "label": "Thursday",
+                                    "value": "4"
+                                },
+                                {
+                                    "label": "Friday",
+                                    "value": "5"
+                                },
+                                {
+                                    "label": "Saturday",
+                                    "value": "6"
+                                },
+                                {
+                                    "label": "Sunday",
+                                    "value": "0"
+                                }
+                            ],
+                            "attr": "day",
+                            "width": "30% ",
+                            "title": "dayoftheweak",
+                            "filter": false,
+                            "sort": false,
+                            "default": ""
+                        },
+                        {
+                            "type": "text",
+                            "attr": "start",
+                            "width": "30% ",
+                            "title": "speakStart",
+                            "filter": false,
+                            "sort": false,
+                            "default": ""
+                        },
+                        {
+                            "type": "text",
+                            "attr": "templateKey",
+                            "width": "30% ",
+                            "title": "speakEnd",
+                            "filter": false,
+                            "sort": false,
+                            "default": ""
+                        }
+                    ]
                 }
             }
         },
@@ -283,7 +363,6 @@
                 "templateHelp": {
                     "type": "text",
                     "hidden": "data.templateTable[0].template == 'template.NewMessage'",
-                    
                     "minRows": 2,
                     "maxRows": 50,
                     "text": "",
@@ -916,10 +995,19 @@
                     "label": "telegram_parse_mode",
                     "newLine": false,
                     "options": [
-                        {"label": "none", "value": "none"},
-                        {"label": "Html", "value": "HTML"},
-                        {"label": "Markdown V2", "value": "MarkdownV2 "}
-                        ]
+                        {
+                            "label": "none",
+                            "value": "none"
+                        },
+                        {
+                            "label": "Html",
+                            "value": "HTML"
+                        },
+                        {
+                            "label": "Markdown V2",
+                            "value": "MarkdownV2 "
+                        }
+                    ]
                 },
                 "telegram_ChatId": {
                     "type": "text",
@@ -1318,30 +1406,99 @@
                     "label": "pushover_Sound",
                     "newLine": true,
                     "options": [
-                        {"label": "default", "value": "pushover"},
-                        {"label": "bike", "value": "bike"},
-                        {"label": "bugle", "value": "bugle"},
-                        {"label": "cashregister", "value": "cashregister"},
-                        {"label": "classical", "value": "classical"},
-                        {"label": "cosmic", "value": "cosmic"},
-                        {"label": "falling", "value": "falling"},
-                        {"label": "gamelan", "value": "gamelan"},
-                        {"label": "incoming", "value": "incoming"},
-                        {"label": "intermission", "value": "intermission"},
-                        {"label": "magic", "value": "magic"},
-                        {"label": "mechanical", "value": "mechanical"},
-                        {"label": "pianobar", "value": "pianobar"},
-                        {"label": "siren", "value": "siren"},
-                        {"label": "spacealarm", "value": "spacealarm"},
-                        {"label": "tugboat", "value": "tugboat"},
-                        {"label": "alien", "value": "alien"},
-                        {"label": "climb", "value": "climb"},
-                        {"label": "persistent", "value": "persistent"},
-                        {"label": "echo", "value": "echo"},
-                        {"label": "updown", "value": "updown"},
-                        {"label": "vibrate", "value": "vibrate"},
-                        {"label": "none", "value": "none"}
-                        ]
+                        {
+                            "label": "default",
+                            "value": "pushover"
+                        },
+                        {
+                            "label": "bike",
+                            "value": "bike"
+                        },
+                        {
+                            "label": "bugle",
+                            "value": "bugle"
+                        },
+                        {
+                            "label": "cashregister",
+                            "value": "cashregister"
+                        },
+                        {
+                            "label": "classical",
+                            "value": "classical"
+                        },
+                        {
+                            "label": "cosmic",
+                            "value": "cosmic"
+                        },
+                        {
+                            "label": "falling",
+                            "value": "falling"
+                        },
+                        {
+                            "label": "gamelan",
+                            "value": "gamelan"
+                        },
+                        {
+                            "label": "incoming",
+                            "value": "incoming"
+                        },
+                        {
+                            "label": "intermission",
+                            "value": "intermission"
+                        },
+                        {
+                            "label": "magic",
+                            "value": "magic"
+                        },
+                        {
+                            "label": "mechanical",
+                            "value": "mechanical"
+                        },
+                        {
+                            "label": "pianobar",
+                            "value": "pianobar"
+                        },
+                        {
+                            "label": "siren",
+                            "value": "siren"
+                        },
+                        {
+                            "label": "spacealarm",
+                            "value": "spacealarm"
+                        },
+                        {
+                            "label": "tugboat",
+                            "value": "tugboat"
+                        },
+                        {
+                            "label": "alien",
+                            "value": "alien"
+                        },
+                        {
+                            "label": "climb",
+                            "value": "climb"
+                        },
+                        {
+                            "label": "persistent",
+                            "value": "persistent"
+                        },
+                        {
+                            "label": "echo",
+                            "value": "echo"
+                        },
+                        {
+                            "label": "updown",
+                            "value": "updown"
+                        },
+                        {
+                            "label": "vibrate",
+                            "value": "vibrate"
+                        },
+                        {
+                            "label": "none",
+                            "value": "none"
+                        }
+                    ]
                 },
                 "pushover_Priority": {
                     "type": "checkbox",
@@ -1362,8 +1519,7 @@
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "pushover_Device",
                     "newLine": true
-                },    
-
+                },
                 "hidden": "data.imExpert != true",
                 "restoreDefault": {
                     "type": "sendTo",
@@ -1622,7 +1778,6 @@
                     "titleAttr": "warntype",
                     "label": "alexa2_sounds",
                     "hidden": "data.imExpert != true",
-                    
                     "items": [
                         {
                             "attr": "warntypenumber",
@@ -1768,7 +1923,6 @@
                     "hidden": "true",
                     "useNative": true
                 }
-                
             }
         },
         "_history": {

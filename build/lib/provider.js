@@ -457,6 +457,7 @@ class ProviderController extends import_library.BaseClass {
   notificationServices = [];
   noWarning;
   pushOn = false;
+  globalSpeakSilentTime = [];
   constructor(adapter) {
     super(adapter, "provider");
     this.library = this.adapter.library;
@@ -471,6 +472,26 @@ class ProviderController extends import_library.BaseClass {
       states[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
     }
     definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
+    if (this.adapter.config.silentTime !== void 0) {
+      this.globalSpeakSilentTime = (this.adapter.config.silentTime || []).map((item) => {
+        const result = { day: -1, start: 0, end: 0 };
+        for (const a in item) {
+          const b = a;
+          if (b != "day" && item[b].indexOf(":") != -1) {
+            const t = item[b].split(":");
+            if (Number.isNaN(t[0]))
+              return null;
+            if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
+              t[1] = String(60 / parseInt(t[1]));
+              item[b] = t.join(".");
+            } else
+              item[b] = t[0];
+          }
+          result[b] = b == "day" ? item[b] : parseInt(item[b]);
+        }
+        return result.day == -1 ? null : result;
+      });
+    }
   }
   async createNotificationService(optionList) {
     for (const a in optionList) {

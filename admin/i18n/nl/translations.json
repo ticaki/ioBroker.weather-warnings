@@ -498,5 +498,18 @@
     "8.": "achtste",
     "9.": "negende",
     "22.alexa2": "tweeëntwintigste",
-    "28.alexa2": "achtentwintig"
+    "28.alexa2": "achtentwintig",
+    "Monday": "Maandag",
+    "Tuesday": "Dinsdag",
+    "Wednesday": "Woensdag",
+    "Thursday": "Donderdag",
+    "Friday": "Vrijdag",
+    "Saturday": "Zaterdag",
+    "Sunday": "Zondag",
+    "Additional_settings": "Aanvullende instellingen",
+    "Speak_settings": "Spreek instellingen",
+    "dayoftheweak": "Dag van de week",
+    "speakStart": "Starttijd",
+    "speakEnd": "Eindtijd",
+    "speakSilentTime": "Stille tijden voor stemuitvoer (tijd als HH:MM of HH."
 }

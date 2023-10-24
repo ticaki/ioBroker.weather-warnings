@@ -498,5 +498,18 @@
     "8.": "ósma",
     "9.": "dziewiąty",
     "22.alexa2": "dwadzieścia sekund",
-    "28.alexa2": "dwudziesty ósmy"
+    "28.alexa2": "dwudziesty ósmy",
+    "Monday": "Poniedziałek",
+    "Tuesday": "Wtorek",
+    "Wednesday": "Środa",
+    "Thursday": "Czwartek",
+    "Friday": "Piątek",
+    "Saturday": "Sobota",
+    "Sunday": "Niedziela",
+    "Additional_settings": "Dodatkowe ustawienia",
+    "Speak_settings": "Wypowiedz ustawienia",
+    "dayoftheweak": "Dzień tygodnia",
+    "speakStart": "Czas rozpoczęcia",
+    "speakEnd": "Koniec czasu",
+    "speakSilentTime": "Ciche czasy dla komunikatów głosowych (czas jako GG:MM lub GG."
 }

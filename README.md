@@ -125,8 +125,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-* (ticaki) optimise german 22. & 28. for alexa
-* (ticaki) 
+* (ticaki) optimise german 22. & 28. for alexa.
+* (ticaki) Quiet times for voice notifications.
+* (ticaki) bugfix: now the English translation is loaded.
 
 ### 0.4.1 (2023-10-22)
 * (ticaki) update german translation for alexa
