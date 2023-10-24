@@ -127,6 +127,13 @@ export const color = {
         '4': 'color.textGeneric.4',
         '5': 'color.textGeneric.5',
     },
+    textdwd: {
+        '0': 'color.textGeneric.0',
+        '1': 'color.textGeneric.2',
+        '2': 'color.textGeneric.3',
+        '3': 'color.textGeneric.4',
+        '4': 'color.textGeneric.5',
+    },
 };
 
 type ChangeTypeOfKeys<Obj, N> = Obj extends object ? { [K in keyof Obj]-?: ChangeTypeOfKeys<Obj[K], N> } : N;
