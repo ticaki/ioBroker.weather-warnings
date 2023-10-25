@@ -205,7 +205,6 @@
     "email_Footer": "Нижній колонтитул електронної пошти",
     "dividerDirs": "Внутрішні каталоги",
     "alexa2_device_ids": "Пристрій/група",
-    "alexa2_volumen": "Обсяг",
     "template.NewMessage": "Попередження ${Warntypename} від ${starttime}, рівень: ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} все ясно, рівень: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Все чисто!",

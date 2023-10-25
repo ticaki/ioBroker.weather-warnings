@@ -203,7 +203,6 @@
     "email_Footer": "Fußzeile für E-Mail",
     "dividerDirs": "Interne Verzeichnisse",
     "alexa2_device_ids": "Gerät/Gruppe",
-    "alexa2_volumen": "Volumen",
     "template.NewMessage": "Warnung: ${Warntypename} ab ${starttime}, Stufe: ${warnlevelcolorname}",
     "template.RemoveMessage": "Entwarnung: ${Warntypename}, Stufe: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Entwarnung!",
