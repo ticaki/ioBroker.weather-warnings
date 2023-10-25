@@ -205,7 +205,6 @@
     "email_Footer": "Pied de page pour l'e-mail",
     "dividerDirs": "Annuaires internes",
     "alexa2_device_ids": "Appareil/Groupe",
-    "alexa2_volumen": "Volume",
     "template.NewMessage": "${Warntypename} avertissement de ${starttime}, niveau : ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} tout est clair, niveau : ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Tout est clair!",

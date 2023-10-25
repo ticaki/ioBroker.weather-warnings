@@ -205,7 +205,6 @@
     "email_Footer": "Stopka do e-maila",
     "dividerDirs": "Katalogi wewnętrzne",
     "alexa2_device_ids": "Urządzenie/grupa",
-    "alexa2_volumen": "Tom",
     "template.NewMessage": "Ostrzeżenie ${Warntypename} od ${starttime}, poziom: ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} wszystko jasne, poziom: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Wszystko jasne!",
