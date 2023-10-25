@@ -132,7 +132,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.4 (2023-10-25)
 * (ticaki) Added Say-It
 * (ticaki) User-definable icons (path)
 * (ticaki) Email works, Added title for pushover and email

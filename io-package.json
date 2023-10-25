@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.4.3",
+    "version": "0.4.4",
     "news": {
+      "0.4.4": {
+        "en": "Added Say-It\nUser-definable icons (path)\nEmail works, Added title for pushover and email",
+        "de": "Hinzugefügt Say-It\nBenutzerdefinierbare Icons (Pfad)\nE-Mail funktioniert, Titel hinzugefügt für Pushover und E-Mail",
+        "ru": "Добавлен Say-It\nИконки пользователя (пат)\nРаботы по электронной почте, Добавлено название для pushover и email",
+        "pt": "Adicionado Say-It\nÍcones definidos pelo usuário (caminho)\nE-mail funciona, Título adicionado para pushover e e-mail",
+        "nl": "Toegevoegd\nUser-definable iconen (path)\nE-mail werkt. Vermelding van de titel voor push-over en e-mail",
+        "fr": "Ajouté Say-It\nIcônes définis par l'utilisateur (chemin)\nE-mail fonctionne, Titre ajouté pour pushover et email",
+        "it": "Aggiunto Say-It\nIcone definibili dall'utente (percorso)\nE-mail funziona, Titolo aggiunto per pushover e email",
+        "es": "Agregado\nÍconos definidos por el usuario (path)\nCorreo electrónico funciona, Título añadido para pushover y email",
+        "pl": "Added Say-It (ang.)\nIkony nieokreślone (ang. User-definable icons, path.)\nPraca Emaila. Oficjalna strona pushover i e-mail",
+        "uk": "Доданий Сай-It\nКористувальницькі іконки (патія)\nЕлектронні роботи, Додано назву для pushover і email",
+        "zh-cn": "增 编\n使用可衡量的参数(抗体)\n电子邮件工程, 移交和电子邮件的附加名称"
+      },
       "0.4.3": {
         "en": "Added Say-It\nUser-definable icons (path)\nEmail works, Added title for pushover and email",
         "de": "Hinzugefügt Say-It\nBenutzerdefinierbare Icons (Pfad)\nE-Mail funktioniert, Titel hinzugefügt für Pushover und E-Mail",
@@ -80,19 +93,6 @@
         "pl": "ikona",
         "uk": "додано: іконки",
         "zh-cn": "增加:背景"
-      },
-      "0.3.5": {
-        "en": "added: Data points for manually triggering notifications.",
-        "de": "Hinzugefügt: Datenpunkte für manuelle Benachrichtigungen.",
-        "ru": "добавлено: Точки данных для ручного запуска уведомлений.",
-        "pt": "adicionado: pontos de dados para activar manualmente notificações.",
-        "nl": "data wijst op handmatige informatie.",
-        "fr": "ajouté: Points de données pour déclencher manuellement les notifications.",
-        "it": "aggiunto: Punti di dati per attivare manualmente le notifiche.",
-        "es": "añadido: Puntos de datos para las notificaciones de activación manual.",
-        "pl": "dodano: punkty danych dla ręcznie wyzwalających powiadomień.",
-        "uk": "доданий: дані для ручних сповіщень.",
-        "zh-cn": "增加:机发通知的数据点。."
       }
     },
     "titleLang": {
