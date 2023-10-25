@@ -20,6 +20,12 @@
 **Still in development** so no good sample templates yet and email is not quite ready. If you have any wishes, just make a feature request.
 
 This adapter accesses weather warnings of different weather services and outputs them as text or voice messages. Additionally it creates States grouped by type, which can be used to react to current warnings.
+
+Provider:
+- DWD 
+- Zamg (Austria)
+- UWZ
+
 ## Installation
 After installation the configuration site will automatically open and will be needed to be **reloaded**. This will show the templates in the language that was set.
 

@@ -15,10 +15,18 @@
 ## weather-warnings adapter for ioBroker
 
 **Ist noch in der Entwicklung** daher noch keine guten Beispielvorlagen und Email ist noch nicht ganz fertig. Wenn ihr da wünsche habt, einfach ne Feature Request machen.
+**Readme hängen auch immer den Funktionen hinterher**
 
 Dieser Adapter ruft Wetterwarnungen verschiedener optionaler Dienste ab und gibt diese als Textnachricht oder Sprachnachrichten aus. Zusätzlich werden nach Typ gruppierte States bereitgestellt, mit denen man auf aktuelle Warnlagen reagieren kann.
+
+Provider:
+- DWD 
+- Zamg (Österreich)
+- UWZ
+
 ## Installation
 Nach der Installation und dem automatischen öffnen der Konfigurationsseite diese **nochmals reloaden**. Damit werden die Vorlagen in der eingestellten Sprache angezeigt.
+
 
 ## Konfiguration
 ![Basicconfiguration](img/basic.png)
