@@ -318,7 +318,14 @@
     "alexa2_MessageAllRemove": "RemoveAllMessage",
     "alexa2_volumen": 15,
     "alexa2_manualAll": "NewMessage",
-    "alexa2_sounds": []
+    "alexa2_sounds": [],
+    
+    "sayit_Enabled": false,
+    "sayit_MessageNew": "NewMessage",
+    "sayit_MessageRemove": "RemoveMessage",
+    "sayit_MessageAllRemove": "RemoveAllMessage",
+    "sayit_volumen": 15,
+    "sayit_manualAll": "NewMessage"
   },
   "objects": [],
   "instanceObjects": []

@@ -272,13 +272,14 @@ class WeatherWarnings extends utils.Adapter {
                             service: service,
                             filter: {
                                 auto: {
-                                    level: self.config[
-                                        (notificationService + '_LevelFilter') as keyof ioBroker.AdapterConfig
-                                    ] as number,
+                                    level:
+                                        (self.config[
+                                            (notificationService + '_LevelFilter') as keyof ioBroker.AdapterConfig
+                                        ] as number) || -1,
                                     type: (
-                                        self.config[
+                                        (self.config[
                                             (notificationService + '_TypeFilter') as keyof ioBroker.AdapterConfig
-                                        ] as string[]
+                                        ] as string[]) || []
                                     ).map((a) => String(a)),
                                 },
                                 manual: {
@@ -351,6 +352,15 @@ class WeatherWarnings extends utils.Adapter {
                         self.log.error(`Missing adapter for alexa - deactivated`);
                         delete notificationServiceOpt.alexa2;
                         self.config.alexa2_Enabled = false;
+                    }
+                }
+                if (self.config.sayit_Enabled && notificationServiceOpt.sayit != undefined) {
+                    notificationServiceOpt.sayit.volumen =
+                        self.config.sayit_volumen > 0 ? String(self.config.sayit_volumen) : '';
+                    if (self.config.sayit_Adapter == 'none') {
+                        self.log.error(`Missing adapter for alexa - deactivated`);
+                        delete notificationServiceOpt.sayit;
+                        self.config.sayit_Enabled = false;
                     }
                 }
                 try {

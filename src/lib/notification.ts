@@ -169,6 +169,7 @@ export class NotificationClass extends library.BaseClass {
             case 'history':
             case 'email':
                 break;
+            case 'sayit':
             case 'alexa2': {
                 // silentTime
                 if (this.adapter.providerController!.globalSpeakSilentTime !== undefined) {
@@ -204,6 +205,7 @@ export class NotificationClass extends library.BaseClass {
                 case 'history':
                 case 'email':
                     break;
+                case 'sayit':
                 case 'alexa2': {
                     switch (this.library.language) {
                         case 'en':
@@ -364,34 +366,51 @@ export class NotificationClass extends library.BaseClass {
                         }
                     }
                     /* Alexa code ask Apollon later
-                    const opt: any = {
-                        // value
-                        deviceSerialNumber: devices[0], // Serial number of one device to get Meta data which will be used if no device is pecified on the commands
-                        sequenceNodes: [], // list of sequences or commands
-                        sequenceType: 'ParallelNode', // "SerialNode" or "ParallelNode" for the provided sequenceNodes on main level. Default is "SerialNode"
-                    };
-                    for (const a in devices) {
-                        const optsub: any = { sequenceType: 'SerialNode', nodes: [] };
-                        optsub.nodes.push({
-                            command: 'speak-volume',
-                            value: 1, //this.adapter.config.alexa2_volumen,
-                            device: devices[a],
-                        });
-                        for (const msg of messages) {
-                            if (Array.isArray(msg)) continue;
+                        const opt: any = {
+                            // value
+                            deviceSerialNumber: devices[0], // Serial number of one device to get Meta data which will be used if no device is pecified on the commands
+                            sequenceNodes: [], // list of sequences or commands
+                            sequenceType: 'ParallelNode', // "SerialNode" or "ParallelNode" for the provided sequenceNodes on main level. Default is "SerialNode"
+                        };
+                        for (const a in devices) {
+                            const optsub: any = { sequenceType: 'SerialNode', nodes: [] };
                             optsub.nodes.push({
-                                command: 'speak',
-                                value: `${this.adapter.config.alexa2_volumen};${msg.text}`,
+                                command: 'speak-volume',
+                                value: 1, //this.adapter.config.alexa2_volumen,
                                 device: devices[a],
                             });
+                            for (const msg of messages) {
+                                if (Array.isArray(msg)) continue;
+                                optsub.nodes.push({
+                                    command: 'speak',
+                                    value: `${this.adapter.config.alexa2_volumen};${msg.text}`,
+                                    device: devices[a],
+                                });
+                            }
+                            opt.sequenceNodes.push(optsub);
                         }
-                        opt.sequenceNodes.push(optsub);
+                        this.log.debug(
+                            JSON.stringify(
+                                await this.adapter.sendToAsync(this.options.adapter, 'sendSequenceCommand', opt),
+                            ),
+                        );*/
+                }
+                break;
+            case 'sayit':
+                {
+                    let d = '';
+                    const prefix = `${this.options.volumen};`;
+                    for (const msg of messages) {
+                        if (Array.isArray(msg)) continue;
+                        if (msg.text != '') {
+                            await this.adapter.setForeignStateAsync(
+                                `${this.options.adapter}.tts.text`,
+                                prefix + msg.text,
+                            );
+                            d += prefix + msg.text;
+                        }
                     }
-                    this.log.debug(
-                        JSON.stringify(
-                            await this.adapter.sendToAsync(this.options.adapter, 'sendSequenceCommand', opt),
-                        ),
-                    );*/
+                    this.log.debug(`Send to sayit: ${d}`);
                 }
                 break;
             case 'history':

@@ -227,8 +227,8 @@ class WeatherWarnings extends utils.Adapter {
               service,
               filter: {
                 auto: {
-                  level: self.config[notificationService + "_LevelFilter"],
-                  type: self.config[notificationService + "_TypeFilter"].map((a2) => String(a2))
+                  level: self.config[notificationService + "_LevelFilter"] || -1,
+                  type: (self.config[notificationService + "_TypeFilter"] || []).map((a2) => String(a2))
                 },
                 manual: {
                   level: self.config[notificationService + "_ManualLevelFilter"] ? self.config[notificationService + "_ManualLevelFilter"] : -1,
@@ -280,6 +280,14 @@ class WeatherWarnings extends utils.Adapter {
             self.log.error(`Missing adapter for alexa - deactivated`);
             delete notificationServiceOpt.alexa2;
             self.config.alexa2_Enabled = false;
+          }
+        }
+        if (self.config.sayit_Enabled && notificationServiceOpt.sayit != void 0) {
+          notificationServiceOpt.sayit.volumen = self.config.sayit_volumen > 0 ? String(self.config.sayit_volumen) : "";
+          if (self.config.sayit_Adapter == "none") {
+            self.log.error(`Missing adapter for alexa - deactivated`);
+            delete notificationServiceOpt.sayit;
+            self.config.sayit_Enabled = false;
           }
         }
         try {

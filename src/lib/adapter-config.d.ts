@@ -139,6 +139,18 @@ declare global {
             alexa2_device_ids: string[];
             alexa2_volumen: number;
             alexa2_Audio: string;
+
+            sayit_Adapter: string;
+            sayit_DwdEnabled: boolean;
+            sayit_UwzEnabled: boolean;
+            sayit_ZamgEnabled: boolean;
+            sayit_TypeFilter: number[];
+            sayit_LevelFilter: number;
+            sayit_Enabled: boolean;
+            sayit_MessageNew: string;
+            sayit_MessageRemove: string;
+            sayit_MessageAllRemove: string;
+            sayit_volumen: number;
         }
     }
 }

@@ -2,6 +2,8 @@ import { MessagesClass } from '../messages';
 import * as NotificationType from './notificationService-def';
 import { ProviderClassType, messageFilterType, providerServices } from './provider-def';
 
+//export type Type = Required<keyof OptionsType>;
+
 export type Type = Required<keyof OptionsType>;
 export type OptionsType = {
     telegram?: {
@@ -24,6 +26,9 @@ export type OptionsType = {
     } & BaseType;
     alexa2?: {
         name: 'alexa2';
+    } & BaseType;
+    sayit?: {
+        name: 'sayit';
     } & BaseType;
 };
 
@@ -61,6 +66,10 @@ export type BaseType =
           audio: string;
           sounds: { warntype: string; sound: string; warntypenumber: number }[];
           sounds_enabled: boolean;
+      } & bBaseType)
+    | ({
+          name: 'sayit';
+          volumen: string;
       } & bBaseType);
 
 type bBaseType = {
@@ -114,9 +123,10 @@ export const serciceCapabilities: Record<Type, ConfigType> = {
     pushover: { notifications: push },
     history: { notifications: history },
     alexa2: { notifications: push },
+    sayit: { notifications: push },
 };
 
-export const Array: Type[] = ['telegram', 'pushover', 'whatsapp', 'json', 'history', 'email', 'alexa2'];
+export const Array: Type[] = ['telegram', 'pushover', 'whatsapp', 'json', 'history', 'email', 'alexa2', 'sayit'];
 
 export type MessageType = {
     text: string;
@@ -154,6 +164,9 @@ export const notificationServiceDefaults: Record<NotificationType.Type, Partial<
         useadapter: true,
     },
     alexa2: {
+        useadapter: true,
+    },
+    sayit: {
         useadapter: true,
     },
 };

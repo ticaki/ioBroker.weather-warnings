@@ -2145,6 +2145,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
+            sayit: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'Alexa',
+                    type: 'boolean',
+                    role: 'button',
+                    read: false,
+                    write: true,
+                },
+                native: {},
+            },
         },
     },
 };

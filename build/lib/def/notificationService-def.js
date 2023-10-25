@@ -36,9 +36,10 @@ const serciceCapabilities = {
   whatsapp: { notifications: push },
   pushover: { notifications: push },
   history: { notifications: history },
-  alexa2: { notifications: push }
+  alexa2: { notifications: push },
+  sayit: { notifications: push }
 };
-const Array = ["telegram", "pushover", "whatsapp", "json", "history", "email", "alexa2"];
+const Array = ["telegram", "pushover", "whatsapp", "json", "history", "email", "alexa2", "sayit"];
 const notificationServiceDefaults = {
   telegram: {
     useadapter: true
@@ -59,6 +60,9 @@ const notificationServiceDefaults = {
     useadapter: true
   },
   alexa2: {
+    useadapter: true
+  },
+  sayit: {
     useadapter: true
   }
 };
