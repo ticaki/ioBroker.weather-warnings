@@ -1,331 +1,331 @@
 {
-    "common": {
-        "name": "weather-warnings",
-        "version": "0.4.2",
-        "news": {
-            "0.4.2": {
-                "en": "optimise german 22. & 28. for alexa.\nQuiet times for voice notifications.\nbugfix: now the English translation is loaded. Alexa uses the correct day of the week with ZAMG heading.",
-                "de": "Optimiert deutsche 22. & 28. für alexa.\nRuhezeiten für Sprachmeldungen(bitte testen).\nbugfix: jetzt wird die englische Übersetzung geladen. Alexa verwendet den richtigen Tag der Woche mit ZAMG Headline.",
-                "ru": "оптимизировать немецкий 22. & 28. для alexa.\nТихое время для голосовых уведомлений.\nbugfix: теперь английский перевод загружен. Alexa использует правильный день недели с головой DWD.",
-                "pt": "otimizar alemão 22. & 28. para alexa.\nTempos silenciosos para notificações por voz.\nbugfix: agora a tradução em inglês é carregada. Alexa usa o dia correto da semana com DWD em direção.",
-                "nl": "optimise german 22.\nStiltetijd voor voice-informaties.\nnu is de Engelse vertaling geladen. Alexa gebruikt de juiste dag van de week met DWD.",
-                "fr": "optimiser l'allemand 22. & 28. pour alexa.\nTemps calme pour les notifications vocales.\nbugfix: maintenant la traduction anglaise est chargée. Alexa utilise le bon jour de la semaine avec le cap DWD.",
-                "it": "ottimista tedesco 22. & 28. per alexa.\nTempi silenziosi per le notifiche vocali.\nbugfix: ora la traduzione inglese viene caricata. Alexa utilizza il giorno corretto della settimana con la direzione DWD.",
-                "es": "optimista alemán 22. \" 28. para alexa.\nTiempos silenciosos para notificaciones de voz.\nbugfix: ahora la traducción al inglés está cargada. Alexa utiliza el día correcto de la semana con dirección DWD.",
-                "pl": "optymista germanu 22. i 28. za alexę.\nCzas wolny od głosu.\natak: teraz angielskie tłumaczenie jest załadowane. Alexa używa odpowiedniego dnia tygodnia z DWD.",
-                "uk": "оптимізуйте німецьку 22. & 28. для alexa.\nТерміни на голосові повідомлення.\nвиправлення: тепер переклад англійською мовою завантажується. Alexa використовує правильний день тижня з головою DWD.",
-                "zh-cn": "alexa的astimise german 22和28。.\n发言通知的基数。.\nbugfix:现在有英文译本。 Alexa利用周的正确日子和DWD的标题。."
-            },
-            "0.4.1": {
-                "en": "update german translation for alexa",
-                "de": "Deutsche übersetzung für Alexa aktualisieren",
-                "ru": "обновить немецкий перевод для alexa",
-                "pt": "atualização alemão tradução para alexa",
-                "nl": "vertaling:",
-                "fr": "mise à jour traduction allemande pour alexa",
-                "it": "aggiornamento traduzione tedesca per alexa",
-                "es": "actualización traducción alemana para alexa",
-                "pl": "uaktualnianie germannego tłumaczenia na alexa",
-                "uk": "оновлення німецького перекладу для alexa",
-                "zh-cn": "四. 更新法文本"
-            },
-            "0.4.0": {
-                "en": "Welcome to latest.\nzamg date convert for alexa.",
-                "de": "Herzlich willkommen im Beta :).\nZamg date konvertieren für alexa.",
-                "ru": "Добро пожаловать в последний.\nzamg дата конвертер для alexa",
-                "pt": "Bem-vindo ao mais recente.\nzamg data converter para alexa",
-                "nl": "Welkom bij het laatste.\nzamg datum convert voor alexa",
-                "fr": "Bienvenue au dernier.\nzamg date convertir pour alexa",
-                "it": "Benvenuto al più tardi.\nzamg data convertire per alexa",
-                "es": "Bienvenido a lo último.\nzamg date convert for alexa",
-                "pl": "Witamy najnowocześniejsze.\ndata zamarzania",
-                "uk": "Ласкаво просимо до останнього.\nzamg дата конвертер для alexa",
-                "zh-cn": "最新情况。.\n扎姆格日期改为法拉"
-            },
-            "0.3.7": {
-                "en": "Alexa Sounds for warntypes\nmore options for pushover, telegram, alexa, email html\nUsable urls for icons\nfixed error in type filter",
-                "de": "Alexa Sounds für Warntypen\nMehr Optionen für pushover, telegramm, alexa, e-mail html\nVerwendbare Urls für Icons\nFehler behoben im Typfilter",
-                "ru": "Alexa Sounds для предупреждающих типов\nбольше опций для pushover, telegram, alexa, email html\nПолезные URL для иконок\nфиксированная ошибка в тип фильтре",
-                "pt": "Alexa Sons para avisos\nmais opções para pushover, telegram, alexa, e-mail html\nUrls utilizáveis para ícones\nerro fixo no filtro tipo",
-                "nl": "Alexa klinkt als waarschuwing\nmeer opties voor pushover, telegram, alexa, e-mail htmi\nGebruikbare uilen voor iconen\nfilter",
-                "fr": "Alexa Sons for warningtypes\nautres options pour pushover, telegram, alexa, email html\nUrls utilisables pour les icônes\nerreur fixe dans le filtre de type",
-                "it": "Alexa Suoni per avvertimentitipi\npiù opzioni per pushover, telegram, alexa, email html\nRicci utilizzabili per icone\nerrore fisso nel filtro tipo",
-                "es": "Alexa Sonidos para warntypes\nmás opciones para pushover, telegrama, alexa, email html\nUrales utilizables para iconos\nerror fijo en el filtro tipo",
-                "pl": "Alexa Sounds (ang.)\nmożliwe jest, że telegram, alexa, e-mail html\nUrl dla ikon\nbłąd w filtrze typem",
-                "uk": "Alexa Sounds для попередження\nдодаткові параметри для pushover, телеграма, alexa, email html\nУстілки для ікон\nфіксована помилка в фільтрі типу",
-                "zh-cn": "Alexa对战争型的声音\n推广的更多选择、电图、法、电子邮件 html\n导 言\n类型过滤的固定错误"
-            },
-            "0.3.6": {
-                "en": "added: icons",
-                "de": "hinzugefügt: icons",
-                "ru": "добавлено: icons",
-                "pt": "adicionado: ícones",
-                "nl": "vertaling:",
-                "fr": "ajouté: icônes",
-                "it": "aggiunto: icone",
-                "es": "añadido: iconos",
-                "pl": "ikona",
-                "uk": "додано: іконки",
-                "zh-cn": "增加:背景"
-            },
-            "0.3.5": {
-                "en": "added: Data points for manually triggering notifications.",
-                "de": "Hinzugefügt: Datenpunkte für manuelle Benachrichtigungen.",
-                "ru": "добавлено: Точки данных для ручного запуска уведомлений.",
-                "pt": "adicionado: pontos de dados para activar manualmente notificações.",
-                "nl": "data wijst op handmatige informatie.",
-                "fr": "ajouté: Points de données pour déclencher manuellement les notifications.",
-                "it": "aggiunto: Punti di dati per attivare manualmente le notifiche.",
-                "es": "añadido: Puntos de datos para las notificaciones de activación manual.",
-                "pl": "dodano: punkty danych dla ręcznie wyzwalających powiadomień.",
-                "uk": "доданий: дані для ручних сповіщень.",
-                "zh-cn": "增加:机发通知的数据点。."
-            },
-            "0.3.4": {
-                "en": "add translation to common.name",
-                "de": "übersetzung hinzufügen. name",
-                "ru": "добавить перевод в общий. имя",
-                "pt": "adicionar tradução para comum. nome",
-                "nl": "vertaling toevoegen. naam",
-                "fr": "ajouter la traduction en commun. nom",
-                "it": "aggiungere la traduzione in comune. nome",
-                "es": "añadir traducción a común. nombre",
-                "pl": "tłumaczenie na wspólne. nazwa",
-                "uk": "додати переклад на загальний. ім'я",
-                "zh-cn": "增加共同翻译。 姓名"
-            }
-        },
-        "titleLang": {
-            "en": "Weather Warnings",
-            "de": "Wetterwarnungen",
-            "ru": "Предупреждения о погоде",
-            "pt": "Avisos meteorológicos",
-            "nl": "Weerwaarschuwingen",
-            "fr": "Avertissements météorologiques",
-            "it": "Avvisi meteo",
-            "es": "Advertencias meteorológicas",
-            "pl": "Ostrzeżenia pogodowe",
-            "uk": "Попередження про погоду",
-            "zh-cn": "天气警告"
-        },
-        "desc": {
-            "en": "weather-warnings",
-            "de": "Wetterwarnungen",
-            "ru": "предупреждения о погоде",
-            "pt": "avisos meteorológicos",
-            "nl": "weerwaarschuwingen",
-            "fr": "avertissements météorologiques",
-            "it": "allerta meteo",
-            "es": "advertencias-meteorológicas",
-            "pl": "ostrzeżenia pogodowe",
-            "uk": "погодні попередження",
-            "zh-cn": "天气警报"
-        },
-        "authors": [
-            "ticaki <github@renopoint.de>"
-        ],
-        "keywords": [
-            "weather",
-            "dwd",
-            "uwz",
-            "zamg",
-            "warnings",
-            "push"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "build/main.js",
-        "icon": "weather-warnings.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
-        "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "weather",
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "supportedMessages": {
-            "custom": true
-        },
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=5.0.12"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.13"
-            }
-        ]
+  "common": {
+    "name": "weather-warnings",
+    "version": "0.4.3",
+    "news": {
+      "0.4.3": {
+        "en": "Added Say-It\nUser-definable icons (path)\nEmail works, Added title for pushover and email",
+        "de": "Hinzugefügt Say-It\nBenutzerdefinierbare Icons (Pfad)\nE-Mail funktioniert, Titel hinzugefügt für Pushover und E-Mail",
+        "ru": "Добавлен Say-It\nИконки пользователя (пат)\nРаботы по электронной почте, Добавлено название для pushover и email",
+        "pt": "Adicionado Say-It\nÍcones definidos pelo usuário (caminho)\nE-mail funciona, Título adicionado para pushover e e-mail",
+        "nl": "Toegevoegd\nUser-definable iconen (path)\nE-mail werkt. Vermelding van de titel voor push-over en e-mail",
+        "fr": "Ajouté Say-It\nIcônes définis par l'utilisateur (chemin)\nE-mail fonctionne, Titre ajouté pour pushover et email",
+        "it": "Aggiunto Say-It\nIcone definibili dall'utente (percorso)\nE-mail funziona, Titolo aggiunto per pushover e email",
+        "es": "Agregado\nÍconos definidos por el usuario (path)\nCorreo electrónico funciona, Título añadido para pushover y email",
+        "pl": "Added Say-It (ang.)\nIkony nieokreślone (ang. User-definable icons, path.)\nPraca Emaila. Oficjalna strona pushover i e-mail",
+        "uk": "Доданий Сай-It\nКористувальницькі іконки (патія)\nЕлектронні роботи, Додано назву для pushover і email",
+        "zh-cn": "增 编\n使用可衡量的参数(抗体)\n电子邮件工程, 移交和电子邮件的附加名称"
+      },
+      "0.4.2": {
+        "en": "optimise german 22. & 28. for alexa.\nQuiet times for voice notifications.\nbugfix: now the English translation is loaded. Alexa uses the correct day of the week with ZAMG heading.",
+        "de": "Optimiert deutsche 22. & 28. für alexa.\nRuhezeiten für Sprachmeldungen(bitte testen).\nbugfix: jetzt wird die englische Übersetzung geladen. Alexa verwendet den richtigen Tag der Woche mit ZAMG Headline.",
+        "ru": "оптимизировать немецкий 22. & 28. для alexa.\nТихое время для голосовых уведомлений.\nbugfix: теперь английский перевод загружен. Alexa использует правильный день недели с головой DWD.",
+        "pt": "otimizar alemão 22. & 28. para alexa.\nTempos silenciosos para notificações por voz.\nbugfix: agora a tradução em inglês é carregada. Alexa usa o dia correto da semana com DWD em direção.",
+        "nl": "optimise german 22.\nStiltetijd voor voice-informaties.\nnu is de Engelse vertaling geladen. Alexa gebruikt de juiste dag van de week met DWD.",
+        "fr": "optimiser l'allemand 22. & 28. pour alexa.\nTemps calme pour les notifications vocales.\nbugfix: maintenant la traduction anglaise est chargée. Alexa utilise le bon jour de la semaine avec le cap DWD.",
+        "it": "ottimista tedesco 22. & 28. per alexa.\nTempi silenziosi per le notifiche vocali.\nbugfix: ora la traduzione inglese viene caricata. Alexa utilizza il giorno corretto della settimana con la direzione DWD.",
+        "es": "optimista alemán 22. \" 28. para alexa.\nTiempos silenciosos para notificaciones de voz.\nbugfix: ahora la traducción al inglés está cargada. Alexa utiliza el día correcto de la semana con dirección DWD.",
+        "pl": "optymista germanu 22. i 28. za alexę.\nCzas wolny od głosu.\natak: teraz angielskie tłumaczenie jest załadowane. Alexa używa odpowiedniego dnia tygodnia z DWD.",
+        "uk": "оптимізуйте німецьку 22. & 28. для alexa.\nТерміни на голосові повідомлення.\nвиправлення: тепер переклад англійською мовою завантажується. Alexa використовує правильний день тижня з головою DWD.",
+        "zh-cn": "alexa的astimise german 22和28。.\n发言通知的基数。.\nbugfix:现在有英文译本。 Alexa利用周的正确日子和DWD的标题。."
+      },
+      "0.4.1": {
+        "en": "update german translation for alexa",
+        "de": "Deutsche übersetzung für Alexa aktualisieren",
+        "ru": "обновить немецкий перевод для alexa",
+        "pt": "atualização alemão tradução para alexa",
+        "nl": "vertaling:",
+        "fr": "mise à jour traduction allemande pour alexa",
+        "it": "aggiornamento traduzione tedesca per alexa",
+        "es": "actualización traducción alemana para alexa",
+        "pl": "uaktualnianie germannego tłumaczenia na alexa",
+        "uk": "оновлення німецького перекладу для alexa",
+        "zh-cn": "四. 更新法文本"
+      },
+      "0.4.0": {
+        "en": "Welcome to latest.\nzamg date convert for alexa.",
+        "de": "Herzlich willkommen im Beta :).\nZamg date konvertieren für alexa.",
+        "ru": "Добро пожаловать в последний.\nzamg дата конвертер для alexa",
+        "pt": "Bem-vindo ao mais recente.\nzamg data converter para alexa",
+        "nl": "Welkom bij het laatste.\nzamg datum convert voor alexa",
+        "fr": "Bienvenue au dernier.\nzamg date convertir pour alexa",
+        "it": "Benvenuto al più tardi.\nzamg data convertire per alexa",
+        "es": "Bienvenido a lo último.\nzamg date convert for alexa",
+        "pl": "Witamy najnowocześniejsze.\ndata zamarzania",
+        "uk": "Ласкаво просимо до останнього.\nzamg дата конвертер для alexa",
+        "zh-cn": "最新情况。.\n扎姆格日期改为法拉"
+      },
+      "0.3.7": {
+        "en": "Alexa Sounds for warntypes\nmore options for pushover, telegram, alexa, email html\nUsable urls for icons\nfixed error in type filter",
+        "de": "Alexa Sounds für Warntypen\nMehr Optionen für pushover, telegramm, alexa, e-mail html\nVerwendbare Urls für Icons\nFehler behoben im Typfilter",
+        "ru": "Alexa Sounds для предупреждающих типов\nбольше опций для pushover, telegram, alexa, email html\nПолезные URL для иконок\nфиксированная ошибка в тип фильтре",
+        "pt": "Alexa Sons para avisos\nmais opções para pushover, telegram, alexa, e-mail html\nUrls utilizáveis para ícones\nerro fixo no filtro tipo",
+        "nl": "Alexa klinkt als waarschuwing\nmeer opties voor pushover, telegram, alexa, e-mail htmi\nGebruikbare uilen voor iconen\nfilter",
+        "fr": "Alexa Sons for warningtypes\nautres options pour pushover, telegram, alexa, email html\nUrls utilisables pour les icônes\nerreur fixe dans le filtre de type",
+        "it": "Alexa Suoni per avvertimentitipi\npiù opzioni per pushover, telegram, alexa, email html\nRicci utilizzabili per icone\nerrore fisso nel filtro tipo",
+        "es": "Alexa Sonidos para warntypes\nmás opciones para pushover, telegrama, alexa, email html\nUrales utilizables para iconos\nerror fijo en el filtro tipo",
+        "pl": "Alexa Sounds (ang.)\nmożliwe jest, że telegram, alexa, e-mail html\nUrl dla ikon\nbłąd w filtrze typem",
+        "uk": "Alexa Sounds для попередження\nдодаткові параметри для pushover, телеграма, alexa, email html\nУстілки для ікон\nфіксована помилка в фільтрі типу",
+        "zh-cn": "Alexa对战争型的声音\n推广的更多选择、电图、法、电子邮件 html\n导 言\n类型过滤的固定错误"
+      },
+      "0.3.6": {
+        "en": "added: icons",
+        "de": "hinzugefügt: icons",
+        "ru": "добавлено: icons",
+        "pt": "adicionado: ícones",
+        "nl": "vertaling:",
+        "fr": "ajouté: icônes",
+        "it": "aggiunto: icone",
+        "es": "añadido: iconos",
+        "pl": "ikona",
+        "uk": "додано: іконки",
+        "zh-cn": "增加:背景"
+      },
+      "0.3.5": {
+        "en": "added: Data points for manually triggering notifications.",
+        "de": "Hinzugefügt: Datenpunkte für manuelle Benachrichtigungen.",
+        "ru": "добавлено: Точки данных для ручного запуска уведомлений.",
+        "pt": "adicionado: pontos de dados para activar manualmente notificações.",
+        "nl": "data wijst op handmatige informatie.",
+        "fr": "ajouté: Points de données pour déclencher manuellement les notifications.",
+        "it": "aggiunto: Punti di dati per attivare manualmente le notifiche.",
+        "es": "añadido: Puntos de datos para las notificaciones de activación manual.",
+        "pl": "dodano: punkty danych dla ręcznie wyzwalających powiadomień.",
+        "uk": "доданий: дані для ручних сповіщень.",
+        "zh-cn": "增加:机发通知的数据点。."
+      }
     },
-    "native": {
-        "allowedDirs": [],
-        "useJsonHistory": false,
-        "dwdwarncellTable": [],
-        "uwzwarncellTable": [],
-        "zamgwarncellTable": [],
-        "useTestWarnings": false,
-        "dwdEnabled": false,
-        "uwzEnabled": false,
-        "zamgEnabled": false,
-        "dwdHourFilter": 0,
-        "uwzHourFilter": 0,
-        "zamgHourFilter": 0,
-        "notPushAtStart": true,
-        "refreshTime": 15,
-        "messageTemplate": [],
-        "templateTable": [
-            {
-                "templateKey": "NewMessage",
-                "template": "template.NewMessage"
-            },
-            {
-                "templateKey": "RemoveMessage",
-                "template": "template.RemoveMessage"
-            },
-            {
-                "templateKey": "RemoveAllMessage",
-                "template": "template.RemoveAllMessage"
-            },
-            {
-                "templateKey": "NewJson",
-                "template": "template.NewJson"
-            },
-            {
-                "templateKey": "RemoveJson",
-                "template": "template.RemoveJson"
-            },
-            {
-                "templateKey": "RemoveAllJson",
-                "template": "template.RemoveAllJson"
-            },
-            {
-                "templateKey": "EmailHeader",
-                "template": "template.emailHeader"
-            },
-            {
-                "templateKey": "EmailMessage",
-                "template": "template.emailMessage"
-            },
-            {
-                "templateKey": "EmailFooter",
-                "template": "template.emailFooter"
-            },
-            {
-                "templateKey": "NewMessageWithArray",
-                "template": "template.NewMessageWithArray"
-            },
-            {
-                "templateKey": "_CustomArray",
-                "template": "template._CustomArray"
-            }
-        ],
-        "dwdLanguage": "ger",
-        "uwzLanguage": "DE",
-        "zamgLanguage": "de",
-        "dwdTypeFilter": [],
-        "zamgTypeFilter": [],
-        "uwzTypeFilter": [],
-        "dwdLevelFilter": 0,
-        "uwzLevelFilter": 0,
-        "zamgLevelFilter": 0,
-        "telegram_DwdEnabled": true,
-        "telegram_UwzEnabled": true,
-        "telegram_ZamgEnabled": true,
-        "telegram_TypeFilter": [],
-        "telegram_LevelFilter": 0,
-        "telegram_ManualTypeFilter": [],
-        "telegram_ManualLevelFilter": 0,
-        "telegram_Enabled": false,
-        "telegram_Adapter": "none",
-        "telegram_MessageNew": "NewMessage",
-        "telegram_MessageRemove": "RemoveMessage",
-        "telegram_MessageAllRemove": "RemoveAllMessage",
-        "telegram_manualAll": "NewMessage",
-        "whatsapp_DwdEnabled": true,
-        "whatsapp_UwzEnabled": true,
-        "whatsapp_ZamgEnabled": true,
-        "whatsapp_TypeFilter": [],
-        "whatsapp_LevelFilter": 0,
-        "whatsapp_ManualTypeFilter": [],
-        "whatsapp_ManualLevelFilter": 0,
-        "whatsapp_Enabled": false,
-        "whatsapp_Adapter": "none",
-        "whatsapp_MessageNew": "NewMessage",
-        "whatsapp_MessageRemove": "RemoveMessage",
-        "whatsapp_MessageAllRemove": "RemoveAllMessage",
-        "whatsapp_manualAll": "NewMessage",
-        "pushover_DwdEnabled": true,
-        "pushover_UwzEnabled": true,
-        "pushover_ZamgEnabled": true,
-        "pushover_TypeFilter": [],
-        "pushover_LevelFilter": 0,
-        "pushover_ManualTypeFilter": [],
-        "pushover_ManualLevelFilter": 0,
-        "pushover_Enabled": false,
-        "pushover_Adapter": "none",
-        "pushover_MessageNew": "NewMessage",
-        "pushover_MessageRemove": "RemoveMessage",
-        "pushover_MessageAllRemove": "RemoveAllMessage",
-        "pushover_manualAll": "NewMessage",
-        "json_DwdEnabled": true,
-        "json_UwzEnabled": true,
-        "json_ZamgEnabled": true,
-        "json_TypeFilter": [],
-        "json_LevelFilter": 0,
-        "json_Enabled": false,
-        "json_MessageAll": "NewJson",
-        "json_parse": false,
-        "history_DwdEnabled": true,
-        "history_UwzEnabled": true,
-        "history_ZamgEnabled": true,
-        "history_TypeFilter": [],
-        "history_LevelFilter": 0,
-        "history_Enabled": false,
-        "history_MessageNew": "NewJson",
-        "history_allinOne": false,
-        "email_Adapter": "none",
-        "email_line_break": "\n",
-        "email_DwdEnabled": true,
-        "email_UwzEnabled": true,
-        "email_ZamgEnabled": true,
-        "email_TypeFilter": [],
-        "email_LevelFilter": 0,
-        "email_ManualTypeFilter": [],
-        "email_ManualLevelFilter": 0,
-        "email_Enabled": false,
-        "email_MessageNew": "NewMessage",
-        "email_MessageRemove": "RemoveMessage",
-        "email_Header": "none",
-        "email_Footer": "none",
-        "email_manualAll": "NewMessage",
-        "alexa2_Adapter": "none",
-        "alexa2_DwdEnabled": true,
-        "alexa2_UwzEnabled": true,
-        "alexa2_ZamgEnabled": true,
-        "alexa2_device_ids": [],
-        "alexa2_TypeFilter": [],
-        "alexa2_LevelFilter": 0,
-        "alexa2_ManualTypeFilter": [],
-        "alexa2_ManualLevelFilter": 0,
-        "alexa2_Enabled": false,
-        "alexa2_MessageNew": "NewMessage",
-        "alexa2_MessageRemove": "RemoveMessage",
-        "alexa2_MessageAllRemove": "RemoveAllMessage",
-        "alexa2_volumen": 15,
-        "alexa2_manualAll": "NewMessage",
-        "alexa2_sounds": [],
-        "sayit_Enabled": false,
-        "sayit_MessageNew": "NewMessage",
-        "sayit_MessageRemove": "RemoveMessage",
-        "sayit_MessageAllRemove": "RemoveAllMessage",
-        "sayit_volumen": 15,
-        "sayit_manualAll": "NewMessage"
+    "titleLang": {
+      "en": "Weather Warnings",
+      "de": "Wetterwarnungen",
+      "ru": "Предупреждения о погоде",
+      "pt": "Avisos meteorológicos",
+      "nl": "Weerwaarschuwingen",
+      "fr": "Avertissements météorologiques",
+      "it": "Avvisi meteo",
+      "es": "Advertencias meteorológicas",
+      "pl": "Ostrzeżenia pogodowe",
+      "uk": "Попередження про погоду",
+      "zh-cn": "天气警告"
     },
-    "objects": [],
-    "instanceObjects": []
+    "desc": {
+      "en": "weather-warnings",
+      "de": "Wetterwarnungen",
+      "ru": "предупреждения о погоде",
+      "pt": "avisos meteorológicos",
+      "nl": "weerwaarschuwingen",
+      "fr": "avertissements météorologiques",
+      "it": "allerta meteo",
+      "es": "advertencias-meteorológicas",
+      "pl": "ostrzeżenia pogodowe",
+      "uk": "погодні попередження",
+      "zh-cn": "天气警报"
+    },
+    "authors": [
+      "ticaki <github@renopoint.de>"
+    ],
+    "keywords": [
+      "weather",
+      "dwd",
+      "uwz",
+      "zamg",
+      "warnings",
+      "push"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "build/main.js",
+    "icon": "weather-warnings.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
+    "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "weather",
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "supportedMessages": {
+      "custom": true
+    },
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.12"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
+    ]
+  },
+  "native": {
+    "allowedDirs": [],
+    "useJsonHistory": false,
+    "dwdwarncellTable": [],
+    "uwzwarncellTable": [],
+    "zamgwarncellTable": [],
+    "useTestWarnings": false,
+    "dwdEnabled": false,
+    "uwzEnabled": false,
+    "zamgEnabled": false,
+    "dwdHourFilter": 0,
+    "uwzHourFilter": 0,
+    "zamgHourFilter": 0,
+    "notPushAtStart": true,
+    "refreshTime": 15,
+    "messageTemplate": [],
+    "templateTable": [
+      {
+        "templateKey": "NewMessage",
+        "template": "template.NewMessage"
+      },
+      {
+        "templateKey": "RemoveMessage",
+        "template": "template.RemoveMessage"
+      },
+      {
+        "templateKey": "RemoveAllMessage",
+        "template": "template.RemoveAllMessage"
+      },
+      {
+        "templateKey": "NewJson",
+        "template": "template.NewJson"
+      },
+      {
+        "templateKey": "RemoveJson",
+        "template": "template.RemoveJson"
+      },
+      {
+        "templateKey": "RemoveAllJson",
+        "template": "template.RemoveAllJson"
+      },
+      {
+        "templateKey": "EmailHeader",
+        "template": "template.emailHeader"
+      },
+      {
+        "templateKey": "EmailMessage",
+        "template": "template.emailMessage"
+      },
+      {
+        "templateKey": "EmailFooter",
+        "template": "template.emailFooter"
+      },
+      {
+        "templateKey": "NewMessageWithArray",
+        "template": "template.NewMessageWithArray"
+      },
+      {
+        "templateKey": "_CustomArray",
+        "template": "template._CustomArray"
+      }
+    ],
+    "dwdLanguage": "ger",
+    "uwzLanguage": "DE",
+    "zamgLanguage": "de",
+    "dwdTypeFilter": [],
+    "zamgTypeFilter": [],
+    "uwzTypeFilter": [],
+    "dwdLevelFilter": 0,
+    "uwzLevelFilter": 0,
+    "zamgLevelFilter": 0,
+    "telegram_DwdEnabled": true,
+    "telegram_UwzEnabled": true,
+    "telegram_ZamgEnabled": true,
+    "telegram_TypeFilter": [],
+    "telegram_LevelFilter": 0,
+    "telegram_ManualTypeFilter": [],
+    "telegram_ManualLevelFilter": 0,
+    "telegram_Enabled": false,
+    "telegram_Adapter": "none",
+    "telegram_MessageNew": "NewMessage",
+    "telegram_MessageRemove": "RemoveMessage",
+    "telegram_MessageAllRemove": "RemoveAllMessage",
+    "telegram_manualAll": "NewMessage",
+    "whatsapp_DwdEnabled": true,
+    "whatsapp_UwzEnabled": true,
+    "whatsapp_ZamgEnabled": true,
+    "whatsapp_TypeFilter": [],
+    "whatsapp_LevelFilter": 0,
+    "whatsapp_ManualTypeFilter": [],
+    "whatsapp_ManualLevelFilter": 0,
+    "whatsapp_Enabled": false,
+    "whatsapp_Adapter": "none",
+    "whatsapp_MessageNew": "NewMessage",
+    "whatsapp_MessageRemove": "RemoveMessage",
+    "whatsapp_MessageAllRemove": "RemoveAllMessage",
+    "whatsapp_manualAll": "NewMessage",
+    "pushover_DwdEnabled": true,
+    "pushover_UwzEnabled": true,
+    "pushover_ZamgEnabled": true,
+    "pushover_TypeFilter": [],
+    "pushover_LevelFilter": 0,
+    "pushover_ManualTypeFilter": [],
+    "pushover_ManualLevelFilter": 0,
+    "pushover_Enabled": false,
+    "pushover_Adapter": "none",
+    "pushover_MessageNew": "NewMessage",
+    "pushover_MessageRemove": "RemoveMessage",
+    "pushover_MessageAllRemove": "RemoveAllMessage",
+    "pushover_manualAll": "NewMessage",
+    "json_DwdEnabled": true,
+    "json_UwzEnabled": true,
+    "json_ZamgEnabled": true,
+    "json_TypeFilter": [],
+    "json_LevelFilter": 0,
+    "json_Enabled": false,
+    "json_MessageAll": "NewJson",
+    "json_parse": false,
+    "history_DwdEnabled": true,
+    "history_UwzEnabled": true,
+    "history_ZamgEnabled": true,
+    "history_TypeFilter": [],
+    "history_LevelFilter": 0,
+    "history_Enabled": false,
+    "history_MessageNew": "NewJson",
+    "history_allinOne": false,
+    "email_Adapter": "none",
+    "email_line_break": "\n",
+    "email_DwdEnabled": true,
+    "email_UwzEnabled": true,
+    "email_ZamgEnabled": true,
+    "email_TypeFilter": [],
+    "email_LevelFilter": 0,
+    "email_ManualTypeFilter": [],
+    "email_ManualLevelFilter": 0,
+    "email_Enabled": false,
+    "email_MessageNew": "NewMessage",
+    "email_MessageRemove": "RemoveMessage",
+    "email_Header": "none",
+    "email_Footer": "none",
+    "email_manualAll": "NewMessage",
+    "alexa2_Adapter": "none",
+    "alexa2_DwdEnabled": true,
+    "alexa2_UwzEnabled": true,
+    "alexa2_ZamgEnabled": true,
+    "alexa2_device_ids": [],
+    "alexa2_TypeFilter": [],
+    "alexa2_LevelFilter": 0,
+    "alexa2_ManualTypeFilter": [],
+    "alexa2_ManualLevelFilter": 0,
+    "alexa2_Enabled": false,
+    "alexa2_MessageNew": "NewMessage",
+    "alexa2_MessageRemove": "RemoveMessage",
+    "alexa2_MessageAllRemove": "RemoveAllMessage",
+    "alexa2_volumen": 15,
+    "alexa2_manualAll": "NewMessage",
+    "alexa2_sounds": [],
+    "sayit_Enabled": false,
+    "sayit_MessageNew": "NewMessage",
+    "sayit_MessageRemove": "RemoveMessage",
+    "sayit_MessageAllRemove": "RemoveAllMessage",
+    "sayit_volumen": 15,
+    "sayit_manualAll": "NewMessage"
+  },
+  "objects": [],
+  "instanceObjects": []
 }
