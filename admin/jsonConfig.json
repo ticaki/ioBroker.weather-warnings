@@ -562,7 +562,7 @@
                     ],
                     "newLine": true,
                     "sm": 12,
-                    "md": 6,
+                    "md": 10,
                     "lg": 3
                 },
                 "dwdHourFilter": {
@@ -1290,7 +1290,6 @@
                     "jsonData": "{ \"service\": \"pushover\" }",
                     "manual": false,
                     "multiple": false,
-                    "default": {"value": "none", "label":"none"},
                     "disabled": "data.pushover_Adapter == 'none'",
                     "sm": 12,
                     "md": 5,
@@ -2385,7 +2384,6 @@
                     "jsonData": "{ \"service\": \"email\" }",
                     "manual": false,
                     "multiple": false,
-                    "default": {"value": "none", "label":"none"},
                     "disabled": "data.email_Adapter == 'none'",
                     "sm": 12,
                     "md": 5,
