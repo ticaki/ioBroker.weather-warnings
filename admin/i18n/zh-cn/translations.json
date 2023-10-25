@@ -510,5 +510,11 @@
     "dayoftheweak": "一周中的天",
     "speakStart": "开始时间",
     "speakEnd": "时间结束",
-    "speakSilentTime": "语音输出的安静时间（时间为 HH:MM 或 HH."
+    "speakSilentTime": "语音输出的安静时间（时间为 HH:MM 或 HH.",
+    "sayit_Enabled": "激活说它",
+    "speak_volumen": "体积",
+    "icons_settings": "图标设置",
+    "icons_prefix": "iconurl 的前缀 (/vis.0/...)",
+    "icons_suffix": "iconurl 的后缀 (.png)",
+    "icons_description": "适配器添加以下可能的字符串："
 }

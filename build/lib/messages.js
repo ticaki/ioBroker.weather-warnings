@@ -927,7 +927,9 @@ class MessagesClass extends import_library.BaseClass {
       case "geticon": {
         const id = MessageType.genericWarntyp[this.genericType].id;
         const color = this.adapter.config.icon_color || "blue";
-        if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
+        if (this.adapter.config.icons_prefix && this.adapter.config.icons_suffix) {
+          return this.adapter.config.icons_prefix + id + this.adapter.config.icons_suffix;
+        } else if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
           return `${this.adapter.config.iobrokerUrl || ""}/adapter/${this.adapter.name}/icons/${color}/${id}.png`;
         }
         return "";

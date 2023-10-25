@@ -292,6 +292,43 @@
                             "default": ""
                         }
                     ]
+                },
+                "icons_settings": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "icons_settings",
+                    "hidden": "data.imExpert != true",
+                    "size": 3
+                },
+                "icons_prefix": {
+                    "type": "text",
+                    "sm": 12,
+                    "md": 9,
+                    "lg": 9,
+                    "label": "icons_prefix",
+                    "default": "",
+                    "hidden": "data.imExpert != true",
+                    "newLine": true
+                },
+                "icons_suffix": {
+                    "type": "text",
+                    "sm": 12,
+                    "md": 3,
+                    "lg": 3,
+                    "label": "icons_suffix",
+                    "default": ".png",
+                    "hidden": "data.imExpert != true",
+                    "newLine": false
+                },
+                "icons_description": {
+                    "type": "text",
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "label": "icons_description",
+                    "readOnly": true,
+                    "hidden": "data.imExpert != true",
+                    "newLine": true
                 }
             }
         },

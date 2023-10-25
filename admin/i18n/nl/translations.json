@@ -510,5 +510,11 @@
     "dayoftheweak": "Dag van de week",
     "speakStart": "Starttijd",
     "speakEnd": "Eindtijd",
-    "speakSilentTime": "Stille tijden voor stemuitvoer (tijd als HH:MM of HH."
+    "speakSilentTime": "Stille tijden voor stemuitvoer (tijd als HH:MM of HH.",
+    "sayit_Enabled": "Activeer Say-It",
+    "speak_volumen": "Volume",
+    "icons_settings": "Pictograminstellingen",
+    "icons_prefix": "Voorvoegsel van de iconurl (/vis.0/...)",
+    "icons_suffix": "Achtervoegsel van de iconurl (.png)",
+    "icons_description": "Adapter voegt de volgende mogelijke tekenreeksen toe:"
 }

@@ -124,6 +124,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) Added Say-It
+* (ticaki) User-definable icons (path)
+
 ### 0.4.2 (2023-10-24)
 * (ticaki) optimise german 22. & 28. for alexa.
 * (ticaki) Quiet times for voice notifications.

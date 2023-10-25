@@ -510,5 +510,11 @@
     "dayoftheweak": "День тижня",
     "speakStart": "Час початку",
     "speakEnd": "Час закінчення",
-    "speakSilentTime": "Часи тиші для голосового виведення (час як ГГ:ХХ або ГГ."
+    "speakSilentTime": "Часи тиші для голосового виведення (час як ГГ:ХХ або ГГ.",
+    "sayit_Enabled": "Активуйте Say-It",
+    "speak_volumen": "Обсяг",
+    "icons_settings": "Налаштування значків",
+    "icons_prefix": "Префікс URL-адреси значка (/vis.0/...)",
+    "icons_suffix": "Суфікс iconurl (.png)",
+    "icons_description": "Адаптер додає такі можливі рядки:"
 }
