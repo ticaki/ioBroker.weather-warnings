@@ -205,7 +205,6 @@
     "email_Footer": "电子邮件页脚",
     "dividerDirs": "内部目录",
     "alexa2_device_ids": "设备/组",
-    "alexa2_volumen": "体积",
     "template.NewMessage": "来自 ${starttime} 的 ${Warntypename} 警告，级别：${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} 全部清除，级别：${warnlevelcolorname}",
     "template.RemoveAllMessage": "全清！",

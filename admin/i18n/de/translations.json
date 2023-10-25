@@ -64,7 +64,7 @@
     "textLevels.textGeneric.3": "schwer",
     "textLevels.textGeneric.4": "extrem",
     "textLevels.textGeneric.5": "schrecklich",
-    "useTestWarnings": "Testwarnungen aktivieren ",
+    "useTestWarnings": "Testwarnungen aktivieren! Adapter ist offline",
     "uwzEnabled": "UWZ aktivieren",
     "uwzSelectDescription": "UWZ-ID, diese besteht aus Ländercode und Postleitzahl (DE12345, AT54321)",
     "uwzTypeFilter": "Filtere die folgenden Warnungstypen aus dem Ergebnis.",
@@ -203,7 +203,6 @@
     "email_Footer": "Fußzeile für E-Mail",
     "dividerDirs": "Interne Verzeichnisse",
     "alexa2_device_ids": "Gerät/Gruppe",
-    "alexa2_volumen": "Volumen",
     "template.NewMessage": "Warnung: ${Warntypename} ab ${starttime}, Stufe: ${warnlevelcolorname}",
     "template.RemoveMessage": "Entwarnung: ${Warntypename}, Stufe: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Entwarnung!",
@@ -258,8 +257,8 @@
     "statesObjectsWarnings.dwdService.raw.CERTAINTY": "Art der Nachricht.",
     "statesObjectsWarnings.dwdService.raw.EC_PROFILE": "EC_PROFILE",
     "statesObjectsWarnings.dwdService.raw.EC_LICENSE": "EC_LICENSE",
-    "statesObjectsWarnings.dwdService.raw.EC_II": "Warntyp",
-    "statesObjectsWarnings.dwdService.raw.EC_GROUP": "Warntypegroup",
+    "statesObjectsWarnings.dwdService.raw.EC_II": "Warntyp ",
+    "statesObjectsWarnings.dwdService.raw.EC_GROUP": "Warntypgruppe",
     "statesObjectsWarnings.dwdService.raw.EC_AREA_COLOR": "Farbe als R G B",
     "statesObjectsWarnings.dwdService.raw.EFFECTIVE": "Der Zeitpunkt der Ausgabe der Warnung.",
     "statesObjectsWarnings.dwdService.raw.ONSET": "Startzeitpunkt der Warnung",
@@ -511,5 +510,5 @@
     "dayoftheweak": "Wochentag",
     "speakStart": "Startzeit",
     "speakEnd": "Endzeit",
-    "speakSilentTime": "Ruhezeiten für die Sprachausgabe (Zeit als HH:MM oder HH."
+    "speakSilentTime": "Ruhezeiten für die Sprachausgabe (Zeit als HH:MM oder HH)."
 }

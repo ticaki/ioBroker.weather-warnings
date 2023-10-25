@@ -205,7 +205,6 @@
     "email_Footer": "Rodapé para e-mail",
     "dividerDirs": "Diretórios internos",
     "alexa2_device_ids": "Dispositivo/Grupo",
-    "alexa2_volumen": "Volume",
     "template.NewMessage": "Aviso de ${Warntypename} de ${starttime}, nível: ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} tudo limpo, nível: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Tudo limpo!",

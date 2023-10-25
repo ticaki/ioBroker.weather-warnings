@@ -205,7 +205,6 @@
     "email_Footer": "Нижний колонтитул электронной почты",
     "dividerDirs": "Внутренние каталоги",
     "alexa2_device_ids": "Устройство/группа",
-    "alexa2_volumen": "Объем",
     "template.NewMessage": "Предупреждение ${Warntypename} от ${starttime}, уровень: ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} все очищено, уровень: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Все чисто!",

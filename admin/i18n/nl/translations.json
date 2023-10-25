@@ -205,7 +205,6 @@
     "email_Footer": "Voettekst voor e-mail",
     "dividerDirs": "Interne mappen",
     "alexa2_device_ids": "Apparaat/groep",
-    "alexa2_volumen": "Volume",
     "template.NewMessage": "${Warntypename} waarschuwing van ${starttime}, niveau: ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} helemaal duidelijk, niveau: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Alles duidelijk!",

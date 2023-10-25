@@ -205,7 +205,6 @@
     "email_Footer": "Piè di pagina per e-mail",
     "dividerDirs": "Directory interne",
     "alexa2_device_ids": "Dispositivo/Gruppo",
-    "alexa2_volumen": "Volume",
     "template.NewMessage": "Avviso ${Warntypename} da ${starttime}, livello: ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} tutto pulito, livello: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Tutto chiaro!",

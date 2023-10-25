@@ -205,7 +205,6 @@
     "email_Footer": "Pie de página para correo electrónico",
     "dividerDirs": "Directorios internos",
     "alexa2_device_ids": "Dispositivo/Grupo",
-    "alexa2_volumen": "Volumen",
     "template.NewMessage": "Advertencia de ${Warntypename} de ${starttime}, nivel: ${warnlevelcolorname}",
     "template.RemoveMessage": "${Warntypename} todo despejado, nivel: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "¡Todo claro!",
