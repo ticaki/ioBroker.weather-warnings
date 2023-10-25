@@ -515,6 +515,6 @@
     "icons_settings":"Icon settings",
     "icons_prefix":"Prefix of the iconurl (/vis.0/...) (Blank to deactivate)",
     "icons_suffix":"Suffix of the iconurl (.png)",
-    "icons_description":"Adapter adds the following possible strings:"
+    "icons_description":"Adapter adds the following possible strings:",
     "speakSilentTime": "Quiet times for voice output (time as HH:MM or HH)."
 }
