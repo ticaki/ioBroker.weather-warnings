@@ -2099,6 +2099,18 @@ const statesObjectsWarnings = {
           write: true
         },
         native: {}
+      },
+      sayit: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "Alexa",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
       }
     }
   }

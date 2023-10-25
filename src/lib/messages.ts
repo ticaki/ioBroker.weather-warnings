@@ -232,7 +232,7 @@ export class MessagesClass extends BaseClass {
             warnlevelcolorname: {
                 node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     MessageType.level.uwz,
-                )}, $i[2]); $lookup(${JSON.stringify(MessageType.color.textGeneric)},$string($l)))`,
+                )}, $i[2]); $lookup(${JSON.stringify(MessageType.color.textuwz)},$string($l)))`,
                 cmd: 'translate',
             },
             warnlevelnumber: {
@@ -242,7 +242,7 @@ export class MessagesClass extends BaseClass {
             },
             warnlevelcolorhex: {
                 node: `$lookup(${JSON.stringify(
-                    MessageType.color.generic,
+                    MessageType.color.uwzColor,
                 )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     MessageType.level.uwz,
                 )}, $i[2]))))`,
@@ -374,7 +374,7 @@ export class MessagesClass extends BaseClass {
             ceiling: { node: `` },
             altitude: { node: `` },
             warnlevelcolorname: {
-                node: `$lookup(${JSON.stringify(MessageType.color.textGeneric)},$string(rawinfo.wlevel + 1))`,
+                node: `$lookup(${JSON.stringify(MessageType.color.textzamg)},$string(rawinfo.wlevel + 1))`,
                 cmd: 'translate',
             },
             warnlevelnumber: {

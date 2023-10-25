@@ -104,7 +104,7 @@ export const textLevels = {
     },
 };
 export const color = {
-    generic: {
+    uwzColor: {
         0: `#00ff00`,
         1: `#00ff00`,
         2: `#fffc04`,
@@ -119,9 +119,17 @@ export const color = {
         3: `#ffc400`,
         4: `#ff0404`,
     },
-    textGeneric: {
+    textuwz: {
         '0': 'color.textGeneric.0',
         '1': 'color.textGeneric.1',
+        '2': 'color.textGeneric.2',
+        '3': 'color.textGeneric.3',
+        '4': 'color.textGeneric.4',
+        '5': 'color.textGeneric.5',
+    },
+    textzamg: {
+        '0': '',
+        '1': 'color.textGeneric.0',
         '2': 'color.textGeneric.2',
         '3': 'color.textGeneric.3',
         '4': 'color.textGeneric.4',
@@ -133,6 +141,7 @@ export const color = {
         '2': 'color.textGeneric.3',
         '3': 'color.textGeneric.4',
         '4': 'color.textGeneric.5',
+        '5': '',
     },
 };
 

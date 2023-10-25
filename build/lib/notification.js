@@ -159,6 +159,7 @@ class NotificationClass extends library.BaseClass {
       case "history":
       case "email":
         break;
+      case "sayit":
       case "alexa2": {
         if (this.adapter.providerController.globalSpeakSilentTime !== void 0) {
           const now = new Date().getHours() + new Date().getMinutes() / 60;
@@ -198,6 +199,7 @@ class NotificationClass extends library.BaseClass {
         case "history":
         case "email":
           break;
+        case "sayit":
         case "alexa2": {
           switch (this.library.language) {
             case "en":
@@ -352,6 +354,24 @@ class NotificationClass extends library.BaseClass {
               }
             }
           }
+        }
+        break;
+      case "sayit":
+        {
+          let d = "";
+          const prefix = `${this.options.volumen};`;
+          for (const msg of messages) {
+            if (Array.isArray(msg))
+              continue;
+            if (msg.text != "") {
+              await this.adapter.setForeignStateAsync(
+                `${this.options.adapter}.tts.text`,
+                prefix + msg.text
+              );
+              d += prefix + msg.text;
+            }
+          }
+          this.log.debug(`Send to sayit: ${d}`);
         }
         break;
       case "history":
