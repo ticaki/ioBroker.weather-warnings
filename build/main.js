@@ -95,6 +95,7 @@ class WeatherWarnings extends utils.Adapter {
         this.log.warn("Fixed configuration for allowed datapoints! ");
       }
     }
+    change = false;
     try {
       await this.library.init();
       this.providerController.setAllowedDirs(allowedDirsConfig);
@@ -115,6 +116,16 @@ class WeatherWarnings extends utils.Adapter {
       if (this.config.templateHelp !== reply) {
         native = native || {};
         native = { ...native, templateHelp: reply };
+        change = true;
+      }
+    }
+    {
+      let reply = " ";
+      reply = Object.keys(messagesDef.genericWarntyp).map((a) => messagesDef.genericWarntyp[a].id).join(", ");
+      if (this.config.icons_description != reply) {
+        native = native || {};
+        native = { ...native, icons_description: reply };
+        change = true;
       }
     }
     {
@@ -184,8 +195,9 @@ class WeatherWarnings extends utils.Adapter {
       this.log.info(`Write default templates to config for ${this.namespace}!`);
       native = native || {};
       native = { ...native, templateTable };
+      change = true;
     }
-    if (native !== void 0) {
+    if (native !== void 0 && change) {
       await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
         native
       });

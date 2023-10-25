@@ -511,5 +511,11 @@
     "dayoftheweak": "Dia da semana",
     "speakStart": "Hora de início",
     "speakEnd": "Fim do tempo",
-    "speakSilentTime": "Tempos de silêncio para saída de voz (tempo como HH:MM ou HH."
+    "speakSilentTime": "Tempos de silêncio para saída de voz (tempo como HH:MM ou HH.",
+    "sayit_Enabled": "Ative o Say It",
+    "speak_volumen": "Volume",
+    "icons_settings": "Configurações de ícone",
+    "icons_prefix": "Prefixo do iconurl (/vis.0/...)",
+    "icons_suffix": "Sufixo do iconurl (.png)",
+    "icons_description": "O adaptador adiciona as seguintes strings possíveis:"
 }

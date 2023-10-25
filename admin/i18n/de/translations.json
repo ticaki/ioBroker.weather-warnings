@@ -511,5 +511,11 @@
     "dayoftheweak": "Wochentag",
     "speakStart": "Startzeit",
     "speakEnd": "Endzeit",
-    "speakSilentTime": "Ruhezeiten für die Sprachausgabe (Zeit als HH:MM oder HH."
+    "speakSilentTime": "Ruhezeiten für die Sprachausgabe (Zeit als HH:MM oder HH.",
+    "sayit_Enabled": "Aktivieren Sie Say-It",
+    "speak_volumen": "Volumen",
+    "icons_settings": "Iconeinstellungen",
+    "icons_suffix": "Suffix der Iconurl (.png)",
+    "icons_description": "Der Adapter fügt die folgenden möglichen Zeichenfolgen hinzu:",
+    "icons_prefix": "Präfix der Iconurl (/vis.0/...) (Leer zum Deaktivieren)"
 }

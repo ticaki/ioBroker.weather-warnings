@@ -512,5 +512,9 @@
     "dayoftheweak":"Day of the week",
     "speakStart": "Start Time",
     "speakEnd": "End Time",
-    "speakSilentTime": "Quiet times for voice output (time as HH:MM or HH."
+    "speakSilentTime": "Quiet times for voice output (time as HH:MM or HH.",
+    "icons_settings":"Icon settings",
+    "icons_prefix":"Prefix of the iconurl (/vis.0/...) (Blank to deactivate)",
+    "icons_suffix":"Suffix of the iconurl (.png)",
+    "icons_description":"Adapter adds the following possible strings:"
 }
