@@ -103,7 +103,8 @@ export class NotificationClass extends library.BaseClass {
                         if (!notifications.includes(action)) continue;
 
                         const templateKey = actions[action as keyof typeof this.options.actions];
-                        if (!templateKey) continue;
+                        if (!templateKey || templateKey == 'none') continue;
+                        if (action == 'removeAll') continue;
                         if (
                             manual || // get every message
                             (action == 'new' && message.newMessage) || // new message
@@ -119,6 +120,14 @@ export class NotificationClass extends library.BaseClass {
                                 msg.action = action;
                                 msg.provider = providers[a];
                                 msg.message = message;
+                                if (
+                                    notifications.includes('title') &&
+                                    actions['title'] !== undefined &&
+                                    actions['title'] !== 'none'
+                                ) {
+                                    const title = await message.getMessage(actions['title']);
+                                    msg.title = title.text;
+                                }
                                 result.push(msg); // hier sammele die Nachrichten
                             }
                         }
@@ -138,6 +147,7 @@ export class NotificationClass extends library.BaseClass {
             if (
                 this.options.notifications.includes('removeAll') &&
                 this.options.actions['removeAll'] != 'none' &&
+                allowActions.includes('removeAll') &&
                 (manual || (!this.removeAllSend && activeWarnings == 0))
             ) {
                 const templates = this.adapter.config.templateTable;
@@ -146,14 +156,19 @@ export class NotificationClass extends library.BaseClass {
                     const result = await this.adapter.providerController!.noWarning.getMessage(
                         this.options.actions['removeAll'],
                     );
-                    this.sendNotifications([
+                    const msg: NotificationType.MessageType[] = [
                         {
                             text: result.text, // templates[tempid].template.replaceAll('\\}', '}'),
                             startts: result.startts,
                             template: result.template,
                             action: result.action,
                         },
-                    ]);
+                    ];
+                    const res: NotificationType.MessageType | null = this.options.actions['title']
+                        ? await this.adapter.providerController!.noWarning.getMessage(this.options.actions['title'])
+                        : null;
+                    if (res !== null && res.text) msg[0].title = res.text;
+                    this.sendNotifications(msg);
                 }
                 this.removeAllSend = true;
             }
@@ -279,14 +294,15 @@ export class NotificationClass extends library.BaseClass {
                             if (this.options.chatid.length > 0) {
                                 const chatids = this.options.chatid.split(',');
                                 for (const chatid of chatids)
-                                    await this.adapter.sendToAsync(this.options.adapter, 'send', {
+                                    this.adapter.sendTo(this.options.adapter, 'send', {
                                         ...opt,
                                         chatid: chatid,
                                     });
                             } else {
-                                await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
+                                this.adapter.sendTo(this.options.adapter, 'send', opt);
                             }
-                        } else await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
+                        } else this.adapter.sendTo(this.options.adapter, 'send', opt);
+                        await library.sleep(50);
                         this.log.debug(`Send the message: ${msg.text}`);
                     }
                 }
@@ -298,11 +314,15 @@ export class NotificationClass extends library.BaseClass {
                             message: msg.text,
                             sound: this.options.sound || 'none',
                         };
-                        //newMsg.title = topic
+                        if (msg.title !== undefined && msg.title != '') {
+                            opt.title = msg.title;
+                        }
                         if (this.options.priority) opt.priority = msg.message ? msg.message.level - 2 : -1;
                         if (this.options.device.length > 0) opt.device = this.options.device;
-                        await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
+                        // stupid pushover adapter dont callback if he runs into a "dont do this"
+                        this.adapter.sendTo(this.options.adapter, 'send', opt);
                         this.log.debug(`Send the message: ${msg.text}`);
+                        await library.sleep(50);
                     }
                 }
                 break;
@@ -314,7 +334,8 @@ export class NotificationClass extends library.BaseClass {
                         // obj.message.phone
                         const opt = { text: msg.text };
 
-                        await this.adapter.sendToAsync(service, 'send', opt);
+                        this.adapter.sendTo(service, 'send', opt);
+                        await library.sleep(50);
                         this.log.debug(`Send the message: ${msg.text}`);
                     }
                 }
@@ -535,12 +556,14 @@ export class NotificationClass extends library.BaseClass {
                     });
                     result.sort((a, b) => a.startts - b.startts);
                     const opt: any = {};
+                    if (result.length > 0 && messages.length > 0 && messages[0].title) {
+                        opt.subject = messages[0].title;
+                    }
                     opt.html = result.map((a) => a.text).join(this.adapter.config.email_line_break);
                     const templates = this.adapter.config.templateTable;
                     // das hier ist noch nicht gut, subject sollte vom Nutzer besser bestimmbar sein.
                     let token = 'message.status.new';
                     if (messages[0].action == 'removeAll') token = 'message.status.clear';
-                    opt.subject = await this.adapter.library.getTranslation(token);
                     if (this.adapter.config.email_Header !== 'none') {
                         const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Header);
                         if (tempid != -1) {
@@ -558,7 +581,8 @@ export class NotificationClass extends library.BaseClass {
                         }
                     }
                     this.log.debug(`start email sending! Messagecount: ${result.length}`);
-                    await this.adapter.sendToAsync(this.options.adapter, 'send', opt);
+                    this.adapter.sendTo(this.options.adapter, 'send', opt);
+                    await library.sleep(50);
                     this.log.debug(`Send the message: ${JSON.stringify(opt)}`);
                 }
                 break;

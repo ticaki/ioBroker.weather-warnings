@@ -26,15 +26,16 @@ __export(notificationService_def_exports, {
 module.exports = __toCommonJS(notificationService_def_exports);
 const manual = ["manualAll"];
 const push = [...manual, "new", "remove", "removeAll"];
+const pushTitle = [...manual, "new", "remove", "removeAll", "title"];
 const history = ["new", "remove"];
 const json = ["all", "removeAll"];
-const email = [...manual, "new", "all", "removeAll", "remove"];
+const email = [...manual, "new", "all", "removeAll", "remove", "title"];
 const serciceCapabilities = {
   telegram: { notifications: push },
   email: { notifications: email },
   json: { notifications: json },
   whatsapp: { notifications: push },
-  pushover: { notifications: push },
+  pushover: { notifications: pushTitle },
   history: { notifications: history },
   alexa2: { notifications: push },
   sayit: { notifications: push }

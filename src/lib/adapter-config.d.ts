@@ -97,6 +97,7 @@ declare global {
             pushover_Sound: string;
             pushover_Priority: boolean;
             pushover_Device: string;
+            pushover_Title: string;
 
             json_DwdEnabled: boolean;
             json_UwzEnabled: boolean;
@@ -130,6 +131,7 @@ declare global {
             email_MessageRemove: string;
             email_Header: string;
             email_Footer: string;
+            email_Title: string;
 
             alexa2_Adapter: string;
             alexa2_DwdEnabled: boolean;

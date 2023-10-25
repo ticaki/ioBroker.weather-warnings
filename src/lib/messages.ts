@@ -705,7 +705,7 @@ export class MessagesClass extends BaseClass {
             }
         }
 
-        return await this.updateFormatedData(true);
+        return await this.updateFormatedData();
     }
     /** return true not filter message */
     filter(filter: messageFilterType): boolean {
@@ -860,12 +860,12 @@ export class MessagesClass extends BaseClass {
         return { startts: time, text: msg.replaceAll('\\}', '}').replaceAll('\\n', '\n'), template: template };
     };
 
-    async updateFormatedData(update: boolean = false): Promise<customFormatedKR> {
-        if (!this.rawWarning && !this.formatedData) {
-            throw new Error(`${this.log.getName()} error(165) rawWarning and formatedDate empty!`);
+    async updateFormatedData(): Promise<customFormatedKR> {
+        if (!this.rawWarning) {
+            throw new Error(`${this.log.getName()} error(165) rawWarning null or undefined!`);
         }
 
-        if (!this.formatedData || this.updated || update) {
+        {
             const timeOffset =
                 (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0
                     ? '+'
@@ -882,7 +882,10 @@ export class MessagesClass extends BaseClass {
                 const obj = this.formatedKeysJsonataDefinition[key as keyof MessageType.customFormatedKeysDef];
                 if (obj !== undefined) {
                     // reset the offset because of daylight saving time
-                    const cmd = obj.node !== undefined ? obj.node.replace(`\${this.timeOffset}`, timeOffset) : '';
+                    const cmd =
+                        obj.node !== undefined && obj.node != ''
+                            ? obj.node.replace(`\${this.timeOffset}`, timeOffset)
+                            : '';
 
                     let result =
                         cmd != ''

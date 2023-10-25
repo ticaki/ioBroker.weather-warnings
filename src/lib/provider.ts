@@ -685,7 +685,7 @@ export class ProviderController extends BaseClass {
     updateEndless(that: ProviderController): void {
         if (that.adapter.config.useTestCase) {
             that.adapter.config.useTestWarnings = !that.adapter.config.useTestWarnings;
-            that.refreshTime = 60000;
+            that.refreshTime = 180000;
         }
         that.connection = false;
         if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);
@@ -743,7 +743,7 @@ export class ProviderController extends BaseClass {
 
         if (this.pushOn) {
             for (const push of this.notificationServices) {
-                await push.sendMessage(this.providers, ['new', 'remove', 'all']);
+                await push.sendMessage(this.providers, ['new', 'remove', 'all', 'removeAll']);
             }
         }
         this.pushOn = true;
@@ -831,7 +831,7 @@ export class ProviderController extends BaseClass {
     async updateMesssages(): Promise<void> {
         for (const a in this.providers) {
             for (const b in this.providers[a].messages) {
-                await this.providers[a].messages[b].updateFormatedData(true);
+                await this.providers[a].messages[b].updateFormatedData();
                 await this.providers[a].messages[b].writeFormatedKeys(Number(b));
             }
         }

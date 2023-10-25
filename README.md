@@ -23,7 +23,7 @@ This adapter accesses weather warnings of different weather services and outputs
 
 Provider:
 - DWD 
-- Zamg (Austria)
+- ZAMG (Austria)
 - UWZ
 
 ## Installation
@@ -110,6 +110,8 @@ Templates for 3) cannot contain `${}` Tokens.
 
 **alexa:** Additionally one or multiple devices has/have to be selected. The volume only changes for voice messages and should afterwards be reset to default. Message size per warning is limited to 250 characters. Sounds are possible, activate Expert to display the options.
 
+**title, header, footer** only ${status} works here. Other tokens contain random values or no value.
+
 ## General Behaviour
 - No duplicate messages should be sent for one and the same thing. DWD is very particular about this.
 - If `none` is selected as the template, no notifications are sent for it.
@@ -133,6 +135,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 ### **WORK IN PROGRESS**
 * (ticaki) Added Say-It
 * (ticaki) User-definable icons (path)
+* (ticaki) Email works, Added title for pushover and email
 
 ### 0.4.2 (2023-10-24)
 * (ticaki) optimise german 22. & 28. for alexa.

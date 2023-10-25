@@ -21,7 +21,7 @@ Dieser Adapter ruft Wetterwarnungen verschiedener optionaler Dienste ab und gibt
 
 Provider:
 - DWD 
-- Zamg (Österreich)
+- ZAMG (Österreich)
 - UWZ
 
 ## Installation

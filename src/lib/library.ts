@@ -374,7 +374,7 @@ export class Library extends BaseClass {
     ): Promise<string | { [key: string]: string }> {
         let result: any;
         if (typeof cmd === 'string') {
-            if (cmd === '') return '';
+            if (cmd == '') return '';
             try {
                 result = await jsonata(cmd).evaluate(data);
             } catch (error: any) {
@@ -572,4 +572,7 @@ export class Library extends BaseClass {
             })
         );
     }
+}
+export async function sleep(time: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, time));
 }

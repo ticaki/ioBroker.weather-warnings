@@ -4,6 +4,7 @@
     "MessageNew": "Select the template to use with new warnings.",
     "MessageAll": "Select the template to use with exist warnings.",
     "MessageRemove": "Select the template to use with removed warnings.",
+    "MessageTitle":"Select the template to use as title. (only Token: status)",
     "SelectNotificationService": "Select adapter instance.",
     "TypeFilter": "The following warning types are filtered out of the notifications.",
     "WarnLanguage": "Languange of retrieved warnings.",

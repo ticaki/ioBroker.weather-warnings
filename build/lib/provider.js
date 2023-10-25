@@ -591,7 +591,7 @@ class ProviderController extends import_library.BaseClass {
   updateEndless(that) {
     if (that.adapter.config.useTestCase) {
       that.adapter.config.useTestWarnings = !that.adapter.config.useTestWarnings;
-      that.refreshTime = 6e4;
+      that.refreshTime = 18e4;
     }
     that.connection = false;
     if (that.refreshTimeRef)
@@ -648,7 +648,7 @@ class ProviderController extends import_library.BaseClass {
     }
     if (this.pushOn) {
       for (const push of this.notificationServices) {
-        await push.sendMessage(this.providers, ["new", "remove", "all"]);
+        await push.sendMessage(this.providers, ["new", "remove", "all", "removeAll"]);
       }
     }
     this.pushOn = true;
@@ -731,7 +731,7 @@ class ProviderController extends import_library.BaseClass {
   async updateMesssages() {
     for (const a in this.providers) {
       for (const b in this.providers[a].messages) {
-        await this.providers[a].messages[b].updateFormatedData(true);
+        await this.providers[a].messages[b].updateFormatedData();
         await this.providers[a].messages[b].writeFormatedKeys(Number(b));
       }
     }

@@ -227,13 +227,15 @@ class WeatherWarnings extends utils.Adapter {
               remove: self.config[notificationService + "_MessageRemove"],
               removeAll: self.config[notificationService + "_MessageAllRemove"],
               all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : "",
-              manualAll: self.config[notificationService + "_manualAll"] !== void 0 ? self.config[notificationService + "_manualAll"] : ""
+              manualAll: self.config[notificationService + "_manualAll"] !== void 0 ? self.config[notificationService + "_manualAll"] : "",
+              title: self.config[notificationService + "_Title"] !== void 0 ? self.config[notificationService + "_Title"] : ""
             };
-            template.new = template.new ? template.new : "none";
-            template.remove = template.remove ? template.remove : "none";
-            template.removeAll = template.removeAll ? template.removeAll : "none";
-            template.all = template.all ? template.all : "none";
-            template.manualAll = template.manualAll ? template.manualAll : "none";
+            for (const a2 in template) {
+              const b = a2;
+              if (template[b] == void 0)
+                continue;
+              template[b] = template[b] ? template[b] : "none";
+            }
             notificationServiceOpt[notificationService] = {
               ...import_notificationService_def.notificationServiceDefaults[notificationService],
               service,

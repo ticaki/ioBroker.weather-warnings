@@ -108,7 +108,9 @@ class NotificationClass extends library.BaseClass {
             if (!notifications.includes(action))
               continue;
             const templateKey = actions[action];
-            if (!templateKey)
+            if (!templateKey || templateKey == "none")
+              continue;
+            if (action == "removeAll")
               continue;
             if (manual || action == "new" && message.newMessage || action == "remove" && !message.notDeleted || action == "manualAll" || action == "all" && notifications.includes("all") && !notifications.includes("new") && !notifications.includes("remove")) {
               const msg = await message.getMessage(templateKey);
@@ -116,6 +118,10 @@ class NotificationClass extends library.BaseClass {
                 msg.action = action;
                 msg.provider = providers[a];
                 msg.message = message;
+                if (notifications.includes("title") && actions["title"] !== void 0 && actions["title"] !== "none") {
+                  const title = await message.getMessage(actions["title"]);
+                  msg.title = title.text;
+                }
                 result.push(msg);
               }
             }
@@ -130,21 +136,25 @@ class NotificationClass extends library.BaseClass {
       await this.sendNotifications(result);
       this.removeAllSend = false;
     } else {
-      if (this.options.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && (manual || !this.removeAllSend && activeWarnings == 0)) {
+      if (this.options.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && allowActions.includes("removeAll") && (manual || !this.removeAllSend && activeWarnings == 0)) {
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex((a) => a.templateKey == this.options.actions["removeAll"]);
         if (tempid != -1) {
           const result2 = await this.adapter.providerController.noWarning.getMessage(
             this.options.actions["removeAll"]
           );
-          this.sendNotifications([
+          const msg = [
             {
               text: result2.text,
               startts: result2.startts,
               template: result2.template,
               action: result2.action
             }
-          ]);
+          ];
+          const res = this.options.actions["title"] ? await this.adapter.providerController.noWarning.getMessage(this.options.actions["title"]) : null;
+          if (res !== null && res.text)
+            msg[0].title = res.text;
+          this.sendNotifications(msg);
         }
         this.removeAllSend = true;
       }
@@ -263,15 +273,16 @@ class NotificationClass extends library.BaseClass {
               if (this.options.chatid.length > 0) {
                 const chatids = this.options.chatid.split(",");
                 for (const chatid of chatids)
-                  await this.adapter.sendToAsync(this.options.adapter, "send", {
+                  this.adapter.sendTo(this.options.adapter, "send", {
                     ...opt,
                     chatid
                   });
               } else {
-                await this.adapter.sendToAsync(this.options.adapter, "send", opt);
+                this.adapter.sendTo(this.options.adapter, "send", opt);
               }
             } else
-              await this.adapter.sendToAsync(this.options.adapter, "send", opt);
+              this.adapter.sendTo(this.options.adapter, "send", opt);
+            await library.sleep(50);
             this.log.debug(`Send the message: ${msg.text}`);
           }
         }
@@ -283,12 +294,16 @@ class NotificationClass extends library.BaseClass {
               message: msg.text,
               sound: this.options.sound || "none"
             };
+            if (msg.title !== void 0 && msg.title != "") {
+              opt.title = msg.title;
+            }
             if (this.options.priority)
               opt.priority = msg.message ? msg.message.level - 2 : -1;
             if (this.options.device.length > 0)
               opt.device = this.options.device;
-            await this.adapter.sendToAsync(this.options.adapter, "send", opt);
+            this.adapter.sendTo(this.options.adapter, "send", opt);
             this.log.debug(`Send the message: ${msg.text}`);
+            await library.sleep(50);
           }
         }
         break;
@@ -299,7 +314,8 @@ class NotificationClass extends library.BaseClass {
               return false;
             const service = this.options.adapter.replace("whatsapp", "whatsapp-cmb");
             const opt = { text: msg.text };
-            await this.adapter.sendToAsync(service, "send", opt);
+            this.adapter.sendTo(service, "send", opt);
+            await library.sleep(50);
             this.log.debug(`Send the message: ${msg.text}`);
           }
         }
@@ -493,12 +509,14 @@ class NotificationClass extends library.BaseClass {
           });
           result.sort((a, b) => a.startts - b.startts);
           const opt = {};
+          if (result.length > 0 && messages.length > 0 && messages[0].title) {
+            opt.subject = messages[0].title;
+          }
           opt.html = result.map((a) => a.text).join(this.adapter.config.email_line_break);
           const templates = this.adapter.config.templateTable;
           let token = "message.status.new";
           if (messages[0].action == "removeAll")
             token = "message.status.clear";
-          opt.subject = await this.adapter.library.getTranslation(token);
           if (this.adapter.config.email_Header !== "none") {
             const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Header);
             if (tempid != -1) {
@@ -516,7 +534,8 @@ class NotificationClass extends library.BaseClass {
             }
           }
           this.log.debug(`start email sending! Messagecount: ${result.length}`);
-          await this.adapter.sendToAsync(this.options.adapter, "send", opt);
+          this.adapter.sendTo(this.options.adapter, "send", opt);
+          await library.sleep(50);
           this.log.debug(`Send the message: ${JSON.stringify(opt)}`);
         }
         break;

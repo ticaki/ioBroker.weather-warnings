@@ -694,7 +694,7 @@ class MessagesClass extends import_library.BaseClass {
         }
       }
     }
-    return await this.updateFormatedData(true);
+    return await this.updateFormatedData();
   }
   filter(filter) {
     if (filter.level && filter.level > this.level)
@@ -834,18 +834,18 @@ class MessagesClass extends import_library.BaseClass {
   returnMessage = (msg, time, template) => {
     return { startts: time, text: msg.replaceAll("\\}", "}").replaceAll("\\n", "\n"), template };
   };
-  async updateFormatedData(update = false) {
-    if (!this.rawWarning && !this.formatedData) {
-      throw new Error(`${this.log.getName()} error(165) rawWarning and formatedDate empty!`);
+  async updateFormatedData() {
+    if (!this.rawWarning) {
+      throw new Error(`${this.log.getName()} error(165) rawWarning null or undefined!`);
     }
-    if (!this.formatedData || this.updated || update) {
+    {
       const timeOffset = (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0 ? "+" : "-") + ("00" + Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))).slice(-2) + ("00" + Math.abs(new Date().getTimezoneOffset() % 60)).slice(-2);
       const status = this.newMessage ? MessageType.status.new : this.notDeleted ? MessageType.status.hold : MessageType.status.clear;
       const temp = {};
       for (const key in this.formatedKeysJsonataDefinition) {
         const obj = this.formatedKeysJsonataDefinition[key];
         if (obj !== void 0) {
-          const cmd = obj.node !== void 0 ? obj.node.replace(`\${this.timeOffset}`, timeOffset) : "";
+          const cmd = obj.node !== void 0 && obj.node != "" ? obj.node.replace(`\${this.timeOffset}`, timeOffset) : "";
           let result = cmd != "" ? await this.library.readWithJsonata(
             this.rawWarning,
             cmd

@@ -43,7 +43,8 @@ var __privateSet = (obj, member, value, setter) => {
 var library_exports = {};
 __export(library_exports, {
   BaseClass: () => BaseClass,
-  Library: () => Library
+  Library: () => Library,
+  sleep: () => sleep
 });
 module.exports = __toCommonJS(library_exports);
 var import_jsonata = __toESM(require("jsonata"));
@@ -319,7 +320,7 @@ class Library extends BaseClass {
   async readWithJsonata(data, cmd) {
     let result;
     if (typeof cmd === "string") {
-      if (cmd === "")
+      if (cmd == "")
         return "";
       try {
         result = await (0, import_jsonata.default)(cmd).evaluate(data);
@@ -504,9 +505,13 @@ class Library extends BaseClass {
     });
   }
 }
+async function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   BaseClass,
-  Library
+  Library,
+  sleep
 });
 //# sourceMappingURL=library.js.map

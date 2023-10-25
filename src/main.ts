@@ -273,13 +273,19 @@ class WeatherWarnings extends utils.Adapter {
                                           (notificationService + '_manualAll') as keyof ioBroker.AdapterConfig
                                       ] as string)
                                     : '',
+                            title:
+                                self.config[(notificationService + '_Title') as keyof ioBroker.AdapterConfig] !==
+                                undefined
+                                    ? (self.config[
+                                          (notificationService + '_Title') as keyof ioBroker.AdapterConfig
+                                      ] as string)
+                                    : '',
                         };
-
-                        template.new = template.new ? template.new : 'none';
-                        template.remove = template.remove ? template.remove : 'none';
-                        template.removeAll = template.removeAll ? template.removeAll : 'none';
-                        template.all = template.all ? template.all : 'none';
-                        template.manualAll = template.manualAll ? template.manualAll : 'none';
+                        for (const a in template) {
+                            const b = a as keyof NotificationType.ActionsType;
+                            if (template[b] == undefined) continue;
+                            template[b] = template[b] ? template[b]! : 'none';
+                        }
 
                         // @ts-expect-error keine ahnung :)
                         notificationServiceOpt[notificationService] = {

@@ -95,6 +95,7 @@ export type ActionsType = {
     header?: string;
     footer?: string;
     manualAll?: string;
+    title?: string;
 };
 
 export type ConfigType = {
@@ -110,9 +111,10 @@ export type ConfigType = {
 export const manual: ActionsUnionType[] = ['manualAll'];
 
 const push: ActionsUnionType[] = [...manual, 'new', 'remove', 'removeAll'];
+const pushTitle: ActionsUnionType[] = [...manual, 'new', 'remove', 'removeAll', 'title'];
 const history: ActionsUnionType[] = ['new', 'remove'];
 const json: ActionsUnionType[] = ['all', 'removeAll'];
-const email: ActionsUnionType[] = [...manual, 'new', 'all', 'removeAll', 'remove'];
+const email: ActionsUnionType[] = [...manual, 'new', 'all', 'removeAll', 'remove', 'title'];
 
 //const speak: ActionsUnionType[] = ['new', 'remove', 'removeAll'];
 export const serciceCapabilities: Record<Type, ConfigType> = {
@@ -120,7 +122,7 @@ export const serciceCapabilities: Record<Type, ConfigType> = {
     email: { notifications: email },
     json: { notifications: json },
     whatsapp: { notifications: push },
-    pushover: { notifications: push },
+    pushover: { notifications: pushTitle },
     history: { notifications: history },
     alexa2: { notifications: push },
     sayit: { notifications: push },
@@ -135,6 +137,7 @@ export type MessageType = {
     action?: keyof ActionsType;
     provider?: ProviderClassType;
     message?: MessagesClass;
+    title?: string;
 };
 
 export type pushover_options = {
