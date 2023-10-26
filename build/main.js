@@ -110,8 +110,8 @@ class WeatherWarnings extends utils.Adapter {
       const keys = Object.keys(messagesDef.customFormatedTokensJson);
       keys.sort();
       for (const a in keys) {
-        reply += "${" + a + "}: " + (this.library.getTranslation(
-          messagesDef.customFormatedTokensJson[a]
+        reply += "${" + keys[a] + "}: " + (this.library.getTranslation(
+          messagesDef.customFormatedTokensJson[keys[a]]
         ) + "\n");
       }
       reply = reply.slice(0, -2);
