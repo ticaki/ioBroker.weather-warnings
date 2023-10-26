@@ -486,6 +486,7 @@ export class ProviderController extends BaseClass {
     noWarning: MessagesClass;
     pushOn = false;
     globalSpeakSilentTime: ({ day: number[]; start: number; end: number } | null)[] = [];
+    testStatus = 0;
 
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
@@ -684,8 +685,9 @@ export class ProviderController extends BaseClass {
 
     updateEndless(that: ProviderController): void {
         if (that.adapter.config.useTestCase) {
-            that.adapter.config.useTestWarnings = !that.adapter.config.useTestWarnings;
-            that.refreshTime = 180000;
+            if (++that.testStatus > 3) that.testStatus = 1;
+            that.adapter.config.useTestWarnings = true;
+            that.refreshTime = 60000;
         }
         that.connection = false;
         if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);

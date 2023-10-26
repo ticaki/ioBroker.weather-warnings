@@ -458,6 +458,7 @@ class ProviderController extends import_library.BaseClass {
   noWarning;
   pushOn = false;
   globalSpeakSilentTime = [];
+  testStatus = 0;
   constructor(adapter) {
     super(adapter, "provider");
     this.library = this.adapter.library;
@@ -590,8 +591,10 @@ class ProviderController extends import_library.BaseClass {
   }
   updateEndless(that) {
     if (that.adapter.config.useTestCase) {
-      that.adapter.config.useTestWarnings = !that.adapter.config.useTestWarnings;
-      that.refreshTime = 18e4;
+      if (++that.testStatus > 3)
+        that.testStatus = 1;
+      that.adapter.config.useTestWarnings = true;
+      that.refreshTime = 6e4;
     }
     that.connection = false;
     if (that.refreshTimeRef)

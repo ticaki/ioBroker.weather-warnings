@@ -164,9 +164,11 @@ export class NotificationClass extends library.BaseClass {
                             action: result.action,
                         },
                     ];
-                    const res: NotificationType.MessageType | null = this.options.actions['title']
-                        ? await this.adapter.providerController!.noWarning.getMessage(this.options.actions['title'])
-                        : null;
+                    const res: NotificationType.MessageType | null =
+                        this.options.actions['title'] &&
+                        templates.findIndex((a) => a.templateKey == this.options.actions['title']) != -1
+                            ? await this.adapter.providerController!.noWarning.getMessage(this.options.actions['title'])
+                            : null;
                     if (res !== null && res.text) msg[0].title = res.text;
                     this.sendNotifications(msg);
                 }
