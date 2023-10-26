@@ -107,7 +107,9 @@ class WeatherWarnings extends utils.Adapter {
     let native = void 0;
     {
       let reply = "Tokens:\n";
-      for (const a in messagesDef.customFormatedTokensJson) {
+      const keys = Object.keys(messagesDef.customFormatedTokensJson);
+      keys.sort();
+      for (const a in keys) {
         reply += "${" + a + "}: " + (this.library.getTranslation(
           messagesDef.customFormatedTokensJson[a]
         ) + "\n");

@@ -326,8 +326,18 @@ const testData = {
 };
 export function getTestData(service: string, _that: WeatherWarnings): DataImportType {
     const result = JSON.parse(JSON.stringify(testData));
+    const random = Math.round(Math.random());
     if (service == 'dwdService') {
         for (const i in testData.dwdService.features) {
+            if (_that.providerController!.testStatus == 2) {
+                if (Number(i) % 2 == random) {
+                    result.dwdService.features[i] = null;
+                    continue;
+                }
+            } else if (_that.providerController!.testStatus == 3) {
+                result.dwdService.features[i] = null;
+                continue;
+            }
             const f = testData.dwdService.features[i];
             const start = Date.now() + Math.random() * 12000000 + 60000;
             if (new Date(f.properties.EXPIRES).getTime() + 14000000 < start) {
@@ -346,11 +356,20 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
         return result.dwdService as unknown as DataImportType;
     } else if (service == 'uwzService') {
         for (const i in testData.uwzService.results) {
+            if (_that.providerController!.testStatus == 2) {
+                if (Number(i) % 2 == random) {
+                    result.uwzService.results[i] = null;
+                    continue;
+                }
+            } else if (_that.providerController!.testStatus == 3) {
+                result.uwzService.results[i] = null;
+                continue;
+            }
             const f = testData.uwzService.results[i];
-            const start = Date.now() + Math.random() * 2400000 + 60000;
+            const start = Date.now() + Math.random() * 1200000 + 300000;
             if (f.dtgEnd * 1000 + 3600000 < start) {
                 f.dtgStart = new Date(start).getTime() / 1000;
-                f.dtgEnd = new Date(start + Math.random() * 2400000 + 300000).getTime() / 1000;
+                f.dtgEnd = new Date(start + Math.random() * 1200000 + 300000).getTime() / 1000;
             }
             if (f.dtgEnd < Date.now() / 1000) {
                 result.uwzService.results[i] = null;
@@ -358,19 +377,25 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
                 result.uwzService.results[i] = testData.uwzService.results[i];
             }
         }
-        for (let i = result.uwzService.results - 1; i >= 0; i--) {
+        for (let i = result.uwzService.results.length - 1; i >= 0; i--) {
             if (result.uwzService.results[i] == null) result.uwzService.results.splice(i, 1);
         }
         return result.uwzService as unknown as DataImportType;
     } else if (service == 'zamgService') {
         for (const i in testData.zamgService.properties.warnings) {
+            if (_that.providerController!.testStatus == 2) {
+                if (Number(i) % 2 == random) {
+                    result.zamgService.properties.warnings[i] = null;
+                    continue;
+                }
+            } else if (_that.providerController!.testStatus == 3) {
+                result.zamgService.properties.warnings[i] = null;
+                continue;
+            }
             const f = testData.zamgService.properties.warnings[i];
-            const start = Date.now() + Math.random() * 2400000 + 60000;
+            const start = Date.now() + Math.random() * 1200000 + 300000;
             if (Number(f.properties.rawinfo.end) * 1000 + 3600000 < start) {
                 f.properties.rawinfo.start = (new Date(start).getTime() / 1000).toString();
-                f.properties.rawinfo.start = (
-                    new Date(start + Math.random() * 2400000 + 300000).getTime() / 1000
-                ).toString();
                 f.properties.rawinfo.end = (
                     new Date(start + Math.random() * 2400000 + 300000).getTime() / 1000
                 ).toString();
@@ -381,10 +406,10 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
                 result.zamgService.properties.warnings[i] = testData.zamgService.properties.warnings[i];
             }
         }
-        for (let i = result.zamgService.properties.warnings - 1; i >= 0; i--) {
-            if (result.zamgService.properties.warnings[i] === null) result.zamgService.properties.warnings.splice(i, 1);
+        for (let i = result.zamgService.properties.warnings.length - 1; i >= 0; i--) {
+            if (result.zamgService.properties.warnings[i] == null) result.zamgService.properties.warnings.splice(i, 1);
         }
-        return testData.zamgService as unknown as DataImportType;
+        return result.zamgService as unknown as DataImportType;
     }
     return null;
 }
