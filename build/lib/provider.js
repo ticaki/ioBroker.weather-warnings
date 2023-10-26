@@ -596,7 +596,7 @@ class ProviderController extends import_library.BaseClass {
       if (++that.testStatus > 3)
         that.testStatus = 1;
       that.adapter.config.useTestWarnings = true;
-      that.refreshTime = 15e3;
+      that.refreshTime = 6e4;
     }
     that.connection = false;
     if (that.refreshTimeRef)

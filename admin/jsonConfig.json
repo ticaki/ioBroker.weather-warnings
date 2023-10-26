@@ -399,8 +399,20 @@
                     "label": "restoreDefault",
                     "tooltip": "restoreDefaultToolTip",
                     "sm": 6,
-                    "md": 4,
-                    "lg": 3,
+                    "md": 6,
+                    "lg": 6,
+                    "useNative": true
+                },
+                "addDefault": {
+                    "type": "sendTo",
+                    "command": "addDefault",
+                    "jsonData": "{ \"service\": \"template\"}",
+                    "newLine": false,
+                    "label": "addDefault",
+                    "tooltip": "addDefaultToolTip",
+                    "sm": 6,
+                    "md": 6,
+                    "lg": 6,
                     "useNative": true
                 }
             }

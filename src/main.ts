@@ -623,7 +623,7 @@ class WeatherWarnings extends utils.Adapter {
                     break;
 
                 /** defaults for templates */
-
+                case 'addDefault':
                 case 'restoreDefault':
                     {
                         let data: any = {};
@@ -633,8 +633,23 @@ class WeatherWarnings extends utils.Adapter {
                                     templateTable: this.library.cloneGenericObject(io_package.native.templateTable),
                                 },
                             };
+                            if (obj.command == 'addDefault') {
+                                const obj = await this.getForeignObjectAsync(
+                                    `system.adapter.${this.name}.${this.instance}`,
+                                );
+                                if (obj && obj.native && obj.native.templateTable) {
+                                    const config = obj.native.templateTable;
+                                    for (const a of data.native.templateTable) {
+                                        const index = config.findIndex((b: any) => b.templateKey == a.templateKey);
+                                        if (index == -1) {
+                                            config.push(a);
+                                        }
+                                    }
+                                    data.native.templateTable = config;
+                                }
+                            }
                             for (const a in data.native.templateTable) {
-                                const key = `template.${data.native.templateTable[a].templateKey}`;
+                                const key = data.native.templateTable[a].template;
                                 data.native.templateTable[a].template = this.library.getTranslation(key);
                             }
                         } else {

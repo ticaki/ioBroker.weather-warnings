@@ -105,12 +105,14 @@ export class NotificationClass extends library.BaseClass {
                         const templateKey = actions[action as keyof typeof this.options.actions];
                         if (!templateKey || templateKey == 'none') continue;
                         if (action == 'removeAll') continue;
+                        // hier sollte nur 1 Warnungen durch gehen
                         if (
                             manual || // get every message
                             (action == 'new' && message.newMessage) || // new message
                             (action == 'remove' && !message.notDeleted) || // remove message
                             action == 'manualAll' ||
                             (action == 'all' &&
+                                // bei Diensten mit all sollten keine neuen oder entfernten nachrichten bei all durchlaufen.
                                 notifications.includes('all') &&
                                 !(notifications.includes('new') && message.newMessage) &&
                                 !(notifications.includes('remove') && !message.notDeleted))
@@ -135,15 +137,18 @@ export class NotificationClass extends library.BaseClass {
                 }
             }
         }
+        // überprüfe ob die all mit new/remove Veränderungen enthält außer bei manutellen dann sortieren.
         if (notifications.includes('all') && notifications.includes('new') && notifications.includes('remove')) {
-            let sendthem = false;
-            for (const msg of result) {
-                if (msg.message && (msg.message.newMessage || !msg.message.notDeleted)) {
-                    sendthem = true;
-                    break;
+            let sendthem = manual;
+            if (!sendthem) {
+                for (const msg of result) {
+                    if (msg.message && (msg.message.newMessage || !msg.message.notDeleted)) {
+                        sendthem = true;
+                        break;
+                    }
                 }
             }
-            if (!sendthem && !manual) {
+            if (!sendthem) {
                 result = [];
             } else {
                 result.sort((a, b) => {
@@ -153,18 +158,18 @@ export class NotificationClass extends library.BaseClass {
                         (a.message.newMessage && b.message.newMessage) ||
                         (!a.message.notDeleted && !b.message.notDeleted)
                     )
-                        return 0;
-                    if (a.message.newMessage) return -3;
-                    if (b.message.newMessage) return 3;
-                    if (!a.message.notDeleted) return -2;
-                    if (!b.message.notDeleted) return 2;
+                        return a.startts == b.startts ? 0 : a.startts < b.startts ? -1 : 1;
+                    if (a.message.newMessage) return -1;
+                    if (b.message.newMessage) return 1;
+                    if (!a.message.notDeleted) return -1;
+                    if (!b.message.notDeleted) return 1;
                     return a.startts == b.startts ? 0 : a.startts < b.startts ? -1 : 1;
                 });
             }
         }
-        if (manual && result.findIndex((a) => a.action != 'removeAll') > -1) {
+        /*if (manual && result.findIndex((a) => a.action != 'removeAll') > -1) {
             result = result.filter((a) => a.action != 'removeAll');
-        }
+        }*/
         if (result.length > 0 && activeWarnings > 0) {
             await this.sendNotifications(result); // hier an alle
             this.removeAllSend = false;

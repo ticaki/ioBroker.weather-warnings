@@ -130,14 +130,16 @@ class NotificationClass extends library.BaseClass {
       }
     }
     if (notifications.includes("all") && notifications.includes("new") && notifications.includes("remove")) {
-      let sendthem = false;
-      for (const msg of result) {
-        if (msg.message && (msg.message.newMessage || !msg.message.notDeleted)) {
-          sendthem = true;
-          break;
+      let sendthem = manual;
+      if (!sendthem) {
+        for (const msg of result) {
+          if (msg.message && (msg.message.newMessage || !msg.message.notDeleted)) {
+            sendthem = true;
+            break;
+          }
         }
       }
-      if (!sendthem && !manual) {
+      if (!sendthem) {
         result = [];
       } else {
         result.sort((a, b) => {
@@ -146,21 +148,18 @@ class NotificationClass extends library.BaseClass {
           if (!b.message)
             return -1;
           if (a.message.newMessage && b.message.newMessage || !a.message.notDeleted && !b.message.notDeleted)
-            return 0;
+            return a.startts == b.startts ? 0 : a.startts < b.startts ? -1 : 1;
           if (a.message.newMessage)
-            return -3;
+            return -1;
           if (b.message.newMessage)
-            return 3;
+            return 1;
           if (!a.message.notDeleted)
-            return -2;
+            return -1;
           if (!b.message.notDeleted)
-            return 2;
+            return 1;
           return a.startts == b.startts ? 0 : a.startts < b.startts ? -1 : 1;
         });
       }
-    }
-    if (manual && result.findIndex((a) => a.action != "removeAll") > -1) {
-      result = result.filter((a) => a.action != "removeAll");
     }
     if (result.length > 0 && activeWarnings > 0) {
       await this.sendNotifications(result);

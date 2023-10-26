@@ -430,6 +430,9 @@ class Library extends BaseClass {
       return this.translation[key];
     return key;
   }
+  existTranslation(key) {
+    return this.translation[key] !== void 0;
+  }
   async getTranslationObj(key) {
     const language = [
       "en",

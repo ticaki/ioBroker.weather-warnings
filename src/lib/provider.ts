@@ -689,7 +689,7 @@ export class ProviderController extends BaseClass {
         if (that.adapter.config.useTestCase) {
             if (++that.testStatus > 3) that.testStatus = 1;
             that.adapter.config.useTestWarnings = true;
-            that.refreshTime = 15000;
+            that.refreshTime = 60000;
         }
         that.connection = false;
         if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);
