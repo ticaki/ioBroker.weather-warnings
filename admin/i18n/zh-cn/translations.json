@@ -516,5 +516,6 @@
     "icons_settings": "图标设置",
     "icons_prefix": "iconurl 的前缀 (/vis.0/...)",
     "icons_suffix": "iconurl 的后缀 (.png)",
-    "icons_description": "适配器添加以下可能的字符串："
+    "icons_description": "适配器添加以下可能的字符串：",
+    "MessageTitle": "选择用作标题的模板。 （仅令牌：状态）"
 }

@@ -516,5 +516,6 @@
     "icons_settings": "Paramètres des icônes",
     "icons_prefix": "Préfixe de l'iconurl (/vis.0/...)",
     "icons_suffix": "Suffixe de l'iconurl (.png)",
-    "icons_description": "L'adaptateur ajoute les chaînes possibles suivantes :"
+    "icons_description": "L'adaptateur ajoute les chaînes possibles suivantes :",
+    "MessageTitle": "Sélectionnez le modèle à utiliser comme titre. (uniquement Token : statut)"
 }

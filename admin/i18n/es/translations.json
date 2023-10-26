@@ -516,5 +516,6 @@
     "icons_settings": "Configuración de iconos",
     "icons_prefix": "Prefijo del iconurl (/vis.0/...)",
     "icons_suffix": "Sufijo del iconurl (.png)",
-    "icons_description": "El adaptador agrega las siguientes cadenas posibles:"
+    "icons_description": "El adaptador agrega las siguientes cadenas posibles:",
+    "MessageTitle": "Seleccione la plantilla para usar como título. (solo Token: estado)"
 }

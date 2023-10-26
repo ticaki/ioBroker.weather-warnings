@@ -516,5 +516,6 @@
     "icons_suffix": "Suffix der Iconurl (.png)",
     "icons_description": "Der Adapter fügt die folgenden möglichen Zeichenfolgen hinzu:",
     "icons_prefix": "Präfix der Iconurl (/vis.0/...) (Leer zum Deaktivieren)",
-    "speakSilentTime": "Ruhezeiten für die Sprachausgabe (Zeit als HH:MM oder HH)."
+    "speakSilentTime": "Ruhezeiten für die Sprachausgabe (Zeit als HH:MM oder HH).",
+    "MessageTitle": "Wählen Sie die Vorlage aus, die Sie als Titel verwenden möchten. (nur Token: Status)"
 }

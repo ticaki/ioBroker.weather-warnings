@@ -2500,6 +2500,20 @@
                     "label": "MessageRemove",
                     "newLine": true
                 },
+                "email_MessageAllRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"email\"}",
+                    "disabled": "data.email_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "default": "none",
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "MessageAllRemove",
+                    "newLine": true
+                },
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",

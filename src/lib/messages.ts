@@ -918,7 +918,9 @@ export class MessagesClass extends BaseClass {
                 MessageType.genericWarntyp[this.genericType].name,
             );
             this.formatedData.warntypegeneric = this.genericType;
-            this.formatedData.locationcustom = this.provider ? this.provider.customName : '';
+            this.formatedData.locationcustom = this.provider
+                ? this.provider.customName
+                : this.providerController.providers.map((a) => a.customName).join(', ');
             this.formatedData.provider = this.provider
                 ? this.provider.service.replace('Service', '').toUpperCase()
                 : 'unknown';

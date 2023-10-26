@@ -266,6 +266,12 @@ class WeatherWarnings extends utils.Adapter {
                                     ? (self.config[
                                           (notificationService + '_MessageAll') as keyof ioBroker.AdapterConfig
                                       ] as string)
+                                    : self.config[
+                                          (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
+                                      ] !== undefined
+                                    ? (self.config[
+                                          (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
+                                      ] as string)
                                     : '',
                             manualAll:
                                 self.config[(notificationService + '_manualAll') as keyof ioBroker.AdapterConfig] !==

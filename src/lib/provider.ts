@@ -492,6 +492,8 @@ export class ProviderController extends BaseClass {
         super(adapter, 'provider');
         this.library = this.adapter.library;
         this.noWarning = new MessagesClass(this.adapter, this.name, null, {}, this);
+        this.noWarning.newMessage = false;
+        this.noWarning.notDeleted = false;
         this.doEndOfUpdater.bind(this);
     }
     async init(): Promise<void> {
@@ -687,7 +689,7 @@ export class ProviderController extends BaseClass {
         if (that.adapter.config.useTestCase) {
             if (++that.testStatus > 3) that.testStatus = 1;
             that.adapter.config.useTestWarnings = true;
-            that.refreshTime = 60000;
+            that.refreshTime = 15000;
         }
         that.connection = false;
         if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);

@@ -112,7 +112,7 @@ class NotificationClass extends library.BaseClass {
               continue;
             if (action == "removeAll")
               continue;
-            if (manual || action == "new" && message.newMessage || action == "remove" && !message.notDeleted || action == "manualAll" || action == "all" && notifications.includes("all") && !notifications.includes("new") && !notifications.includes("remove")) {
+            if (manual || action == "new" && message.newMessage || action == "remove" && !message.notDeleted || action == "manualAll" || action == "all" && notifications.includes("all") && !(notifications.includes("new") && message.newMessage) && !(notifications.includes("remove") && !message.notDeleted)) {
               const msg = await message.getMessage(templateKey);
               if (msg.text != "") {
                 msg.action = action;
@@ -127,6 +127,36 @@ class NotificationClass extends library.BaseClass {
             }
           }
         }
+      }
+    }
+    if (notifications.includes("all") && notifications.includes("new") && notifications.includes("remove")) {
+      let sendthem = false;
+      for (const msg of result) {
+        if (msg.message && (msg.message.newMessage || !msg.message.notDeleted)) {
+          sendthem = true;
+          break;
+        }
+      }
+      if (!sendthem && !manual) {
+        result = [];
+      } else {
+        result.sort((a, b) => {
+          if (!a.message)
+            return 1;
+          if (!b.message)
+            return -1;
+          if (a.message.newMessage && b.message.newMessage || !a.message.notDeleted && !b.message.notDeleted)
+            return 0;
+          if (a.message.newMessage)
+            return -3;
+          if (b.message.newMessage)
+            return 3;
+          if (!a.message.notDeleted)
+            return -2;
+          if (!b.message.notDeleted)
+            return 2;
+          return a.startts == b.startts ? 0 : a.startts < b.startts ? -1 : 1;
+        });
       }
     }
     if (manual && result.findIndex((a) => a.action != "removeAll") > -1) {
@@ -151,10 +181,10 @@ class NotificationClass extends library.BaseClass {
               action: result2.action
             }
           ];
-          const res = this.options.actions["title"] && templates.findIndex((a) => a.templateKey == this.options.actions["title"]) != -1 ? await this.adapter.providerController.noWarning.getMessage(this.options.actions["title"]) : null;
+          const res = this.options.actions["title"] && this.options.actions["title"] != "none" && templates.findIndex((a) => a.templateKey == this.options.actions["title"]) != -1 ? await this.adapter.providerController.noWarning.getMessage(this.options.actions["title"]) : null;
           if (res !== null && res.text)
             msg[0].title = res.text;
-          this.sendNotifications(msg);
+          await this.sendNotifications(msg);
         }
         this.removeAllSend = true;
       }
@@ -501,13 +531,12 @@ class NotificationClass extends library.BaseClass {
       case "email":
         {
           const result = messages.filter((i, p) => {
-            if (i.text != "" && i.provider) {
+            if (i.text != "") {
               if (messages.findIndex((i2) => i2.text == i.text) == p)
                 return true;
             }
             return false;
           });
-          result.sort((a, b) => a.startts - b.startts);
           const opt = {};
           if (result.length > 0 && messages.length > 0 && messages[0].title) {
             opt.subject = messages[0].title;

@@ -228,7 +228,7 @@ class WeatherWarnings extends utils.Adapter {
               new: self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "",
               remove: self.config[notificationService + "_MessageRemove"],
               removeAll: self.config[notificationService + "_MessageAllRemove"],
-              all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : "",
+              all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "",
               manualAll: self.config[notificationService + "_manualAll"] !== void 0 ? self.config[notificationService + "_manualAll"] : "",
               title: self.config[notificationService + "_Title"] !== void 0 ? self.config[notificationService + "_Title"] : ""
             };

@@ -516,5 +516,6 @@
     "icons_settings": "Pictograminstellingen",
     "icons_prefix": "Voorvoegsel van de iconurl (/vis.0/...)",
     "icons_suffix": "Achtervoegsel van de iconurl (.png)",
-    "icons_description": "Adapter voegt de volgende mogelijke tekenreeksen toe:"
+    "icons_description": "Adapter voegt de volgende mogelijke tekenreeksen toe:",
+    "MessageTitle": "Selecteer de sjabloon die u als titel wilt gebruiken. (enkel Token: status)"
 }

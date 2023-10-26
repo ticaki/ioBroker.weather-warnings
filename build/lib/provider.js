@@ -463,6 +463,8 @@ class ProviderController extends import_library.BaseClass {
     super(adapter, "provider");
     this.library = this.adapter.library;
     this.noWarning = new import_messages.MessagesClass(this.adapter, this.name, null, {}, this);
+    this.noWarning.newMessage = false;
+    this.noWarning.notDeleted = false;
     this.doEndOfUpdater.bind(this);
   }
   async init() {
@@ -594,7 +596,7 @@ class ProviderController extends import_library.BaseClass {
       if (++that.testStatus > 3)
         that.testStatus = 1;
       that.adapter.config.useTestWarnings = true;
-      that.refreshTime = 6e4;
+      that.refreshTime = 15e3;
     }
     that.connection = false;
     if (that.refreshTimeRef)
