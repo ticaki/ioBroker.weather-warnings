@@ -28,6 +28,7 @@ var messagesDef = __toESM(require("./lib/def/messages-def"));
 var import_provider_def = require("./lib/def/provider-def");
 var NotificationType = __toESM(require("./lib/def/notificationService-def"));
 var import_notificationService_def = require("./lib/def/notificationService-def.js");
+var import_definitionen = require("./lib/def/definitionen.js");
 import_axios.default.defaults.timeout = 8e3;
 class WeatherWarnings extends utils.Adapter {
   library;
@@ -388,6 +389,11 @@ class WeatherWarnings extends utils.Adapter {
         for (const a in self.providerController.providers) {
           holdStates.push(self.providerController.providers[a].name);
         }
+        holdStates.push("command");
+        holdStates.push("info.connection");
+        holdStates.push("provider.activeWarnings_json");
+        holdStates.push("provider.history");
+        holdStates.push("provider.activeWarnings");
         await self.library.cleanUpTree(holdStates, 3);
         self.providerController.updateCommandStates();
         self.providerController.updateEndless(self.providerController);
@@ -422,8 +428,11 @@ class WeatherWarnings extends utils.Adapter {
     if (state.ack)
       return;
     this.library.setdb(id.replace(`${this.namespace}.`, ""), "state", state.val, void 0, state.ack, state.ts);
-    if (this.providerController)
-      this.providerController.onStatePush(id);
+    if (import_definitionen.actionStates[id.replace(`${this.namespace}.`, "")] == void 0) {
+      if (this.providerController)
+        this.providerController.onStatePush(id);
+    }
+    this.library.writedp(id, false);
   }
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {

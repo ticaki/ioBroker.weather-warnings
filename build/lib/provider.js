@@ -37,6 +37,7 @@ module.exports = __toCommonJS(provider_exports);
 var import_axios = __toESM(require("axios"));
 var definitionen = __toESM(require("./def/definitionen"));
 var import_library = require("./library");
+var providerDef = __toESM(require("./def/provider-def"));
 var import_messages = require("./messages");
 var NotificationClass = __toESM(require("./notification"));
 var import_test_warnings = require("./test-warnings");
@@ -457,9 +458,13 @@ class ProviderController extends import_library.BaseClass {
   notificationServices = [];
   noWarning;
   pushOn = false;
-  globalSpeakSilentTime = [];
   testStatus = 0;
   activeMessages = 0;
+  isSilentTime = true;
+  silentTime = {
+    forceOff: false,
+    profil: [[], [], [], []]
+  };
   constructor(adapter) {
     super(adapter, "provider");
     this.library = this.adapter.library;
@@ -477,29 +482,51 @@ class ProviderController extends import_library.BaseClass {
     }
     definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
     if (this.adapter.config.silentTime !== void 0) {
-      this.globalSpeakSilentTime = (this.adapter.config.silentTime || []).map((item) => {
-        const result = { day: [], start: 0, end: 0 };
-        for (const a in item) {
-          const b = a;
-          if (b != "day" && item[b].indexOf(":") != -1) {
-            const t = item[b].split(":");
-            if (Number.isNaN(t[0]))
-              return null;
-            if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
-              t[1] = String(parseInt(t[1]) / 60);
-              item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-            } else
-              item[b] = t[0];
+      for (let p = 0; p < providerDef.silentTimeKeys.length; p++) {
+        let index = -1;
+        this.silentTime.profil[++index] = (this.adapter.config.silentTime || []).filter((f) => f && providerDef.silentTimeKeys[index] == f.profil).map((item) => {
+          const result = {
+            day: [],
+            start: 0,
+            end: 0
+          };
+          for (const a in item) {
+            const b = a;
+            if (b == "profil")
+              continue;
+            if (b != "day" && item[b].indexOf(":") != -1) {
+              const t = item[b].split(":");
+              if (Number.isNaN(t[0]))
+                return null;
+              if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
+                t[1] = String(parseInt(t[1]) / 60);
+                item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
+              } else
+                item[b] = t[0];
+            }
+            if (b == "day")
+              result.day = item.day;
+            else if (b == "end")
+              result.end = parseFloat(item.end);
+            else
+              result.start = parseFloat(item.start);
           }
-          if (b == "day")
-            result.day = item.day;
-          else if (b == "end")
-            result.end = parseFloat(item.end);
-          else
-            result.start = parseFloat(item.start);
-        }
-        return result;
-      });
+          this.log.info(
+            `Silent time added: Profil: ${providerDef.silentTimeKeys[index]} start: ${result.start} end: ${result.end} days: ${JSON.stringify(result.day)}`
+          );
+          return result;
+        }).filter((f) => f != null);
+      }
+      this.library.writedp(
+        `command.silentTime`,
+        void 0,
+        definitionen.statesObjectsWarnings.allService.command.silentTime._channel
+      );
+      for (const dp in definitionen.actionStates) {
+        const data = definitionen.actionStates[dp];
+        if (!this.library.readdp(dp))
+          this.library.writedp(dp, data.default, data.def);
+      }
     }
   }
   async createNotificationService(optionList) {
@@ -622,9 +649,10 @@ class ProviderController extends import_library.BaseClass {
       }
     }
   }
-  updateAlertEndless(that) {
+  async updateAlertEndless(that) {
     if (that.unload)
       return;
+    await that.setSpeakAllowed();
     that.checkAlerts();
     const timeout = 61333 - Date.now() % 6e4;
     that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
@@ -692,7 +720,6 @@ class ProviderController extends import_library.BaseClass {
       if (cmd == push.name && push.canManual())
         await push.sendMessage(providers, [...NotificationType.manual, "removeAll"], true);
     }
-    await this.library.writedp(id, false, definitionen.statesObjectsWarnings.allService.command[cmd]);
   }
   async updateCommandStates() {
     for (const p of [...this.providers, this]) {
@@ -717,7 +744,7 @@ class ProviderController extends import_library.BaseClass {
         }
       }
       for (const dp in states)
-        if (states[dp] !== void 0)
+        if (states[dp] !== void 0 && definitionen.actionStates[dp] == void 0)
           await this.adapter.delObjectAsync(dp);
       await this.adapter.subscribeStatesAsync(channel + ".*");
     }
@@ -741,6 +768,54 @@ class ProviderController extends import_library.BaseClass {
         await this.providers[a].messages[b].writeFormatedKeys(Number(b));
       }
     }
+  }
+  async setSpeakAllowed() {
+    if (this.isSilentAuto()) {
+      const profil = this.getSpeakProfil();
+      let isSpeakAllowed = true;
+      if (this.silentTime !== void 0) {
+        const now = new Date().getHours() + new Date().getMinutes() / 60;
+        const day = String(new Date().getDay());
+        for (const t of this.silentTime.profil[profil]) {
+          if (t === null)
+            continue;
+          if (t.day.indexOf(day) == -1)
+            continue;
+          if (t.start < t.end) {
+            if (t.start <= now && t.end > now) {
+              isSpeakAllowed = false;
+              break;
+            }
+          } else {
+            if (t.start <= now || t.end > now) {
+              isSpeakAllowed = false;
+              break;
+            }
+          }
+          isSpeakAllowed = true;
+        }
+      }
+      if (isSpeakAllowed != this.silentTime.shouldSpeakAllowed) {
+        await this.library.writedp(
+          `command.silentTime.isSpeakAllowed`,
+          isSpeakAllowed,
+          definitionen.statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed
+        );
+        this.silentTime.shouldSpeakAllowed = isSpeakAllowed;
+      }
+    }
+  }
+  isSilentAuto() {
+    const result = this.library.readdp(`command.silentTime.autoMode`);
+    return result != void 0 && !!result.val;
+  }
+  isSpeakAllowed() {
+    const result = this.library.readdp(`command.silentTime.isSpeakAllowed`);
+    return result != void 0 && !!result.val || result == void 0;
+  }
+  getSpeakProfil() {
+    const result = this.library.readdp(`command.silentTime.profil`);
+    return result != void 0 && typeof result.val == "number" ? result.val : 0;
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

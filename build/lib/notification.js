@@ -204,23 +204,7 @@ class NotificationClass extends library.BaseClass {
         break;
       case "sayit":
       case "alexa2": {
-        if (this.adapter.providerController.globalSpeakSilentTime !== void 0) {
-          const now = new Date().getHours() + new Date().getMinutes() / 60;
-          const day = new Date().getDay();
-          for (const t of this.adapter.providerController.globalSpeakSilentTime) {
-            if (t === null)
-              continue;
-            if (t.day.indexOf(day) == -1)
-              continue;
-            if (t.start < t.end) {
-              if (t.start <= now && t.end > now)
-                return false;
-            } else {
-              if (t.start <= now || t.end > now)
-                return false;
-            }
-          }
-        }
+        return this.adapter.providerController.isSpeakAllowed();
       }
     }
     return true;
