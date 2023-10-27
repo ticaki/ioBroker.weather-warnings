@@ -459,6 +459,7 @@ class ProviderController extends import_library.BaseClass {
   pushOn = false;
   globalSpeakSilentTime = [];
   testStatus = 0;
+  activeMessages = 0;
   constructor(adapter) {
     super(adapter, "provider");
     this.library = this.adapter.library;
@@ -636,7 +637,7 @@ class ProviderController extends import_library.BaseClass {
   async doEndOfUpdater() {
     this.setConnected();
     await this.updateMesssages();
-    let activMessages = 0;
+    this.activeMessages = 0;
     for (const a in this.providers) {
       let am = 0;
       for (const b in this.providers[a].messages) {
@@ -649,7 +650,7 @@ class ProviderController extends import_library.BaseClass {
         am,
         definitionen.genericStateObjects.activeWarnings
       );
-      activMessages += am;
+      this.activeMessages += am;
     }
     if (this.pushOn) {
       for (const push of this.notificationServices) {
@@ -659,12 +660,12 @@ class ProviderController extends import_library.BaseClass {
     this.pushOn = true;
     await this.adapter.library.writedp(
       `${this.name}.activeWarnings`,
-      activMessages,
+      this.activeMessages,
       definitionen.genericStateObjects.activeWarnings
     );
     this.providers.forEach((a) => a.clearMessages());
     this.providers.forEach((a) => a.finishTurn());
-    this.log.debug(`We have ${activMessages} active messages.`);
+    this.log.debug(`We have ${this.activeMessages} active messages.`);
   }
   providersExist() {
     return this.providers.length > 0;

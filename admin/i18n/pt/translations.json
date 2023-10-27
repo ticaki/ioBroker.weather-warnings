@@ -517,5 +517,9 @@
     "icons_prefix": "Prefixo do iconurl (/vis.0/...)",
     "icons_suffix": "Sufixo do iconurl (.png)",
     "icons_description": "O adaptador adiciona as seguintes strings possíveis:",
-    "MessageTitle": "Selecione o modelo para usar como título. (apenas Token: status)"
+    "MessageTitle": "Selecione o modelo para usar como título. (apenas Token: status)",
+    "whatsapp_Phonenumber": "Número de telefone",
+    "addDefault": "Adicionar modelos padrão",
+    "addDefaultToolTip": "Adicione os modelos padrão, desde que a chave do modelo seja gratuita. Não é sobrescrito.",
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Número de avisos"
 }

@@ -39,7 +39,7 @@ const customFormatedTokensJson = {
   startday: "Start Day",
   startmonth: "Start Month",
   startdaytime: "Start: Time of day.",
-  startadverb: "Start: temporal adverb",
+  startadverb: "Start: temporal adverb (yesterday, today, tomorrow, day after tomorrow)",
   endtime: "End Time",
   enddate: "End Date",
   endday: "End Day",
@@ -72,7 +72,8 @@ const customFormatedTokensJson = {
   status: "Status of warning. new, hold, all clear",
   starttimems: "Start time in ms",
   endtimems: "End Time in ms",
-  iconurl: "Url to Icon"
+  iconurl: "Url to Icon",
+  warningcount: "Number of Warnings"
 };
 const textLevels = {
   textGeneric: {

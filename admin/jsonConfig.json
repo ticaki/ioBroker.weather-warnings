@@ -1018,7 +1018,6 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "manual": false,
                     "default": "none",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "hidden": "data.imExpert != true",
@@ -1234,6 +1233,18 @@
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
+                "telegram_extras": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "notification_extras",
+                    "size": 3
+                },
+                "whatsapp_Phonenumber": {
+                    "type": "text",
+                    "label":"whatsapp_Phonenumber",
+                    "newLine":true,
+                    "disabled": "data.whatsapp_Adapter == 'none'"
+                },
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",
@@ -1246,6 +1257,7 @@
                     "hidden": "true",
                     "useNative": true
                 }
+                
             }
         },
         "_pushover": {
@@ -1442,7 +1454,6 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2,
-                    "manual": true,
                     "default": "none",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "pushover_Sound",

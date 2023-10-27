@@ -517,5 +517,9 @@
     "icons_prefix": "Префікс URL-адреси значка (/vis.0/...)",
     "icons_suffix": "Суфікс iconurl (.png)",
     "icons_description": "Адаптер додає такі можливі рядки:",
-    "MessageTitle": "Виберіть шаблон для використання як заголовка. (лише маркер: статус)"
+    "MessageTitle": "Виберіть шаблон для використання як заголовка. (лише маркер: статус)",
+    "whatsapp_Phonenumber": "Номер телефону",
+    "addDefault": "Додайте стандартні шаблони",
+    "addDefaultToolTip": "Додайте стандартні шаблони, якщо ключ шаблону вільний. Він не перезаписується.",
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Кількість попереджень"
 }

@@ -1495,6 +1495,18 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      warningcount: {
+        _id: "warningcount",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.warningcount",
+          type: "number",
+          role: "value",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
       cdhour: {
         _id: "cdhour",
         type: "state",

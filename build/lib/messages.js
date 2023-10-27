@@ -29,8 +29,8 @@ __export(messages_exports, {
 module.exports = __toCommonJS(messages_exports);
 var import_definitionen = require("./def/definitionen");
 var MessageType = __toESM(require("./def/messages-def"));
-var import_library = require("./library");
-class MessagesClass extends import_library.BaseClass {
+var library = __toESM(require("./library"));
+class MessagesClass extends library.BaseClass {
   provider;
   providerController;
   library;
@@ -193,6 +193,10 @@ class MessagesClass extends import_library.BaseClass {
       startadverb: {
         cmd: "adverb",
         node: "ONSET"
+      },
+      warningcount: {
+        cmd: "warningcount",
+        node: ""
       }
     },
     uwzService: {
@@ -337,6 +341,10 @@ class MessagesClass extends import_library.BaseClass {
       startadverb: {
         cmd: "adverb",
         node: "dtgStart * 1000"
+      },
+      warningcount: {
+        cmd: "warningcount",
+        node: ""
       }
     },
     zamgService: {
@@ -468,6 +476,10 @@ class MessagesClass extends import_library.BaseClass {
       startadverb: {
         cmd: "adverb",
         node: "$number(rawinfo.start)*1000"
+      },
+      warningcount: {
+        cmd: "warningcount",
+        node: ""
       }
     },
     default: {
@@ -570,6 +582,10 @@ class MessagesClass extends import_library.BaseClass {
         node: ""
       },
       startadverb: {
+        cmd: void 0,
+        node: ""
+      },
+      warningcount: {
         cmd: void 0,
         node: ""
       }
@@ -703,7 +719,7 @@ class MessagesClass extends import_library.BaseClass {
       return false;
     return true;
   }
-  async getMessage(templateKey) {
+  async getMessage(templateKey, pushService) {
     let msg = "";
     const templates = this.adapter.config.templateTable;
     const tempid = templates.findIndex((a) => a.templateKey == templateKey);
@@ -715,11 +731,10 @@ class MessagesClass extends import_library.BaseClass {
     if (this.formatedData) {
       msg = await this.getTemplates(tempid);
       if (tempid == -1) {
-        this.log.error(`No template for Key: ${templateKey}!`);
+        this.log.error(`${pushService.name}`, `No template for key: ${templateKey}!`);
       } else {
         this.cache.messages[templates[tempid].templateKey] = this.returnMessage(msg, this.starttime, templateKey);
       }
-      return this.returnMessage(msg, this.starttime, templateKey);
     }
     return this.returnMessage(msg, this.starttime, templateKey);
   }
@@ -967,6 +982,11 @@ class MessagesClass extends import_library.BaseClass {
           if (rgb && rgb.length == 3) {
             return "#" + `00${Number(rgb[0]).toString(16)}`.slice(-2) + `00${Number(rgb[1]).toString(16)}`.slice(-2) + `00${Number(rgb[2]).toString(16)}`.slice(-2);
           }
+        }
+        break;
+      case "warningcount":
+        {
+          return this.adapter.providerController.activeMessages;
         }
         break;
     }

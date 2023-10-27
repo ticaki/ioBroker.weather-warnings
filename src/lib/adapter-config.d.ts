@@ -83,6 +83,7 @@ declare global {
             whatsapp_MessageNew: string;
             whatsapp_MessageRemove: string;
             whatsapp_MessageAllRemove: string;
+            whatsapp_Phonenumber: string;
 
             pushover_DwdEnabled: boolean;
             pushover_UwzEnabled: boolean;

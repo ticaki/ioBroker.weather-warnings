@@ -113,13 +113,13 @@ class NotificationClass extends library.BaseClass {
             if (action == "removeAll")
               continue;
             if (manual || action == "new" && message.newMessage || action == "remove" && !message.notDeleted || action == "manualAll" || action == "all" && notifications.includes("all") && !(notifications.includes("new") && message.newMessage) && !(notifications.includes("remove") && !message.notDeleted)) {
-              const msg = await message.getMessage(templateKey);
+              const msg = await message.getMessage(templateKey, this);
               if (msg.text != "") {
                 msg.action = action;
                 msg.provider = providers[a];
                 msg.message = message;
                 if (notifications.includes("title") && actions["title"] !== void 0 && actions["title"] !== "none") {
-                  const title = await message.getMessage(actions["title"]);
+                  const title = await message.getMessage(actions["title"], this);
                   msg.title = title.text;
                 }
                 result.push(msg);
@@ -170,7 +170,8 @@ class NotificationClass extends library.BaseClass {
         const tempid = templates.findIndex((a) => a.templateKey == this.options.actions["removeAll"]);
         if (tempid != -1) {
           const result2 = await this.adapter.providerController.noWarning.getMessage(
-            this.options.actions["removeAll"]
+            this.options.actions["removeAll"],
+            this
           );
           const msg = [
             {
@@ -180,7 +181,10 @@ class NotificationClass extends library.BaseClass {
               action: result2.action
             }
           ];
-          const res = this.options.actions["title"] && this.options.actions["title"] != "none" && templates.findIndex((a) => a.templateKey == this.options.actions["title"]) != -1 ? await this.adapter.providerController.noWarning.getMessage(this.options.actions["title"]) : null;
+          const res = this.options.actions["title"] && this.options.actions["title"] != "none" && templates.findIndex((a) => a.templateKey == this.options.actions["title"]) != -1 ? await this.adapter.providerController.noWarning.getMessage(
+            this.options.actions["title"],
+            this
+          ) : null;
           if (res !== null && res.text)
             msg[0].title = res.text;
           await this.sendNotifications(msg);
@@ -343,6 +347,8 @@ class NotificationClass extends library.BaseClass {
               return false;
             const service = this.options.adapter.replace("whatsapp", "whatsapp-cmb");
             const opt = { text: msg.text };
+            if (this.options.phonenumber)
+              opt.phone = this.options.phonenumber;
             this.adapter.sendTo(service, "send", opt);
             await library.sleep(50);
             this.log.debug(`Send the message: ${msg.text}`);

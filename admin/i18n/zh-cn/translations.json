@@ -517,5 +517,9 @@
     "icons_prefix": "iconurl 的前缀 (/vis.0/...)",
     "icons_suffix": "iconurl 的后缀 (.png)",
     "icons_description": "适配器添加以下可能的字符串：",
-    "MessageTitle": "选择用作标题的模板。 （仅令牌：状态）"
+    "MessageTitle": "选择用作标题的模板。 （仅令牌：状态）",
+    "whatsapp_Phonenumber": "电话号码",
+    "addDefault": "添加默认模板",
+    "addDefaultToolTip": "只要模板密钥空闲，就可以添加标准模板。它不会被覆盖。",
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "警告次数"
 }

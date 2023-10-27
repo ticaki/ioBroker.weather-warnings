@@ -517,5 +517,9 @@
     "icons_prefix": "Prefijo del iconurl (/vis.0/...)",
     "icons_suffix": "Sufijo del iconurl (.png)",
     "icons_description": "El adaptador agrega las siguientes cadenas posibles:",
-    "MessageTitle": "Seleccione la plantilla para usar como título. (solo Token: estado)"
+    "MessageTitle": "Seleccione la plantilla para usar como título. (solo Token: estado)",
+    "whatsapp_Phonenumber": "Número de teléfono",
+    "addDefault": "Agregar plantillas predeterminadas",
+    "addDefaultToolTip": "Agregue las plantillas estándar siempre que la clave de la plantilla esté libre. No se sobrescribe.",
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Número de advertencias"
 }

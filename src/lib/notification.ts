@@ -117,7 +117,7 @@ export class NotificationClass extends library.BaseClass {
                                 !(notifications.includes('new') && message.newMessage) &&
                                 !(notifications.includes('remove') && !message.notDeleted))
                         ) {
-                            const msg = await message.getMessage(templateKey);
+                            const msg = await message.getMessage(templateKey, this);
                             if (msg.text != '') {
                                 msg.action = action;
                                 msg.provider = providers[a];
@@ -127,7 +127,7 @@ export class NotificationClass extends library.BaseClass {
                                     actions['title'] !== undefined &&
                                     actions['title'] !== 'none'
                                 ) {
-                                    const title = await message.getMessage(actions['title']);
+                                    const title = await message.getMessage(actions['title'], this);
                                     msg.title = title.text;
                                 }
                                 result.push(msg); // hier sammele die Nachrichten
@@ -187,6 +187,7 @@ export class NotificationClass extends library.BaseClass {
                 if (tempid != -1) {
                     const result = await this.adapter.providerController!.noWarning.getMessage(
                         this.options.actions['removeAll'],
+                        this,
                     );
                     const msg: NotificationType.MessageType[] = [
                         {
@@ -200,7 +201,10 @@ export class NotificationClass extends library.BaseClass {
                         this.options.actions['title'] &&
                         this.options.actions['title'] != 'none' &&
                         templates.findIndex((a) => a.templateKey == this.options.actions['title']) != -1
-                            ? await this.adapter.providerController!.noWarning.getMessage(this.options.actions['title'])
+                            ? await this.adapter.providerController!.noWarning.getMessage(
+                                  this.options.actions['title'],
+                                  this,
+                              )
                             : null;
                     if (res !== null && res.text) msg[0].title = res.text;
                     await this.sendNotifications(msg);
@@ -367,8 +371,8 @@ export class NotificationClass extends library.BaseClass {
                         if (Array.isArray(msg)) return false;
                         const service = this.options.adapter.replace('whatsapp', 'whatsapp-cmb');
                         // obj.message.phone
-                        const opt = { text: msg.text };
-
+                        const opt: { text: string; phone?: string } = { text: msg.text };
+                        if (this.options.phonenumber) opt.phone = this.options.phonenumber;
                         this.adapter.sendTo(service, 'send', opt);
                         await library.sleep(50);
                         this.log.debug(`Send the message: ${msg.text}`);

@@ -26,6 +26,14 @@ Provider:
 - ZAMG (Austria)
 - UWZ
 
+Push service
+- Telegram
+- Whatsapp
+- Pushover
+- Email
+- Alexa
+- Sayit
+
 ## Installation
 After installation the configuration site will automatically open and will be needed to be **reloaded**. This will show the templates in the language that was set.
 

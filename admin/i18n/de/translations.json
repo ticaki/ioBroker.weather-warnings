@@ -517,5 +517,9 @@
     "icons_description": "Der Adapter fügt die folgenden möglichen Zeichenfolgen hinzu:",
     "icons_prefix": "Präfix der Iconurl (/vis.0/...) (Leer zum Deaktivieren)",
     "speakSilentTime": "Ruhezeiten für die Sprachausgabe (Zeit als HH:MM oder HH).",
-    "MessageTitle": "Wählen Sie die Vorlage aus, die Sie als Titel verwenden möchten. (nur Token: Status)"
+    "MessageTitle": "Wählen Sie die Vorlage aus, die Sie als Titel verwenden möchten. (nur Token: Status)",
+    "whatsapp_Phonenumber": "Telefonnummer",
+    "addDefault": "Fügt Standardvorlagen hinzu",
+    "addDefaultToolTip": "Fügt die Standardvorlagen hinzu, solange der Vorlagenschlüssel frei ist. Es wird nichts überschrieben.",
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Anzahl der Warnungen"
 }

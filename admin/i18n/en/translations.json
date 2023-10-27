@@ -461,6 +461,7 @@
     "statesObjectsWarnings.allService.formatedkeys.startdaytime": "Start: Time of the day.",
     "statesObjectsWarnings.allService.formatedkeys.enddaytime": "End: Time of the day.",
     "statesObjectsWarnings.allService.formatedkeys.startadverb": "Start: Temporal adverb.",
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Number of warnings",
     "yesterday": "yesterday",
     "today": "today",
     "tomorrow": "tomorrow",
@@ -517,5 +518,8 @@
     "icons_prefix":"Prefix of the iconurl (/vis.0/...) (Blank to deactivate)",
     "icons_suffix":"Suffix of the iconurl (.png)",
     "icons_description":"Adapter adds the following possible strings:",
-    "speakSilentTime": "Quiet times for voice output (time as HH:MM or HH)."
+    "speakSilentTime": "Quiet times for voice output (time as HH:MM or HH).",
+    "whatsapp_Phonenumber": "Phonenumber",
+    "addDefault": "Add default templates",
+    "addDefaultToolTip":"Add the standard templates as long as the template key is free. It is not overwritten."
 }

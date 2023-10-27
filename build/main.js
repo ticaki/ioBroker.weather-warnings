@@ -269,6 +269,8 @@ class WeatherWarnings extends utils.Adapter {
           notificationServiceOpt.telegram.parse_mode = self.config.telegram_parse_mode || "none";
         }
         if (self.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != void 0) {
+          if (self.config.whatsapp_Phonenumber)
+            notificationServiceOpt.whatsapp.phonenumber = self.config.whatsapp_Phonenumber;
         }
         if (self.config.pushover_Enabled && notificationServiceOpt.pushover != void 0) {
           notificationServiceOpt.pushover.sound = self.config.pushover_Sound || "none";
@@ -309,9 +311,7 @@ class WeatherWarnings extends utils.Adapter {
         try {
           await self.providerController.createNotificationService(notificationServiceOpt);
         } catch (error) {
-          self.log.error(
-            "--- Status undefined - execution interrupted - Please check your configuration. ---"
-          );
+          self.log.error("Execution interrupted - Please check your configuration. ---");
           return;
         }
         for (const a in self.config.dwdwarncellTable) {

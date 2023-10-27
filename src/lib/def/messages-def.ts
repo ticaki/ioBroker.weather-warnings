@@ -46,6 +46,7 @@ export type customFormatedTokens = {
     starttimems: number;
     endtimems: number;
     iconurl: string;
+    warningcount: string;
 };
 
 export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, string> = {
@@ -54,7 +55,7 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     startday: 'Start Day',
     startmonth: 'Start Month',
     startdaytime: 'Start: Time of day.',
-    startadverb: 'Start: temporal adverb',
+    startadverb: 'Start: temporal adverb (yesterday, today, tomorrow, day after tomorrow)',
     endtime: 'End Time', // Endzeitpunkt
     enddate: 'End Date', // Enddatum
     endday: 'End Day',
@@ -88,6 +89,7 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     starttimems: 'Start time in ms',
     endtimems: 'End Time in ms',
     iconurl: 'Url to Icon',
+    warningcount: 'Number of Warnings',
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;

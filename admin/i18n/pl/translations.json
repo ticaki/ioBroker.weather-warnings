@@ -517,5 +517,9 @@
     "icons_prefix": "Przedrostek iconurl (/vis.0/...)",
     "icons_suffix": "Przyrostek iconurl (.png)",
     "icons_description": "Adapter dodaje następujące możliwe ciągi znaków:",
-    "MessageTitle": "Wybierz szablon, który ma zostać użyty jako tytuł. (tylko Token: status)"
+    "MessageTitle": "Wybierz szablon, który ma zostać użyty jako tytuł. (tylko Token: status)",
+    "whatsapp_Phonenumber": "Numer telefonu",
+    "addDefault": "Dodaj szablony domyślne",
+    "addDefaultToolTip": "Dodaj szablony standardowe, o ile klucz szablonu jest wolny. Nie jest nadpisywany.",
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Liczba ostrzeżeń"
 }

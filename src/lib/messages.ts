@@ -3,8 +3,9 @@ import { statesObjectsWarnings } from './def/definitionen';
 import * as MessageType from './def/messages-def';
 import * as NotificationType from './def/notificationService-def';
 import { messageFilterType } from './def/provider-def';
-import { BaseClass, Library } from './library';
+import * as library from './library';
 import * as Provider from './def/provider-def';
+import { NotificationClass } from './notification';
 
 type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
     ? { [K in keyof Obj]: ChangeTypeOfKeys<Obj[K], newKey> }
@@ -28,14 +29,15 @@ type messageCmdType =
     | 'countdownfuture'
     | 'daytime'
     | 'adverb'
-    | 'dwdcolor';
+    | 'dwdcolor'
+    | 'warningcount';
 /**
  * MessageClass
  */
-export class MessagesClass extends BaseClass {
+export class MessagesClass extends library.BaseClass {
     provider: Provider.ProviderClassType | null;
     providerController: Provider.ProviderController;
-    library: Library;
+    library: library.Library;
     private formatedKeysJsonataDefinition: customformatedKJDef = {};
     formatedData: customFormatedKInit;
     rawWarning: any;
@@ -201,6 +203,10 @@ export class MessagesClass extends BaseClass {
                 cmd: 'adverb',
                 node: 'ONSET',
             },
+            warningcount: {
+                cmd: 'warningcount',
+                node: '',
+            },
         },
 
         uwzService: {
@@ -346,6 +352,10 @@ export class MessagesClass extends BaseClass {
                 cmd: 'adverb',
                 node: 'dtgStart * 1000',
             },
+            warningcount: {
+                cmd: 'warningcount',
+                node: '',
+            },
         },
         zamgService: {
             starttime: {
@@ -478,6 +488,10 @@ export class MessagesClass extends BaseClass {
                 cmd: 'adverb',
                 node: '$number(rawinfo.start)*1000',
             },
+            warningcount: {
+                cmd: 'warningcount',
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -579,6 +593,10 @@ export class MessagesClass extends BaseClass {
                 node: '',
             },
             startadverb: {
+                cmd: undefined,
+                node: '',
+            },
+            warningcount: {
                 cmd: undefined,
                 node: '',
             },
@@ -714,7 +732,7 @@ export class MessagesClass extends BaseClass {
         return true;
     }
 
-    async getMessage(templateKey: string): Promise<NotificationType.MessageType> {
+    async getMessage(templateKey: string, pushService: NotificationClass): Promise<NotificationType.MessageType> {
         let msg: string = '';
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex((a) => a.templateKey == templateKey);
@@ -727,14 +745,12 @@ export class MessagesClass extends BaseClass {
         if (this.formatedData) {
             msg = await this.getTemplates(tempid);
             if (tempid == -1) {
-                this.log.error(`No template for Key: ${templateKey}!`);
+                this.log.error(`${pushService.name}`, `No template for key: ${templateKey}!`);
             } else {
                 this.cache.messages[templates[tempid].templateKey as keyof typeof this.cache.messages] =
                     this.returnMessage(msg, this.starttime, templateKey);
             }
-            return this.returnMessage(msg, this.starttime, templateKey);
         }
-
         return this.returnMessage(msg, this.starttime, templateKey);
     }
 
@@ -1020,6 +1036,11 @@ export class MessagesClass extends BaseClass {
                             `00${Number(rgb[2]).toString(16)}`.slice(-2)
                         );
                     }
+                }
+                break;
+            case 'warningcount':
+                {
+                    return this.adapter.providerController!.activeMessages;
                 }
                 break;
         }
