@@ -140,9 +140,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.5 (2023-10-28)
 * (ticaki) Quiet times with profile & control states
-* (ticaki) Jumping of the data tree reduced
+* (ticaki) Fixed: Jumping of the data tree
+* (ticaki) Bugfixing
 
 ### 0.4.4 (2023-10-25)
 * (ticaki) Added Say-It
