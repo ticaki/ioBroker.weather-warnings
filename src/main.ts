@@ -96,7 +96,7 @@ class WeatherWarnings extends utils.Adapter {
                 this.log.warn('Fixed configuration for allowed datapoints! ');
             }
         }
-        change = false;
+
         try {
             //const states = await self.getStatesAsync('*');
             await this.library.init();
@@ -105,7 +105,7 @@ class WeatherWarnings extends utils.Adapter {
         } catch (error) {
             this.log.error(`catch(1): init error while reading states! ${error}`);
         }
-
+        change = false;
         const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
         //create alexa sound array
         if (obj) {
@@ -124,9 +124,10 @@ class WeatherWarnings extends utils.Adapter {
                             '\n');
                 }
                 reply = reply.slice(0, -2);
-                if (this.config.templateHelp !== reply) {
+                if (this.config.templateHelp != reply) {
                     obj.native.templateHelp = reply;
                     change = true;
+                    this.log.info('Update configuration. Reason: templateHelp');
                 }
             }
             {
@@ -152,6 +153,7 @@ class WeatherWarnings extends utils.Adapter {
                         this.log.debug('update config');
                         change = true;
                         obj.native.silentTime = [];
+                        this.log.info('Update configuration. Reason: silentTime');
                     }
                 }
             }
@@ -203,6 +205,7 @@ class WeatherWarnings extends utils.Adapter {
                 this.config.alexa2_sounds = sounds;
 
                 if (change) {
+                    this.log.info('Update configuration. Reason: alexa2_sounds');
                     obj.native.alexa2_sounds = sounds;
                 }
                 /*await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
@@ -233,11 +236,12 @@ class WeatherWarnings extends utils.Adapter {
                 this.log.info(`Write default templates to config for ${this.namespace}!`);
 
                 obj.native = { ...obj.native, templateTable: templateTable };
+                this.log.info('Update configuration. Reason: templateTable');
                 change = true;
             }
             if (change) {
                 await this.setObjectAsync(`system.adapter.${this.namespace}`, obj);
-                this.log.info('Update configuration. Restart!');
+
                 this.log.info(JSON.stringify(obj.native.silentTime));
             }
         }
