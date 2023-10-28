@@ -356,7 +356,6 @@
     "statesObjectsWarnings.allService.formatedkeys.description": "Descrizione dell'avviso.",
     "statesObjectsWarnings.allService.formatedkeys.instruction": "Raccomandazioni per l'azione dell'avviso.",
     "statesObjectsWarnings.allService.formatedkeys.impact": "Descrizione dell'impatto dell'avviso.",
-    "statesObjectsWarnings.allService.formatedkeys.altitude": "Valore superiore dell'intervallo di altezza in metri.",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelname": "Livello di avviso come nome livello",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname": "Livello di avviso come nome colore",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelnumber": "Livello di allerta come numero",

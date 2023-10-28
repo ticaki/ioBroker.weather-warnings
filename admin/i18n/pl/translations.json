@@ -356,7 +356,6 @@
     "statesObjectsWarnings.allService.formatedkeys.description": "Opis ostrzeżenia.",
     "statesObjectsWarnings.allService.formatedkeys.instruction": "Zalecenia dotyczące działania ostrzeżenia.",
     "statesObjectsWarnings.allService.formatedkeys.impact": "Opis wpływu ostrzeżenia.",
-    "statesObjectsWarnings.allService.formatedkeys.altitude": "Górna wartość zakresu wysokości w metrach.",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelname": "Poziom ostrzeżenia jako nazwa poziomu",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname": "Poziom ostrzeżenia jako nazwa koloru",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelnumber": "Poziom ostrzeżenia jako liczba",

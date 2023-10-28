@@ -356,7 +356,6 @@
     "statesObjectsWarnings.allService.formatedkeys.description": "Опис попередження.",
     "statesObjectsWarnings.allService.formatedkeys.instruction": "Рекомендації щодо дії попередження.",
     "statesObjectsWarnings.allService.formatedkeys.impact": "Опис впливу попередження.",
-    "statesObjectsWarnings.allService.formatedkeys.altitude": "Верхнє значення діапазону висоти в метрах.",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelname": "Рівень попередження як назва рівня",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname": "Рівень попередження як назва кольору",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelnumber": "Рівень попередження як число",
