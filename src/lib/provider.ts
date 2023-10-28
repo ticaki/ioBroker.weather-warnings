@@ -521,6 +521,8 @@ export class ProviderController extends BaseClass {
         const profileNames: string[] = [];
         if (this.adapter.config.silentTime !== undefined) {
             for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
+                if (!this.adapter.config.silentTime[p].speakProfile) continue;
+                if (this.adapter.config.silentTime[p].silentTime.length == 0) continue;
                 profileNames.push(this.adapter.config.silentTime[p].speakProfile);
                 this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
                 this.silentTime.profil.push(
@@ -892,7 +894,12 @@ export class ProviderController extends BaseClass {
         if (this.isSilentAuto()) {
             const profil = this.getSpeakProfil();
             let isSpeakAllowed = true;
-            if (this.silentTime !== undefined) {
+
+            if (
+                this.silentTime !== undefined &&
+                this.silentTime.profil[profil] &&
+                Array.isArray(this.silentTime.profil[profil])
+            ) {
                 const now = new Date().getHours() + new Date().getMinutes() / 60;
                 const day = String(new Date().getDay());
                 for (const t of this.silentTime.profil[profil]) {
