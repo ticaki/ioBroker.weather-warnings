@@ -372,10 +372,9 @@ class ZAMGProvider extends BaseProvider {
       result.properties.warnings[a].properties.location = result.properties.location.properties.name;
       result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
       await super.updateData(result.properties.warnings[a].properties, a);
-      let index = this.messages.findIndex(
-        (m) => m.rawWarning.warnid == result.properties.warnings[a].properties.warnid
+      const index = this.messages.findIndex(
+        (m) => m.rawWarning.warnid == result.properties.warnings[a].properties.warnid && result.properties.warnings[a].properties.rawinfo.wlevel == m.rawWarning.rawinfo.wlevel
       );
-      index = -1;
       if (index == -1) {
         const nmessage = new import_messages.MessagesClass(
           this.adapter,
