@@ -58,6 +58,8 @@ declare global {
             uwzLevelFilter: number;
             zamgLevelFilter: number;
 
+            zamgEveryChange: boolean;
+
             telegram_DwdEnabled: boolean;
             telegram_UwzEnabled: boolean;
             telegram_ZamgEnabled: boolean;

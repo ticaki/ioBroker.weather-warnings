@@ -519,5 +519,6 @@
     "whatsapp_Phonenumber": "Número de teléfono",
     "addDefault": "Agregar plantillas predeterminadas",
     "addDefaultToolTip": "Agregue las plantillas estándar siempre que la clave de la plantilla esté libre. No se sobrescribe.",
-    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Número de advertencias"
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Número de advertencias",
+    "providerEveryChange": "Las advertencias se consideran nuevas cada vez que se modifican."
 }

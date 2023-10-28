@@ -519,5 +519,6 @@
     "whatsapp_Phonenumber": "Numero di telefono",
     "addDefault": "Aggiungi modelli predefiniti",
     "addDefaultToolTip": "Aggiungi i modelli standard purché la chiave del modello sia libera. Non viene sovrascritto.",
-    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Numero di avvisi"
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Numero di avvisi",
+    "providerEveryChange": "Gli avvisi vengono considerati nuovi ogni volta che vengono modificati."
 }

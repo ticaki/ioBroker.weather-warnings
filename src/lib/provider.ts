@@ -400,12 +400,17 @@ export class ZAMGProvider extends BaseProvider {
             result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
             await super.updateData(result.properties.warnings[a].properties, a);
 
-            const index = this.messages.findIndex(
-                (m) =>
-                    m.rawWarning.warnid == result.properties.warnings[a].properties.warnid &&
-                    result.properties.warnings[a].properties.rawinfo.wlevel == m.rawWarning.rawinfo.wlevel &&
-                    result.properties.warnings[a].properties.rawinfo.wtype == m.rawWarning.rawinfo.wtype,
-            );
+            const index = this.messages.findIndex((m) => {
+                if (this.adapter.config.zamgEveryChange) {
+                    return JSON.stringify(result.properties.warnings[a].properties) == JSON.stringify(m.rawWarning);
+                } else {
+                    return (
+                        m.rawWarning.warnid == result.properties.warnings[a].properties.warnid &&
+                        result.properties.warnings[a].properties.rawinfo.wlevel == m.rawWarning.rawinfo.wlevel &&
+                        result.properties.warnings[a].properties.rawinfo.wtype == m.rawWarning.rawinfo.wtype
+                    );
+                }
+            });
             if (index == -1) {
                 const nmessage = new MessagesClass(
                     this.adapter,

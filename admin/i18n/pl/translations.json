@@ -519,5 +519,6 @@
     "whatsapp_Phonenumber": "Numer telefonu",
     "addDefault": "Dodaj szablony domyślne",
     "addDefaultToolTip": "Dodaj szablony standardowe, o ile klucz szablonu jest wolny. Nie jest nadpisywany.",
-    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Liczba ostrzeżeń"
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Liczba ostrzeżeń",
+    "providerEveryChange": "Ostrzeżenia są uważane za nowe po każdej zmianie."
 }

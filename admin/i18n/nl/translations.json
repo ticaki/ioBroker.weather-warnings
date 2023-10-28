@@ -519,5 +519,6 @@
     "whatsapp_Phonenumber": "Telefoonnummer",
     "addDefault": "Standaardsjablonen toevoegen",
     "addDefaultToolTip": "Voeg de standaardsjablonen toe zolang de sjabloonsleutel vrij is. Het wordt niet overschreven.",
-    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Aantal waarschuwingen"
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Aantal waarschuwingen",
+    "providerEveryChange": "Waarschuwingen worden als nieuw beschouwd telkens wanneer ze worden gewijzigd."
 }

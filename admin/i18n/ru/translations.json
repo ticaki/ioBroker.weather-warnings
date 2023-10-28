@@ -519,5 +519,6 @@
     "whatsapp_Phonenumber": "Номер телефона",
     "addDefault": "Добавить шаблоны по умолчанию",
     "addDefaultToolTip": "Добавьте стандартные шаблоны, если ключ шаблона свободен. Он не перезаписывается.",
-    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Количество предупреждений"
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Количество предупреждений",
+    "providerEveryChange": "Предупреждения считаются новыми каждый раз, когда они изменяются."
 }

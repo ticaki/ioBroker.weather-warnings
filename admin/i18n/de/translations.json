@@ -519,5 +519,6 @@
     "whatsapp_Phonenumber": "Telefonnummer",
     "addDefault": "Fügt Standardvorlagen hinzu",
     "addDefaultToolTip": "Fügt die Standardvorlagen hinzu, solange der Vorlagenschlüssel frei ist. Es wird nichts überschrieben.",
-    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Anzahl der Warnungen"
+    "statesObjectsWarnings.allService.formatedkeys.warningcount": "Anzahl der Warnungen",
+    "providerEveryChange": "Warnungen gelten nach jeder Änderung am Datensatz als neu."
 }

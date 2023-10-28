@@ -519,5 +519,6 @@
     "speakSilentTime": "Quiet times for voice output (time as HH:MM or HH).",
     "whatsapp_Phonenumber": "Phonenumber",
     "addDefault": "Add default templates",
-    "addDefaultToolTip": "Add the standard templates as long as the template key is free. It is not overwritten."
+    "addDefaultToolTip": "Add the standard templates as long as the template key is free. It is not overwritten.",
+    "providerEveryChange": "Warnings are considered new each time they are changed."
 }
