@@ -240,7 +240,6 @@ class WeatherWarnings extends utils.Adapter {
             }
             if (change) {
                 await this.setObjectAsync(`system.adapter.${this.namespace}`, obj);
-                this.log.info(JSON.stringify(obj.native.silentTime));
             }
         }
         this.setTimeout(
