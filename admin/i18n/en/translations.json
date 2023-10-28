@@ -360,8 +360,6 @@
     "statesObjectsWarnings.allService.formatedkeys.description": "Description of warning.",
     "statesObjectsWarnings.allService.formatedkeys.instruction": "Recommendations for action of the warning.",
     "statesObjectsWarnings.allService.formatedkeys.impact": "Impact description of warning.",
-    "statesObjectsWarnings.allService.formatedkeys.ceiling": "Upper value of the height range in meter.",
-    "statesObjectsWarnings.allService.formatedkeys.altitude": "Upper value of the height range in meter.",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelname": "Level of Warning as Levelname",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname": "Level of Warning as Colorname",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelnumber": "Level of Warning as Number",

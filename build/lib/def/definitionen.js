@@ -1813,7 +1813,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "statesObjectsWarnings.allService.formatedkeys.ceiling",
+          name: "statesObjectsWarnings.dwdService.raw.CEILING",
           type: "number",
           role: "text",
           read: true,
@@ -1825,7 +1825,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "statesObjectsWarnings.allService.formatedkeys.altitude",
+          name: "statesObjectsWarnings.dwdService.raw.ALTITUDE",
           type: "number",
           role: "text",
           read: true,
