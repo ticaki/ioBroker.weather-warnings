@@ -239,7 +239,7 @@ class WeatherWarnings extends utils.Adapter {
                 change = true;
             }
             if (change) {
-                await this.setObjectAsync(`system.adapter.${this.namespace}`, obj);
+                await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
             }
         }
         this.setTimeout(
