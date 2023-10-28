@@ -566,7 +566,11 @@ export class ProviderController extends BaseClass {
                 if (!this.library.readdp(String(dp))) await this.library.writedp(String(dp), data.default, data.def);
                 else {
                     const def = definitionen.actionStates[dp].def;
-                    await this.adapter.extendObjectAsync(String(dp), { common: def.common });
+                    const obj = await this.adapter.getObjectAsync(String(dp));
+                    if (obj) {
+                        obj.common = def.common;
+                        await this.adapter.setObjectAsync(String(dp), obj);
+                    }
                 }
             }
         }

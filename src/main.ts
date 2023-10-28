@@ -550,7 +550,7 @@ class WeatherWarnings extends utils.Adapter {
         this.library.setdb(id.replace(`${this.namespace}.`, ''), 'state', state.val, undefined, state.ack, state.ts);
         if (actionStates[id.replace(`${this.namespace}.`, '')] == undefined)
             if (this.providerController) this.providerController.onStatePush(id);
-        this.library.writedp(id, false);
+        this.library.writedp(id.replace(`${this.namespace}.`, ''), false);
     }
 
     /**

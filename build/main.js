@@ -444,7 +444,7 @@ class WeatherWarnings extends utils.Adapter {
       if (this.providerController)
         this.providerController.onStatePush(id);
     }
-    this.library.writedp(id, false);
+    this.library.writedp(id.replace(`${this.namespace}.`, ""), false);
   }
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {
