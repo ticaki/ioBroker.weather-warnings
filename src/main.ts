@@ -124,7 +124,7 @@ class WeatherWarnings extends utils.Adapter {
                             '\n');
                 }
                 reply = reply.slice(0, -2);
-                if (obj.native.templateHelp != reply) {
+                if (JSON.stringify(obj.native.templateHelp) != JSON.stringify(reply)) {
                     obj.native.templateHelp = reply;
                     change = true;
                     this.log.info('Update configuration. Reason: templateHelp');
@@ -158,7 +158,7 @@ class WeatherWarnings extends utils.Adapter {
                 }
             }
             {
-                let sounds = this.config.alexa2_sounds || [];
+                let sounds = obj.native.alexa2_sounds || [];
                 if (!sounds || !Array.isArray(sounds)) sounds = [];
                 for (const w in messagesDef.genericWarntyp) {
                     const index = sounds.findIndex(
@@ -202,7 +202,7 @@ class WeatherWarnings extends utils.Adapter {
                 }
                 //this.config.alexa2_sounds = sounds;
 
-                if (obj.native.alexa2_sounds != sounds) {
+                if (JSON.stringify(obj.native.alexa2_sounds) != JSON.stringify(sounds)) {
                     change = true;
                     this.log.info('Update configuration. Reason: alexa2_sounds');
                     obj.native.alexa2_sounds = sounds;
@@ -240,7 +240,6 @@ class WeatherWarnings extends utils.Adapter {
             }
             if (change) {
                 await this.setObjectAsync(`system.adapter.${this.namespace}`, obj);
-
                 this.log.info(JSON.stringify(obj.native.silentTime));
             }
         }
