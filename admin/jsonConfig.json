@@ -290,7 +290,7 @@
                             "type": "text",
                             "attr": "speakProfile",
                             "label": "profileName",
-                            "Default": "Fill me!"
+                            "default": "Fill me!"
                         },
                         {
                             "type": "table",
