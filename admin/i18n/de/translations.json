@@ -520,5 +520,11 @@
     "addDefault": "Fügt Standardvorlagen hinzu",
     "addDefaultToolTip": "Fügt die Standardvorlagen hinzu, solange der Vorlagenschlüssel frei ist. Es wird nichts überschrieben.",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "Anzahl der Warnungen",
-    "providerEveryChange": "Warnungen gelten nach jeder Änderung am Datensatz als neu."
+    "providerEveryChange": "Warnungen gelten nach jeder Änderung am Datensatz als neu.",
+    "statesObjectsWarnings.allService.command.silentTime": "Kommandos für Ruhezeiten",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Sprechen erlaubt einstellen. (automatisch/manuell)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Stellen Sie den Automatikmodus ein",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Wählen Sie das aktive Profil aus.",
+    "profileName": "Profilname",
+    "speakSilentTimeDetail": "Tabelle mit Ruhezeiten"
 }

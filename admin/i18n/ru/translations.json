@@ -520,5 +520,11 @@
     "addDefault": "Добавить шаблоны по умолчанию",
     "addDefaultToolTip": "Добавьте стандартные шаблоны, если ключ шаблона свободен. Он не перезаписывается.",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "Количество предупреждений",
-    "providerEveryChange": "Предупреждения считаются новыми каждый раз, когда они изменяются."
+    "providerEveryChange": "Предупреждения считаются новыми каждый раз, когда они изменяются.",
+    "statesObjectsWarnings.allService.command.silentTime": "Приказы о тихом времени",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Установите разрешение разговора (авто/ручной).",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Установите автоматический режим",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Выберите активный профиль.",
+    "profileName": "Имя профиля",
+    "speakSilentTimeDetail": "Таблица времен"
 }

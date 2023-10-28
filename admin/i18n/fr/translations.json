@@ -520,5 +520,11 @@
     "addDefault": "Ajouter des modèles par défaut",
     "addDefaultToolTip": "Ajoutez les modèles standards tant que la clé du modèle est libre. Il n'est pas écrasé.",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "Nombre d'avertissements",
-    "providerEveryChange": "Les avertissements sont considérés comme nouveaux à chaque fois qu'ils sont modifiés."
+    "providerEveryChange": "Les avertissements sont considérés comme nouveaux à chaque fois qu'ils sont modifiés.",
+    "statesObjectsWarnings.allService.command.silentTime": "Commandes de temps calmes",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Définir la parole autorisée. (auto/manuel)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Régler le mode automatique",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Sélectionnez le profil actif.",
+    "profileName": "Nom de profil",
+    "speakSilentTimeDetail": "Table des temps"
 }

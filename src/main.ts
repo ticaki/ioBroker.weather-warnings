@@ -96,7 +96,7 @@ class WeatherWarnings extends utils.Adapter {
                 this.log.warn('Fixed configuration for allowed datapoints! ');
             }
         }
-        change = false;
+
         try {
             //const states = await self.getStatesAsync('*');
             await this.library.init();
@@ -105,127 +105,137 @@ class WeatherWarnings extends utils.Adapter {
         } catch (error) {
             this.log.error(`catch(1): init error while reading states! ${error}`);
         }
-
-        const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+        change = false;
+        const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
         //create alexa sound array
-        let native: any = undefined;
-        {
-            let reply = 'Tokens:\n';
-            const keys = Object.keys(messagesDef.customFormatedTokensJson);
-            keys.sort();
-            for (const a in keys) {
-                reply +=
-                    '${' +
-                    keys[a] +
-                    '}: ' +
-                    (this.library.getTranslation(
-                        messagesDef.customFormatedTokensJson[keys[a] as keyof messagesDef.customFormatedTokens],
-                    ) +
-                        '\n');
-            }
-            reply = reply.slice(0, -2);
-            if (this.config.templateHelp !== reply) {
-                native = native || {};
-                native = { ...native, templateHelp: reply };
-                change = true;
-            }
-        }
-        {
-            let reply = ' ';
-            reply = Object.keys(messagesDef.genericWarntyp)
-                //@ts-expect-error is keyof
-                .map((a) => messagesDef.genericWarntyp[a].id)
-                .join(', ');
-            if (this.config.icons_description != reply) {
-                native = native || {};
-                native = { ...native, icons_description: reply };
-                change = true;
-            }
-        }
-        {
-            let sounds = this.config.alexa2_sounds || [];
-            if (!sounds || !Array.isArray(sounds)) sounds = [];
-            for (const w in messagesDef.genericWarntyp) {
-                const index = sounds.findIndex(
-                    (a: { warntype: string; sound: string; warntypenumber: number }) => a.warntypenumber == Number(w),
-                );
-                if (index != -1) {
-                    const t = this.library.getTranslation(
-                        messagesDef.genericWarntyp[Number(w) as keyof messagesDef.genericWarntypeType].name,
-                    );
-                    if (t != sounds[index].warntype) {
-                        change = true;
-                        sounds[index].warntype = t;
-                    }
-                } else {
+        if (obj) {
+            {
+                let reply = 'Tokens:\n';
+                const keys = Object.keys(messagesDef.customFormatedTokensJson);
+                keys.sort();
+                for (const a in keys) {
+                    reply +=
+                        '${' +
+                        keys[a] +
+                        '}: ' +
+                        (this.library.getTranslation(
+                            messagesDef.customFormatedTokensJson[keys[a] as keyof messagesDef.customFormatedTokens],
+                        ) +
+                            '\n');
+                }
+                reply = reply.slice(0, -2);
+                if (obj.native.templateHelp && obj.native.templateHelp.valueOf() != reply.valueOf()) {
+                    obj.native.templateHelp = reply;
                     change = true;
-                    sounds.push({
-                        warntypenumber: Number(w),
-                        warntype: this.library.getTranslation(
+                    this.log.info('Update configuration. Reason: templateHelp');
+                }
+            }
+            {
+                let reply = ' ';
+                reply = Object.keys(messagesDef.genericWarntyp)
+                    //@ts-expect-error is keyof
+                    .map((a) => messagesDef.genericWarntyp[a].id)
+                    .join(', ');
+                if (this.config.icons_description != reply) {
+                    obj.native.icons_description = reply;
+                    change = true;
+                }
+            }
+            {
+                if (this.config.silentTime) {
+                    let update = false;
+                    for (const a of this.config.silentTime) {
+                        if (a.profil != undefined) {
+                            update = true;
+                        }
+                    }
+                    if (update) {
+                        this.log.debug('update config');
+                        change = true;
+                        obj.native.silentTime = [];
+                        this.log.info('Update configuration. Reason: silentTime');
+                    }
+                }
+            }
+            {
+                let sounds = obj.native.alexa2_sounds || [];
+                if (!sounds || !Array.isArray(sounds)) sounds = [];
+                for (const w in messagesDef.genericWarntyp) {
+                    const index = sounds.findIndex(
+                        (a: { warntype: string; sound: string; warntypenumber: number }) =>
+                            a.warntypenumber == Number(w),
+                    );
+                    if (index != -1) {
+                        const t = this.library.getTranslation(
                             messagesDef.genericWarntyp[Number(w) as keyof messagesDef.genericWarntypeType].name,
-                        ),
+                        );
+                        if (t != sounds[index].warntype) {
+                            change = true;
+                            sounds[index].warntype = t;
+                        }
+                    } else {
+                        change = true;
+                        sounds.push({
+                            warntypenumber: Number(w),
+                            warntype: this.library.getTranslation(
+                                messagesDef.genericWarntyp[Number(w) as keyof messagesDef.genericWarntypeType].name,
+                            ),
+                            sound: '',
+                        });
+                    }
+                }
+
+                const index = sounds.findIndex(
+                    (a: { warntype: string; sound: string; warntypenumber: number }) => a.warntypenumber == Number(0),
+                );
+                if (index == -1) {
+                    sounds.push({
+                        warntypenumber: Number(0),
+                        warntype: this.library.getTranslation('template.RemoveAllMessage'),
                         sound: '',
                     });
+                } else {
+                    const t = this.library.getTranslation('template.RemoveAllMessage');
+                    if (t != sounds[index].warntype) {
+                        sounds[index].warntype = t;
+                    }
                 }
-            }
-
-            const index = sounds.findIndex(
-                (a: { warntype: string; sound: string; warntypenumber: number }) => a.warntypenumber == Number(0),
-            );
-            if (index == -1) {
-                change = true;
-                sounds.push({
-                    warntypenumber: Number(0),
-                    warntype: this.library.getTranslation('template.RemoveAllMessage'),
-                    sound: '',
-                });
-            } else {
-                const t = this.library.getTranslation('template.RemoveAllMessage');
-                if (t != sounds[index].warntype) {
+                if (JSON.stringify(obj.native.alexa2_sounds) != JSON.stringify(sounds)) {
                     change = true;
-                    sounds[index].warntype = t;
+                    this.log.info('Update configuration. Reason: alexa2_sounds');
+                    obj.native.alexa2_sounds = sounds;
                 }
             }
-            this.config.alexa2_sounds = sounds;
 
+            /** write default templates to config if template 0 == translation token */
+            if (
+                obj &&
+                obj.native &&
+                obj.native.templateTable[0] &&
+                obj.native.templateTable[0].template == 'template.NewMessage'
+            ) {
+                this.log.info(`First start after installation detected.`);
+                const templateTable: any = this.library.cloneGenericObject(obj.native.templateTable);
+                for (const a in obj.native.templateTable) {
+                    templateTable[a as keyof typeof this.config.templateTable].template = this.library.getTranslation(
+                        obj.native.templateTable[a].template,
+                    );
+                    this.log.debug(
+                        `Read default template from i18n: ${this.library.getTranslation(
+                            obj.native.templateTable[a].template,
+                        )}`,
+                    );
+                }
+                this.config.templateTable = templateTable;
+                this.log.info(`Write default templates to config for ${this.namespace}!`);
+
+                obj.native = { ...obj.native, templateTable: templateTable };
+                this.log.info('Update configuration. Reason: templateTable');
+                change = true;
+            }
             if (change) {
-                native = native || {};
-                native = { ...native, alexa2_sounds: sounds };
+                await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
             }
-            /*await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-                native: { alexa2_sounds: sounds },
-            });*/
-        }
-
-        /** write default templates to config if template 0 == translation token */
-        if (
-            config &&
-            config.native &&
-            config.native.templateTable[0] &&
-            config.native.templateTable[0].template == 'template.NewMessage'
-        ) {
-            this.log.info(`First start after installation detected.`);
-            const templateTable: any = this.library.cloneGenericObject(config.native.templateTable);
-            for (const a in config.native.templateTable) {
-                templateTable[a as keyof typeof this.config.templateTable].template = this.library.getTranslation(
-                    config.native.templateTable[a].template,
-                );
-                this.log.debug(
-                    `Read default template from i18n: ${this.library.getTranslation(
-                        config.native.templateTable[a].template,
-                    )}`,
-                );
-            }
-            this.config.templateTable = templateTable;
-            this.log.info(`Write default templates to config for ${this.namespace}!`);
-            native = native || {};
-            native = { ...native, templateTable: templateTable };
-            change = true;
-        }
-        if (native !== undefined && change) {
-            await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-                native: native,
-            });
         }
         this.setTimeout(
             async function (that: any) {
@@ -529,13 +539,14 @@ class WeatherWarnings extends utils.Adapter {
      * Is called if a subscribed state changes
      * We need this later, dont remove
      */
-    private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
+    private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
         if (!state) return;
         if (state.ack) return;
         this.library.setdb(id.replace(`${this.namespace}.`, ''), 'state', state.val, undefined, state.ack, state.ts);
         if (actionStates[id.replace(`${this.namespace}.`, '')] == undefined)
             if (this.providerController) this.providerController.onStatePush(id);
-        this.library.writedp(id, false);
+        await this.library.writedp(id.replace(`${this.namespace}.`, ''), state.val);
+        await this.providerController!.setSpeakAllowed();
     }
 
     /**

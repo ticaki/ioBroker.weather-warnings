@@ -520,5 +520,11 @@
     "addDefault": "Dodaj szablony domyślne",
     "addDefaultToolTip": "Dodaj szablony standardowe, o ile klucz szablonu jest wolny. Nie jest nadpisywany.",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "Liczba ostrzeżeń",
-    "providerEveryChange": "Ostrzeżenia są uważane za nowe po każdej zmianie."
+    "providerEveryChange": "Ostrzeżenia są uważane za nowe po każdej zmianie.",
+    "statesObjectsWarnings.allService.command.silentTime": "Ciche czasy nakazują",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Ustaw mówienie dozwolone. (automatyczne/ręczne)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Ustaw tryb automatyczny",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Wybierz aktywny profil.",
+    "profileName": "Nazwa profilu",
+    "speakSilentTimeDetail": "Tabela czasów"
 }

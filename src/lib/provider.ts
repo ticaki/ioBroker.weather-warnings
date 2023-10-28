@@ -495,10 +495,10 @@ export class ProviderController extends BaseClass {
     //globalSpeakSilentTime: ({ profil: string; day: number[]; start: number; end: number } | null)[] = [];
     testStatus = 0;
     activeMessages = 0;
-    isSilentTime: boolean = true;
+    speakProfiles: string[] = [];
     silentTime: { shouldSpeakAllowed?: boolean; forceOff: boolean; profil: providerDef.silentTimeConfigType[][] } = {
         forceOff: false,
-        profil: [[], [], [], []],
+        profil: [],
     };
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
@@ -518,51 +518,61 @@ export class ProviderController extends BaseClass {
             states[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
         }
         definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
-
+        const profileNames: string[] = [];
         if (this.adapter.config.silentTime !== undefined) {
-            for (let p = 0; p < providerDef.silentTimeKeys.length; p++) {
-                let index = -1;
-                this.silentTime.profil[++index] = (this.adapter.config.silentTime || [])
-                    .filter((f) => f && providerDef.silentTimeKeys[index] == f.profil)
-                    .map((item): providerDef.silentTimeConfigType | null => {
-                        const result: providerDef.silentTimeConfigType = {
-                            day: [],
-                            start: 0,
-                            end: 0,
-                        };
-
-                        for (const a in item) {
-                            const b = a as keyof typeof item;
-                            if (b == 'profil') continue;
-                            if (b != 'day' && item[b].indexOf(':') != -1) {
-                                const t = item[b].split(':');
-                                if (Number.isNaN(t[0])) return null;
-                                if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
-                                    t[1] = String(parseInt(t[1]) / 60);
-                                    item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-                                } else item[b] = t[0];
+            for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
+                profileNames.push(this.adapter.config.silentTime[p].speakProfile);
+                this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
+                this.silentTime.profil.push(
+                    (this.adapter.config.silentTime[p].silentTime || [])
+                        .map((item): providerDef.silentTimeConfigType | null => {
+                            const result: providerDef.silentTimeConfigType = {
+                                day: [],
+                                start: 0,
+                                end: 0,
+                            };
+                            for (const a in item) {
+                                const b = a as keyof typeof item;
+                                if (b != 'day' && item[b].indexOf(':') != -1) {
+                                    const t = item[b].split(':');
+                                    if (Number.isNaN(t[0])) return null;
+                                    if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
+                                        t[1] = String(parseInt(t[1]) / 60);
+                                        item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
+                                    } else item[b] = t[0];
+                                }
+                                if (b == 'day') result.day = item.day;
+                                else if (b == 'end') result.end = parseFloat(item.end);
+                                else result.start = parseFloat(item.start);
                             }
-                            if (b == 'day') result.day = item.day;
-                            else if (b == 'end') result.end = parseFloat(item.end);
-                            else result.start = parseFloat(item.start);
-                        }
-                        this.log.info(
-                            `Silent time added: Profil: ${providerDef.silentTimeKeys[index]} start: ${
-                                result.start
-                            } end: ${result.end} days: ${JSON.stringify(result.day)}`,
-                        );
-                        return result;
-                    })
-                    .filter((f) => f != null) as providerDef.silentTimeConfigType[];
+                            this.log.info(
+                                `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${
+                                    result.start
+                                } end: ${result.end} days: ${JSON.stringify(result.day)}`,
+                            );
+                            return result;
+                        })
+                        .filter((f) => f != null) as providerDef.silentTimeConfigType[],
+                );
             }
+            definitionen.statesObjectsWarnings.allService.command.silentTime.profil.common.states = profileNames;
             this.library.writedp(
                 `command.silentTime`,
                 undefined,
                 definitionen.statesObjectsWarnings.allService.command.silentTime._channel,
             );
-            for (const dp in definitionen.actionStates) {
-                const data = definitionen.actionStates[dp as keyof typeof definitionen.actionStates];
-                if (!this.library.readdp(dp)) this.library.writedp(dp, data.default, data.def);
+            for (const a in definitionen.actionStates) {
+                const dp = a as keyof typeof definitionen.actionStates;
+                const data = definitionen.actionStates[dp];
+                if (!this.library.readdp(String(dp))) await this.library.writedp(String(dp), data.default, data.def);
+                else {
+                    const def = definitionen.actionStates[dp].def;
+                    const obj = await this.adapter.getObjectAsync(String(dp));
+                    if (obj) {
+                        obj.common = def.common;
+                        await this.adapter.setObjectAsync(String(dp), obj);
+                    }
+                }
             }
         }
 

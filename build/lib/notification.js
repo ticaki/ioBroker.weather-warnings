@@ -249,6 +249,7 @@ class NotificationClass extends library.BaseClass {
                   / [a-zA-Z][a-zA-Z], \d{1,2}\.\d{1,2}\.\d{4} /g,
                   (x) => this.library.convertSpeakDate(x, this.options.name, true)
                 );
+                message.text = message.text.replaceAll(/\\+n/g, "");
                 let count = 0;
                 let pos = 250;
                 while (pos <= message.text.length && count++ < 50) {

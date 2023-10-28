@@ -520,5 +520,11 @@
     "addDefault": "Додайте стандартні шаблони",
     "addDefaultToolTip": "Додайте стандартні шаблони, якщо ключ шаблону вільний. Він не перезаписується.",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "Кількість попереджень",
-    "providerEveryChange": "Попередження вважаються новими щоразу, коли вони змінюються."
+    "providerEveryChange": "Попередження вважаються новими щоразу, коли вони змінюються.",
+    "statesObjectsWarnings.allService.command.silentTime": "Команди тихого часу",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Установити дозволений голос. (авто/ручний)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Встановити автоматичний режим",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Виберіть активний профіль.",
+    "profileName": "Імя профілю",
+    "speakSilentTimeDetail": "Таблиця часів"
 }

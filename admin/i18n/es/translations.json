@@ -520,5 +520,11 @@
     "addDefault": "Agregar plantillas predeterminadas",
     "addDefaultToolTip": "Agregue las plantillas estándar siempre que la clave de la plantilla esté libre. No se sobrescribe.",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "Número de advertencias",
-    "providerEveryChange": "Las advertencias se consideran nuevas cada vez que se modifican."
+    "providerEveryChange": "Las advertencias se consideran nuevas cada vez que se modifican.",
+    "statesObjectsWarnings.allService.command.silentTime": "Comandos de tiempos tranquilos",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Establecer conversación permitida. (automático/manual)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Establecer el modo automático",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Seleccione el perfil activo.",
+    "profileName": "Nombre de perfil",
+    "speakSilentTimeDetail": "Tabla de tiempos"
 }

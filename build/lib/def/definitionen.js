@@ -33,7 +33,6 @@ __export(definitionen_exports, {
 });
 module.exports = __toCommonJS(definitionen_exports);
 var messagesDef = __toESM(require("./messages-def"));
-var providerDef = __toESM(require("./provider-def"));
 const defaultChannel = {
   _id: "",
   type: "channel",
@@ -2164,7 +2163,7 @@ const statesObjectsWarnings = {
             name: "statesObjectsWarnings.allService.command.silentTime.profil",
             type: "number",
             role: "level.mode",
-            states: providerDef.silentTimeKeys,
+            states: [],
             read: true,
             write: true
           },

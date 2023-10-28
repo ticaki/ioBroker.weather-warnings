@@ -520,5 +520,11 @@
     "addDefault": "Standaardsjablonen toevoegen",
     "addDefaultToolTip": "Voeg de standaardsjablonen toe zolang de sjabloonsleutel vrij is. Het wordt niet overschreven.",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "Aantal waarschuwingen",
-    "providerEveryChange": "Waarschuwingen worden als nieuw beschouwd telkens wanneer ze worden gewijzigd."
+    "providerEveryChange": "Waarschuwingen worden als nieuw beschouwd telkens wanneer ze worden gewijzigd.",
+    "statesObjectsWarnings.allService.command.silentTime": "Commando's voor stille tijden",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Stel spreek toegestaan ​​in. (auto/handmatig)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Stel de automatische modus in",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Selecteer het actieve profiel.",
+    "profileName": "Profielnaam",
+    "speakSilentTimeDetail": "Tabel der tijden"
 }

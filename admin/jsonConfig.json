@@ -192,7 +192,7 @@
                             "type": "text",
                             "readOnly": true,
                             "xs": 12,
-                    "sm": 2,
+                            "sm": 2,
                             "md": 2,
                             "lg": 2
                         },
@@ -200,7 +200,7 @@
                             "attr": "dpWarning",
                             "type": "checkbox",
                             "xs": 12,
-                    "sm": 12,
+                            "sm": 12,
                             "md": 2,
                             "lg": 2,
                             "label": ".warning"
@@ -209,7 +209,7 @@
                             "attr": "dpFormated",
                             "type": "checkbox",
                             "xs": 12,
-                    "sm": 12,
+                            "sm": 12,
                             "md": 2,
                             "lg": 2,
                             "label": ".formatedKeys"
@@ -218,7 +218,7 @@
                             "attr": "dpAlerts",
                             "type": "checkbox",
                             "xs": 12,
-                    "sm": 12,
+                            "sm": 12,
                             "md": 2,
                             "lg": 2,
                             "label": ".alerts"
@@ -276,70 +276,63 @@
                     "size": 3
                 },
                 "silentTime": {
-                    "type": "table",
+                    "type": "accordion",
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
-                    "default": [],
+                    "titleAttr": "speakProfile",
                     "label": "speakSilentTime",
+                    "hidden": "data.imExpert != true",
                     "items": [
                         {
-                            "type": "select",
-                            "attr": "profil",
-                            "title": "Profil",
-                            "options": [
+                            "type": "text",
+                            "attr": "speakProfile",
+                            "label": "profileName"
+                        },
+                        {
+                            "type": "table",
+                            "newLine": true,
+                            "attr": "silentTime",
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 12,
+                            "lg": 12,
+                            "default": [],
+                            "label": "speakSilentTimeDetail",
+                            "items": [            
                                 {
-                                    "label": "allDays",
-                                    "value": "alldays"
+                                    "type": "selectSendTo",
+                                    "command": "weekdays",
+                                    "jsonData": "{ \"service\": \"dwdService\" }",
+                                    "manual": false,
+                                    "multiple": true,
+                                    "attr": "day",
+                                    "width": "50% ",
+                                    "title": "dayoftheweak",
+                                    "filter": false,
+                                    "sort": false
                                 },
                                 {
-                                    "label": "Holidays",
-                                    "value": "holidays"
+                                    "type": "text",
+                                    "attr": "start",
+                                    "width": "25% ",
+                                    "title": "speakStart",
+                                    "filter": false,
+                                    "sort": false,
+                                    "default": ""
                                 },
                                 {
-                                    "label": "Guests",
-                                    "value": "guests"
-                                },
-                                {
-                                    "label": "Custom",
-                                    "value": "custom"
+                                    "type": "text",
+                                    "attr": "end",
+                                    "width": "25% ",
+                                    "title": "speakEnd",
+                                    "filter": false,
+                                    "sort": false,
+                                    "default": ""
                                 }
-                            ],
-                            "default": "alldays",
-                            "width": "20% ",
-                            "newLine": true
-                        },
-                        {
-                            "type": "selectSendTo",
-                            "command": "weekdays",
-                            "jsonData": "{ \"service\": \"dwdService\" }",
-                            "manual": false,
-                            "multiple": true,
-                            "attr": "day",
-                            "width": "40% ",
-                            "title": "dayoftheweak",
-                            "filter": false,
-                            "sort": false
-                        },
-                        {
-                            "type": "text",
-                            "attr": "start",
-                            "width": "20% ",
-                            "title": "speakStart",
-                            "filter": false,
-                            "sort": false,
-                            "default": ""
-                        },
-                        {
-                            "type": "text",
-                            "attr": "end",
-                            "width": "20% ",
-                            "title": "speakEnd",
-                            "filter": false,
-                            "sort": false,
-                            "default": ""
+                            ]
                         }
                     ]
                 },
@@ -1992,7 +1985,7 @@
                             "readOnly": true,
                             "hidden": true,
                             "xs": 12,
-                    "sm": 1,
+                            "sm": 1,
                             "md": 1,
                             "lg": 1
                         },
@@ -2001,7 +1994,7 @@
                             "type": "text",
                             "readOnly": true,
                             "xs": 12,
-                    "sm": 2,
+                            "sm": 2,
                             "md": 2,
                             "lg": 3
                         },
@@ -2009,7 +2002,7 @@
                             "attr": "sound",
                             "type": "text",
                             "xs": 12,
-                    "sm": 9,
+                            "sm": 9,
                             "md": 8,
                             "lg": 8,
                             "label": "alexa_sound_item"

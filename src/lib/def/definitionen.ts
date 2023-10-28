@@ -2209,7 +2209,7 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                         name: 'statesObjectsWarnings.allService.command.silentTime.profil',
                         type: 'number',
                         role: 'level.mode',
-                        states: providerDef.silentTimeKeys,
+                        states: [],
                         read: true,
                         write: true,
                     },

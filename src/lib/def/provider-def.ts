@@ -214,6 +214,8 @@ export type DataImportType = nullType | dataImportDwdType | dataImportZamgType |
     },
 };*/
 
-export type silentTimeType = 'holiday' | 'alldays' | 'guess' | 'custom';
-export type silentTimeConfigType = { day: string[]; start: number; end: number };
-export const silentTimeKeys: silentTimeType[] = ['alldays', 'holiday', 'guess', 'custom'];
+export type silentTimeConfigType = {
+    day: string[];
+    start: number;
+    end: number;
+};

@@ -520,5 +520,11 @@
     "addDefault": "添加默认模板",
     "addDefaultToolTip": "只要模板密钥空闲，就可以添加标准模板。它不会被覆盖。",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "警告次数",
-    "providerEveryChange": "每次更改时，警告都被视为新的。"
+    "providerEveryChange": "每次更改时，警告都被视为新的。",
+    "statesObjectsWarnings.allService.command.silentTime": "安静时间命令",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "设置允许发言。（自动/手动）",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "设置自动模式",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "选择活动配置文件。",
+    "profileName": "个人资料名称",
+    "speakSilentTimeDetail": "时间表"
 }

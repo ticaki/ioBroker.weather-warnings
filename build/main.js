@@ -89,14 +89,13 @@ class WeatherWarnings extends utils.Adapter {
       break;
     }
     if (change) {
-      const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
-      if (obj && obj.native) {
-        obj.native.allowedDirs = this.config.allowedDirs;
-        await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
+      const obj2 = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+      if (obj2 && obj2.native) {
+        obj2.native.allowedDirs = this.config.allowedDirs;
+        await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj2);
         this.log.warn("Fixed configuration for allowed datapoints! ");
       }
     }
-    change = false;
     try {
       await this.library.init();
       this.providerController.setAllowedDirs(allowedDirsConfig);
@@ -104,106 +103,119 @@ class WeatherWarnings extends utils.Adapter {
     } catch (error) {
       this.log.error(`catch(1): init error while reading states! ${error}`);
     }
-    const config = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
-    let native = void 0;
-    {
-      let reply = "Tokens:\n";
-      const keys = Object.keys(messagesDef.customFormatedTokensJson);
-      keys.sort();
-      for (const a in keys) {
-        reply += "${" + keys[a] + "}: " + (this.library.getTranslation(
-          messagesDef.customFormatedTokensJson[keys[a]]
-        ) + "\n");
-      }
-      reply = reply.slice(0, -2);
-      if (this.config.templateHelp !== reply) {
-        native = native || {};
-        native = { ...native, templateHelp: reply };
-        change = true;
-      }
-    }
-    {
-      let reply = " ";
-      reply = Object.keys(messagesDef.genericWarntyp).map((a) => messagesDef.genericWarntyp[a].id).join(", ");
-      if (this.config.icons_description != reply) {
-        native = native || {};
-        native = { ...native, icons_description: reply };
-        change = true;
-      }
-    }
-    {
-      let sounds = this.config.alexa2_sounds || [];
-      if (!sounds || !Array.isArray(sounds))
-        sounds = [];
-      for (const w in messagesDef.genericWarntyp) {
-        const index2 = sounds.findIndex(
-          (a) => a.warntypenumber == Number(w)
-        );
-        if (index2 != -1) {
-          const t = this.library.getTranslation(
-            messagesDef.genericWarntyp[Number(w)].name
-          );
-          if (t != sounds[index2].warntype) {
-            change = true;
-            sounds[index2].warntype = t;
-          }
-        } else {
+    change = false;
+    const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+    if (obj) {
+      {
+        let reply = "Tokens:\n";
+        const keys = Object.keys(messagesDef.customFormatedTokensJson);
+        keys.sort();
+        for (const a in keys) {
+          reply += "${" + keys[a] + "}: " + (this.library.getTranslation(
+            messagesDef.customFormatedTokensJson[keys[a]]
+          ) + "\n");
+        }
+        reply = reply.slice(0, -2);
+        if (obj.native.templateHelp && obj.native.templateHelp.valueOf() != reply.valueOf()) {
+          obj.native.templateHelp = reply;
           change = true;
-          sounds.push({
-            warntypenumber: Number(w),
-            warntype: this.library.getTranslation(
+          this.log.info("Update configuration. Reason: templateHelp");
+        }
+      }
+      {
+        let reply = " ";
+        reply = Object.keys(messagesDef.genericWarntyp).map((a) => messagesDef.genericWarntyp[a].id).join(", ");
+        if (this.config.icons_description != reply) {
+          obj.native.icons_description = reply;
+          change = true;
+        }
+      }
+      {
+        if (this.config.silentTime) {
+          let update = false;
+          for (const a of this.config.silentTime) {
+            if (a.profil != void 0) {
+              update = true;
+            }
+          }
+          if (update) {
+            this.log.debug("update config");
+            change = true;
+            obj.native.silentTime = [];
+            this.log.info("Update configuration. Reason: silentTime");
+          }
+        }
+      }
+      {
+        let sounds = obj.native.alexa2_sounds || [];
+        if (!sounds || !Array.isArray(sounds))
+          sounds = [];
+        for (const w in messagesDef.genericWarntyp) {
+          const index2 = sounds.findIndex(
+            (a) => a.warntypenumber == Number(w)
+          );
+          if (index2 != -1) {
+            const t = this.library.getTranslation(
               messagesDef.genericWarntyp[Number(w)].name
-            ),
+            );
+            if (t != sounds[index2].warntype) {
+              change = true;
+              sounds[index2].warntype = t;
+            }
+          } else {
+            change = true;
+            sounds.push({
+              warntypenumber: Number(w),
+              warntype: this.library.getTranslation(
+                messagesDef.genericWarntyp[Number(w)].name
+              ),
+              sound: ""
+            });
+          }
+        }
+        const index = sounds.findIndex(
+          (a) => a.warntypenumber == Number(0)
+        );
+        if (index == -1) {
+          sounds.push({
+            warntypenumber: Number(0),
+            warntype: this.library.getTranslation("template.RemoveAllMessage"),
             sound: ""
           });
+        } else {
+          const t = this.library.getTranslation("template.RemoveAllMessage");
+          if (t != sounds[index].warntype) {
+            sounds[index].warntype = t;
+          }
         }
-      }
-      const index = sounds.findIndex(
-        (a) => a.warntypenumber == Number(0)
-      );
-      if (index == -1) {
-        change = true;
-        sounds.push({
-          warntypenumber: Number(0),
-          warntype: this.library.getTranslation("template.RemoveAllMessage"),
-          sound: ""
-        });
-      } else {
-        const t = this.library.getTranslation("template.RemoveAllMessage");
-        if (t != sounds[index].warntype) {
+        if (JSON.stringify(obj.native.alexa2_sounds) != JSON.stringify(sounds)) {
           change = true;
-          sounds[index].warntype = t;
+          this.log.info("Update configuration. Reason: alexa2_sounds");
+          obj.native.alexa2_sounds = sounds;
         }
       }
-      this.config.alexa2_sounds = sounds;
+      if (obj && obj.native && obj.native.templateTable[0] && obj.native.templateTable[0].template == "template.NewMessage") {
+        this.log.info(`First start after installation detected.`);
+        const templateTable = this.library.cloneGenericObject(obj.native.templateTable);
+        for (const a in obj.native.templateTable) {
+          templateTable[a].template = this.library.getTranslation(
+            obj.native.templateTable[a].template
+          );
+          this.log.debug(
+            `Read default template from i18n: ${this.library.getTranslation(
+              obj.native.templateTable[a].template
+            )}`
+          );
+        }
+        this.config.templateTable = templateTable;
+        this.log.info(`Write default templates to config for ${this.namespace}!`);
+        obj.native = { ...obj.native, templateTable };
+        this.log.info("Update configuration. Reason: templateTable");
+        change = true;
+      }
       if (change) {
-        native = native || {};
-        native = { ...native, alexa2_sounds: sounds };
+        await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
       }
-    }
-    if (config && config.native && config.native.templateTable[0] && config.native.templateTable[0].template == "template.NewMessage") {
-      this.log.info(`First start after installation detected.`);
-      const templateTable = this.library.cloneGenericObject(config.native.templateTable);
-      for (const a in config.native.templateTable) {
-        templateTable[a].template = this.library.getTranslation(
-          config.native.templateTable[a].template
-        );
-        this.log.debug(
-          `Read default template from i18n: ${this.library.getTranslation(
-            config.native.templateTable[a].template
-          )}`
-        );
-      }
-      this.config.templateTable = templateTable;
-      this.log.info(`Write default templates to config for ${this.namespace}!`);
-      native = native || {};
-      native = { ...native, templateTable };
-      change = true;
-    }
-    if (native !== void 0 && change) {
-      await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-        native
-      });
     }
     this.setTimeout(
       async function(that) {
@@ -422,7 +434,7 @@ class WeatherWarnings extends utils.Adapter {
       }
     }
   }
-  onStateChange(id, state) {
+  async onStateChange(id, state) {
     if (!state)
       return;
     if (state.ack)
@@ -432,7 +444,8 @@ class WeatherWarnings extends utils.Adapter {
       if (this.providerController)
         this.providerController.onStatePush(id);
     }
-    this.library.writedp(id, false);
+    await this.library.writedp(id.replace(`${this.namespace}.`, ""), state.val);
+    await this.providerController.setSpeakAllowed();
   }
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {
