@@ -26,12 +26,14 @@ var definitionen_exports = {};
 __export(definitionen_exports, {
   Defaults: () => Defaults,
   PROVIDER_OPTIONS: () => PROVIDER_OPTIONS,
+  actionStates: () => actionStates,
   defaultChannel: () => defaultChannel,
   genericStateObjects: () => genericStateObjects,
   statesObjectsWarnings: () => statesObjectsWarnings
 });
 module.exports = __toCommonJS(definitionen_exports);
 var messagesDef = __toESM(require("./messages-def"));
+var providerDef = __toESM(require("./provider-def"));
 const defaultChannel = {
   _id: "",
   type: "channel",
@@ -2123,8 +2125,67 @@ const statesObjectsWarnings = {
           write: true
         },
         native: {}
+      },
+      silentTime: {
+        _channel: {
+          _id: "",
+          type: "channel",
+          common: { name: "statesObjectsWarnings.allService.command.silentTime" },
+          native: {}
+        },
+        isSpeakAllowed: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed",
+            type: "boolean",
+            role: "switch.mode.silent",
+            read: true,
+            write: true
+          },
+          native: {}
+        },
+        autoMode: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "statesObjectsWarnings.allService.command.silentTime.autoMode",
+            type: "boolean",
+            role: "switch.mode.auto",
+            read: true,
+            write: true
+          },
+          native: {}
+        },
+        profil: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "statesObjectsWarnings.allService.command.silentTime.profil",
+            type: "number",
+            role: "level.mode",
+            states: providerDef.silentTimeKeys,
+            read: true,
+            write: true
+          },
+          native: {}
+        }
       }
     }
+  }
+};
+const actionStates = {
+  "command.silentTime.autoMode": {
+    def: statesObjectsWarnings.allService.command.silentTime.autoMode,
+    default: true
+  },
+  "command.silentTime.isSpeakAllowed": {
+    def: statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed,
+    default: true
+  },
+  "command.silentTime.profil": {
+    def: statesObjectsWarnings.allService.command.silentTime.profil,
+    default: 0
   }
 };
 const Defaults = {
@@ -2179,6 +2240,7 @@ const PROVIDER_OPTIONS = {
 0 && (module.exports = {
   Defaults,
   PROVIDER_OPTIONS,
+  actionStates,
   defaultChannel,
   genericStateObjects,
   statesObjectsWarnings

@@ -15,6 +15,7 @@ import * as messagesDef from './lib/def/messages-def';
 import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationService-def.js';
+import { actionStates } from './lib/def/definitionen.js';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -481,6 +482,11 @@ class WeatherWarnings extends utils.Adapter {
                 for (const a in self.providerController.providers) {
                     holdStates.push(self.providerController.providers[a].name);
                 }
+                holdStates.push('command');
+                holdStates.push('info.connection');
+                holdStates.push('provider.activeWarnings_json');
+                holdStates.push('provider.history');
+                holdStates.push('provider.activeWarnings');
                 await self.library.cleanUpTree(holdStates, 3);
 
                 self.providerController.updateCommandStates();
@@ -527,7 +533,9 @@ class WeatherWarnings extends utils.Adapter {
         if (!state) return;
         if (state.ack) return;
         this.library.setdb(id.replace(`${this.namespace}.`, ''), 'state', state.val, undefined, state.ack, state.ts);
-        if (this.providerController) this.providerController.onStatePush(id);
+        if (actionStates[id.replace(`${this.namespace}.`, '')] == undefined)
+            if (this.providerController) this.providerController.onStatePush(id);
+        this.library.writedp(id, false);
     }
 
     /**

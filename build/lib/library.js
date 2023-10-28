@@ -244,6 +244,7 @@ class Library extends BaseClass {
     }
     for (const a in del) {
       await this.adapter.delObjectAsync(del[a], { recursive: true });
+      this.log.debug(`Clean up tree delete: ${del[a]}`);
     }
   }
   cleandp(string, lowerCase = false) {

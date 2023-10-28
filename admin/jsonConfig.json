@@ -255,11 +255,37 @@
                     "type": "table",
                     "newLine": true,
                     "sm": 12,
-                    "md": 8,
-                    "lg": 8,
+                    "md": 12,
+                    "lg": 12,
                     "default": [],
                     "label": "speakSilentTime",
                     "items": [
+                        {
+                            "type": "select",
+                            "attr": "profil",
+                            "title": "Profil",
+                            "options": [
+                                {
+                                    "label": "allDays",
+                                    "value": "alldays"
+                                },
+                                {
+                                    "label": "Holidays",
+                                    "value": "holidays"
+                                },
+                                {
+                                    "label": "Guests",
+                                    "value": "guests"
+                                },
+                                {
+                                    "label": "Custom",
+                                    "value": "custom"
+                                }
+                            ],
+                            "default": "alldays",
+                            "width": "20% ",
+                            "newLine": true
+                        },
                         {
                             "type": "selectSendTo",
                             "command": "weekdays",
@@ -267,16 +293,15 @@
                             "manual": false,
                             "multiple": true,
                             "attr": "day",
-                            "width": "30% ",
+                            "width": "40% ",
                             "title": "dayoftheweak",
                             "filter": false,
-                            "sort": false,
-                            "default": ""
+                            "sort": false
                         },
                         {
                             "type": "text",
                             "attr": "start",
-                            "width": "30% ",
+                            "width": "20% ",
                             "title": "speakStart",
                             "filter": false,
                             "sort": false,
@@ -285,7 +310,7 @@
                         {
                             "type": "text",
                             "attr": "end",
-                            "width": "30% ",
+                            "width": "20% ",
                             "title": "speakEnd",
                             "filter": false,
                             "sort": false,
@@ -1241,8 +1266,8 @@
                 },
                 "whatsapp_Phonenumber": {
                     "type": "text",
-                    "label":"whatsapp_Phonenumber",
-                    "newLine":true,
+                    "label": "whatsapp_Phonenumber",
+                    "newLine": true,
                     "disabled": "data.whatsapp_Adapter == 'none'"
                 },
                 "restoreDefault": {
@@ -1257,7 +1282,6 @@
                     "hidden": "true",
                     "useNative": true
                 }
-                
             }
         },
         "_pushover": {
@@ -1573,7 +1597,6 @@
                     "label": "pushover_Device",
                     "newLine": true
                 },
-                
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",

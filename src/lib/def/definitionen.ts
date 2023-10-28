@@ -59,7 +59,9 @@ export type statesObjectsWarningsType = {
             ChangeTypeOfKeys<Required<messagesDef.customFormatedKeysDef>, ioBroker.StateObject>;
         alerts: customChannelType & messagesDef.genericWarntypStatesTree;
         command: customChannelType &
-            ChangeTypeOfKeys<Required<Record<notificationServiceDef.Type, string>>, ioBroker.StateObject>;
+            ChangeTypeOfKeys<Required<Record<notificationServiceDef.Type, string>>, ioBroker.StateObject> & {
+                silentTime: customChannelType & Record<'autoMode' | 'isSpeakAllowed' | 'profil', ioBroker.StateObject>;
+            };
     };
 };
 
@@ -2169,7 +2171,67 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
+            silentTime: {
+                _channel: {
+                    _id: '',
+                    type: 'channel',
+                    common: { name: 'statesObjectsWarnings.allService.command.silentTime' },
+                    native: {},
+                },
+                isSpeakAllowed: {
+                    _id: '',
+                    type: 'state',
+                    common: {
+                        name: 'statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed',
+                        type: 'boolean',
+                        role: 'switch.mode.silent',
+                        read: true,
+                        write: true,
+                    },
+                    native: {},
+                },
+                autoMode: {
+                    _id: '',
+                    type: 'state',
+                    common: {
+                        name: 'statesObjectsWarnings.allService.command.silentTime.autoMode',
+                        type: 'boolean',
+                        role: 'switch.mode.auto',
+                        read: true,
+                        write: true,
+                    },
+                    native: {},
+                },
+                profil: {
+                    _id: '',
+                    type: 'state',
+                    common: {
+                        name: 'statesObjectsWarnings.allService.command.silentTime.profil',
+                        type: 'number',
+                        role: 'level.mode',
+                        states: providerDef.silentTimeKeys,
+                        read: true,
+                        write: true,
+                    },
+                    native: {},
+                },
+            },
         },
+    },
+};
+
+export const actionStates: { [dp: string]: { def: ioBroker.StateObject; default: boolean | number | string } } = {
+    'command.silentTime.autoMode': {
+        def: statesObjectsWarnings.allService.command.silentTime.autoMode,
+        default: true,
+    },
+    'command.silentTime.isSpeakAllowed': {
+        def: statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed,
+        default: true,
+    },
+    'command.silentTime.profil': {
+        def: statesObjectsWarnings.allService.command.silentTime.profil,
+        default: 0,
     },
 };
 export const Defaults = {
