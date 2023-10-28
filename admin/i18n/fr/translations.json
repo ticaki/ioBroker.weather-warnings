@@ -356,8 +356,6 @@
     "statesObjectsWarnings.allService.formatedkeys.description": "Description de l'avertissement.",
     "statesObjectsWarnings.allService.formatedkeys.instruction": "Recommandations pour l'action de l'avertissement.",
     "statesObjectsWarnings.allService.formatedkeys.impact": "Description de l'impact de l'avertissement.",
-    "statesObjectsWarnings.allService.formatedkeys.ceiling": "Valeur supérieure de la plage de hauteur en mètres.",
-    "statesObjectsWarnings.allService.formatedkeys.altitude": "Valeur supérieure de la plage de hauteur en mètres.",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelname": "Niveau d'avertissement comme nom de niveau",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname": "Niveau d'avertissement comme nom de couleur",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelnumber": "Niveau d'avertissement sous forme de nombre",
