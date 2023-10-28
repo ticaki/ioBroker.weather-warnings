@@ -124,7 +124,7 @@ class WeatherWarnings extends utils.Adapter {
                             '\n');
                 }
                 reply = reply.slice(0, -2);
-                if (JSON.stringify(obj.native.templateHelp) != JSON.stringify(reply)) {
+                if (obj.native.templateHelp.valueOf() != reply.valueOf()) {
                     obj.native.templateHelp = reply;
                     change = true;
                     this.log.info('Update configuration. Reason: templateHelp');
