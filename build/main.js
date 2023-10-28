@@ -434,7 +434,7 @@ class WeatherWarnings extends utils.Adapter {
       }
     }
   }
-  onStateChange(id, state) {
+  async onStateChange(id, state) {
     if (!state)
       return;
     if (state.ack)
@@ -444,7 +444,8 @@ class WeatherWarnings extends utils.Adapter {
       if (this.providerController)
         this.providerController.onStatePush(id);
     }
-    this.library.writedp(id.replace(`${this.namespace}.`, ""), false);
+    await this.library.writedp(id.replace(`${this.namespace}.`, ""), state.val);
+    await this.providerController.setSpeakAllowed();
   }
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {

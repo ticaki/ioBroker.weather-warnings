@@ -498,7 +498,7 @@ export class ProviderController extends BaseClass {
     speakProfiles: string[] = [];
     silentTime: { shouldSpeakAllowed?: boolean; forceOff: boolean; profil: providerDef.silentTimeConfigType[][] } = {
         forceOff: false,
-        profil: [[], [], [], []],
+        profil: [],
     };
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
@@ -521,38 +521,40 @@ export class ProviderController extends BaseClass {
         const profileNames: string[] = [];
         if (this.adapter.config.silentTime !== undefined) {
             for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
-                let index = -1;
+                const index = -1;
                 profileNames.push(this.adapter.config.silentTime[p].speakProfile);
                 this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
-                this.silentTime.profil[++index] = (this.adapter.config.silentTime[p].silentTime || [])
-                    .map((item): providerDef.silentTimeConfigType | null => {
-                        const result: providerDef.silentTimeConfigType = {
-                            day: [],
-                            start: 0,
-                            end: 0,
-                        };
-                        for (const a in item) {
-                            const b = a as keyof typeof item;
-                            if (b != 'day' && item[b].indexOf(':') != -1) {
-                                const t = item[b].split(':');
-                                if (Number.isNaN(t[0])) return null;
-                                if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
-                                    t[1] = String(parseInt(t[1]) / 60);
-                                    item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-                                } else item[b] = t[0];
+                this.silentTime.profil.push(
+                    (this.adapter.config.silentTime[p].silentTime || [])
+                        .map((item): providerDef.silentTimeConfigType | null => {
+                            const result: providerDef.silentTimeConfigType = {
+                                day: [],
+                                start: 0,
+                                end: 0,
+                            };
+                            for (const a in item) {
+                                const b = a as keyof typeof item;
+                                if (b != 'day' && item[b].indexOf(':') != -1) {
+                                    const t = item[b].split(':');
+                                    if (Number.isNaN(t[0])) return null;
+                                    if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
+                                        t[1] = String(parseInt(t[1]) / 60);
+                                        item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
+                                    } else item[b] = t[0];
+                                }
+                                if (b == 'day') result.day = item.day;
+                                else if (b == 'end') result.end = parseFloat(item.end);
+                                else result.start = parseFloat(item.start);
                             }
-                            if (b == 'day') result.day = item.day;
-                            else if (b == 'end') result.end = parseFloat(item.end);
-                            else result.start = parseFloat(item.start);
-                        }
-                        this.log.info(
-                            `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${
-                                result.start
-                            } end: ${result.end} days: ${JSON.stringify(result.day)}`,
-                        );
-                        return result;
-                    })
-                    .filter((f) => f != null) as providerDef.silentTimeConfigType[];
+                            this.log.info(
+                                `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${
+                                    result.start
+                                } end: ${result.end} days: ${JSON.stringify(result.day)}`,
+                            );
+                            return result;
+                        })
+                        .filter((f) => f != null) as providerDef.silentTimeConfigType[],
+                );
             }
             definitionen.statesObjectsWarnings.allService.command.silentTime.profil.common.states = profileNames;
             this.library.writedp(

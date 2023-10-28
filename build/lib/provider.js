@@ -466,7 +466,7 @@ class ProviderController extends import_library.BaseClass {
   speakProfiles = [];
   silentTime = {
     forceOff: false,
-    profil: [[], [], [], []]
+    profil: []
   };
   constructor(adapter) {
     super(adapter, "provider");
@@ -487,39 +487,41 @@ class ProviderController extends import_library.BaseClass {
     const profileNames = [];
     if (this.adapter.config.silentTime !== void 0) {
       for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
-        let index = -1;
+        const index = -1;
         profileNames.push(this.adapter.config.silentTime[p].speakProfile);
         this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
-        this.silentTime.profil[++index] = (this.adapter.config.silentTime[p].silentTime || []).map((item) => {
-          const result = {
-            day: [],
-            start: 0,
-            end: 0
-          };
-          for (const a in item) {
-            const b = a;
-            if (b != "day" && item[b].indexOf(":") != -1) {
-              const t = item[b].split(":");
-              if (Number.isNaN(t[0]))
-                return null;
-              if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
-                t[1] = String(parseInt(t[1]) / 60);
-                item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-              } else
-                item[b] = t[0];
+        this.silentTime.profil.push(
+          (this.adapter.config.silentTime[p].silentTime || []).map((item) => {
+            const result = {
+              day: [],
+              start: 0,
+              end: 0
+            };
+            for (const a in item) {
+              const b = a;
+              if (b != "day" && item[b].indexOf(":") != -1) {
+                const t = item[b].split(":");
+                if (Number.isNaN(t[0]))
+                  return null;
+                if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
+                  t[1] = String(parseInt(t[1]) / 60);
+                  item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
+                } else
+                  item[b] = t[0];
+              }
+              if (b == "day")
+                result.day = item.day;
+              else if (b == "end")
+                result.end = parseFloat(item.end);
+              else
+                result.start = parseFloat(item.start);
             }
-            if (b == "day")
-              result.day = item.day;
-            else if (b == "end")
-              result.end = parseFloat(item.end);
-            else
-              result.start = parseFloat(item.start);
-          }
-          this.log.info(
-            `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${result.start} end: ${result.end} days: ${JSON.stringify(result.day)}`
-          );
-          return result;
-        }).filter((f) => f != null);
+            this.log.info(
+              `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${result.start} end: ${result.end} days: ${JSON.stringify(result.day)}`
+            );
+            return result;
+          }).filter((f) => f != null)
+        );
       }
       definitionen.statesObjectsWarnings.allService.command.silentTime.profil.common.states = profileNames;
       this.library.writedp(

@@ -544,13 +544,14 @@ class WeatherWarnings extends utils.Adapter {
      * Is called if a subscribed state changes
      * We need this later, dont remove
      */
-    private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
+    private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
         if (!state) return;
         if (state.ack) return;
         this.library.setdb(id.replace(`${this.namespace}.`, ''), 'state', state.val, undefined, state.ack, state.ts);
         if (actionStates[id.replace(`${this.namespace}.`, '')] == undefined)
             if (this.providerController) this.providerController.onStatePush(id);
-        this.library.writedp(id.replace(`${this.namespace}.`, ''), false);
+        await this.library.writedp(id.replace(`${this.namespace}.`, ''), state.val);
+        await this.providerController!.setSpeakAllowed();
     }
 
     /**
