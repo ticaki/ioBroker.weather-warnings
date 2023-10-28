@@ -380,7 +380,6 @@
     "genericWarntypState.headline": "Überschrift",
     "genericWarntypState.type": "Warntyp",
     "genericWarntypState.active": "Warnung ist aktiv.",
-    "statesObjectsWarnings.allService.formatedkeys.ceiling": "Oberer Wert des Höhenbereichs in Metern.",
     "statesObjectsWarnings.allService.formatedkeys.altitude": "Oberer Wert des Höhenbereichs in Metern.",
     "manualAll": "Wählen Sie die Vorlage aus, die für Warnungen bei manuell ausgelösten Benachrichtigungen verwendet werden soll.",
     "ManualTypeFilter": "Die folgenden Warntypen werden aus manuell ausgelösten Benachrichtigungen herausgefiltert.",

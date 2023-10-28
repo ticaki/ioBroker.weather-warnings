@@ -356,7 +356,6 @@
     "statesObjectsWarnings.allService.formatedkeys.description": "Beschrijving van waarschuwing.",
     "statesObjectsWarnings.allService.formatedkeys.instruction": "Aanbevelingen voor actie van de waarschuwing.",
     "statesObjectsWarnings.allService.formatedkeys.impact": "Impactbeschrijving van waarschuwing.",
-    "statesObjectsWarnings.allService.formatedkeys.ceiling": "Bovenste waarde van het hoogtebereik in meter.",
     "statesObjectsWarnings.allService.formatedkeys.altitude": "Bovenste waarde van het hoogtebereik in meter.",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelname": "Waarschuwingsniveau als niveaunaam",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname": "Waarschuwingsniveau als kleurnaam",

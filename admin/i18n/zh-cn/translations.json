@@ -356,7 +356,6 @@
     "statesObjectsWarnings.allService.formatedkeys.description": "警告描述。",
     "statesObjectsWarnings.allService.formatedkeys.instruction": "针对警告采取的行动建议。",
     "statesObjectsWarnings.allService.formatedkeys.impact": "警告的影响描述。",
-    "statesObjectsWarnings.allService.formatedkeys.ceiling": "高度范围的上限值（以米为单位）。",
     "statesObjectsWarnings.allService.formatedkeys.altitude": "高度范围的上限值（以米为单位）。",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelname": "警告级别作为 Levelname",
     "statesObjectsWarnings.allService.formatedkeys.warnlevelcolorname": "警告级别作为 Colorname",
