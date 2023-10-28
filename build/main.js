@@ -116,7 +116,7 @@ class WeatherWarnings extends utils.Adapter {
           ) + "\n");
         }
         reply = reply.slice(0, -2);
-        if (this.config.templateHelp != reply) {
+        if (obj.native.templateHelp != reply) {
           obj.native.templateHelp = reply;
           change = true;
           this.log.info("Update configuration. Reason: templateHelp");
@@ -177,7 +177,6 @@ class WeatherWarnings extends utils.Adapter {
           (a) => a.warntypenumber == Number(0)
         );
         if (index == -1) {
-          change = true;
           sounds.push({
             warntypenumber: Number(0),
             warntype: this.library.getTranslation("template.RemoveAllMessage"),
@@ -186,12 +185,11 @@ class WeatherWarnings extends utils.Adapter {
         } else {
           const t = this.library.getTranslation("template.RemoveAllMessage");
           if (t != sounds[index].warntype) {
-            change = true;
             sounds[index].warntype = t;
           }
         }
-        this.config.alexa2_sounds = sounds;
-        if (change) {
+        if (obj.native.alexa2_sounds != sounds) {
+          change = true;
           this.log.info("Update configuration. Reason: alexa2_sounds");
           obj.native.alexa2_sounds = sounds;
         }
