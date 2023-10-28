@@ -495,7 +495,7 @@ export class ProviderController extends BaseClass {
     //globalSpeakSilentTime: ({ profil: string; day: number[]; start: number; end: number } | null)[] = [];
     testStatus = 0;
     activeMessages = 0;
-    isSilentTime: boolean = true;
+    speakProfiles: string[] = [];
     silentTime: { shouldSpeakAllowed?: boolean; forceOff: boolean; profil: providerDef.silentTimeConfigType[][] } = {
         forceOff: false,
         profil: [[], [], [], []],
@@ -518,22 +518,21 @@ export class ProviderController extends BaseClass {
             states[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
         }
         definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
-
+        const profileNames: string[] = [];
         if (this.adapter.config.silentTime !== undefined) {
-            for (let p = 0; p < providerDef.silentTimeKeys.length; p++) {
+            for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
                 let index = -1;
-                this.silentTime.profil[++index] = (this.adapter.config.silentTime || [])
-                    .filter((f) => f && providerDef.silentTimeKeys[index] == f.profil)
+                profileNames.push(this.adapter.config.silentTime[p].speakProfile);
+                this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
+                this.silentTime.profil[++index] = (this.adapter.config.silentTime[p].silentTime || [])
                     .map((item): providerDef.silentTimeConfigType | null => {
                         const result: providerDef.silentTimeConfigType = {
                             day: [],
                             start: 0,
                             end: 0,
                         };
-
                         for (const a in item) {
                             const b = a as keyof typeof item;
-                            if (b == 'profil') continue;
                             if (b != 'day' && item[b].indexOf(':') != -1) {
                                 const t = item[b].split(':');
                                 if (Number.isNaN(t[0])) return null;
@@ -547,7 +546,7 @@ export class ProviderController extends BaseClass {
                             else result.start = parseFloat(item.start);
                         }
                         this.log.info(
-                            `Silent time added: Profil: ${providerDef.silentTimeKeys[index]} start: ${
+                            `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${
                                 result.start
                             } end: ${result.end} days: ${JSON.stringify(result.day)}`,
                         );
@@ -555,14 +554,20 @@ export class ProviderController extends BaseClass {
                     })
                     .filter((f) => f != null) as providerDef.silentTimeConfigType[];
             }
+            definitionen.statesObjectsWarnings.allService.command.silentTime.profil.common.states = profileNames;
             this.library.writedp(
                 `command.silentTime`,
                 undefined,
                 definitionen.statesObjectsWarnings.allService.command.silentTime._channel,
             );
-            for (const dp in definitionen.actionStates) {
-                const data = definitionen.actionStates[dp as keyof typeof definitionen.actionStates];
-                if (!this.library.readdp(dp)) this.library.writedp(dp, data.default, data.def);
+            for (const a in definitionen.actionStates) {
+                const dp = a as keyof typeof definitionen.actionStates;
+                const data = definitionen.actionStates[dp];
+                if (!this.library.readdp(String(dp))) await this.library.writedp(String(dp), data.default, data.def);
+                else {
+                    const def = definitionen.actionStates[dp].def;
+                    await this.adapter.extendObjectAsync(String(dp), { common: def.common });
+                }
             }
         }
 

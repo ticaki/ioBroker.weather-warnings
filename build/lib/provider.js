@@ -37,7 +37,6 @@ module.exports = __toCommonJS(provider_exports);
 var import_axios = __toESM(require("axios"));
 var definitionen = __toESM(require("./def/definitionen"));
 var import_library = require("./library");
-var providerDef = __toESM(require("./def/provider-def"));
 var import_messages = require("./messages");
 var NotificationClass = __toESM(require("./notification"));
 var import_test_warnings = require("./test-warnings");
@@ -464,7 +463,7 @@ class ProviderController extends import_library.BaseClass {
   pushOn = false;
   testStatus = 0;
   activeMessages = 0;
-  isSilentTime = true;
+  speakProfiles = [];
   silentTime = {
     forceOff: false,
     profil: [[], [], [], []]
@@ -485,10 +484,13 @@ class ProviderController extends import_library.BaseClass {
       states[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
     }
     definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
+    const profileNames = [];
     if (this.adapter.config.silentTime !== void 0) {
-      for (let p = 0; p < providerDef.silentTimeKeys.length; p++) {
+      for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
         let index = -1;
-        this.silentTime.profil[++index] = (this.adapter.config.silentTime || []).filter((f) => f && providerDef.silentTimeKeys[index] == f.profil).map((item) => {
+        profileNames.push(this.adapter.config.silentTime[p].speakProfile);
+        this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
+        this.silentTime.profil[++index] = (this.adapter.config.silentTime[p].silentTime || []).map((item) => {
           const result = {
             day: [],
             start: 0,
@@ -496,8 +498,6 @@ class ProviderController extends import_library.BaseClass {
           };
           for (const a in item) {
             const b = a;
-            if (b == "profil")
-              continue;
             if (b != "day" && item[b].indexOf(":") != -1) {
               const t = item[b].split(":");
               if (Number.isNaN(t[0]))
@@ -516,20 +516,26 @@ class ProviderController extends import_library.BaseClass {
               result.start = parseFloat(item.start);
           }
           this.log.info(
-            `Silent time added: Profil: ${providerDef.silentTimeKeys[index]} start: ${result.start} end: ${result.end} days: ${JSON.stringify(result.day)}`
+            `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${result.start} end: ${result.end} days: ${JSON.stringify(result.day)}`
           );
           return result;
         }).filter((f) => f != null);
       }
+      definitionen.statesObjectsWarnings.allService.command.silentTime.profil.common.states = profileNames;
       this.library.writedp(
         `command.silentTime`,
         void 0,
         definitionen.statesObjectsWarnings.allService.command.silentTime._channel
       );
-      for (const dp in definitionen.actionStates) {
+      for (const a in definitionen.actionStates) {
+        const dp = a;
         const data = definitionen.actionStates[dp];
-        if (!this.library.readdp(dp))
-          this.library.writedp(dp, data.default, data.def);
+        if (!this.library.readdp(String(dp)))
+          await this.library.writedp(String(dp), data.default, data.def);
+        else {
+          const def = definitionen.actionStates[dp].def;
+          await this.adapter.extendObjectAsync(String(dp), { common: def.common });
+        }
       }
     }
   }

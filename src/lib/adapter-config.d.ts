@@ -23,7 +23,17 @@ declare global {
 
             alexa2_sounds: { warntype: string; sound: string; warntypenumber: number }[];
             alexa2_sounds_enabled: boolean;
-            silentTime: { profil: silentTimeType; day: string[]; start: string; end: string }[];
+
+            silentTime: Array<{
+                profil?: string;
+                speakProfile: string;
+                silentTime: Array<{
+                    day: Array<string>;
+                    start: string;
+                    end: string;
+                }>;
+            }>;
+
             icons_prefix: string;
             icons_suffix: string;
             icons_description: string;
