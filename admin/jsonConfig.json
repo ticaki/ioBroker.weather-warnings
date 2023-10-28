@@ -300,7 +300,7 @@
                             "md": 12,
                             "lg": 12,
                             "default": [],
-                            "label": "speakSilentTime",
+                            "label": "speakSilentTimeDetail",
                             "items": [            
                                 {
                                     "type": "selectSendTo",

@@ -520,5 +520,11 @@
     "addDefault": "Aggiungi modelli predefiniti",
     "addDefaultToolTip": "Aggiungi i modelli standard purché la chiave del modello sia libera. Non viene sovrascritto.",
     "statesObjectsWarnings.allService.formatedkeys.warningcount": "Numero di avvisi",
-    "providerEveryChange": "Gli avvisi vengono considerati nuovi ogni volta che vengono modificati."
+    "providerEveryChange": "Gli avvisi vengono considerati nuovi ogni volta che vengono modificati.",
+    "statesObjectsWarnings.allService.command.silentTime": "Comandi di tempi tranquilli",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Imposta la voce consentita.(automatico/manuale)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Imposta la modalità automatica",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Seleziona il profilo attivo.",
+    "profileName": "Nome del profilo",
+    "speakSilentTimeDetail": "Tabella dei tempi"
 }

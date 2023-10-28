@@ -520,5 +520,11 @@
     "whatsapp_Phonenumber": "Phonenumber",
     "addDefault": "Add default templates",
     "addDefaultToolTip": "Add the standard templates as long as the template key is free. It is not overwritten.",
-    "providerEveryChange": "Warnings are considered new each time they are changed."
+    "providerEveryChange": "Warnings are considered new each time they are changed.",
+    "statesObjectsWarnings.allService.command.silentTime":"Quiet times commands",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed":"Set speak allowed.(auto/manual)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode":"Set the automatic mode",
+    "statesObjectsWarnings.allService.command.silentTime.profil":"Select the active profil.",
+    "profileName":"Profile name",
+    "speakSilentTimeDetail":"Table of Times"
 }

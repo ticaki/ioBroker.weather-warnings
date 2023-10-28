@@ -521,7 +521,6 @@ export class ProviderController extends BaseClass {
         const profileNames: string[] = [];
         if (this.adapter.config.silentTime !== undefined) {
             for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
-                const index = -1;
                 profileNames.push(this.adapter.config.silentTime[p].speakProfile);
                 this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
                 this.silentTime.profil.push(
