@@ -292,8 +292,8 @@ export type notificationMessageType = {
     | 'thaw';*/
 
 export const genericWarntyp: genericWarntypeType = {
-    '0': { name: 'textLevels.textGeneric.0', id: 'none', dwdService: [-1], uwzService: [-1], zamgService: [-1] },
-    '1': { name: 'genericWarntyp.1.name', id: 'unknown', dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
+    '0': { name: 'textLevels.textGeneric.0', id: 'none', dwdService: [0], uwzService: [0], zamgService: [0] },
+    '1': { name: 'genericWarntyp.1.name', id: 'unknown', dwdService: [], uwzService: [1], zamgService: [8] },
     '2': {
         name: 'genericWarntyp.2.name',
         id: 'storm',
@@ -360,7 +360,7 @@ export function filterWarntype(p: providerServices, f: string[], o: number): boo
 
 export const warnTypeName: warnTypeNameType = {
     uwzService: {
-        '0': 'warnTypeName.uwzService.0',
+        '0': 'textLevels.textGeneric.0',
         '1': 'warnTypeName.uwzService.1',
         '2': 'warnTypeName.uwzService.2',
         '3': 'warnTypeName.uwzService.3',
@@ -374,7 +374,7 @@ export const warnTypeName: warnTypeNameType = {
         '11': 'warnTypeName.uwzService.11',
     },
     zamgService: {
-        '0': 'warnTypeName.zamgService.0',
+        '0': 'textLevels.textGeneric.0',
         '1': 'warnTypeName.zamgService.1',
         '2': 'warnTypeName.zamgService.2',
         '3': 'warnTypeName.zamgService.3',
@@ -385,6 +385,7 @@ export const warnTypeName: warnTypeNameType = {
         '8': 'warnTypeName.zamgService.8',
     },
     dwdService: {
+        '0': 'textLevels.textGeneric.0',
         '22': 'warnTypeName.dwdService.22',
         '24': 'warnTypeName.dwdService.24',
         '31': 'warnTypeName.dwdService.31',
@@ -476,6 +477,7 @@ interface ZamgService {
 }
 
 interface DwdService {
+    '0': string;
     '22': string;
     '24': string;
     '31': string;
@@ -537,7 +539,7 @@ interface DwdService {
 export const level = {
     uwz: { green: 0, darkgreen: 0, yellow: 1, orange: 2, red: 3, violet: 4 },
 };
-export const dwdLevel = { minor: 1, moderate: 2, severe: 3, extreme: 4 };
+export const dwdLevel = { none: 0, minor: 1, moderate: 2, severe: 3, extreme: 4 };
 /*
 40: 'vORABINFORMATION schweres Gewitter',
         55: 'vORABINFORMATION Orkanböen',

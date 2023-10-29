@@ -67,7 +67,7 @@ class BaseProvider extends import_library.BaseClass {
     this.log.setLogPrefix(`${name}-${options.warncellId}`);
     this.filter = options.filter;
     this.customName = options.customName;
-    this.noMessage = new import_messages.MessagesClass(this.adapter, "noMessage", null, {}, this.providerController, this.name);
+    this.noMessage = new import_messages.MessagesClass(this.adapter, "noMessage", null, {}, this.providerController, this);
     this.noMessage.updateFormated();
     const temp = this.library.cloneGenericObject(
       definitionen.statesObjectsWarnings[this.service]._channel
@@ -489,11 +489,23 @@ class ProviderController extends import_library.BaseClass {
   async init() {
     this.pushOn = !this.adapter.config.notPushAtStart;
     this.refreshTime = this.adapter.config.refreshTime * 6e4;
-    const states = [];
+    const typeStates = [];
     for (const a in messagesDef.genericWarntyp) {
-      states[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
+      typeStates[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
     }
-    definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
+    definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = typeStates;
+    const states = await this.adapter.getStatesAsync("provider.*");
+    for (const state in states) {
+      if (state.includes(".formatedKeys.")) {
+        const key = state.split(".").pop();
+        if (definitionen.statesObjectsWarnings.allService.formatedkeys[key] != void 0) {
+          await this.adapter.extendObjectAsync(
+            state.replace(`${this.adapter.name}.${this.adapter.instance}.`, ""),
+            definitionen.statesObjectsWarnings.allService.formatedkeys[key]
+          );
+        }
+      }
+    }
     const profileNames = [];
     if (this.adapter.config.silentTime !== void 0) {
       for (let p = 0; p < this.adapter.config.silentTime.length; p++) {

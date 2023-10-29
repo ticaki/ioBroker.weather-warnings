@@ -4,7 +4,7 @@ export * from '../provider';
 /**Available provider identifier strings */
 export type providerServices = 'dwdService' | 'zamgService' | 'ninaService' | 'uwzService' | 'metroService';
 
-export const providerServicesArray = ['dwdService', 'zamgService', 'uwzService']; //, 'uwzService', 'metroService'];
+export const providerServicesArray: providerServices[] = ['dwdService', 'zamgService', 'uwzService']; //, 'uwzService', 'metroService'];
 export type ProviderClassType =
     | Provider.DWDProvider
     | Provider.ZAMGProvider

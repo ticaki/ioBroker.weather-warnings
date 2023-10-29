@@ -6,6 +6,7 @@ import { messageFilterType } from './def/provider-def';
 import * as library from './library';
 import * as Provider from './def/provider-def';
 import { NotificationClass } from './notification';
+import { defaultData } from './test-warnings';
 
 type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
     ? { [K in keyof Obj]: ChangeTypeOfKeys<Obj[K], newKey> }
@@ -602,14 +603,14 @@ export class MessagesClass extends library.BaseClass {
             },
         },
     };
-    providerName: string = '';
+    providerParent: Provider.ProviderClassType | null = null;
     constructor(
         adapter: WeatherWarnings,
         name: string,
         provider: Provider.ProviderClassType | null,
         data: object,
         pcontroller: Provider.ProviderController,
-        providerName: string = '',
+        providerParent: Provider.ProviderClassType | null = null,
     ) {
         super(adapter, name);
 
@@ -621,7 +622,7 @@ export class MessagesClass extends library.BaseClass {
         this.rawWarning = data;
         this.templates = this.adapter.config.templateTable;
         this.providerController = pcontroller;
-        this.providerName = this.provider ? this.provider.name : providerName;
+        this.providerParent = providerParent ? providerParent : null;
         switch (provider ? provider.service : 'default') {
             case `dwdService`:
             case `uwzService`:
@@ -635,17 +636,46 @@ export class MessagesClass extends library.BaseClass {
                     }
                 }
                 break;
-            default:
+            default: {
                 const json = this.formatedKeyCommand['default'];
                 for (const k in json) {
                     const key = k as keyof MessageType.customFormatedKeysDef;
                     const data = json[key];
                     this.addFormatedDefinition(key, data);
                 }
+                switch (this.providerParent ? this.providerParent.service : '') {
+                    case `dwdService`:
+                        {
+                            this.rawWarning = defaultData.dwdService;
+                        }
+                        break;
+                    case `uwzService`:
+                        {
+                            this.rawWarning = defaultData.uwzService;
+                        }
+                        break;
+                    case `zamgService`:
+                        {
+                            this.rawWarning = defaultData.zamgService;
+                        }
+                        break;
+                    default: {
+                    }
+                }
+                if (this.providerParent) {
+                    const json = this.formatedKeyCommand[this.providerParent.service];
+                    for (const k in json) {
+                        const key = k as keyof MessageType.customFormatedKeysDef;
+                        const data = json[key];
+                        this.addFormatedDefinition(key, data);
+                    }
+                }
+                break;
+            }
         }
     }
     async updateFormated(): Promise<customFormatedKR> {
-        switch (this.provider ? this.provider.service : 'default') {
+        switch (this.provider ? this.provider.service : this.providerParent ? this.providerParent.service : 'default') {
             case 'dwdService':
                 {
                     this.starttime = Number(await this.library.readWithJsonata(this.rawWarning, `$toMillis(ONSET)`));
@@ -710,7 +740,9 @@ export class MessagesClass extends library.BaseClass {
                 this.notDeleted = true;
             }
         }
-
+        if (this.name == 'noMessage') {
+            this.newMessage = false;
+        }
         const sortedWarntypes: Required<MessageType.genericWarntypeNumberType>[] = [
             10, 7, 2, 4, 3, 8, 9, 5, 6, 11, 12, 1,
         ];
@@ -841,7 +873,7 @@ export class MessagesClass extends library.BaseClass {
                             } else if (result) temp = arraykey[1];
                             if (temp.indexOf('\\${') != -1) {
                                 temp = temp.replace(/\\\${/g, '${');
-                                temp = temp.replace(/\\}/g, '}');
+                                temp = temp.replace(/\\+}/g, '}');
                                 rerun = true;
                             }
                             msg += temp;
@@ -876,7 +908,7 @@ export class MessagesClass extends library.BaseClass {
         return msg;
     }
     private returnMessage = (msg: string, time: number, template: string): NotificationType.MessageType => {
-        return { startts: time, text: msg.replace(/\\\\}/g, '}').replace(/\\\\n/g, '\n'), template: template };
+        return { startts: time, text: msg.replace(/\\+}/g, '}').replace(/\\+n/g, '\n'), template: template };
     };
 
     async updateFormatedData(): Promise<customFormatedKR> {
@@ -893,7 +925,7 @@ export class MessagesClass extends library.BaseClass {
                 ('00' + Math.abs(new Date().getTimezoneOffset() % 60)).slice(-2);
             const status = this.newMessage
                 ? MessageType.status.new
-                : this.notDeleted
+                : this.notDeleted && this.name != 'noMessage'
                 ? MessageType.status.hold
                 : MessageType.status.clear;
             const temp: any = {};
@@ -1030,6 +1062,7 @@ export class MessagesClass extends library.BaseClass {
             }
             case 'dwdcolor':
                 {
+                    if (!data) return '';
                     const rgb = data.split(' ');
                     if (rgb && rgb.length == 3) {
                         return (
@@ -1050,7 +1083,7 @@ export class MessagesClass extends library.BaseClass {
         return '';
     }
 
-    //** Update rawWanrings and dont delete message */
+    //** Update rawWarning and dont delete message */
     async updateData(data: object): Promise<void> {
         this.rawWarning = data;
         this.notDeleted = true;
@@ -1092,9 +1125,9 @@ export class MessagesClass extends library.BaseClass {
     }
     async writeFormatedKeys(index: number): Promise<void> {
         if (this.notDeleted) {
-            if (this.providerName)
+            if (this.providerParent)
                 this.library.writeFromJson(
-                    `${this.providerName}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
+                    `${this.providerParent.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
                     `allService.formatedkeys`,
                     statesObjectsWarnings,
                     this.formatedData,

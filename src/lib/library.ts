@@ -378,6 +378,7 @@ export class Library extends BaseClass {
             if (cmd == '') return '';
             try {
                 result = await jsonata(cmd).evaluate(data);
+                if (result == undefined) return '';
             } catch (error: any) {
                 this.log.error(error.message);
                 this.log.error(`The cmd: ${cmd} is invaild Message: ${error.message}.`);
@@ -412,11 +413,6 @@ export class Library extends BaseClass {
             if (!del) {
                 const obj = await this.adapter.getObjectAsync(dp);
                 if (!this.adapter.config.useJsonHistory && dp.endsWith('.warning.jsonHistory')) {
-                    this.log.debug('delete state: ' + dp);
-                    await this.adapter.delObjectAsync(dp);
-                    continue;
-                }
-                if (dp.endsWith('.warntypegeneric')) {
                     this.log.debug('delete state: ' + dp);
                     await this.adapter.delObjectAsync(dp);
                     continue;

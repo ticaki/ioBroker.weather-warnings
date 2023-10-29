@@ -59,7 +59,7 @@ export class BaseProvider extends BaseClass {
         this.filter = options.filter;
         this.customName = options.customName;
 
-        this.noMessage = new MessagesClass(this.adapter, 'noMessage', null, {}, this.providerController, this.name);
+        this.noMessage = new MessagesClass(this.adapter, 'noMessage', null, {}, this.providerController, this);
         this.noMessage.updateFormated();
         const temp = this.library.cloneGenericObject(
             //@ts-expect-error ist vorhanden
@@ -521,12 +521,28 @@ export class ProviderController extends BaseClass {
         this.pushOn = !this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
         this.refreshTime = this.adapter.config.refreshTime * 60000;
 
-        const states: string[] = [];
+        const typeStates: string[] = [];
         for (const a in messagesDef.genericWarntyp) {
             //@ts-expect-error dann so
-            states[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
+            typeStates[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
         }
-        definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = states;
+        definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = typeStates;
+        //update FormatedDataObjects
+        const states = await this.adapter.getStatesAsync('provider.*');
+        for (const state in states) {
+            if (state.includes('.formatedKeys.')) {
+                const key = state
+                    .split('.')
+                    .pop() as keyof typeof definitionen.statesObjectsWarnings.allService.formatedkeys;
+                if (definitionen.statesObjectsWarnings.allService.formatedkeys[key] != undefined) {
+                    await this.adapter.extendObjectAsync(
+                        state.replace(`${this.adapter.name}.${this.adapter.instance}.`, ''),
+                        definitionen.statesObjectsWarnings.allService.formatedkeys[key],
+                    );
+                }
+            }
+        }
+
         const profileNames: string[] = [];
         if (this.adapter.config.silentTime !== undefined) {
             for (let p = 0; p < this.adapter.config.silentTime.length; p++) {

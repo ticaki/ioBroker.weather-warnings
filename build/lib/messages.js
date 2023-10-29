@@ -30,6 +30,7 @@ module.exports = __toCommonJS(messages_exports);
 var import_definitionen = require("./def/definitionen");
 var MessageType = __toESM(require("./def/messages-def"));
 var library = __toESM(require("./library"));
+var import_test_warnings = require("./test-warnings");
 class MessagesClass extends library.BaseClass {
   provider;
   providerController;
@@ -591,8 +592,8 @@ class MessagesClass extends library.BaseClass {
       }
     }
   };
-  providerName = "";
-  constructor(adapter, name, provider, data, pcontroller, providerName = "") {
+  providerParent = null;
+  constructor(adapter, name, provider, data, pcontroller, providerParent = null) {
     super(adapter, name);
     if (!data && provider) {
       throw new Error(`${this.log.getName()} data is null`);
@@ -602,13 +603,48 @@ class MessagesClass extends library.BaseClass {
     this.rawWarning = data;
     this.templates = this.adapter.config.templateTable;
     this.providerController = pcontroller;
-    this.providerName = this.provider ? this.provider.name : providerName;
+    this.providerParent = providerParent ? providerParent : null;
     switch (provider ? provider.service : "default") {
       case `dwdService`:
       case `uwzService`:
       case `zamgService`:
         if (provider && provider.service) {
-          const json2 = this.formatedKeyCommand[provider.service];
+          const json = this.formatedKeyCommand[provider.service];
+          for (const k in json) {
+            const key = k;
+            const data2 = json[key];
+            this.addFormatedDefinition(key, data2);
+          }
+        }
+        break;
+      default: {
+        const json = this.formatedKeyCommand["default"];
+        for (const k in json) {
+          const key = k;
+          const data2 = json[key];
+          this.addFormatedDefinition(key, data2);
+        }
+        switch (this.providerParent ? this.providerParent.service : "") {
+          case `dwdService`:
+            {
+              this.rawWarning = import_test_warnings.defaultData.dwdService;
+            }
+            break;
+          case `uwzService`:
+            {
+              this.rawWarning = import_test_warnings.defaultData.uwzService;
+            }
+            break;
+          case `zamgService`:
+            {
+              this.rawWarning = import_test_warnings.defaultData.zamgService;
+            }
+            break;
+          default: {
+          }
+        }
+        if (this.providerParent) {
+          const json2 = this.formatedKeyCommand[this.providerParent.service];
           for (const k in json2) {
             const key = k;
             const data2 = json2[key];
@@ -616,17 +652,11 @@ class MessagesClass extends library.BaseClass {
           }
         }
         break;
-      default:
-        const json = this.formatedKeyCommand["default"];
-        for (const k in json) {
-          const key = k;
-          const data2 = json[key];
-          this.addFormatedDefinition(key, data2);
-        }
+      }
     }
   }
   async updateFormated() {
-    switch (this.provider ? this.provider.service : "default") {
+    switch (this.provider ? this.provider.service : this.providerParent ? this.providerParent.service : "default") {
       case "dwdService":
         {
           this.starttime = Number(await this.library.readWithJsonata(this.rawWarning, `$toMillis(ONSET)`));
@@ -687,6 +717,9 @@ class MessagesClass extends library.BaseClass {
         this.newMessage = false;
         this.notDeleted = true;
       }
+    }
+    if (this.name == "noMessage") {
+      this.newMessage = false;
     }
     const sortedWarntypes = [
       10,
@@ -818,7 +851,7 @@ class MessagesClass extends library.BaseClass {
                 temp2 = arraykey[1];
               if (temp2.indexOf("\\${") != -1) {
                 temp2 = temp2.replace(/\\\${/g, "${");
-                temp2 = temp2.replace(/\\}/g, "}");
+                temp2 = temp2.replace(/\\+}/g, "}");
                 rerun = true;
               }
               msg += temp2;
@@ -849,7 +882,7 @@ class MessagesClass extends library.BaseClass {
     return msg;
   }
   returnMessage = (msg, time, template) => {
-    return { startts: time, text: msg.replace(/\\\\}/g, "}").replace(/\\\\n/g, "\n"), template };
+    return { startts: time, text: msg.replace(/\\+}/g, "}").replace(/\\+n/g, "\n"), template };
   };
   async updateFormatedData() {
     if (!this.rawWarning) {
@@ -857,7 +890,7 @@ class MessagesClass extends library.BaseClass {
     }
     {
       const timeOffset = (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0 ? "+" : "-") + ("00" + Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))).slice(-2) + ("00" + Math.abs(new Date().getTimezoneOffset() % 60)).slice(-2);
-      const status = this.newMessage ? MessageType.status.new : this.notDeleted ? MessageType.status.hold : MessageType.status.clear;
+      const status = this.newMessage ? MessageType.status.new : this.notDeleted && this.name != "noMessage" ? MessageType.status.hold : MessageType.status.clear;
       const temp = {};
       for (const key in this.formatedKeysJsonataDefinition) {
         const obj = this.formatedKeysJsonataDefinition[key];
@@ -980,6 +1013,8 @@ class MessagesClass extends library.BaseClass {
       }
       case "dwdcolor":
         {
+          if (!data)
+            return "";
           const rgb = data.split(" ");
           if (rgb && rgb.length == 3) {
             return "#" + `00${Number(rgb[0]).toString(16)}`.slice(-2) + `00${Number(rgb[1]).toString(16)}`.slice(-2) + `00${Number(rgb[2]).toString(16)}`.slice(-2);
@@ -1029,9 +1064,9 @@ class MessagesClass extends library.BaseClass {
   }
   async writeFormatedKeys(index) {
     if (this.notDeleted) {
-      if (this.providerName)
+      if (this.providerParent)
         this.library.writeFromJson(
-          `${this.providerName}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
+          `${this.providerParent.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
           `allService.formatedkeys`,
           import_definitionen.statesObjectsWarnings,
           this.formatedData

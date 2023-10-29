@@ -62,7 +62,7 @@ export type statesObjectsWarningsType = {
             ChangeTypeOfKeys<Required<Record<notificationServiceDef.Type, string>>, ioBroker.StateObject> & {
                 silentTime: customChannelType & Record<'autoMode' | 'isSpeakAllowed' | 'profil', ioBroker.StateObject>;
             };
-    };
+    } & { ninaService?: customChannelType | undefined } & { metroService?: customChannelType | undefined };
 };
 
 export const genericStateObjects: {
