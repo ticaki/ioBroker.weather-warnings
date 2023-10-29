@@ -95,11 +95,11 @@ const color = {
     5: `#ff00ff`
   },
   zamgColor: {
-    0: `#00ff00`,
-    1: `#01DF3A`,
-    2: `#fffc04`,
-    3: `#ffc400`,
-    4: `#ff0404`
+    0: `#01DF3A`,
+    1: `#fffc04`,
+    2: `#ffc400`,
+    3: `#ff0404`,
+    4: `#ff00ff`
   },
   textuwz: {
     "0": "color.textGeneric.0",
@@ -110,12 +110,11 @@ const color = {
     "5": "color.textGeneric.5"
   },
   textzamg: {
-    "0": "",
-    "1": "color.textGeneric.0",
-    "2": "color.textGeneric.2",
-    "3": "color.textGeneric.3",
-    "4": "color.textGeneric.4",
-    "5": "color.textGeneric.5"
+    "0": "color.textGeneric.0",
+    "1": "color.textGeneric.2",
+    "2": "color.textGeneric.3",
+    "3": "color.textGeneric.4",
+    "4": "color.textGeneric.5"
   },
   textdwd: {
     "0": "color.textGeneric.0",

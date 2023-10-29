@@ -379,7 +379,7 @@ class MessagesClass extends library.BaseClass {
         cmd: "translate"
       },
       warnlevelnumber: {
-        node: `$string(rawinfo.wlevel + 1)`
+        node: `$string(rawinfo.wlevel)`
       },
       warnlevelcolorhex: {
         node: `$lookup(${JSON.stringify(MessageType.color.zamgColor)},$string(rawinfo.wlevel + 1))`

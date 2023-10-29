@@ -302,6 +302,7 @@
                     "type": "text",
                     "xs": 12,
                     "sm": 12,
+                    "hidden": "true",
                     "md": 6,
                     "lg": 3,
                     "label": "iobrokerUrl",
