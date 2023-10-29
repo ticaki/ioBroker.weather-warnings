@@ -526,5 +526,6 @@
     "statesObjectsWarnings.allService.command.silentTime.autoMode": "设置自动模式",
     "statesObjectsWarnings.allService.command.silentTime.profil": "选择活动配置文件。",
     "profileName": "个人资料名称",
-    "speakSilentTimeDetail": "时间表"
+    "speakSilentTimeDetail": "时间表",
+    "NoWarning": "无警告"
 }

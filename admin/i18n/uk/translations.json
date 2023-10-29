@@ -526,5 +526,6 @@
     "statesObjectsWarnings.allService.command.silentTime.autoMode": "Встановити автоматичний режим",
     "statesObjectsWarnings.allService.command.silentTime.profil": "Виберіть активний профіль.",
     "profileName": "Імя профілю",
-    "speakSilentTimeDetail": "Таблиця часів"
+    "speakSilentTimeDetail": "Таблиця часів",
+    "NoWarning": "Без попередження"
 }

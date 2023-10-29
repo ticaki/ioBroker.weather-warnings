@@ -261,7 +261,7 @@ export class BaseProvider extends BaseClass {
             index = m;
             await this.messages[m].writeFormatedKeys(m);
         }
-        for (index++; index < 3; index++) {
+        for (index++; index < this.adapter.numOfRawWarnings; index++) {
             await this.noMessage.writeFormatedKeys(index);
         }
         await this.library.garbageColleting(

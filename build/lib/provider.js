@@ -247,7 +247,7 @@ class BaseProvider extends import_library.BaseClass {
       index = m;
       await this.messages[m].writeFormatedKeys(m);
     }
-    for (index++; index < 3; index++) {
+    for (index++; index < this.adapter.numOfRawWarnings; index++) {
       await this.noMessage.writeFormatedKeys(index);
     }
     await this.library.garbageColleting(

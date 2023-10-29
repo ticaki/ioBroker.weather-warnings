@@ -526,5 +526,6 @@
     "statesObjectsWarnings.allService.command.silentTime.autoMode": "Imposta la modalità automatica",
     "statesObjectsWarnings.allService.command.silentTime.profil": "Seleziona il profilo attivo.",
     "profileName": "Nome del profilo",
-    "speakSilentTimeDetail": "Tabella dei tempi"
+    "speakSilentTimeDetail": "Tabella dei tempi",
+    "NoWarning": "Nessun avvertimento"
 }

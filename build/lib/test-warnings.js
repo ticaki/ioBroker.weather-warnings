@@ -27,100 +27,107 @@ function useTestData() {
   return true;
 }
 const defaultData = {
-  uwzService: [
-    {
-      center: "UWZ",
-      areaID: "",
-      dtgEnd: 1,
-      areaType: "",
-      dtgStart: 1,
-      payload: {
-        translationsLongText: {
-          DE: ""
-        },
-        id: "1.6",
-        creation: 1,
-        uwzLevel: 0,
-        translationsShortText: {
-          DE: ""
-        },
-        fileName: "",
-        levelName: "alert_forewarn_green",
-        shortText: "",
-        longText: "",
-        altMin: 0,
-        altMax: 0
+  uwzService: {
+    center: "UWZ",
+    areaID: "",
+    dtgEnd: 1,
+    areaType: "",
+    dtgStart: 1,
+    payload: {
+      translationsLongText: {
+        FR: "",
+        LU: "",
+        EN: "",
+        ES: "",
+        NL: "",
+        DE: "",
+        IT: "",
+        DK: ""
       },
-      severity: 0,
-      type: 0
-    }
-  ],
-  dwdService: [
-    {
-      AREADESC: "",
-      NAME: "",
-      WARNCELLID: 0,
-      IDENTIFIER: "",
-      SENDER: "",
-      SENT: "1970-01-01T01:00:00Z",
-      STATUS: "",
-      MSGTYPE: "",
-      SOURCE: "",
-      SCOPE: "",
-      CODE: "",
-      LANGUAGE: "",
-      CATEGORY: "",
-      EVENT: "",
-      RESPONSETYPE: "",
-      URGENCY: "",
-      SEVERITY: "none",
-      CERTAINTY: "",
-      EC_PROFILE: "",
-      EC_LICENSE: "",
-      EC_II: "0",
-      EC_GROUP: "NONE",
-      EC_AREA_COLOR: "197 229 102",
-      EFFECTIVE: "1970-01-01T01:00:00Z",
-      ONSET: "1970-01-01T01:00:00Z",
-      EXPIRES: "1970-01-01T01:00:00Z",
-      SENDERNAME: "",
-      HEADLINE: "",
-      DESCRIPTION: "",
-      INSTRUCTION: "",
-      WEB: "https://www.wettergefahren.de",
-      CONTACT: "Deutscher Wetterdienst",
-      PARAMETERNAME: "",
-      PARAMETERVALUE: "",
-      ALTITUDE: 0,
-      CEILING: 0
-    }
-  ],
-  zamgService: [
-    {
-      properties: {
-        auswirkungen: "",
-        begin: "",
-        chgid: 0,
-        create: "",
-        empfehlungen: "",
-        end: "",
-        meteotext: "",
-        rawinfo: {
-          end: "1",
-          start: "1",
-          wlevel: 0,
-          wtype: 0
-        },
-        text: "",
-        updategrund: "",
-        verlaufid: 1,
-        warnid: 1,
-        warnstufeid: 0,
-        warntypid: 0
+      id: "1.6",
+      creation: 1,
+      uwzLevel: 0,
+      translationsShortText: {
+        FR: "",
+        LU: "",
+        EN: "",
+        ES: "",
+        NL: "",
+        DE: "",
+        IT: "",
+        DK: ""
       },
-      type: "Warning"
-    }
-  ]
+      fileName: "",
+      levelName: "alert_forewarn_green",
+      shortText: "",
+      longText: "",
+      altMin: 0,
+      altMax: 0
+    },
+    severity: 0,
+    type: 0
+  },
+  dwdService: {
+    AREADESC: "",
+    NAME: "",
+    WARNCELLID: 0,
+    IDENTIFIER: "",
+    SENDER: "",
+    SENT: "1970-01-01T01:00:00Z",
+    STATUS: "",
+    MSGTYPE: "",
+    SOURCE: "",
+    SCOPE: "",
+    CODE: "",
+    LANGUAGE: "",
+    CATEGORY: "",
+    EVENT: "",
+    RESPONSETYPE: "",
+    URGENCY: "",
+    SEVERITY: "none",
+    CERTAINTY: "",
+    EC_PROFILE: "",
+    EC_LICENSE: "",
+    EC_II: "0",
+    EC_GROUP: "NONE",
+    EC_AREA_COLOR: "32 255 26",
+    EFFECTIVE: "1970-01-01T01:00:00Z",
+    ONSET: "1970-01-01T01:00:00Z",
+    EXPIRES: "1970-01-01T01:00:00Z",
+    SENDERNAME: "",
+    HEADLINE: "",
+    DESCRIPTION: "",
+    INSTRUCTION: "",
+    WEB: "https://www.wettergefahren.de",
+    CONTACT: "Deutscher Wetterdienst",
+    PARAMETERNAME: "",
+    PARAMETERVALUE: "",
+    ALTITUDE: 0,
+    CEILING: 0
+  },
+  zamgService: {
+    auswirkungen: "",
+    begin: "",
+    chgid: 0,
+    create: "",
+    empfehlungen: "",
+    end: "",
+    meteotext: "",
+    rawinfo: {
+      end: "1",
+      start: "1",
+      wlevel: 0,
+      wtype: 0
+    },
+    text: "",
+    updategrund: "",
+    verlaufid: 1,
+    warnid: 1,
+    warnstufeid: 0,
+    warntypid: 0,
+    nachrichtentyp: "",
+    location: ""
+  }
 };
 const testData = {
   uwzService: {
