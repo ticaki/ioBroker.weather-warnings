@@ -108,7 +108,7 @@
                 },
                 "icon_color": {
                     "type": "select",
-                    "disabled": "data.test == '' ",
+                    "disabled": "data.icons_prefix != ''",
                     "label": "icon_color",
                     "options": [
                         {
@@ -126,16 +126,6 @@
                     "md": 4,
                     "lg": 2,
                     "newLine": true
-                },
-                "iobrokerUrl": {
-                    "type": "text",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 3,
-                    "label": "iobrokerUrl",
-                    "default": "",
-                    "newLine": false
                 },
                 "refreshTime": {
                     "type": "number",
@@ -163,7 +153,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
-                    "disabled": "data.imExpert",
+                    "hidden": "data.imExpert",
                     "default": false,
                     "label": "imExpert",
                     "newLine": true
@@ -224,55 +214,19 @@
                             "label": ".alerts"
                         }
                     ]
-                },
-                "dividerHdr": {
-                    "newLine": true,
-                    "type": "header",
-                    "text": "test_diver",
-                    "hidden": "data.imExpert != true",
-                    "size": 3
-                },
-                "useTestWarnings": {
-                    "type": "checkbox",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "label": "useTestWarnings",
-                    "hidden": "data.imExpert != true",
-                    "newLine": true
-                },
-                "useJsonHistory": {
-                    "type": "checkbox",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "disabled": "data.useTestWarnings",
-                    "label": "useJsonHistory",
-                    "hidden": "data.imExpert != true",
-                    "newLine": false
-                },
-                "useTestCase": {
-                    "type": "checkbox",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "label": "useTestCase",
-                    "hidden": "data.imExpert != true",
-                    "newLine": true
                 }
             }
         },
         "_Additional_settings": {
             "type": "panel",
             "label": "Additional_settings",
+            "hidden": "data.imExpert != true",
             "items": {
                 "dividerHdr": {
                     "newLine": true,
                     "type": "header",
                     "text": "Speak_settings",
+                    "hidden": "data.imExpert != true || (!data.alexa2_Enabled && !data.sayit_Enabled)",
                     "size": 3
                 },
                 "silentTime": {
@@ -284,7 +238,7 @@
                     "lg": 12,
                     "titleAttr": "speakProfile",
                     "label": "speakSilentTime",
-                    "hidden": "data.imExpert != true",
+                    "hidden": "data.imExpert != true || (!data.alexa2_Enabled && !data.sayit_Enabled)",
                     "items": [
                         {
                             "type": "text",
@@ -344,6 +298,16 @@
                     "hidden": "data.imExpert != true",
                     "size": 3
                 },
+                "iobrokerUrl": {
+                    "type": "text",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "label": "iobrokerUrl",
+                    "default": "",
+                    "newLine": false
+                },
                 "icons_prefix": {
                     "type": "text",
                     "xs": 12,
@@ -374,6 +338,44 @@
                     "lg": 12,
                     "label": "icons_description",
                     "readOnly": true,
+                    "hidden": "data.imExpert != true",
+                    "newLine": true
+                },
+                "dividerHdr2": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "test_diver",
+                    "hidden": "data.imExpert != true",
+                    "size": 3
+                },
+                "useTestWarnings": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "label": "useTestWarnings",
+                    "hidden": "data.imExpert != true",
+                    "newLine": true
+                },
+                "useJsonHistory": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "disabled": "data.useTestWarnings",
+                    "label": "useJsonHistory",
+                    "hidden": "data.imExpert != true",
+                    "newLine": false
+                },
+                "useTestCase": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "label": "useTestCase",
                     "hidden": "data.imExpert != true",
                     "newLine": true
                 }
@@ -513,7 +515,6 @@
                 },
                 "dwdLanguage": {
                     "type": "select",
-                    "disabled": "data.test == '' ",
                     "label": "WarnLanguage",
                     "options": [
                         {
