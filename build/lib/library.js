@@ -358,6 +358,11 @@ class Library extends BaseClass {
           await this.adapter.delObjectAsync(dp);
           continue;
         }
+        if (dp.endsWith(".warntypegeneric")) {
+          this.log.debug("delete state: " + dp);
+          await this.adapter.delObjectAsync(dp);
+          continue;
+        }
         this.setdb(
           dp,
           "state",
