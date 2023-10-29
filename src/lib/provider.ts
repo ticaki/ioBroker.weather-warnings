@@ -39,6 +39,7 @@ export class BaseProvider extends BaseClass {
     rawData: providerDef.DataImportType = null;
     library: Library;
     messages: MessagesClass[] = [];
+    noMessage: MessagesClass;
     providerController: ProviderController;
     filter: providerDef.messageFilterType;
     customName: string = '';
@@ -58,6 +59,8 @@ export class BaseProvider extends BaseClass {
         this.filter = options.filter;
         this.customName = options.customName;
 
+        this.noMessage = new MessagesClass(this.adapter, 'noMessage', null, {}, this.providerController, this.name);
+        this.noMessage.updateFormated();
         const temp = this.library.cloneGenericObject(
             //@ts-expect-error ist vorhanden
             definitionen.statesObjectsWarnings[this.service]._channel,
@@ -167,6 +170,7 @@ export class BaseProvider extends BaseClass {
             const m = this.messages[a];
             if (!m) continue;
             const name = messagesDef.genericWarntyp[m.genericType].id;
+            if (name == 'none') continue;
             if (reply[name] === undefined) continue;
             if (m.endtime < Date.now()) continue;
 
@@ -249,11 +253,16 @@ export class BaseProvider extends BaseClass {
     }
     //** Called at the end of updateData() from every childclass */
     async finishUpdateData(): Promise<void> {
+        let index = -1;
+        this.messages.sort((a, b) => {
+            return a.starttime - b.starttime;
+        });
         for (let m = 0; m < this.messages.length; m++) {
-            this.messages.sort((a, b) => {
-                return a.starttime - b.starttime;
-            });
+            index = m;
             await this.messages[m].writeFormatedKeys(m);
+        }
+        for (index++; index < 3; index++) {
+            await this.noMessage.writeFormatedKeys(index);
         }
         await this.library.garbageColleting(
             `${this.name}.formatedKeys`,

@@ -244,7 +244,7 @@ export type genericWarntypStatesTree = ChangeTypeOfKeys<
     genericWarnTypNameJsonType,
     genericWarntypeStatesType & customChannelType
 >;
-export type genericWarntypeNumberType = 10 | 7 | 2 | 4 | 3 | 8 | 9 | 5 | 6 | 11 | 12 | 1;
+export type genericWarntypeNumberType = 10 | 7 | 2 | 4 | 3 | 8 | 9 | 5 | 6 | 11 | 12 | 1 | 0;
 
 export type genericWarntypeType = Record<Required<genericWarntypeNumberType>, genericWarntypeTypeSub>;
 
@@ -259,6 +259,7 @@ type genericWarntypeTypeSub = {
 };
 
 type genericWarnTypNameJsonType = {
+    none: string;
     unknown: string;
     storm: string;
     snowfall: string;
@@ -291,6 +292,7 @@ export type notificationMessageType = {
     | 'thaw';*/
 
 export const genericWarntyp: genericWarntypeType = {
+    '0': { name: 'textLevels.textGeneric.0', id: 'none', dwdService: [-1], uwzService: [-1], zamgService: [-1] },
     '1': { name: 'genericWarntyp.1.name', id: 'unknown', dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
     '2': {
         name: 'genericWarntyp.2.name',

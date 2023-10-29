@@ -204,6 +204,7 @@ function isKeyOfObject(key, obj) {
   return key in obj;
 }
 const genericWarntyp = {
+  "0": { name: "textLevels.textGeneric.0", id: "none", dwdService: [-1], uwzService: [-1], zamgService: [-1] },
   "1": { name: "genericWarntyp.1.name", id: "unknown", dwdService: [], uwzService: [0, 1], zamgService: [0, 8] },
   "2": {
     name: "genericWarntyp.2.name",

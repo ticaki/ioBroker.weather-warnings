@@ -50,6 +50,7 @@ class BaseProvider extends import_library.BaseClass {
   rawData = null;
   library;
   messages = [];
+  noMessage;
   providerController;
   filter;
   customName = "";
@@ -66,6 +67,8 @@ class BaseProvider extends import_library.BaseClass {
     this.log.setLogPrefix(`${name}-${options.warncellId}`);
     this.filter = options.filter;
     this.customName = options.customName;
+    this.noMessage = new import_messages.MessagesClass(this.adapter, "noMessage", null, {}, this.providerController, this.name);
+    this.noMessage.updateFormated();
     const temp = this.library.cloneGenericObject(
       definitionen.statesObjectsWarnings[this.service]._channel
     );
@@ -157,6 +160,8 @@ class BaseProvider extends import_library.BaseClass {
       if (!m)
         continue;
       const name = messagesDef.genericWarntyp[m.genericType].id;
+      if (name == "none")
+        continue;
       if (reply[name] === void 0)
         continue;
       if (m.endtime < Date.now())
@@ -234,11 +239,16 @@ class BaseProvider extends import_library.BaseClass {
     return null;
   }
   async finishUpdateData() {
+    let index = -1;
+    this.messages.sort((a, b) => {
+      return a.starttime - b.starttime;
+    });
     for (let m = 0; m < this.messages.length; m++) {
-      this.messages.sort((a, b) => {
-        return a.starttime - b.starttime;
-      });
+      index = m;
       await this.messages[m].writeFormatedKeys(m);
+    }
+    for (index++; index < 3; index++) {
+      await this.noMessage.writeFormatedKeys(index);
     }
     await this.library.garbageColleting(
       `${this.name}.formatedKeys`,

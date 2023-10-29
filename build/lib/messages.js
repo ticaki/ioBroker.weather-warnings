@@ -52,7 +52,7 @@ class MessagesClass extends library.BaseClass {
     messages: {},
     ts: 0
   };
-  genericType = 1;
+  genericType = 0;
   formatedKeyCommand = {
     dwdService: {
       starttime: {
@@ -538,7 +538,7 @@ class MessagesClass extends library.BaseClass {
         node: ""
       },
       iconurl: {
-        cmd: void 0,
+        cmd: "geticon",
         node: ""
       },
       startday: {
@@ -591,7 +591,8 @@ class MessagesClass extends library.BaseClass {
       }
     }
   };
-  constructor(adapter, name, provider, data, pcontroller) {
+  providerName = "";
+  constructor(adapter, name, provider, data, pcontroller, providerName = "") {
     super(adapter, name);
     if (!data && provider) {
       throw new Error(`${this.log.getName()} data is null`);
@@ -601,6 +602,7 @@ class MessagesClass extends library.BaseClass {
     this.rawWarning = data;
     this.templates = this.adapter.config.templateTable;
     this.providerController = pcontroller;
+    this.providerName = this.provider ? this.provider.name : providerName;
     switch (provider ? provider.service : "default") {
       case `dwdService`:
       case `uwzService`:
@@ -681,9 +683,9 @@ class MessagesClass extends library.BaseClass {
         this.ceiling = -1;
         this.altitude = -1;
         this.level = -1;
-        this.type = 0;
+        this.type = -1;
         this.newMessage = false;
-        this.notDeleted = false;
+        this.notDeleted = true;
       }
     }
     const sortedWarntypes = [
@@ -815,8 +817,8 @@ class MessagesClass extends library.BaseClass {
               } else if (result)
                 temp2 = arraykey[1];
               if (temp2.indexOf("\\${") != -1) {
-                temp2 = temp2.replaceAll("\\${", "${");
-                temp2 = temp2.replaceAll("\\}", "}");
+                temp2 = temp2.replace(/\\\${/g, "${");
+                temp2 = temp2.replace(/\\}/g, "}");
                 rerun = true;
               }
               msg += temp2;
@@ -847,7 +849,7 @@ class MessagesClass extends library.BaseClass {
     return msg;
   }
   returnMessage = (msg, time, template) => {
-    return { startts: time, text: msg.replaceAll("\\}", "}").replaceAll("\\n", "\n"), template };
+    return { startts: time, text: msg.replace(/\\\\}/g, "}").replace(/\\\\n/g, "\n"), template };
   };
   async updateFormatedData() {
     if (!this.rawWarning) {
@@ -1027,9 +1029,9 @@ class MessagesClass extends library.BaseClass {
   }
   async writeFormatedKeys(index) {
     if (this.notDeleted) {
-      if (this.provider)
+      if (this.providerName)
         this.library.writeFromJson(
-          `${this.provider.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
+          `${this.providerName}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
           `allService.formatedkeys`,
           import_definitionen.statesObjectsWarnings,
           this.formatedData

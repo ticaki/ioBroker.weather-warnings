@@ -273,7 +273,7 @@ export class NotificationClass extends library.BaseClass {
                                 /* message.text = message.text.replace(/\d{1,2}\.\d{1,2}\... /gi, (x) =>
                                         this.library.convertSpeakDate(x),
                                 );*/
-                                message.text = message.text.replaceAll(/\\+n/g, '');
+                                message.text = message.text.replace(/\\+n/g, '');
                                 // insert ;
                                 // with endless protection
                                 let count = 0;

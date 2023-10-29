@@ -1962,6 +1962,10 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
+      none: {
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.none" } }
+      },
       storm: {
         ...messagesDef.genericWarntypState,
         _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.storm" } }

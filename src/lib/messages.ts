@@ -59,7 +59,7 @@ export class MessagesClass extends library.BaseClass {
         messages: {},
         ts: 0,
     };
-    genericType: keyof MessageType.genericWarntypeType = 1;
+    genericType: keyof MessageType.genericWarntypeType = 0;
     /** jsonata/typscript cmd to gather data from warning json */
     formatedKeyCommand: { [key: string]: Required<customformatedKJDef> } = {
         dwdService: {
@@ -549,7 +549,7 @@ export class MessagesClass extends library.BaseClass {
                 node: '',
             },
             iconurl: {
-                cmd: undefined,
+                cmd: 'geticon',
                 node: '',
             },
             startday: {
@@ -602,12 +602,14 @@ export class MessagesClass extends library.BaseClass {
             },
         },
     };
+    providerName: string = '';
     constructor(
         adapter: WeatherWarnings,
         name: string,
         provider: Provider.ProviderClassType | null,
         data: object,
         pcontroller: Provider.ProviderController,
+        providerName: string = '',
     ) {
         super(adapter, name);
 
@@ -619,6 +621,7 @@ export class MessagesClass extends library.BaseClass {
         this.rawWarning = data;
         this.templates = this.adapter.config.templateTable;
         this.providerController = pcontroller;
+        this.providerName = this.provider ? this.provider.name : providerName;
         switch (provider ? provider.service : 'default') {
             case `dwdService`:
             case `uwzService`:
@@ -702,9 +705,9 @@ export class MessagesClass extends library.BaseClass {
                 this.ceiling = -1;
                 this.altitude = -1;
                 this.level = -1;
-                this.type = 0;
+                this.type = -1;
                 this.newMessage = false;
-                this.notDeleted = false;
+                this.notDeleted = true;
             }
         }
 
@@ -837,8 +840,8 @@ export class MessagesClass extends library.BaseClass {
                                 else temp = arraykey[1].split('#')[1] !== undefined ? arraykey[1].split('#')[1] : '';
                             } else if (result) temp = arraykey[1];
                             if (temp.indexOf('\\${') != -1) {
-                                temp = temp.replaceAll('\\${', '${');
-                                temp = temp.replaceAll('\\}', '}');
+                                temp = temp.replace(/\\\${/g, '${');
+                                temp = temp.replace(/\\}/g, '}');
                                 rerun = true;
                             }
                             msg += temp;
@@ -873,7 +876,7 @@ export class MessagesClass extends library.BaseClass {
         return msg;
     }
     private returnMessage = (msg: string, time: number, template: string): NotificationType.MessageType => {
-        return { startts: time, text: msg.replaceAll('\\}', '}').replaceAll('\\n', '\n'), template: template };
+        return { startts: time, text: msg.replace(/\\\\}/g, '}').replace(/\\\\n/g, '\n'), template: template };
     };
 
     async updateFormatedData(): Promise<customFormatedKR> {
@@ -1089,9 +1092,9 @@ export class MessagesClass extends library.BaseClass {
     }
     async writeFormatedKeys(index: number): Promise<void> {
         if (this.notDeleted) {
-            if (this.provider)
+            if (this.providerName)
                 this.library.writeFromJson(
-                    `${this.provider.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
+                    `${this.providerName}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
                     `allService.formatedkeys`,
                     statesObjectsWarnings,
                     this.formatedData,
