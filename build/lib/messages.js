@@ -984,7 +984,7 @@ class MessagesClass extends library.BaseClass {
         if (this.adapter.config.icons_prefix && this.adapter.config.icons_suffix) {
           return this.adapter.config.icons_prefix + id + this.adapter.config.icons_suffix;
         } else if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
-          return `${this.adapter.config.iobrokerUrl || ""}/adapter/${this.adapter.name}/icons/${color}/${id}.png`;
+          return `/adapter/${this.adapter.name}/icons/${color}/${id}.png`;
         }
         return "";
       }
