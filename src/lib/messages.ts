@@ -1125,13 +1125,21 @@ export class MessagesClass extends library.BaseClass {
     }
     async writeFormatedKeys(index: number): Promise<void> {
         if (this.notDeleted) {
-            if (this.providerParent)
+            if (this.provider) {
+                this.library.writeFromJson(
+                    `${this.provider.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
+                    `allService.formatedkeys`,
+                    statesObjectsWarnings,
+                    this.formatedData,
+                );
+            } else if (this.providerParent) {
                 this.library.writeFromJson(
                     `${this.providerParent.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
                     `allService.formatedkeys`,
                     statesObjectsWarnings,
                     this.formatedData,
                 );
+            }
         }
     }
     addFormatedDefinition(key: keyof customformatedKJDef, arg: customFormatedKDefSub | undefined): void {

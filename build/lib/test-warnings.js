@@ -79,7 +79,7 @@ const defaultData = {
       EC_LICENSE: "",
       EC_II: "0",
       EC_GROUP: "NONE",
-      EC_AREA_COLOR: "201 240 0",
+      EC_AREA_COLOR: "197 229 102",
       EFFECTIVE: "1970-01-01T01:00:00Z",
       ONSET: "1970-01-01T01:00:00Z",
       EXPIRES: "1970-01-01T01:00:00Z",

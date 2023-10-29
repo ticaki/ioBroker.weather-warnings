@@ -1064,13 +1064,21 @@ class MessagesClass extends library.BaseClass {
   }
   async writeFormatedKeys(index) {
     if (this.notDeleted) {
-      if (this.providerParent)
+      if (this.provider) {
+        this.library.writeFromJson(
+          `${this.provider.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
+          `allService.formatedkeys`,
+          import_definitionen.statesObjectsWarnings,
+          this.formatedData
+        );
+      } else if (this.providerParent) {
         this.library.writeFromJson(
           `${this.providerParent.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
           `allService.formatedkeys`,
           import_definitionen.statesObjectsWarnings,
           this.formatedData
         );
+      }
     }
   }
   addFormatedDefinition(key, arg) {
