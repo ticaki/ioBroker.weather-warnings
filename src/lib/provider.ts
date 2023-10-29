@@ -535,6 +535,11 @@ export class ProviderController extends BaseClass {
                     .split('.')
                     .pop() as keyof typeof definitionen.statesObjectsWarnings.allService.formatedkeys;
                 if (definitionen.statesObjectsWarnings.allService.formatedkeys[key] != undefined) {
+                    const def = definitionen.statesObjectsWarnings.allService.formatedkeys[key];
+                    def.common.name =
+                        typeof def.common.name == 'string'
+                            ? await this.library.getTranslationObj(def.common.name)
+                            : def.common.name;
                     await this.adapter.extendObjectAsync(
                         state.replace(`${this.adapter.name}.${this.adapter.instance}.`, ''),
                         definitionen.statesObjectsWarnings.allService.formatedkeys[key],

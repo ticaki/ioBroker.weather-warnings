@@ -494,7 +494,7 @@ export class Library extends BaseClass {
         return this.translation[key] !== undefined;
     }
 
-    private async getTranslationObj(key: string): Promise<ioBroker.StringOrTranslated> {
+    async getTranslationObj(key: string): Promise<ioBroker.StringOrTranslated> {
         const language: (ioBroker.Languages | 'uk')[] = [
             'en',
             'de',

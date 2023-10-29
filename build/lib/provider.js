@@ -499,6 +499,8 @@ class ProviderController extends import_library.BaseClass {
       if (state.includes(".formatedKeys.")) {
         const key = state.split(".").pop();
         if (definitionen.statesObjectsWarnings.allService.formatedkeys[key] != void 0) {
+          const def = definitionen.statesObjectsWarnings.allService.formatedkeys[key];
+          def.common.name = typeof def.common.name == "string" ? await this.library.getTranslationObj(def.common.name) : def.common.name;
           await this.adapter.extendObjectAsync(
             state.replace(`${this.adapter.name}.${this.adapter.instance}.`, ""),
             definitionen.statesObjectsWarnings.allService.formatedkeys[key]
