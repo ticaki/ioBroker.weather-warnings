@@ -138,6 +138,7 @@ class WeatherWarnings extends utils.Adapter {
                     .join(', ');
                 if (this.config.icons_description != reply) {
                     obj.native.icons_description = reply;
+                    this.log.info('Update configuration. Reason: icons_description');
                     change = true;
                 }
             }
@@ -235,6 +236,7 @@ class WeatherWarnings extends utils.Adapter {
             }
             if (change) {
                 await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
+                this.log.info('Update configuration: Done');
             }
         }
         this.setTimeout(
