@@ -160,11 +160,9 @@ class WeatherWarnings extends utils.Adapter {
               messagesDef.genericWarntyp[Number(w)].name
             );
             if (t != sounds[index2].warntype) {
-              change = true;
               sounds[index2].warntype = t;
             }
           } else {
-            change = true;
             sounds.push({
               warntypenumber: Number(w),
               warntype: this.library.getTranslation(
