@@ -219,7 +219,7 @@
     "template.emailMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"${warnlevelcolorhex}\"><b><font color=#000000>${headline}</font></b></td></tr><tr><td style=\"padding: 5px 0 20px 0;\">${description}</td></tr>",
     "template.emailFooter": "</table>",
     "template.emailHeader": "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">",
-    "template.emailTitle": "${Status} from ${locationcustom}",
+    "template.emailTitle": "${Status} for ${locationcustom}",
     "restoreDefault": "Restore templates",
     "restoreDefaultToolTip": "Restore the default templates in the current language!",
     "HourFilter": "Filter raw data: Start time (0 = off)",
@@ -529,5 +529,5 @@
     "profileName": "Profile name",
     "speakSilentTimeDetail": "Table of Times",
     "NoWarning": "No Warning",
-    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64":"Icons base64 coded with html tags."
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Icons base64 coded with html tags."
 }
