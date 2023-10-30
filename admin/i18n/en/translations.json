@@ -445,7 +445,7 @@
     "statesObjectsWarnings.allService.formatedkeys.endday": "Day of the warning end",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Month of the warning end",
     "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Generic warning type as number.",
-    "iobrokerUrl": "Prefix for Iconurl (example http://192.168.1.1:8081)",
+    "iobrokerUrl": "http:// for Iconurl (example http://192.168.1.1:8081)",
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Remaining time hours part. Up to 30 * 24 hours",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Remaining time minutes part.",
     "statesObjectsWarnings.allService.formatedkeys.cdfuture": "Countdown warning lies ahead.",
@@ -521,11 +521,11 @@
     "addDefault": "Add default templates",
     "addDefaultToolTip": "Add the standard templates as long as the template key is free. It is not overwritten.",
     "providerEveryChange": "Warnings are considered new each time they are changed.",
-    "statesObjectsWarnings.allService.command.silentTime":"Quiet times commands",
-    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed":"Set speak allowed.(auto/manual)",
-    "statesObjectsWarnings.allService.command.silentTime.autoMode":"Set the automatic mode",
-    "statesObjectsWarnings.allService.command.silentTime.profil":"Select the active profil.",
-    "profileName":"Profile name",
-    "speakSilentTimeDetail":"Table of Times",
-    "NoWarning":"No Warning"
+    "statesObjectsWarnings.allService.command.silentTime": "Quiet times commands",
+    "statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed": "Set speak allowed.(auto/manual)",
+    "statesObjectsWarnings.allService.command.silentTime.autoMode": "Set the automatic mode",
+    "statesObjectsWarnings.allService.command.silentTime.profil": "Select the active profil.",
+    "profileName": "Profile name",
+    "speakSilentTimeDetail": "Table of Times",
+    "NoWarning": "No Warning"
 }

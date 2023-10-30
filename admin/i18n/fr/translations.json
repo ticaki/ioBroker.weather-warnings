@@ -441,7 +441,7 @@
     "statesObjectsWarnings.allService.formatedkeys.startmonth": "Mois du début de l'avertissement",
     "statesObjectsWarnings.allService.formatedkeys.endday": "Jour de fin d'avertissement",
     "statesObjectsWarnings.allService.formatedkeys.endmonth": "Mois de fin d'avertissement",
-    "iobrokerUrl": "Préfixe pour Iconurl (exemple http://192.168.1.1:8081)",
+    "iobrokerUrl": "http:// Préfixe pour Iconurl (exemple http://192.168.1.1:8081)",
     "statesObjectsWarnings.allService.formatedkeys.warntypegeneric": "Type d'avertissement générique sous forme de numéro.",
     "statesObjectsWarnings.allService.formatedkeys.cdhour": "Partie heures restantes. Jusqu'à 30 * 24 heures",
     "statesObjectsWarnings.allService.formatedkeys.cdminute": "Temps restant minutes partie.",
