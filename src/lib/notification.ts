@@ -62,9 +62,9 @@ export class NotificationClass extends library.BaseClass {
     }
 
     /**
-     *  Send this message after filtering to services REWRITED
+     *  Send this message after filtering to services
      * @param messages the message with MessageClassRef Ref can be null
-     * @param action <string>
+     * @param allowActions <string>[] array new, remove, removeall, all - to allow this action
      * @param manual <boolean> manual new/removeall handling
      * @returns
      */
@@ -167,9 +167,6 @@ export class NotificationClass extends library.BaseClass {
                 });
             }
         }
-        /*if (manual && result.findIndex((a) => a.action != 'removeAll') > -1) {
-            result = result.filter((a) => a.action != 'removeAll');
-        }*/
         if (result.length > 0 && (activeWarnings > 0 || !notifications.includes('removeAll'))) {
             await this.sendNotifications(result); // hier an alle
             this.removeAllSend = false;

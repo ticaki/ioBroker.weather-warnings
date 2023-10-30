@@ -527,5 +527,6 @@
     "statesObjectsWarnings.allService.command.silentTime.profil": "Seleziona il profilo attivo.",
     "profileName": "Nome del profilo",
     "speakSilentTimeDetail": "Tabella dei tempi",
-    "NoWarning": "Nessun avvertimento"
+    "NoWarning": "Nessun avvertimento",
+    "template.emailTitle": "${Status} da ${locationcustom}"
 }

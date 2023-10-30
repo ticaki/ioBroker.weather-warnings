@@ -400,7 +400,7 @@
                         {
                             "type": "text",
                             "attr": "templateKey",
-                            "width": "10% ",
+                            "width": "15% ",
                             "title": "templateKey",
                             "tooltip": "templateKeyTip",
                             "filter": false,
@@ -412,7 +412,7 @@
                         {
                             "type": "text",
                             "attr": "template",
-                            "width": "90% ",
+                            "width": "85% ",
                             "title": "templateTitle",
                             "tooltip": "templateTitleTip",
                             "filter": false,
@@ -2563,6 +2563,20 @@
                     "label": "zamgEnabled",
                     "newLine": true
                 },
+                "email_Title": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"email\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "disabled": "data.email_Adapter == 'none'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "MessageTitle",
+                    "newLine": true
+                },
                 "email_Header": {
                     "type": "selectSendTo",
                     "command": "Messages",
@@ -2598,20 +2612,6 @@
                     "lg": 4,
                     "label": "email_line_break",
                     "newLine": false
-                },
-                "email_Title": {
-                    "type": "selectSendTo",
-                    "command": "Messages",
-                    "jsonData": "{ \"service\": \"email\" }",
-                    "manual": false,
-                    "multiple": false,
-                    "disabled": "data.email_Adapter == 'none'",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 5,
-                    "lg": 4,
-                    "label": "MessageTitle",
-                    "newLine": true
                 },
                 "email_auto": {
                     "type": "staticText",

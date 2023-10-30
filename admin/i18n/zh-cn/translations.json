@@ -527,5 +527,6 @@
     "statesObjectsWarnings.allService.command.silentTime.profil": "选择活动配置文件。",
     "profileName": "个人资料名称",
     "speakSilentTimeDetail": "时间表",
-    "NoWarning": "无警告"
+    "NoWarning": "无警告",
+    "template.emailTitle": "来自 ${locationcustom} 的 ${Status}"
 }
