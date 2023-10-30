@@ -528,5 +528,6 @@
     "profileName": "Nom de profil",
     "speakSilentTimeDetail": "Table des temps",
     "NoWarning": "Pas d'avertissement",
-    "template.emailTitle": "${Status} de ${locationcustom}"
+    "template.emailTitle": "${Status} de ${locationcustom}",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Icônes base64 codées avec des balises html."
 }

@@ -1530,6 +1530,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
+            iconbase64: {
+                _id: 'iconbase64',
+                type: 'state',
+                common: {
+                    name: 'statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64',
+                    type: 'string',
+                    role: 'weather.icon',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
             countdown: {
                 _id: 'starttime',
                 type: 'state',

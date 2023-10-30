@@ -31,7 +31,8 @@ type messageCmdType =
     | 'daytime'
     | 'adverb'
     | 'dwdcolor'
-    | 'warningcount';
+    | 'warningcount'
+    | 'iconbase64';
 /**
  * MessageClass
  */
@@ -208,6 +209,10 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'warningcount',
                 node: '',
             },
+            iconbase64: {
+                cmd: 'iconbase64',
+                node: '',
+            },
         },
 
         uwzService: {
@@ -357,6 +362,10 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'warningcount',
                 node: '',
             },
+            iconbase64: {
+                cmd: 'iconbase64',
+                node: '',
+            },
         },
         zamgService: {
             starttime: {
@@ -493,6 +502,10 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'warningcount',
                 node: '',
             },
+            iconbase64: {
+                cmd: 'iconbase64',
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -598,6 +611,10 @@ export class MessagesClass extends library.BaseClass {
                 node: '',
             },
             warningcount: {
+                cmd: undefined,
+                node: '',
+            },
+            iconbase64: {
                 cmd: undefined,
                 node: '',
             },
@@ -1041,6 +1058,17 @@ export class MessagesClass extends library.BaseClass {
                 }
                 return '';
             }
+            case 'iconbase64':
+                {
+                    if (
+                        MessageType.warnTypeIconsBase64[this.genericType] !== undefined &&
+                        typeof MessageType.warnTypeIconsBase64[this.genericType] === 'string'
+                    ) {
+                        return `${MessageType.warnTypeIconsBase64[this.genericType]}`;
+                    }
+                    return '';
+                }
+                break;
             case 'daytime': {
                 const hour = new Date(data).getHours();
                 let daytime: MessageType.daytimesType = 'noon';

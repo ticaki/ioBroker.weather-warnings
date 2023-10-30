@@ -528,5 +528,6 @@
     "statesObjectsWarnings.allService.command.silentTime.profil": "Select the active profil.",
     "profileName": "Profile name",
     "speakSilentTimeDetail": "Table of Times",
-    "NoWarning": "No Warning"
+    "NoWarning": "No Warning",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64":"Icons base64 coded with html tags."
 }

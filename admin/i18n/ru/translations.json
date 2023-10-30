@@ -528,5 +528,6 @@
     "profileName": "Имя профиля",
     "speakSilentTimeDetail": "Таблица времен",
     "NoWarning": "Нет предупреждения",
-    "template.emailTitle": "${Status} из ${locationcustom}"
+    "template.emailTitle": "${Status} из ${locationcustom}",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Иконки в формате Base64, закодированные с помощью html-тегов."
 }

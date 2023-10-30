@@ -198,6 +198,10 @@ class MessagesClass extends library.BaseClass {
       warningcount: {
         cmd: "warningcount",
         node: ""
+      },
+      iconbase64: {
+        cmd: "iconbase64",
+        node: ""
       }
     },
     uwzService: {
@@ -346,6 +350,10 @@ class MessagesClass extends library.BaseClass {
       warningcount: {
         cmd: "warningcount",
         node: ""
+      },
+      iconbase64: {
+        cmd: "iconbase64",
+        node: ""
       }
     },
     zamgService: {
@@ -481,6 +489,10 @@ class MessagesClass extends library.BaseClass {
       warningcount: {
         cmd: "warningcount",
         node: ""
+      },
+      iconbase64: {
+        cmd: "iconbase64",
+        node: ""
       }
     },
     default: {
@@ -587,6 +599,10 @@ class MessagesClass extends library.BaseClass {
         node: ""
       },
       warningcount: {
+        cmd: void 0,
+        node: ""
+      },
+      iconbase64: {
         cmd: void 0,
         node: ""
       }
@@ -988,6 +1004,14 @@ class MessagesClass extends library.BaseClass {
         }
         return "";
       }
+      case "iconbase64":
+        {
+          if (MessageType.warnTypeIconsBase64[this.genericType] !== void 0 && typeof MessageType.warnTypeIconsBase64[this.genericType] === "string") {
+            return `${MessageType.warnTypeIconsBase64[this.genericType]}`;
+          }
+          return "";
+        }
+        break;
       case "daytime": {
         const hour = new Date(data).getHours();
         let daytime = "noon";

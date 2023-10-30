@@ -528,5 +528,6 @@
     "profileName": "Profielnaam",
     "speakSilentTimeDetail": "Tabel der tijden",
     "NoWarning": "Geen waarschuwing",
-    "template.emailTitle": "${Status} van ${locationcustom}"
+    "template.emailTitle": "${Status} van ${locationcustom}",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Pictogrammen base64 gecodeerd met html-tags."
 }

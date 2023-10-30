@@ -528,5 +528,6 @@
     "profileName": "Імя профілю",
     "speakSilentTimeDetail": "Таблиця часів",
     "NoWarning": "Без попередження",
-    "template.emailTitle": "${Status} від ${locationcustom}"
+    "template.emailTitle": "${Status} від ${locationcustom}",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Іконки base64 закодовані тегами html."
 }

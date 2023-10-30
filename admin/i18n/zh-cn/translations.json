@@ -528,5 +528,6 @@
     "profileName": "个人资料名称",
     "speakSilentTimeDetail": "时间表",
     "NoWarning": "无警告",
-    "template.emailTitle": "来自 ${locationcustom} 的 ${Status}"
+    "template.emailTitle": "来自 ${locationcustom} 的 ${Status}",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "使用 html 标签进行 base64 编码的图标。"
 }
