@@ -529,5 +529,6 @@
     "speakSilentTimeDetail": "Tabel der tijden",
     "NoWarning": "Geen waarschuwing",
     "template.emailTitle": "${Status} van ${locationcustom}",
-    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Pictogrammen base64 gecodeerd met html-tags."
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Pictogrammen base64 gecodeerd met html-tags.",
+    "template.emailRemoveMessage": "<tr><td style=\"opvulling: 5px 0 5px 0;\" bgcolor=\"#606060\"><b><font color=#000000>${Status}: ${headline}</font></b></td></tr><tr><td style=\" opvulling: 5px 0 20px 0;\">${iconbase64}${description}</td></tr>"
 }

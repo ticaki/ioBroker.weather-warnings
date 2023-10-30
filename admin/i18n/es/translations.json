@@ -529,5 +529,6 @@
     "speakSilentTimeDetail": "Tabla de tiempos",
     "NoWarning": "Sin advertencia",
     "template.emailTitle": "${Status} de ${locationcustom}",
-    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Iconos codificados en base64 con etiquetas html."
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Iconos codificados en base64 con etiquetas html.",
+    "template.emailRemoveMessage": "<tr><td style=\"relleno: 5px 0 5px 0;\" bgcolor=\"#606060\"><b><font color=#000000>${Estado}: ${headline}</font></b></td></tr><tr><td style=\" relleno: 5px 0 20px 0;\">${iconbase64}${description}</td></tr>"
 }

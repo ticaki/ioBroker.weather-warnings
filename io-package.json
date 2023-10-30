@@ -216,6 +216,10 @@
                 "template": "template.emailMessage"
             },
             {
+                "templateKey": "EmailRemoveMessage",
+                "template": "template.emailRemoveMessage"
+            },
+            {
                 "templateKey": "EmailFooter",
                 "template": "template.emailFooter"
             },
@@ -304,7 +308,7 @@
         "email_ManualLevelFilter": 0,
         "email_Enabled": false,
         "email_MessageNew": "EmailMessage",
-        "email_MessageRemove": "EmailMessage",
+        "email_MessageRemove": "EmailRemoveMessage",
         "email_Header": "EmailHeader",
         "email_Footer": "EmailFooter",
         "email_manualAll": "EmailMessage",
