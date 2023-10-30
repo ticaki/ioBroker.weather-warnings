@@ -385,17 +385,17 @@ export class MessagesClass extends library.BaseClass {
             ceiling: { node: `` },
             altitude: { node: `` },
             warnlevelcolorname: {
-                node: `$lookup(${JSON.stringify(MessageType.color.textzamg)},$string(rawinfo.wlevel + 1))`,
+                node: `$lookup(${JSON.stringify(MessageType.color.textzamg)},$string(rawinfo.wlevel))`,
                 cmd: 'translate',
             },
             warnlevelnumber: {
                 node: `$string(rawinfo.wlevel)`,
             },
             warnlevelcolorhex: {
-                node: `$lookup(${JSON.stringify(MessageType.color.zamgColor)},$string(rawinfo.wlevel + 1))`,
+                node: `$lookup(${JSON.stringify(MessageType.color.zamgColor)},$string(rawinfo.wlevel))`,
             },
             warnlevelname: {
-                node: `$lookup(${JSON.stringify(MessageType.textLevels.textGeneric)},$string(rawinfo.wlevel + 1))`,
+                node: `$lookup(${JSON.stringify(MessageType.textLevels.textGeneric)},$string(rawinfo.wlevel))`,
                 cmd: 'translate',
             },
             warntypename: {
