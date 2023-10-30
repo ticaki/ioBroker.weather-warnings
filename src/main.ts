@@ -566,31 +566,31 @@ class WeatherWarnings extends utils.Adapter {
                             obj.command,
                             [
                                 {
-                                    label: 'Monday',
+                                    label: this.library.getTranslation('Monday'),
                                     value: '1',
                                 },
                                 {
-                                    label: 'Tuesday',
+                                    label: this.library.getTranslation('Tuesday'),
                                     value: '2',
                                 },
                                 {
-                                    label: 'Wednesday',
+                                    label: this.library.getTranslation('Wednesday'),
                                     value: '3',
                                 },
                                 {
-                                    label: 'Thursday',
+                                    label: this.library.getTranslation('Thursday'),
                                     value: '4',
                                 },
                                 {
-                                    label: 'Friday',
+                                    label: this.library.getTranslation('Friday'),
                                     value: '5',
                                 },
                                 {
-                                    label: 'Saturday',
+                                    label: this.library.getTranslation('Saturday'),
                                     value: '6',
                                 },
                                 {
-                                    label: 'Sunday',
+                                    label: this.library.getTranslation('Sunday'),
                                     value: '0',
                                 },
                             ],

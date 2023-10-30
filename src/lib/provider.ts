@@ -783,7 +783,7 @@ export class ProviderController extends BaseClass {
             if (index < that.providers.length) {
                 if (that.providers[index]) await that.providers[index].updateData();
                 index++;
-                that.refreshTimeRef = that.adapter.setTimeout(updater, 500, that, index);
+                that.refreshTimeRef = that.adapter.setTimeout(updater, 250, that, index);
             } else {
                 await that.doEndOfUpdater();
                 that.refreshTimeRef = that.adapter.setTimeout(that.updateEndless, that.refreshTime || 600000, that);

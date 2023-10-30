@@ -685,7 +685,7 @@ class ProviderController extends import_library.BaseClass {
         if (that2.providers[index])
           await that2.providers[index].updateData();
         index++;
-        that2.refreshTimeRef = that2.adapter.setTimeout(updater, 500, that2, index);
+        that2.refreshTimeRef = that2.adapter.setTimeout(updater, 250, that2, index);
       } else {
         await that2.doEndOfUpdater();
         that2.refreshTimeRef = that2.adapter.setTimeout(that2.updateEndless, that2.refreshTime || 6e5, that2);

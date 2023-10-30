@@ -161,7 +161,7 @@ class NotificationClass extends library.BaseClass {
         });
       }
     }
-    if (result.length > 0 && activeWarnings > 0) {
+    if (result.length > 0 && (activeWarnings > 0 || !notifications.includes("removeAll"))) {
       await this.sendNotifications(result);
       this.removeAllSend = false;
     } else {
@@ -420,6 +420,13 @@ class NotificationClass extends library.BaseClass {
             let newMsg = { message: msg.text };
             if (this.adapter.config.history_allinOne) {
               newMsg = { ...msg.message.formatedData, ts: Date.now() };
+            } else {
+              try {
+                const temp = JSON.parse(newMsg.message);
+                newMsg.message = temp;
+              } catch (e) {
+                this.log.debug(" write message: " + newMsg.message);
+              }
             }
             const targets = [msg.provider.name, msg.provider.providerController.name];
             for (const a in targets) {
@@ -430,7 +437,7 @@ class NotificationClass extends library.BaseClass {
                 if (state && state.val && typeof state.val == "string" && state.val != "")
                   json = JSON.parse(state.val);
                 json.unshift(newMsg);
-                json.splice(500);
+                json.splice(250);
                 await this.adapter.library.writedp(
                   dp,
                   JSON.stringify(json),
