@@ -429,7 +429,7 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl": "URL zu Wettersymbolen.",
     "statesObjectsWarnings.allService.formatedkeys.starttimems": "Startzeit als ms.",
     "statesObjectsWarnings.allService.formatedkeys.endtimems": "Endzeit als ms",
-    "template.emailMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"${warnlevelcolorhex}\"><b><font color=#000000>${headline}</font></b></td></tr><tr><td style=\"padding: 5px 0 20px 0;\">${description}</td></tr>",
+    "template.emailMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"${warnlevelcolorhex}\"><b><font color=#000000>${Status}${headline}</font></b></td></tr><tr><td style=\"padding: 5px 0 20px 0;\">${description}</td></tr>",
     "template.emailFooter": "</table>",
     "template.emailHeader": "<table border=\"1\" cellpadding=\"0\" cellpacing=\"0\" width=\"100%\">",
     "templates": "Vorlagen",
