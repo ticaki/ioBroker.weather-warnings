@@ -140,8 +140,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.8 (2023-10-30)
 * (ticaki) Wrong level assignment for zamg fixed
+* (ticaki) better set defaults
 
 ### 0.4.7 (2023-10-29)
 * (ticaki) improved admin ui

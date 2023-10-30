@@ -1488,7 +1488,7 @@ const statesObjectsWarnings = {
         _id: "iconbase64",
         type: "state",
         common: {
-          name: "statesObjectsWarnings.allService.formatedkeys.countdown.iconurl",
+          name: "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64",
           type: "string",
           role: "weather.icon",
           read: true,
