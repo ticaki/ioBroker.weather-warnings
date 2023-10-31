@@ -408,10 +408,14 @@ export class ZAMGProvider extends BaseProvider {
             result.properties.warnings[a].properties.location = result.properties.location.properties.name;
             result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
             await super.updateData(result.properties.warnings[a].properties, a);
-
+            const data: providerDef.dataImportZamgTypeProperties = JSON.parse(
+                JSON.stringify(result.properties.warnings[a]),
+            );
             const index = this.messages.findIndex((m) => {
                 if (this.adapter.config.zamgEveryChange) {
-                    return JSON.stringify(result.properties.warnings[a].properties) == JSON.stringify(m.rawWarning);
+                    data.chgid = m.rawWarning.chgid;
+                    data.create = m.rawWarning.create;
+                    return JSON.stringify(data) == JSON.stringify(m.rawWarning);
                 } else {
                     return (
                         m.rawWarning.warnid == result.properties.warnings[a].properties.warnid &&
