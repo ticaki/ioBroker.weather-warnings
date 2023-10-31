@@ -31,35 +31,53 @@ Nach der Installation und dem automatischen öffnen der Konfigurationsseite dies
 ## Konfiguration
 ![Basicconfiguration](img/basic.png)
 
-- **Activate DWD/UWZ/ZAMG:** aktiviere den Datenabruf von diesen Dienstleistern
-- **Activate telegram/pushover,...:** aktiviere die Ausgabe von Nachrichten an diese installierten Adapter. 
-- **Activate email:** Schreibt alle aktuellen Warnungen in eine Email.
-- **Activate history:** schreibt in den State: .history einen Verlauf der bis zu 500 Einträgen beinhalten kann. Alle Daten oder ausgewählte.
-- **Activate json-array:** sehr speziel, schreibt die aktuellen Warnungen in ein Array oder nach Aktivierung ein benutzerdefiniertes Json in ein Array, das von Skripten ausgewertet werden kann.
+- **DWD/UWZ/ZAMG aktivieren:** aktiviere den Datenabruf von diesen Dienstleistern
+- **telegram/pushover,... aktivieren:** aktiviere die Ausgabe von Nachrichten an diese installierten Adapter. 
+- **email aktivieren:** Schreibt alle aktuellen Warnungen in eine Email.
+- **Verlauf aktivieren:** schreibt in den State: .history einen Verlauf der bis zu 500 Einträgen beinhalten kann. Alle Daten oder ausgewählte.
+- **json-array aktivieren:** sehr speziel, schreibt die aktuellen Warnungen in ein Array oder nach Aktivierung ein benutzerdefiniertes Json in ein Array, das von Skripten ausgewertet werden kann.
 
 - **Update interval:** Abrufinterval in Minuten zu dem Daten geladen werden. (minimum: 5)
 
-- **Incoming warnings...:** Nach dem Adapterstart werden die beim ersten Datenabruf erhaltenen Warnungen als bekannt angesehen und lösen keine Benachrichtigung aus.
+- **Eingehende Warnungen ...:** Nach dem Adapterstart werden, die beim ersten Datenabruf erhaltenen Warnungen, als bekannt angesehen und lösen keine Benachrichtigung aus.
 
-- **Testing- Activate...:** Use testdata. Adapter is offline.
-
-- **Testing- Raw data history:** Für Debugging, nur nach Aufforderung.
+- **Testwarnungen aktivieren! Adapter ist offline:** Es werden mindestens 2 Testmeldungen pro Provider bei einem Datenabruf in das System gegeben, mit Zufälligen Stand und Endzeiten
 
 
 
-![Template](img/template.png)
 
-Hier kannst du eigenen Nachrichten erstellen, oder vorhandene anpassen. Unterhalb der Tabelle stehen alle verfügbare "Tokens" und was sie bedeuten. Der Unique identifier wird in den Pushdiensten verwendet, um einzustellen welche Vorlage mit welcher Meldungsart verwendet werden soll.
+**Zusätzliche Einstellungen(Expert)**
+
+**Spracheinstellungen:**
+
+**Ruhezeiten für die Sprachausgabe:** Stelle hier die Ruhezeiten ein in der keine Sprachausgabe stattfinden soll. Zeiten werden alls 15:30 oder 15 oder 15:00 definiert. Bitte einen Profilnamen vergeben
+
+**Iconeinstellungen (Alternativ):** Wenn der Prefix ausgefüllt wird ersetz dieses die Standardicons. Dort wo der Prefix hinführt müssen Dateien mit einem der gelisteten Warntypen und der Endung die in Suffix steht befinden.
+
+- **Die Speicherung der Rohdatenhistorie wird aktiviert bzw. deaktiviert und gelöscht (hoher Speicherverbrauch).:** Für Debugging, nur nach Aufforderung.
+- **Intervall verkürzt, Testdaten abwechselnd aktiviert und deaktiviert:** Geänderte Funktion: Interval wird auf 1 Minute gestellt. Im ersten Durchlauf werden 2 neue Warnungen gefunden. Im zweiten wird die Hälfte aufgehoben. Im letzten werden alle aufgehoben und dann gehts wieder von vorne los. 
+
+![Vorlagen](img/template.png)
+
+Hier kannst du eigenen Vorlagen erstellen, oder vorhandene anpassen. Unterhalb der Tabelle stehen alle verfügbare "Tokens" und was sie bedeuten. Die eindeutige Kennung(Vorlagenbezeichner) wird in den Pushdiensten verwendet, um einzustellen welche Vorlage mit welcher Meldungsart verwendet werden soll.
 
 Zeichen mit besonderer Bedeutung:
 - `${}` umfasst Tokens, die durch generierte Infomationen ersetzt werden. Der Vorlagenbezeichner kann hier ebenfalls eingesetzt werden.
-- Vorlagenbezeichner die mit `_` beginnen, werden bei Diensten nicht angeboten.
+- Vorlagenbezeichner die mit `_` beginnen, werden bei Diensten nicht angeboten, jedoch werden diese in States geschrieben.
 - `${[0,1,2,3,4]token}` Eine Zeichenkette mit Werten, token muß ein Zahlentoken sein. Index ist wie im Beispiel. 0 ist der erste Wert in der Liste
 - bei einer Vorlage für Jsons muß das abschließende `}` so geschrieben werden `\}`
 - siehe Beispiele im Adapter.
 - es ist ebenfalls sowas möglich: `${[0,🟢,🟡,🟠,🔴]warnlevelnumber}`
 
+Ein Beispiel:
+```
+Luke, wir haben eine neue Warnung ${Warntypename} ab ${starttime} erhalten, sieht aus wie ein ${_customArray}
+```
+Das Warntypename wird z.B. durch `Gewitter`ersetzt. `startime` durch 20:15 und `_customArray` durch das Ergebnis der entsprechenden Vorlage.  
+
 **Restore Templates:** Setzt die Vorlagen auf die aktuelle Systemsprache zurück. Vorhandene Vorlagen gehen **verloren**. Anschließend speichern & schließen. Sollte ebenfalls verwendet werden, wenn die Systemsprache geändert wurde.
+
+**Add Templates** fügt die Standardvorlagen hinzu, solange die eindeutige Kennung nicht verwendet wird. 
 
 ![DWD](img/DWD.png)
 

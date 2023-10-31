@@ -15,7 +15,7 @@
 
 ## weather-warnings adapter for ioBroker
 
-[Deutsche Readme](https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README_DE.md)
+[Deutsche Readme (meist aktueller)](https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README_DE.md)
 
 **Still in development** so no good sample templates yet and email is not quite ready. If you have any wishes, just make a feature request.
 

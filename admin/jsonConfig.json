@@ -214,6 +214,22 @@
                             "label": ".alerts"
                         }
                     ]
+                },
+                "dividerHdr2": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "test_diver",
+                    "hidden": "data.imExpert != true",
+                    "size": 3
+                },
+                "useTestWarnings": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "label": "useTestWarnings",
+                    "newLine": true
                 }
             }
         },
@@ -349,36 +365,26 @@
                     "hidden": "data.imExpert != true",
                     "size": 3
                 },
-                "useTestWarnings": {
-                    "type": "checkbox",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "label": "useTestWarnings",
-                    "hidden": "data.imExpert != true",
-                    "newLine": true
-                },
                 "useJsonHistory": {
                     "type": "checkbox",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
-                    "lg": 4,
+                    "lg": 6,
                     "disabled": "data.useTestWarnings",
                     "label": "useJsonHistory",
                     "hidden": "data.imExpert != true",
-                    "newLine": false
+                    "newLine": true
                 },
                 "useTestCase": {
                     "type": "checkbox",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
-                    "lg": 4,
+                    "lg": 6,
                     "label": "useTestCase",
                     "hidden": "data.imExpert != true",
-                    "newLine": true
+                    "newLine": false
                 }
             }
         },
