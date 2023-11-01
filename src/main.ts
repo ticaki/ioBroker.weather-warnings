@@ -15,7 +15,7 @@ import * as messagesDef from './lib/def/messages-def';
 import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationService-def.js';
-import { actionStates } from './lib/def/definitionen.js';
+import { actionStates, statesObjectsWarnings } from './lib/def/definitionen.js';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -107,7 +107,7 @@ class WeatherWarnings extends utils.Adapter {
         }
         change = false;
         const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
-        //create alexa sound array
+        //create template Help
         if (obj) {
             {
                 let reply = 'Tokens:\n';
@@ -119,11 +119,13 @@ class WeatherWarnings extends utils.Adapter {
                         keys[a] +
                         '}: ' +
                         (this.library.getTranslation(
-                            messagesDef.customFormatedTokensJson[keys[a] as keyof messagesDef.customFormatedTokens],
+                            statesObjectsWarnings.allService.formatedkeys[
+                                keys[a] as keyof typeof statesObjectsWarnings.allService.formatedkeys
+                            ].common.name as string,
                         ) +
                             '\n');
                 }
-                reply = reply.slice(0, -2);
+                reply = reply.slice(0, -1);
                 if (obj.native.templateHelp && obj.native.templateHelp.valueOf() != reply.valueOf()) {
                     obj.native.templateHelp = reply;
                     change = true;

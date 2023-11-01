@@ -314,21 +314,36 @@ export class NotificationClass extends library.BaseClass {
                     for (const msg of messages) {
                         const opt: any = { text: msg.text, disable_notification: this.options.withNoSound };
                         if (this.options.parse_mode != 'none') opt.parse_mode = this.options.parse_mode;
-                        if (this.options.userid.length > 0 || this.options.chatid.length > 0) {
-                            if (this.options.userid.length > 0) opt.user = this.options.userid;
-                            if (this.options.chatid.length > 0) {
-                                const chatids = this.options.chatid.split(',');
-                                for (const chatid of chatids)
-                                    this.adapter.sendTo(this.options.adapter, 'send', {
-                                        ...opt,
-                                        chatid: chatid,
+                        try {
+                            if (this.options.userid.length > 0 || this.options.chatid.length > 0) {
+                                if (this.options.userid.length > 0) opt.user = this.options.userid;
+                                if (this.options.chatid.length > 0) {
+                                    const chatids = this.options.chatid.split(',');
+                                    for (const chatid of chatids)
+                                        await this.adapter.sendToAsync(
+                                            this.options.adapter,
+                                            'send',
+                                            {
+                                                ...opt,
+                                                chatid: chatid,
+                                            },
+                                            { timeout: 2000 },
+                                        );
+                                } else {
+                                    await this.adapter.sendToAsync(this.options.adapter, 'send', opt, {
+                                        timeout: 2000,
                                     });
-                            } else {
-                                this.adapter.sendTo(this.options.adapter, 'send', opt);
-                            }
-                        } else this.adapter.sendTo(this.options.adapter, 'send', opt);
-                        await library.sleep(50);
-                        this.log.debug(`Send the message: ${msg.text}`);
+                                }
+                            } else await this.adapter.sendToAsync(this.options.adapter, 'send', opt, { timeout: 2000 });
+
+                            this.log.debug(`Send the message: ${msg.text}`);
+                        } catch (error: any) {
+                            if (error.message == 'Timeout exceeded')
+                                this.log.warn(
+                                    `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
+                                );
+                            else throw error;
+                        }
                     }
                 }
                 break;
@@ -345,9 +360,16 @@ export class NotificationClass extends library.BaseClass {
                         if (this.options.priority) opt.priority = msg.message ? msg.message.level - 2 : -1;
                         if (this.options.device.length > 0) opt.device = this.options.device;
                         // stupid pushover adapter dont callback if he runs into a "dont do this"
-                        this.adapter.sendTo(this.options.adapter, 'send', opt);
-                        this.log.debug(`Send the message: ${msg.text}`);
-                        await library.sleep(50);
+                        try {
+                            await this.adapter.sendToAsync(this.options.adapter, 'send', opt, { timeout: 2000 });
+                            this.log.debug(`Send the message: ${msg.text}`);
+                        } catch (error: any) {
+                            if (error.message == 'Timeout exceeded')
+                                this.log.warn(
+                                    `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
+                                );
+                            else throw error;
+                        }
                     }
                 }
                 break;
@@ -355,13 +377,18 @@ export class NotificationClass extends library.BaseClass {
                 {
                     for (const msg of messages) {
                         if (Array.isArray(msg)) return false;
-                        const service = this.options.adapter.replace('whatsapp', 'whatsapp-cmb');
-                        // obj.message.phone
                         const opt: { text: string; phone?: string } = { text: msg.text };
                         if (this.options.phonenumber) opt.phone = this.options.phonenumber;
-                        this.adapter.sendTo(service, 'send', opt);
-                        await library.sleep(50);
-                        this.log.debug(`Send the message: ${msg.text}`);
+                        try {
+                            await this.adapter.sendToAsync(this.options.adapter, 'send', opt, { timeout: 2000 });
+                            this.log.debug(`Send the message: ${msg.text}`);
+                        } catch (error: any) {
+                            if (error.message == 'Timeout exceeded')
+                                this.log.warn(
+                                    `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
+                                );
+                            else throw error;
+                        }
                     }
                 }
                 break;
@@ -437,7 +464,7 @@ export class NotificationClass extends library.BaseClass {
                         }
                         this.log.debug(
                             JSON.stringify(
-                                await this.adapter.sendToAsync(this.options.adapter, 'sendSequenceCommand', opt),
+                                await this.adapter.sendToAsync(this.options.adapter, 'sendSequenceCommand', opt, { timeout: 2000 }),
                             ),
                         );*/
                 }
@@ -491,7 +518,7 @@ export class NotificationClass extends library.BaseClass {
                                     JSON.stringify(json),
                                     genericStateObjects.history,
                                 );
-                            } catch (error) {
+                            } catch (error: any) {
                                 this.log.error(
                                     `${this.name} template has wrong formate. ${this.name} deactivated! template: ${
                                         msg.action ? this.options.actions[msg.action] : 'unknown'
@@ -520,7 +547,7 @@ export class NotificationClass extends library.BaseClass {
                                 provider: messages[a].provider,
                             });
                             providers.push(messages[a].provider !== undefined ? messages[a].provider!.name : '');
-                        } catch (error) {
+                        } catch (error: any) {
                             this.log.error(
                                 `Json template has wrong formate. Conversion deactivated! template: ${messages[a].template}, message: ${messages[a].text}`,
                             );
@@ -613,9 +640,16 @@ export class NotificationClass extends library.BaseClass {
                         }
                     }
                     this.log.debug(`start email sending! Messagecount: ${result.length}`);
-                    this.adapter.sendTo(this.options.adapter, 'send', opt);
-                    await library.sleep(50);
-                    this.log.debug(`Send the message: ${JSON.stringify(opt)}`);
+                    try {
+                        await this.adapter.sendToAsync(this.options.adapter, 'send', opt, { timeout: 2000 });
+                        this.log.debug(`Send the message: ${JSON.stringify(opt)}`);
+                    } catch (error: any) {
+                        if (error.message == 'Timeout exceeded')
+                            this.log.warn(
+                                `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
+                            );
+                        else throw error;
+                    }
                 }
                 break;
         }

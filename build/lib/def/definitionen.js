@@ -1824,7 +1824,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "statesObjectsWarnings.dwdService.raw.CEILING",
+          name: "Warnung gilt ab einer H\xF6he von (in Metern).",
           type: "number",
           role: "text",
           read: true,
@@ -1836,7 +1836,7 @@ const statesObjectsWarnings = {
         _id: "begin",
         type: "state",
         common: {
-          name: "statesObjectsWarnings.dwdService.raw.ALTITUDE",
+          name: "statesObjectsWarnings.uwzService.raw.payload.altMin",
           type: "number",
           role: "text",
           read: true,

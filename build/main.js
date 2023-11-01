@@ -112,10 +112,10 @@ class WeatherWarnings extends utils.Adapter {
         keys.sort();
         for (const a in keys) {
           reply += "${" + keys[a] + "}: " + (this.library.getTranslation(
-            messagesDef.customFormatedTokensJson[keys[a]]
+            import_definitionen.statesObjectsWarnings.allService.formatedkeys[keys[a]].common.name
           ) + "\n");
         }
-        reply = reply.slice(0, -2);
+        reply = reply.slice(0, -1);
         if (obj.native.templateHelp && obj.native.templateHelp.valueOf() != reply.valueOf()) {
           obj.native.templateHelp = reply;
           change = true;
