@@ -17,8 +17,6 @@
 
 [Deutsche Readme (meist aktueller)](https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README_DE.md)
 
-**Still in development** so no good sample templates yet and email is not quite ready. If you have any wishes, just make a feature request.
-
 This adapter accesses weather warnings of different weather services and outputs them as text or voice messages. Additionally it creates States grouped by type, which can be used to react to current warnings.
 
 Provider:
