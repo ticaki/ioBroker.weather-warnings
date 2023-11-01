@@ -382,7 +382,7 @@ class ZAMGProvider extends BaseProvider {
       result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
       await super.updateData(result.properties.warnings[a].properties, a);
       const data = JSON.parse(
-        JSON.stringify(result.properties.warnings[a])
+        JSON.stringify(result.properties.warnings[a].properties)
       );
       const index = this.messages.findIndex((m) => {
         if (this.adapter.config.zamgEveryChange) {

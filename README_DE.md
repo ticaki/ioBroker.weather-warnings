@@ -25,7 +25,7 @@ Provider:
 - UWZ
 
 ## Installation
-Nach der Installation und dem automatischen öffnen der Konfigurationsseite diese **nochmals reloaden**. Damit werden die Vorlagen in der eingestellten Sprache angezeigt.
+Nach der Installation und dem automatischen öffnen der Konfigurationsseite diese **nochmals reloaden**. Damit werden die Vorlagen in der Systemsprache angezeigt.
 
 
 ## Konfiguration
@@ -90,7 +90,7 @@ Das Warntypename wird z.B. durch `Gewitter`ersetzt. `startime` durch 20:15 und `
 **Place name:** benutzerdefinierte Ortsbezeichnung, kann in Warnungen verwendet werden. (Nützlich bei mehreren Warncellen)
 
 **Filter:** 
-- Filter Raw data: Filtert vor jeder weiteren Auswertung alles aus das X Stunden in der Zukunft liegt.
+- Filter Stunden: Filtert vor jeder weiteren Auswertung alles aus das X Stunden in der Zukunft liegt.
 - Type: alles mit diesem Type wird verworfen. 
 - Level: alles kleiner dieses Levels wird verworfen.
 
@@ -116,6 +116,13 @@ Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht meh
 
 **alexa:** Zusätzlich muß hier noch ein/mehrere Geräte ausgewählt werden. Die Lautstärke wird nur für die Sprachnachrichten verändert und sollte anschließend wieder zurück gesetzt werden. Nachrichtengröße pro Warnung ist maximal 250 Zeichen.
 
+
+###Datenpunkte:
+
+**warning**: Enthält die Rohdaten die vom Provider geliefert werden, nur der Stundenfilter hat einfluß hierauf
+**formatedKeys**: Enthält die in Vorlagen verwendbaren Tokens und deren aktueller Wert.
+**alerts**: Die Benachrichtigungsdatenpunkte siehe unten
+**command**: Datenpunkte mit denen etwas ausgelöst oder eingestellt werden kann.
 
 ## General Behaviour
 - No duplicate messages should be sent for one and the same thing. DWD is very particular about this.
