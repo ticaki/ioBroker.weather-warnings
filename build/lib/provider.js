@@ -388,6 +388,10 @@ class ZAMGProvider extends BaseProvider {
         if (this.adapter.config.zamgEveryChange) {
           data.chgid = m.rawWarning.chgid;
           data.create = m.rawWarning.create;
+          if (data.updategrund !== "")
+            this.log.warn(
+              `ZAMG: result.properties.warnings[${a}].properties.updategrund: ${data.updategrund} - Please post this line in the forum or on Github.`
+            );
           return JSON.stringify(data) == JSON.stringify(m.rawWarning);
         } else {
           return m.rawWarning.warnid == result.properties.warnings[a].properties.warnid && result.properties.warnings[a].properties.rawinfo.wlevel == m.rawWarning.rawinfo.wlevel && result.properties.warnings[a].properties.rawinfo.wtype == m.rawWarning.rawinfo.wtype;
