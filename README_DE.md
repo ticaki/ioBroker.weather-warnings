@@ -25,6 +25,7 @@ Provider:
 - UWZ
 
 ## Installation
+Min. Nodejs: v18
 Nach der Installation und dem automatischen öffnen der Konfigurationsseite diese **nochmals reloaden**. Damit werden die Vorlagen in der Systemsprache angezeigt.
 
 

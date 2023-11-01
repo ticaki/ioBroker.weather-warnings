@@ -33,6 +33,7 @@ Push service
 - Sayit
 
 ## Installation
+Min. Nodejs: v18
 After installation the configuration site will automatically open and will be needed to be **reloaded**. This will show the templates in the language that was set.
 
 ## Configuration
