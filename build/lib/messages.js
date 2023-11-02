@@ -199,8 +199,12 @@ class MessagesClass extends library.BaseClass {
         cmd: "warningcount",
         node: ""
       },
-      iconbase64: {
+      htmlicon: {
         cmd: "iconbase64",
+        node: ""
+      },
+      weatheremoji: {
+        cmd: "getEmoji",
         node: ""
       }
     },
@@ -351,8 +355,12 @@ class MessagesClass extends library.BaseClass {
         cmd: "warningcount",
         node: ""
       },
-      iconbase64: {
+      htmlicon: {
         cmd: "iconbase64",
+        node: ""
+      },
+      weatheremoji: {
+        cmd: "getEmoji",
         node: ""
       }
     },
@@ -490,8 +498,12 @@ class MessagesClass extends library.BaseClass {
         cmd: "warningcount",
         node: ""
       },
-      iconbase64: {
+      htmlicon: {
         cmd: "iconbase64",
+        node: ""
+      },
+      weatheremoji: {
+        cmd: "getEmoji",
         node: ""
       }
     },
@@ -602,8 +614,12 @@ class MessagesClass extends library.BaseClass {
         cmd: void 0,
         node: ""
       },
-      iconbase64: {
+      htmlicon: {
         cmd: void 0,
+        node: ""
+      },
+      weatheremoji: {
+        cmd: "getEmoji",
         node: ""
       }
     }
@@ -803,7 +819,7 @@ class MessagesClass extends library.BaseClass {
       if (tempid == -1)
         break;
       let rerun = false;
-      const template = msg === "" ? templates[tempid].template : msg;
+      const template = (msg === "" ? templates[tempid].template : msg).replaceAll("iconbase64", "htmlicon");
       if (!template)
         break;
       const temp = template.split(/(?<!\\)\${/g);
@@ -1008,6 +1024,14 @@ class MessagesClass extends library.BaseClass {
         {
           if (MessageType.warnTypeIconsBase64[this.genericType] !== void 0 && typeof MessageType.warnTypeIconsBase64[this.genericType] === "string") {
             return `${MessageType.warnTypeIconsBase64[this.genericType]}`;
+          }
+          return "";
+        }
+        break;
+      case "getEmoji":
+        {
+          if (MessageType.genericWarntyp[this.genericType] !== void 0 && typeof MessageType.genericWarntyp[this.genericType].emoji === "string") {
+            return `${MessageType.genericWarntyp[this.genericType].emoji}`;
           }
           return "";
         }

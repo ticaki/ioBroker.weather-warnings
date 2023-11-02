@@ -530,5 +530,6 @@
     "profileName": "Profile name",
     "speakSilentTimeDetail": "Table of Times",
     "NoWarning": "No Warning",
-    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Icons base64 coded with html tags."
+    "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Icons base64 coded with html tags.",
+    "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji for the warning type of this message."
 }

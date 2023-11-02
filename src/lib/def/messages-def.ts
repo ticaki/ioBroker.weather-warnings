@@ -47,7 +47,8 @@ export type customFormatedTokens = {
     endtimems: number;
     iconurl: string;
     warningcount: string;
-    iconbase64: string;
+    htmlicon: string;
+    weatheremoji: string;
 };
 
 export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, string> = {
@@ -91,7 +92,8 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     endtimems: 'End Time in ms',
     iconurl: 'Url to Icon',
     warningcount: 'Number of Warnings',
-    iconbase64: 'Blue png icons as base64 string with html tags',
+    htmlicon: 'Blue png icons as base64 string with html tags',
+    weatheremoji: 'Emoji for each warning type.',
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;
@@ -251,12 +253,13 @@ export type genericWarntypeType = Record<Required<genericWarntypeNumberType>, ge
 
 type genericWarntypeTypeSub = {
     name: string;
+    id: keyof genericWarnTypNameJsonType;
+    emoji: string;
     dwdService: number[];
     uwzService: number[];
     zamgService: number[];
     metroService?: number[];
     ninaService?: number[];
-    id: keyof genericWarnTypNameJsonType;
 };
 
 type genericWarnTypNameJsonType = {
@@ -293,14 +296,29 @@ export type notificationMessageType = {
     | 'thaw';*/
 
 export const genericWarntyp: genericWarntypeType = {
-    '0': { name: 'textLevels.textGeneric.0', id: 'none', dwdService: [0], uwzService: [0], zamgService: [0] },
-    '1': { name: 'genericWarntyp.1.name', id: 'unknown', dwdService: [], uwzService: [1], zamgService: [8] },
+    '0': {
+        name: 'textLevels.textGeneric.0',
+        id: 'none',
+        dwdService: [0],
+        uwzService: [0],
+        zamgService: [0],
+        emoji: '✨',
+    },
+    '1': {
+        name: 'genericWarntyp.1.name',
+        id: 'unknown',
+        dwdService: [],
+        uwzService: [1],
+        zamgService: [8],
+        emoji: '❔',
+    },
     '2': {
         name: 'genericWarntyp.2.name',
         id: 'storm',
         dwdService: [40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 96, 79],
         uwzService: [2],
         zamgService: [1],
+        emoji: '🌬️',
     },
     '3': {
         name: 'genericWarntyp.3.name',
@@ -308,6 +326,7 @@ export const genericWarntyp: genericWarntypeType = {
         dwdService: [70, 71, 72, 73, 74, 75, 76],
         uwzService: [3],
         zamgService: [3],
+        emoji: '🌨️',
     },
     '4': {
         name: 'genericWarntyp.4.name',
@@ -315,15 +334,31 @@ export const genericWarntyp: genericWarntypeType = {
         dwdService: [96, 95, 66, 65, 64, 63, 62, 61, 49, 48, 46, 45, 44, 42],
         uwzService: [4],
         zamgService: [2],
+        emoji: '☔',
     },
-    '5': { name: 'genericWarntyp.5.name', id: 'cold', dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
-    '6': { name: 'genericWarntyp.6.name', id: 'forest_fire', dwdService: [], uwzService: [6], zamgService: [] },
+    '5': {
+        name: 'genericWarntyp.5.name',
+        id: 'cold',
+        dwdService: [82, 22],
+        uwzService: [10, 11, 5],
+        zamgService: [7],
+        emoji: '❄️',
+    },
+    '6': {
+        name: 'genericWarntyp.6.name',
+        id: 'forest_fire',
+        dwdService: [],
+        uwzService: [6],
+        zamgService: [],
+        emoji: '🔥',
+    },
     '7': {
         name: 'genericWarntyp.7.name',
         id: 'thunderstorm',
         dwdService: [90, 91, 92, 93, 95, 96, 31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49],
         uwzService: [7],
         zamgService: [5],
+        emoji: '⚡',
     },
     '8': {
         name: 'genericWarntyp.8.name',
@@ -331,17 +366,33 @@ export const genericWarntyp: genericWarntypeType = {
         dwdService: [87, 85, 84, 24],
         uwzService: [8],
         zamgService: [4],
+        emoji: '⛸️',
     },
-    '9': { name: 'genericWarntyp.9.name', id: 'heat', dwdService: [247, 248], uwzService: [9], zamgService: [6] },
+    '9': {
+        name: 'genericWarntyp.9.name',
+        id: 'heat',
+        dwdService: [247, 248],
+        uwzService: [9],
+        zamgService: [6],
+        emoji: '🥵',
+    },
     '10': {
         name: 'genericWarntyp.10.name',
         id: 'hail',
         dwdService: [95, 96, 46, 48, 49],
         uwzService: [],
         zamgService: [],
+        emoji: '🧊',
     },
-    '11': { name: 'genericWarntyp.11.name', id: 'fog', dwdService: [59], uwzService: [], zamgService: [] },
-    '12': { name: 'genericWarntyp.12.name', id: 'thaw', dwdService: [88, 89], uwzService: [], zamgService: [] },
+    '11': { name: 'genericWarntyp.11.name', id: 'fog', dwdService: [59], uwzService: [], zamgService: [], emoji: '🧊' },
+    '12': {
+        name: 'genericWarntyp.12.name',
+        id: 'thaw',
+        dwdService: [88, 89],
+        uwzService: [],
+        zamgService: [],
+        emoji: '💦',
+    },
 };
 
 export const warnTypeIconsBase64: Partial<Record<keyof genericWarntypeType, string>> = {

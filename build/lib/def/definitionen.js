@@ -1484,13 +1484,25 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
-      iconbase64: {
+      htmlicon: {
         _id: "iconbase64",
         type: "state",
         common: {
           name: "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64",
           type: "string",
           role: "weather.icon",
+          read: true,
+          write: false
+        },
+        native: {}
+      },
+      weatheremoji: {
+        _id: "weatheremoji",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji",
+          type: "string",
+          role: "text",
           read: true,
           write: false
         },

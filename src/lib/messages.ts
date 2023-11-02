@@ -32,7 +32,8 @@ type messageCmdType =
     | 'adverb'
     | 'dwdcolor'
     | 'warningcount'
-    | 'iconbase64';
+    | 'iconbase64'
+    | 'getEmoji';
 /**
  * MessageClass
  */
@@ -209,8 +210,12 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'warningcount',
                 node: '',
             },
-            iconbase64: {
+            htmlicon: {
                 cmd: 'iconbase64',
+                node: '',
+            },
+            weatheremoji: {
+                cmd: 'getEmoji',
                 node: '',
             },
         },
@@ -362,8 +367,12 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'warningcount',
                 node: '',
             },
-            iconbase64: {
+            htmlicon: {
                 cmd: 'iconbase64',
+                node: '',
+            },
+            weatheremoji: {
+                cmd: 'getEmoji',
                 node: '',
             },
         },
@@ -502,8 +511,12 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'warningcount',
                 node: '',
             },
-            iconbase64: {
+            htmlicon: {
                 cmd: 'iconbase64',
+                node: '',
+            },
+            weatheremoji: {
+                cmd: 'getEmoji',
                 node: '',
             },
         },
@@ -614,8 +627,12 @@ export class MessagesClass extends library.BaseClass {
                 cmd: undefined,
                 node: '',
             },
-            iconbase64: {
+            htmlicon: {
                 cmd: undefined,
+                node: '',
+            },
+            weatheremoji: {
+                cmd: 'getEmoji',
                 node: '',
             },
         },
@@ -820,7 +837,7 @@ export class MessagesClass extends library.BaseClass {
         while (count++ < 100) {
             if (tempid == -1) break;
             let rerun = false;
-            const template = msg === '' ? templates[tempid].template : msg;
+            const template = (msg === '' ? templates[tempid].template : msg).replaceAll('iconbase64', 'htmlicon');
             if (!template) break;
             const temp = template.split(/(?<!\\)\${/g);
             msg = temp[0];
@@ -1065,6 +1082,17 @@ export class MessagesClass extends library.BaseClass {
                         typeof MessageType.warnTypeIconsBase64[this.genericType] === 'string'
                     ) {
                         return `${MessageType.warnTypeIconsBase64[this.genericType]}`;
+                    }
+                    return '';
+                }
+                break;
+            case 'getEmoji':
+                {
+                    if (
+                        MessageType.genericWarntyp[this.genericType] !== undefined &&
+                        typeof MessageType.genericWarntyp[this.genericType].emoji === 'string'
+                    ) {
+                        return `${MessageType.genericWarntyp[this.genericType].emoji}`;
                     }
                     return '';
                 }

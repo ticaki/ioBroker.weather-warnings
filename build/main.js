@@ -330,7 +330,7 @@ class WeatherWarnings extends utils.Adapter {
         for (const a in self.config.dwdwarncellTable) {
           const id = self.config.dwdwarncellTable[a];
           if (self.config.dwdEnabled) {
-            if (id.dwdSelectId < 1e4 && isNaN(id.dwdSelectId)) {
+            if (isNaN(id.dwdSelectId) && Number(id.dwdSelectId) < 1e4) {
               self.log.warn(`DWD is activated, but no valid warning cell is configured.`);
               continue;
             }

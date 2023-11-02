@@ -75,7 +75,8 @@ const customFormatedTokensJson = {
   endtimems: "End Time in ms",
   iconurl: "Url to Icon",
   warningcount: "Number of Warnings",
-  iconbase64: "Blue png icons as base64 string with html tags"
+  htmlicon: "Blue png icons as base64 string with html tags",
+  weatheremoji: "Emoji for each warning type."
 };
 const textLevels = {
   textGeneric: {
@@ -205,55 +206,103 @@ function isKeyOfObject(key, obj) {
   return key in obj;
 }
 const genericWarntyp = {
-  "0": { name: "textLevels.textGeneric.0", id: "none", dwdService: [0], uwzService: [0], zamgService: [0] },
-  "1": { name: "genericWarntyp.1.name", id: "unknown", dwdService: [], uwzService: [1], zamgService: [8] },
+  "0": {
+    name: "textLevels.textGeneric.0",
+    id: "none",
+    dwdService: [0],
+    uwzService: [0],
+    zamgService: [0],
+    emoji: "\u2728"
+  },
+  "1": {
+    name: "genericWarntyp.1.name",
+    id: "unknown",
+    dwdService: [],
+    uwzService: [1],
+    zamgService: [8],
+    emoji: "\u2754"
+  },
   "2": {
     name: "genericWarntyp.2.name",
     id: "storm",
     dwdService: [40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 96, 79],
     uwzService: [2],
-    zamgService: [1]
+    zamgService: [1],
+    emoji: "\u{1F32C}\uFE0F"
   },
   "3": {
     name: "genericWarntyp.3.name",
     id: "snowfall",
     dwdService: [70, 71, 72, 73, 74, 75, 76],
     uwzService: [3],
-    zamgService: [3]
+    zamgService: [3],
+    emoji: "\u{1F328}\uFE0F"
   },
   "4": {
     name: "genericWarntyp.4.name",
     id: "rain",
     dwdService: [96, 95, 66, 65, 64, 63, 62, 61, 49, 48, 46, 45, 44, 42],
     uwzService: [4],
-    zamgService: [2]
+    zamgService: [2],
+    emoji: "\u2614"
   },
-  "5": { name: "genericWarntyp.5.name", id: "cold", dwdService: [82, 22], uwzService: [10, 11, 5], zamgService: [7] },
-  "6": { name: "genericWarntyp.6.name", id: "forest_fire", dwdService: [], uwzService: [6], zamgService: [] },
+  "5": {
+    name: "genericWarntyp.5.name",
+    id: "cold",
+    dwdService: [82, 22],
+    uwzService: [10, 11, 5],
+    zamgService: [7],
+    emoji: "\u2744\uFE0F"
+  },
+  "6": {
+    name: "genericWarntyp.6.name",
+    id: "forest_fire",
+    dwdService: [],
+    uwzService: [6],
+    zamgService: [],
+    emoji: "\u{1F525}"
+  },
   "7": {
     name: "genericWarntyp.7.name",
     id: "thunderstorm",
     dwdService: [90, 91, 92, 93, 95, 96, 31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49],
     uwzService: [7],
-    zamgService: [5]
+    zamgService: [5],
+    emoji: "\u26A1"
   },
   "8": {
     name: "genericWarntyp.8.name",
     id: "black_ice_slippery",
     dwdService: [87, 85, 84, 24],
     uwzService: [8],
-    zamgService: [4]
+    zamgService: [4],
+    emoji: "\u26F8\uFE0F"
   },
-  "9": { name: "genericWarntyp.9.name", id: "heat", dwdService: [247, 248], uwzService: [9], zamgService: [6] },
+  "9": {
+    name: "genericWarntyp.9.name",
+    id: "heat",
+    dwdService: [247, 248],
+    uwzService: [9],
+    zamgService: [6],
+    emoji: "\u{1F975}"
+  },
   "10": {
     name: "genericWarntyp.10.name",
     id: "hail",
     dwdService: [95, 96, 46, 48, 49],
     uwzService: [],
-    zamgService: []
+    zamgService: [],
+    emoji: "\u{1F9CA}"
   },
-  "11": { name: "genericWarntyp.11.name", id: "fog", dwdService: [59], uwzService: [], zamgService: [] },
-  "12": { name: "genericWarntyp.12.name", id: "thaw", dwdService: [88, 89], uwzService: [], zamgService: [] }
+  "11": { name: "genericWarntyp.11.name", id: "fog", dwdService: [59], uwzService: [], zamgService: [], emoji: "\u{1F9CA}" },
+  "12": {
+    name: "genericWarntyp.12.name",
+    id: "thaw",
+    dwdService: [88, 89],
+    uwzService: [],
+    zamgService: [],
+    emoji: "\u{1F4A6}"
+  }
 };
 const warnTypeIconsBase64 = {
   "0": '<img src="data:image/png;base64,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" />',
