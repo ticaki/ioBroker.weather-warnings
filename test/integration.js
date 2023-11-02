@@ -34,7 +34,7 @@ tests.integration(path.join(__dirname,".."),{
                     obj.native.dwdEnabled=true;
                     obj.native.dwdwarncellTable=[{ dwdSelectId: 80511100, dwdCityname: 'test' },{ dwdSelectId: 80511100, dwdCityname: 'test' }];
                     obj.native.uwzEnabled=true;
-                    obj.native.uwzSelectId=[{ uwzSelectId: 'DE55606', uwzCityname: 'test' }];
+                    obj.native.uwzSelectId=[{ uwzSelectId: '48.333444483766975/14.6258983209036', uwzCityname: 'test' }];
                     obj.native.zamgEnabled=true;
                     obj.native.zamgSelectId=[{ zamgSelectId: '48.333444483766975/14.6258983209036', zamgCityname: 'test' }];
                     obj.native.zamgTypeFilter=[5,1];
@@ -73,7 +73,7 @@ tests.integration(path.join(__dirname,".."),{
                     obj.native.dwdEnabled=true;
                     obj.native.dwdwarncellTable=[{ dwdSelectId: 80511100, dwdCityname: 'test' },{ dwdSelectId: 80511100, dwdCityname: 'test' }];
                     obj.native.uwzEnabled=true;
-                    obj.native.uwzwarncellTable=[{ uwzSelectId: 'DE55606', uwzCityname: 'test' }];
+                    obj.native.uwzwarncellTable=[{ uwzSelectId: '48.333444483766975/14.6258983209036', uwzCityname: 'test' }];
                     obj.native.zamgEnabled=true;
                     obj.native.zamgwarncellTable=[{ zamgSelectId: '48.333444483766975/14.6258983209036', zamgCityname: 'test' }];
                     obj.native.refreshTime=1;

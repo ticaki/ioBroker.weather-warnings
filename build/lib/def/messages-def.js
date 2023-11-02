@@ -320,7 +320,7 @@ function filterWarntype(p, f, o) {
     const id = i;
     const w = genericWarntyp[id];
     if (w[p] == void 0)
-      return false;
+      continue;
     if (Array.isArray(w[p]) && w[p].indexOf(o) != -1) {
       if (f.indexOf(String(id)) == -1) {
         return false;

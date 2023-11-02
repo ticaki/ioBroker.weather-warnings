@@ -2303,6 +2303,7 @@ export const PROVIDER_OPTIONS = {
     },
     uwzService: {
         url: `http://feed.alertspro.meteogroup.com/AlertsPro/AlertsProPollService.php?method=getWarning&language=de&areaID=#  #`,
+        warncellUrl: `https://feed.alertspro.meteogroup.com/AlertsPro/AlertsProPollService.php?method=lookupCoord&lat=#  #&lon=#+  +#`,
     },
     ninaService: {
         url: '${warncellid}',

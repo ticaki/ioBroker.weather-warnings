@@ -39,7 +39,7 @@ declare global {
             icons_description: string;
 
             dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
-            uwzwarncellTable: { uwzSelectId: string; uwzCityname: string }[];
+            uwzwarncellTable: { uwzSelectId: string; uwzCityname: string; realWarncell: string }[];
             zamgwarncellTable: { zamgSelectId: string; zamgCityname: string }[];
 
             dwdEnabled: boolean;

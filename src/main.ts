@@ -12,7 +12,12 @@ import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 import * as messagesDef from './lib/def/messages-def';
-import { messageFilterTypeWithFilter, providerServices, providerServicesArray } from './lib/def/provider-def';
+import {
+    UWZProvider,
+    messageFilterTypeWithFilter,
+    providerServices,
+    providerServicesArray,
+} from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationService-def.js';
 import { actionStates, statesObjectsWarnings } from './lib/def/definitionen.js';
@@ -467,9 +472,24 @@ class WeatherWarnings extends utils.Adapter {
                         }
                     }
                 }
+                const tempTable: any = JSON.parse(JSON.stringify(self.config.uwzwarncellTable));
                 for (const a in self.config.uwzwarncellTable) {
                     const id = self.config.uwzwarncellTable[a];
-                    if (self.config.uwzEnabled && !!id.uwzSelectId) {
+                    if (
+                        self.config.uwzEnabled &&
+                        id &&
+                        typeof id.uwzSelectId == 'string' &&
+                        id.uwzSelectId.split('/').length == 2
+                    ) {
+                        const tempWarncell = await UWZProvider.getWarncell(
+                            id.uwzSelectId.split('/') as [string, string],
+                            'uwzService',
+                            self,
+                        );
+
+                        if (tempWarncell) {
+                            tempTable[a].realWarncell = tempWarncell;
+                        }
                         const options: messageFilterTypeWithFilter = {
                             filter: {
                                 type: self.config.uwzTypeFilter,
@@ -477,18 +497,27 @@ class WeatherWarnings extends utils.Adapter {
                                 hours: self.config.uwzHourFilter,
                             },
                         };
+
                         self.log.info('UWZ activated. Retrieve data.');
                         self.providerController.createProviderIfNotExist({
                             ...options,
                             service: 'uwzService',
-                            warncellId: 'UWZ' + id.uwzSelectId.toUpperCase(), //UWZ + Land + PLZ
+                            warncellId:
+                                tempWarncell == undefined || tempWarncell == '' ? id.realWarncell : tempWarncell,
                             providerController: self.providerController,
                             language: self.config.uwzLanguage,
                             customName: id.uwzCityname,
                         });
+                    } else self.log.warn(`Something is wrong with uwz coordinates: ${id.uwzSelectId}`);
+                }
+                if (JSON.stringify(tempTable) != JSON.stringify(self.config.uwzwarncellTable)) {
+                    const obj = await self.getForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`);
+                    if (obj) {
+                        self.log.debug('change config uwzwarncellTable');
+                        obj.native.uwzwarncellTable = tempTable;
+                        await self.setForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`, obj);
                     }
                 }
-
                 //clear tree
                 const holdStates = [];
                 for (const a in self.providerController.providers) {

@@ -687,9 +687,11 @@ export class MessagesClass extends library.BaseClass {
                     case `uwzService`:
                         {
                             this.rawWarning = defaultData.uwzService;
-                            for (const a in this.rawWarning.payload.translationsShortText)
+                            for (const a in this.rawWarning.payload.translationsShortText) {
                                 this.rawWarning.payload.translationsShortText[a] =
                                     this.library.getTranslation('NoWarning');
+                                break;
+                            }
                         }
                         break;
                     case `zamgService`:

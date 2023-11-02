@@ -696,13 +696,15 @@
                     "items": [
                         {
                             "attr": "uwzSelectId",
-                            "type": "text",
-                            "default": "DE12345",
                             "title": "uwzSelectId",
-                            "tooltip": "uwzSelectDescription",
                             "width": "50% ",
                             "filter": false,
-                            "sort": false
+                            "type": "coordinates",
+                            "divider": "/",
+                            "useSystemName": false,
+                            "newLine": true,
+                            "label": "COORDINATES",
+                            "default": ""
                         },
                         {
                             "type": "text",

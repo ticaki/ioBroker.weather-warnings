@@ -111,18 +111,19 @@ class BaseProvider extends import_library.BaseClass {
     this.service = service;
     return true;
   }
-  setUrl(url = "", keys) {
+  static getUrl(url = "", keys, service) {
+    let result = "";
     if (!url) {
-      this.url = definitionen.PROVIDER_OPTIONS[this.service]["url"];
+      result = definitionen.PROVIDER_OPTIONS[service]["url"];
     } else {
-      this.url = url;
+      result = url;
     }
     let placeholder = "#  #";
     for (const k in keys) {
-      this.url = this.url.replace(placeholder, keys[k]);
+      result = result.replace(placeholder, keys[k]);
       placeholder = placeholder.slice(0, 1) + "+" + placeholder.slice(1, -1) + "+" + placeholder.slice(-1);
     }
-    return this.url;
+    return result;
   }
   async setConnected(status) {
     this.providerController.connection = this.providerController.connection || status;
@@ -297,7 +298,7 @@ class DWDProvider extends BaseProvider {
     super(adapter, { ...options, service: "dwdService" }, `dwd`);
     this.warncellId = options.warncellId;
     const url = definitionen.PROVIDER_OPTIONS.dwdService.url_base + (this.warncellId.startsWith("9") || this.warncellId.startsWith("10") ? definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_land : definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_town) + definitionen.PROVIDER_OPTIONS.dwdService.url_language;
-    this.url = this.setUrl(url, [this.warncellId, options.language]);
+    this.url = BaseProvider.getUrl(url, [this.warncellId, options.language], this.service);
   }
   async updateData() {
     const result = await this.getDataFromProvider();
@@ -360,7 +361,7 @@ class ZAMGProvider extends BaseProvider {
   constructor(adapter, options) {
     super(adapter, { ...options, service: "zamgService" }, `zamg`);
     this.warncellId = options.warncellId;
-    this.setUrl("", [this.warncellId[0], this.warncellId[1], options.language]);
+    this.url = BaseProvider.getUrl("", [this.warncellId[0], this.warncellId[1], options.language], this.service);
   }
   async updateData() {
     const result = await this.getDataFromProvider();
@@ -419,7 +420,27 @@ class UWZProvider extends BaseProvider {
   constructor(adapter, options) {
     super(adapter, { ...options, service: "uwzService" }, `uwz`);
     this.warncellId = options.warncellId.toUpperCase();
-    this.setUrl("", [this.warncellId, options.language]);
+    this.url = BaseProvider.getUrl("", [this.warncellId, options.language], this.service);
+  }
+  static async getWarncell(warncellId, service, that) {
+    try {
+      const result = await import_axios.default.get(
+        UWZProvider.getUrl(
+          definitionen.PROVIDER_OPTIONS.uwzService.warncellUrl,
+          [warncellId[0], warncellId[1]],
+          service
+        )
+      );
+      if (result) {
+        if (result.data && result.data[0]) {
+          return result.data[0].AREA_ID;
+        }
+      }
+      that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)}`);
+    } catch (error) {
+      that.log.warn(`Dont get warncell. ${JSON.stringify(error.toJSON)}`);
+    }
+    return "";
   }
   async updateData() {
     const result = await this.getDataFromProvider();

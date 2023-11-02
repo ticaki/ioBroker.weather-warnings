@@ -376,9 +376,18 @@ class WeatherWarnings extends utils.Adapter {
             }
           }
         }
+        const tempTable = JSON.parse(JSON.stringify(self.config.uwzwarncellTable));
         for (const a in self.config.uwzwarncellTable) {
           const id = self.config.uwzwarncellTable[a];
-          if (self.config.uwzEnabled && !!id.uwzSelectId) {
+          if (self.config.uwzEnabled && id && typeof id.uwzSelectId == "string" && id.uwzSelectId.split("/").length == 2) {
+            const tempWarncell = await import_provider_def.UWZProvider.getWarncell(
+              id.uwzSelectId.split("/"),
+              "uwzService",
+              self
+            );
+            if (tempWarncell) {
+              tempTable[a].realWarncell = tempWarncell;
+            }
             const options = {
               filter: {
                 type: self.config.uwzTypeFilter,
@@ -390,11 +399,20 @@ class WeatherWarnings extends utils.Adapter {
             self.providerController.createProviderIfNotExist({
               ...options,
               service: "uwzService",
-              warncellId: "UWZ" + id.uwzSelectId.toUpperCase(),
+              warncellId: tempWarncell == void 0 || tempWarncell == "" ? id.realWarncell : tempWarncell,
               providerController: self.providerController,
               language: self.config.uwzLanguage,
               customName: id.uwzCityname
             });
+          } else
+            self.log.warn(`Something is wrong with uwz coordinates: ${id.uwzSelectId}`);
+        }
+        if (JSON.stringify(tempTable) != JSON.stringify(self.config.uwzwarncellTable)) {
+          const obj2 = await self.getForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`);
+          if (obj2) {
+            self.log.debug("change config uwzwarncellTable");
+            obj2.native.uwzwarncellTable = tempTable;
+            await self.setForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`, obj2);
           }
         }
         const holdStates = [];

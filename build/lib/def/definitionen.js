@@ -2250,7 +2250,8 @@ const PROVIDER_OPTIONS = {
     url: "https://warnungen.zamg.at/wsapp/api/getWarningsForCoords?lat=#  #&lon=#+  +#1&lang=#++  ++#"
   },
   uwzService: {
-    url: `http://feed.alertspro.meteogroup.com/AlertsPro/AlertsProPollService.php?method=getWarning&language=de&areaID=#  #`
+    url: `http://feed.alertspro.meteogroup.com/AlertsPro/AlertsProPollService.php?method=getWarning&language=de&areaID=#  #`,
+    warncellUrl: `https://feed.alertspro.meteogroup.com/AlertsPro/AlertsProPollService.php?method=lookupCoord&lat=#  #&lon=#+  +#`
   },
   ninaService: {
     url: "${warncellid}"

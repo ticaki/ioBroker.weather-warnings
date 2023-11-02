@@ -121,18 +121,19 @@ export class BaseProvider extends BaseClass {
      * @param url if '' url from PROVIDER_OPTIONS is taken
      * @param keys [string] values to replace - placeholder #  # #+  +# #++  ++# and so on
      */
-    setUrl(url: string = '', keys: string[]): string {
+    static getUrl(url: string = '', keys: string[], service: keyof typeof definitionen.PROVIDER_OPTIONS): string {
+        let result = '';
         if (!url) {
-            this.url = definitionen.PROVIDER_OPTIONS[this.service]['url'];
+            result = definitionen.PROVIDER_OPTIONS[service]['url'];
         } else {
-            this.url = url;
+            result = url;
         }
         let placeholder = '#  #';
         for (const k in keys) {
-            this.url = this.url.replace(placeholder, keys[k]);
+            result = result.replace(placeholder, keys[k]);
             placeholder = placeholder.slice(0, 1) + '+' + placeholder.slice(1, -1) + '+' + placeholder.slice(-1);
         }
-        return this.url;
+        return result;
     }
     async setConnected(status: boolean): Promise<void> {
         this.providerController.connection = this.providerController.connection || status;
@@ -319,7 +320,7 @@ export class DWDProvider extends BaseProvider {
                 ? definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_land
                 : definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_town) +
             definitionen.PROVIDER_OPTIONS.dwdService.url_language;
-        this.url = this.setUrl(url, [this.warncellId, options.language]);
+        this.url = BaseProvider.getUrl(url, [this.warncellId, options.language], this.service);
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as providerDef.dataImportDwdType;
@@ -383,7 +384,7 @@ export class ZAMGProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
         super(adapter, { ...options, service: 'zamgService' }, `zamg`);
         this.warncellId = options.warncellId;
-        this.setUrl('', [this.warncellId[0], this.warncellId[1], options.language]);
+        this.url = BaseProvider.getUrl('', [this.warncellId[0], this.warncellId[1], options.language], this.service);
     }
 
     async updateData(): Promise<void> {
@@ -450,7 +451,32 @@ export class UWZProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: StringProviderOptionsType) {
         super(adapter, { ...options, service: 'uwzService' }, `uwz`);
         this.warncellId = options.warncellId.toUpperCase();
-        this.setUrl('', [this.warncellId, options.language]);
+        this.url = BaseProvider.getUrl('', [this.warncellId, options.language], this.service);
+    }
+    static async getWarncell(
+        warncellId: [string, string],
+        service: providerDef.providerServices,
+
+        that: any,
+    ): Promise<string> {
+        try {
+            const result = await axios.get(
+                UWZProvider.getUrl(
+                    definitionen.PROVIDER_OPTIONS.uwzService.warncellUrl,
+                    [warncellId[0], warncellId[1]],
+                    service,
+                ),
+            );
+            if (result) {
+                if (result.data && result.data[0]) {
+                    return result.data[0].AREA_ID;
+                }
+            }
+            that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)!}`);
+        } catch (error: any) {
+            that.log.warn(`Dont get warncell. ${JSON.stringify(error.toJSON)}`);
+        }
+        return '';
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as providerDef.dataImportUWZType;
@@ -500,8 +526,8 @@ export class METROProvider extends BaseProvider {
 }
 export class ProviderController extends BaseClass {
     providers: providerDef.ProviderClassType[] = [];
-    refreshTimeRef: any = null;
-    alertTimeoutRef: any = null;
+    refreshTimeRef: ioBroker.Timeout | null = null;
+    alertTimeoutRef: ioBroker.Timeout | null = null;
     connection = true;
     name = 'provider';
     refreshTime: number = 300000;
