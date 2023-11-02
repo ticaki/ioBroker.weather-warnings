@@ -185,7 +185,7 @@
     "customFormatedTokensJson.provider": "Anbieter",
     "customFormatedTokensJson.locationcustom": "Standort aus der Administratorkonfiguration",
     "useJsonHistory": "Die Speicherung der Rohdatenhistorie wird aktiviert bzw. deaktiviert und gelöscht (hoher Speicherverbrauch).",
-    "uwzSelectId": "UWZ Warncell-Identifikator",
+    "uwzSelectId": "UWZ-Koordinaten zum Standort. Teiler '/'",
     "allowedDirs": "Verzeichnisse des Anbieters zulassen oder entfernen! Andere Einstellungen werden überschrieben!",
     "zamgSelectId": "ZAMG Koordinaten zum Standort. Teiler '/'",
     "color.textGeneric.0": "grün",
