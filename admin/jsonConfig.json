@@ -718,12 +718,11 @@
                         },
                         {
                             "attr": "realWarncell",
+                            "title": "uwzRealWarncellID",
                             "type": "text",
                             "width": "30% ",
                             "filter": false,
-                            "sort": false,
-                            "label": "icons_description",
-                            "readOnly": true                           
+                            "sort": false,                   
                         }
                     ]
                 },

@@ -476,19 +476,22 @@ class WeatherWarnings extends utils.Adapter {
                 for (const a in self.config.uwzwarncellTable) {
                     const id = self.config.uwzwarncellTable[a];
                     if (
-                        self.config.uwzEnabled &&
-                        id &&
-                        typeof id.uwzSelectId == 'string' &&
-                        id.uwzSelectId.split('/').length == 2
+                        (self.config.uwzEnabled &&
+                            id &&
+                            typeof id.uwzSelectId == 'string' &&
+                            id.uwzSelectId.split('/').length == 2) ||
+                        tempTable[a].realWarncell !== ''
                     ) {
-                        const tempWarncell = await UWZProvider.getWarncell(
-                            id.uwzSelectId.split('/') as [string, string],
-                            'uwzService',
-                            self,
-                        );
+                        if (tempTable[a].realWarncell !== '') {
+                            const tempWarncell = await UWZProvider.getWarncell(
+                                id.uwzSelectId.split('/') as [string, string],
+                                'uwzService',
+                                self,
+                            );
 
-                        if (tempWarncell) {
-                            tempTable[a].realWarncell = tempWarncell;
+                            if (tempWarncell) {
+                                tempTable[a].realWarncell = tempWarncell;
+                            }
                         }
                         const options: messageFilterTypeWithFilter = {
                             filter: {
@@ -502,8 +505,7 @@ class WeatherWarnings extends utils.Adapter {
                         self.providerController.createProviderIfNotExist({
                             ...options,
                             service: 'uwzService',
-                            warncellId:
-                                tempWarncell == undefined || tempWarncell == '' ? id.realWarncell : tempWarncell,
+                            warncellId: tempTable[a].realWarncell,
                             providerController: self.providerController,
                             language: self.config.uwzLanguage,
                             customName: id.uwzCityname,

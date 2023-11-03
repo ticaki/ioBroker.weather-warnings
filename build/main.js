@@ -379,14 +379,16 @@ class WeatherWarnings extends utils.Adapter {
         const tempTable = JSON.parse(JSON.stringify(self.config.uwzwarncellTable));
         for (const a in self.config.uwzwarncellTable) {
           const id = self.config.uwzwarncellTable[a];
-          if (self.config.uwzEnabled && id && typeof id.uwzSelectId == "string" && id.uwzSelectId.split("/").length == 2) {
-            const tempWarncell = await import_provider_def.UWZProvider.getWarncell(
-              id.uwzSelectId.split("/"),
-              "uwzService",
-              self
-            );
-            if (tempWarncell) {
-              tempTable[a].realWarncell = tempWarncell;
+          if (self.config.uwzEnabled && id && typeof id.uwzSelectId == "string" && id.uwzSelectId.split("/").length == 2 || tempTable[a].realWarncell !== "") {
+            if (tempTable[a].realWarncell !== "") {
+              const tempWarncell = await import_provider_def.UWZProvider.getWarncell(
+                id.uwzSelectId.split("/"),
+                "uwzService",
+                self
+              );
+              if (tempWarncell) {
+                tempTable[a].realWarncell = tempWarncell;
+              }
             }
             const options = {
               filter: {
@@ -399,7 +401,7 @@ class WeatherWarnings extends utils.Adapter {
             self.providerController.createProviderIfNotExist({
               ...options,
               service: "uwzService",
-              warncellId: tempWarncell == void 0 || tempWarncell == "" ? id.realWarncell : tempWarncell,
+              warncellId: tempTable[a].realWarncell,
               providerController: self.providerController,
               language: self.config.uwzLanguage,
               customName: id.uwzCityname
