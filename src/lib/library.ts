@@ -257,7 +257,7 @@ export class Library extends BaseClass {
     async cleanUpTree(hold: string[], deep: number): Promise<void> {
         const del = [];
         for (const dp in this.stateDataBase) {
-            if (hold.filter((a) => dp.startsWith(a)).length > 0) continue;
+            if (hold.filter((a) => dp.startsWith(a) || a.startsWith(dp)).length > 0) continue;
             this.stateDataBase[dp] = undefined;
             del.push(dp.split('.').slice(0, deep).join('.'));
         }

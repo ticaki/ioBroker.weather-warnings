@@ -320,7 +320,7 @@ export class DWDProvider extends BaseProvider {
                 ? definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_land
                 : definitionen.PROVIDER_OPTIONS.dwdService.url_appendix_town) +
             definitionen.PROVIDER_OPTIONS.dwdService.url_language;
-        this.url = BaseProvider.getUrl(url, [this.warncellId, options.language], this.service);
+        this.url = DWDProvider.getUrl(url, [this.warncellId, options.language], this.service);
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as providerDef.dataImportDwdType;
@@ -384,7 +384,7 @@ export class ZAMGProvider extends BaseProvider {
     constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
         super(adapter, { ...options, service: 'zamgService' }, `zamg`);
         this.warncellId = options.warncellId;
-        this.url = BaseProvider.getUrl('', [this.warncellId[0], this.warncellId[1], options.language], this.service);
+        this.url = ZAMGProvider.getUrl('', [this.warncellId[0], this.warncellId[1], options.language], this.service);
     }
 
     async updateData(): Promise<void> {
@@ -453,6 +453,7 @@ export class UWZProvider extends BaseProvider {
         this.warncellId = options.warncellId.toUpperCase();
         this.url = BaseProvider.getUrl('', [this.warncellId, options.language], this.service);
     }
+
     static async getWarncell(
         warncellId: [string, string],
         service: providerDef.providerServices,

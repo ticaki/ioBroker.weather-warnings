@@ -237,7 +237,7 @@ class Library extends BaseClass {
   async cleanUpTree(hold, deep) {
     const del = [];
     for (const dp in this.stateDataBase) {
-      if (hold.filter((a) => dp.startsWith(a)).length > 0)
+      if (hold.filter((a) => dp.startsWith(a) || a.startsWith(dp)).length > 0)
         continue;
       this.stateDataBase[dp] = void 0;
       del.push(dp.split(".").slice(0, deep).join("."));
