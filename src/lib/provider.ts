@@ -202,7 +202,7 @@ export class BaseProvider extends BaseClass {
                 return;
             }
 
-            // show text mode in Info states
+            // show test mode in Info states
             this.library.writedp(
                 `${this.name}.info.testMode`,
                 this.adapter.config.useTestWarnings,
@@ -402,7 +402,8 @@ export class ZAMGProvider extends BaseProvider {
         for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
             if (
                 this.filter.hours > 0 &&
-                Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() + this.filter.hours * 3600
+                Number(result.properties.warnings[a].properties.rawinfo.start) >
+                    Date.now() / 1000 + this.filter.hours * 3600
             )
                 continue;
             // special case for zamg
@@ -492,7 +493,8 @@ export class UWZProvider extends BaseProvider {
         this.messages.forEach((a) => (a.notDeleted = false));
         for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
             if (result.results[a] == null) continue;
-            if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() + this.filter.hours * 3600) continue;
+            if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() / 1000 + this.filter.hours * 3600)
+                continue;
             await super.updateData(result.results[a], a);
 
             const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
@@ -598,6 +600,15 @@ export class ProviderController extends BaseClass {
                                 start: 0,
                                 end: 0,
                             };
+                            if (
+                                typeof item !== 'object' ||
+                                item === null ||
+                                typeof item.start !== 'string' ||
+                                typeof item.end !== 'string' ||
+                                item.day === null ||
+                                !Array.isArray(item.day)
+                            )
+                                return null;
                             for (const a in item) {
                                 const b = a as keyof typeof item;
                                 if (b != 'day' && item[b].indexOf(':') != -1) {

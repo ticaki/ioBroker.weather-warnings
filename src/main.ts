@@ -843,23 +843,23 @@ class WeatherWarnings extends utils.Adapter {
                 case 'dwd.name.text':
                     {
                         //debounce
-                        if (this.adminTimeoutRef) {
+                        /*if (this.adminTimeoutRef) {
                             this.clearTimeout(this.adminTimeoutRef);
                             this.adminTimeoutRef = this.setTimeout(this.dwdWarncellIdLongHelper, 2000, {
                                 obj: obj,
                                 that: this,
                             });
-                        } else {
-                            this.dwdWarncellIdLongHelper({
-                                obj: obj,
-                                that: this,
-                            });
-                            this.adminTimeoutRef = this.setTimeout(
+                        } else {*/
+                        this.dwdWarncellIdLongHelper({
+                            obj: obj,
+                            that: this,
+                        });
+                        /*   this.adminTimeoutRef = this.setTimeout(
                                 (that: any) => (that.adminTimeoutRef = null),
                                 2000,
                                 this,
                             );
-                        }
+                        }*/
                     }
                     break;
                 case 'test':
@@ -965,7 +965,7 @@ class WeatherWarnings extends utils.Adapter {
                 });
             }
             const msg = obj.message;
-            if (msg.dwd.length > 2) {
+            if (msg.dwd.length >= 0) {
                 const result = text.filter(
                     (a) =>
                         (a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase())) ||
@@ -979,7 +979,7 @@ class WeatherWarnings extends utils.Adapter {
             } else {
                 if (obj.command == 'dwd.name.text' || obj.command == 'dwd.check')
                     that.sendTo(obj.from, obj.command, '', obj.callback);
-                else that.sendTo(obj.from, obj.command, text, obj.callback);
+                else that.sendTo(obj.from, obj.command, [], obj.callback);
             }
             that.adminTimeoutRef = null;
         }

@@ -377,7 +377,7 @@ class ZAMGProvider extends BaseProvider {
     });
     this.messages.forEach((a) => a.notDeleted = false);
     for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
-      if (this.filter.hours > 0 && Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() + this.filter.hours * 3600)
+      if (this.filter.hours > 0 && Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() / 1e3 + this.filter.hours * 3600)
         continue;
       result.properties.warnings[a].properties.location = result.properties.location.properties.name;
       result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
@@ -457,7 +457,7 @@ class UWZProvider extends BaseProvider {
     for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
       if (result.results[a] == null)
         continue;
-      if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() + this.filter.hours * 3600)
+      if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() / 1e3 + this.filter.hours * 3600)
         continue;
       await super.updateData(result.results[a], a);
       const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
@@ -554,6 +554,8 @@ class ProviderController extends import_library.BaseClass {
               start: 0,
               end: 0
             };
+            if (typeof item !== "object" || item === null || typeof item.start !== "string" || typeof item.end !== "string" || item.day === null || !Array.isArray(item.day))
+              return null;
             for (const a in item) {
               const b = a;
               if (b != "day" && item[b].indexOf(":") != -1) {

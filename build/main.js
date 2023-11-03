@@ -696,23 +696,10 @@ class WeatherWarnings extends utils.Adapter {
         case "dwd.check":
         case "dwd.name.text":
           {
-            if (this.adminTimeoutRef) {
-              this.clearTimeout(this.adminTimeoutRef);
-              this.adminTimeoutRef = this.setTimeout(this.dwdWarncellIdLongHelper, 2e3, {
-                obj,
-                that: this
-              });
-            } else {
-              this.dwdWarncellIdLongHelper({
-                obj,
-                that: this
-              });
-              this.adminTimeoutRef = this.setTimeout(
-                (that) => that.adminTimeoutRef = null,
-                2e3,
-                this
-              );
-            }
+            this.dwdWarncellIdLongHelper({
+              obj,
+              that: this
+            });
           }
           break;
         case "test":
@@ -805,7 +792,7 @@ class WeatherWarnings extends utils.Adapter {
         });
       }
       const msg = obj.message;
-      if (msg.dwd.length > 2) {
+      if (msg.dwd.length >= 0) {
         const result = text.filter(
           (a) => a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase()) || !isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)
         );
@@ -817,7 +804,7 @@ class WeatherWarnings extends utils.Adapter {
         if (obj.command == "dwd.name.text" || obj.command == "dwd.check")
           that.sendTo(obj.from, obj.command, "", obj.callback);
         else
-          that.sendTo(obj.from, obj.command, text, obj.callback);
+          that.sendTo(obj.from, obj.command, [], obj.callback);
       }
       that.adminTimeoutRef = null;
     }
