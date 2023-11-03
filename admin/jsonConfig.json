@@ -697,7 +697,7 @@
                         {
                             "attr": "uwzSelectId",
                             "title": "uwzSelectId",
-                            "width": "50% ",
+                            "width": "40% ",
                             "filter": false,
                             "type": "coordinates",
                             "divider": "/",
@@ -711,10 +711,19 @@
                             "attr": "uwzCityname",
                             "title": "dwdCityname",
                             "tooltip": "dwdCitynameTip",
-                            "width": "40% ",
+                            "width": "30% ",
                             "filter": false,
                             "sort": false,
                             "default": ""
+                        },
+                        {
+                            "attr": "realWarncell",
+                            "type": "text",
+                            "width": "30% ",
+                            "filter": false,
+                            "sort": false,
+                            "label": "icons_description",
+                            "readOnly": true                           
                         }
                     ]
                 },
