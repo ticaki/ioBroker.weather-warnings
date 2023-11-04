@@ -139,7 +139,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### 0.5.0-alpha.0 (2023-11-04)
+### 0.5.0 (2023-11-04)
 * (ticaki) breaking changes: New UWZ configuration. reconfigure
 * (ticaki) breaking changes: Rename and move manual push command states.
 * (ticaki) Quiet times changed, reconfigure. 

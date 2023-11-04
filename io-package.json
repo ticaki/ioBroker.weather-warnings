@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.5.0-alpha.0",
+    "version": "0.5.0",
     "news": {
+      "0.5.0": {
+        "en": "breaking changes: New UWZ configuration. reconfigure needed\nbreaking changes: Rename and move manual push command states.\nQuiet times changed, reconfigure. \nbetter DWD configuration.\nalot improvements.",
+        "de": "Änderungen: Neue UWZ-Konfiguration. Rekonfiguration nötig\nÄnderungen: Umbenennen und manuelle Push-Befehlszustände verschieben.\nRuhezeiten geändert, umgestalten.\nbessere DWD-Konfiguration.\neine menge verbesserungen.",
+        "ru": "сломать изменения: Новая конфигурация UWZ. реконфигурация\nсломать изменения: Переименовать и переместить руководство толкать командные состояния.\nТихие времена изменились, reconfigure.\nлучшая конфигурация DWD.\nулучшения alot.",
+        "pt": "mudanças de quebra: Nova configuração UWZ. reconfigurar\nmudanças de quebra: Renomear e mover estados de comando push manual.\nOs tempos calmos mudaram, reconfiguram.\nmelhor configuração DWD.\nmuitas melhorias.",
+        "nl": "vertaling: Nieuwe UWZ configuratie. Vertaling:\nvertaling: Herhaal en zet handmatige bevelen in.\nRustige tijden veranderden, herconfigureren.\nbeter DWD-configuratie.\nveel verbetering.",
+        "fr": "changements de rupture: Nouvelle configuration UWZ. reconfigure\nchangements de rupture: Renommer et déplacer les états de commande manuels push.\nLes temps tranquilles ont changé, reconfigurer.\nmeilleure configuration DWD.\nalot améliorations.",
+        "it": "cambiamenti di rottura: Nuova configurazione UWZ. riconfigurazione\ncambiamenti di rottura: Rinominare e spostare gli stati di comando manuale push.\nI tempi silenziosi sono cambiati, riconfigurati.\nmigliore configurazione DWD.\nmolti miglioramenti.",
+        "es": "cambios de ruptura: Nueva configuración UWZ. reconfiguración\ncambios de ruptura: Renombrar y mover los estados de mando manual.\nLos tiempos tranquilos cambiaron, reconfiguran.\nmejor configuración DWD.\nmejoras.",
+        "pl": "złamanie się: New UWZ (ang.). konfigurować\nzłamanie się: Rename and move manual command commands.\nZmienił się czas, pogodził się.\nlepiejsza konfiguracja DWD.\nulepszenia lotu.",
+        "uk": "перерву змін: Нова конфігурація UWZ. Посилання\nперерву змін: Перейменування та переміщення ручних командних станів.\nЗмінити час очікування, переналаштувати.\nкраще налаштування DWD.\nполіпшення зльоту.",
+        "zh-cn": "打破变化: 新UWZ组合。 改组\n打破变化: 重新命名和搬动手指挥州。.\n基耶时间变化,重新配置。.\n更好的DWD组合。.\na 时间改进。."
+      },
       "0.5.0-alpha.0": {
         "en": "breaking changes: New UWZ configuration. reconfigure\nbreaking changes: Rename and move manual push command states.\nQuiet times changed, reconfigure. \nbetter DWD configuration.\nalot improvements.",
         "de": "Änderungen: Neue UWZ-Konfiguration. Rekonfiguration\nÄnderungen: Umbenennen und manuelle Push-Befehlszustände verschieben.\nRuhezeiten geändert, umgestalten.\nbessere DWD-Konfiguration.\neine menge verbesserungen.",
@@ -69,19 +82,6 @@
         "zh-cn": "A. 概况和控制国\n固定:倾销数据树\n固定"
       },
       "0.4.4": {
-        "en": "Added Say-It\nUser-definable icons (path)\nEmail works, Added title for pushover and email",
-        "de": "Hinzugefügt Say-It\nBenutzerdefinierbare Icons (Pfad)\nE-Mail funktioniert, Titel hinzugefügt für Pushover und E-Mail",
-        "ru": "Добавлен Say-It\nИконки пользователя (пат)\nРаботы по электронной почте, Добавлено название для pushover и email",
-        "pt": "Adicionado Say-It\nÍcones definidos pelo usuário (caminho)\nE-mail funciona, Título adicionado para pushover e e-mail",
-        "nl": "Toegevoegd\nUser-definable iconen (path)\nE-mail werkt. Vermelding van de titel voor push-over en e-mail",
-        "fr": "Ajouté Say-It\nIcônes définis par l'utilisateur (chemin)\nE-mail fonctionne, Titre ajouté pour pushover et email",
-        "it": "Aggiunto Say-It\nIcone definibili dall'utente (percorso)\nE-mail funziona, Titolo aggiunto per pushover e email",
-        "es": "Agregado\nÍconos definidos por el usuario (path)\nCorreo electrónico funciona, Título añadido para pushover y email",
-        "pl": "Added Say-It (ang.)\nIkony nieokreślone (ang. User-definable icons, path.)\nPraca Emaila. Oficjalna strona pushover i e-mail",
-        "uk": "Доданий Сай-It\nКористувальницькі іконки (патія)\nЕлектронні роботи, Додано назву для pushover і email",
-        "zh-cn": "增 编\n使用可衡量的参数(抗体)\n电子邮件工程, 移交和电子邮件的附加名称"
-      },
-      "0.4.3": {
         "en": "Added Say-It\nUser-definable icons (path)\nEmail works, Added title for pushover and email",
         "de": "Hinzugefügt Say-It\nBenutzerdefinierbare Icons (Pfad)\nE-Mail funktioniert, Titel hinzugefügt für Pushover und E-Mail",
         "ru": "Добавлен Say-It\nИконки пользователя (пат)\nРаботы по электронной почте, Добавлено название для pushover и email",
