@@ -693,8 +693,6 @@ class WeatherWarnings extends utils.Adapter {
           }
           break;
         case "dwd.name":
-        case "dwd.check":
-        case "dwd.name.text":
           {
             this.dwdWarncellIdLongHelper({
               obj,
@@ -772,8 +770,14 @@ class WeatherWarnings extends utils.Adapter {
         const dataArray = data.split("\n");
         dataArray.splice(0, 1);
         dataArray.forEach((element) => {
-          const value = element.split(";")[0];
-          const cityText = element.split(";")[1];
+          const line = element.split(";");
+          const value = line[0];
+          const cityArray = line[1].split(" ");
+          const typ = cityArray.length > 1 ? cityArray.shift() : void 0;
+          let cityText = cityArray.join(" ") + " (";
+          if (typ !== void 0)
+            cityText += typ + "/";
+          cityText += line[4] + ")";
           if (value && (value.startsWith("10") || value.startsWith("9") || value.startsWith("8") || value.startsWith("7"))) {
             if (text)
               text.push({ label: cityText, value: value.trim() });
@@ -791,22 +795,7 @@ class WeatherWarnings extends utils.Adapter {
           return 0;
         });
       }
-      const msg = obj.message;
-      if (msg.dwd.length >= 0) {
-        const result = text.filter(
-          (a) => a.label && a.label.toUpperCase().includes(msg.dwd.toUpperCase()) || !isNaN(msg.dwd) && Number(a.value) == Number(msg.dwd)
-        );
-        if (obj.command == "dwd.name")
-          that.sendTo(obj.from, obj.command, result, obj.callback);
-        else if (obj.command == "dwd.name.text" || obj.command == "dwd.check")
-          that.sendTo(obj.from, obj.command, result.length == 1 ? result[0].label : "", obj.callback);
-      } else {
-        if (obj.command == "dwd.name.text" || obj.command == "dwd.check")
-          that.sendTo(obj.from, obj.command, "", obj.callback);
-        else
-          that.sendTo(obj.from, obj.command, [], obj.callback);
-      }
-      that.adminTimeoutRef = null;
+      that.sendTo(obj.from, obj.command, text, obj.callback);
     }
   }
 }

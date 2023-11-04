@@ -531,5 +531,6 @@
     "template.emailTitle": "${Status} da ${locationcustom}",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Icone base64 codificate con tag html.",
     "template.emailRemoveMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"#606060\"><b><font color=#000000>${Stato}: ${headline}</font></b></td></tr><tr><td style=\" riempimento: 5px 0 20px 0;\">${iconbase64}${description}</td></tr>",
-    "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji per il tipo di avviso di questo messaggio."
+    "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji per il tipo di avviso di questo messaggio.",
+    "uwzRealWarncellID": "L'ID cella di avviso utilizzato da UWZ"
 }
