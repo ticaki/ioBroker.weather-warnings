@@ -719,7 +719,7 @@
                             "type": "text",
                             "width": "30% ",
                             "filter": false,
-                            "sort": false,                   
+                            "sort": false                   
                         }
                     ]
                 },

@@ -239,7 +239,7 @@ class Library extends BaseClass {
     for (const dp in this.stateDataBase) {
       if (hold.filter((a) => dp.startsWith(a) || a.startsWith(dp)).length > 0)
         continue;
-      this.stateDataBase[dp] = void 0;
+      delete this.stateDataBase[dp];
       del.push(dp.split(".").slice(0, deep).join("."));
     }
     for (const a in del) {

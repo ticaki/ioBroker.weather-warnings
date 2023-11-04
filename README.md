@@ -139,6 +139,13 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) breaking changes: New UWZ configuration. reconfigure
+* (ticaki) breaking changes: Rename and move manual push command states.
+* (ticaki) Quiet times changed, reconfigure. 
+* (ticaki) better DWD configuration.
+* (ticaki) alot improvements.
+
 ### 0.4.8 (2023-10-30)
 * (ticaki) Wrong level assignment for zamg fixed
 * (ticaki) better set defaults

@@ -38,9 +38,11 @@ class NotificationClass extends library.BaseClass {
   removeAllSend = true;
   constructor(adapter, notifcationOptions) {
     super(adapter, notifcationOptions.name);
-    this.log.debug(`Create notification service ${this.name}`);
     this.options = notifcationOptions;
     this.options = Object.assign(this.options, NotificationType.serciceCapabilities[notifcationOptions.name]);
+    this.log.info(
+      `Create notification service ${this.name}${this.options.adapter != void 0 ? this.name == "alexa2" ? " state: " + this.adapter.config.alexa2_device_ids.map((a) => `${this.options.adapter}.Echo-Devices.${a}.Commands.speak`).join(", ") : " adapter: " + this.options.adapter : ""}.`
+    );
   }
   async init() {
     switch (this.name) {

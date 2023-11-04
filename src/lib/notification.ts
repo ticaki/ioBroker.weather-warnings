@@ -15,9 +15,21 @@ export class NotificationClass extends library.BaseClass {
 
     constructor(adapter: WeatherWarnings, notifcationOptions: NotificationType.BaseType) {
         super(adapter, notifcationOptions.name);
-        this.log.debug(`Create notification service ${this.name}`);
+
         this.options = notifcationOptions;
         this.options = Object.assign(this.options, NotificationType.serciceCapabilities[notifcationOptions.name]);
+        this.log.info(
+            `Create notification service ${this.name}${
+                this.options.adapter != undefined
+                    ? this.name == 'alexa2'
+                        ? ' state: ' +
+                          this.adapter.config.alexa2_device_ids
+                              .map((a) => `${this.options.adapter}.Echo-Devices.${a}.Commands.speak`)
+                              .join(', ')
+                        : ' adapter: ' + this.options.adapter
+                    : ''
+            }.`,
+        );
     }
 
     /**

@@ -532,5 +532,7 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "使用 html 标签进行 base64 编码的图标。",
     "template.emailRemoveMessage": "<tr><td style=\"填充：5px 0 5px 0;\" bgcolor=\"#606060\"><b><font color=#000000>${状态}：${headline}</font></b></td></tr><tr><td style=\"填充：5px 0 20px 0;\">${iconbase64}${描述}</td></tr>",
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "此消息的警告类型的表情符号。",
-    "uwzRealWarncellID": "UWZ 使用的警告单元 ID"
+    "uwzRealWarncellID": "UWZ 使用的警告单元 ID",
+    "statesObjectsWarnings.allService.commands": "命令",
+    "statesObjectsWarnings.allService.command.clearHistory": "清除历史记录。"
 }

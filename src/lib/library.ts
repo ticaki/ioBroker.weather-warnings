@@ -258,7 +258,7 @@ export class Library extends BaseClass {
         const del = [];
         for (const dp in this.stateDataBase) {
             if (hold.filter((a) => dp.startsWith(a) || a.startsWith(dp)).length > 0) continue;
-            this.stateDataBase[dp] = undefined;
+            delete this.stateDataBase[dp];
             del.push(dp.split('.').slice(0, deep).join('.'));
         }
         for (const a in del) {

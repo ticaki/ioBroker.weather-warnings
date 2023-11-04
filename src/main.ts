@@ -421,8 +421,8 @@ class WeatherWarnings extends utils.Adapter {
                 for (const a in self.config.dwdwarncellTable) {
                     const id = self.config.dwdwarncellTable[a];
                     if (self.config.dwdEnabled) {
-                        if (isNaN(id.dwdSelectId) && Number(id.dwdSelectId) < 10000) {
-                            self.log.warn(`DWD is activated, but no valid warning cell is configured.`);
+                        if (isNaN(id.dwdSelectId) || Number(id.dwdSelectId) < 10000) {
+                            self.log.warn(`DWD "${id.dwdSelectId}" warning cell is invalid.`);
                             continue;
                         }
                         const options: messageFilterTypeWithFilter & {
@@ -434,7 +434,7 @@ class WeatherWarnings extends utils.Adapter {
                                 hours: self.config.dwdHourFilter,
                             },
                         };
-                        self.log.info('DWD activated. Retrieve data.');
+                        self.log.info(`DWD ${id.dwdSelectId} activated. Retrieve data.`);
                         self.providerController.createProviderIfNotExist({
                             ...options,
                             service: 'dwdService',
@@ -525,7 +525,7 @@ class WeatherWarnings extends utils.Adapter {
                 for (const a in self.providerController.providers) {
                     holdStates.push(self.providerController.providers[a].name);
                 }
-                holdStates.push('command');
+                holdStates.push('commands.');
                 holdStates.push('info.connection');
                 holdStates.push('provider.activeWarnings_json');
                 holdStates.push('provider.history');
@@ -578,6 +578,7 @@ class WeatherWarnings extends utils.Adapter {
         this.library.setdb(id.replace(`${this.namespace}.`, ''), 'state', state.val, undefined, state.ack, state.ts);
         if (actionStates[id.replace(`${this.namespace}.`, '')] == undefined)
             if (this.providerController) this.providerController.onStatePush(id);
+        await this.providerController!.clearHistory(id);
         await this.library.writedp(id.replace(`${this.namespace}.`, ''), state.val);
         await this.providerController!.setSpeakAllowed();
     }

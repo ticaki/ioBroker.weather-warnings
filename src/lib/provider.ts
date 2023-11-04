@@ -606,7 +606,8 @@ export class ProviderController extends BaseClass {
                                 typeof item.start !== 'string' ||
                                 typeof item.end !== 'string' ||
                                 item.day === null ||
-                                !Array.isArray(item.day)
+                                !Array.isArray(item.day) ||
+                                item.day.length == 0
                             )
                                 return null;
                             for (const a in item) {
@@ -617,7 +618,8 @@ export class ProviderController extends BaseClass {
                                     if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
                                         t[1] = String(parseInt(t[1]) / 60);
                                         item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-                                    } else item[b] = t[0];
+                                    } else if (isNaN(item[b] as unknown as number)) return null;
+                                    else item[b] = t[0];
                                 }
                                 if (b == 'day') result.day = item.day;
                                 else if (b == 'end') result.end = parseFloat(item.end);
@@ -628,16 +630,16 @@ export class ProviderController extends BaseClass {
                                     result.start
                                 } end: ${result.end} days: ${JSON.stringify(result.day)}`,
                             );
-                            return result;
+                            return result.day.length != 0 && result.start != result.end ? result : null;
                         })
                         .filter((f) => f != null) as providerDef.silentTimeConfigType[],
                 );
             }
-            definitionen.statesObjectsWarnings.allService.command.silentTime.profil.common.states = profileNames;
+            definitionen.statesObjectsWarnings.allService.commands.silentTime.profil.common.states = profileNames;
             this.library.writedp(
-                `command.silentTime`,
+                `commands.silentTime`,
                 undefined,
-                definitionen.statesObjectsWarnings.allService.command.silentTime._channel,
+                definitionen.statesObjectsWarnings.allService.commands.silentTime._channel,
             );
             for (const a in definitionen.actionStates) {
                 const dp = a as keyof typeof definitionen.actionStates;
@@ -899,7 +901,7 @@ export class ProviderController extends BaseClass {
     async onStatePush(id: string): Promise<void> {
         id = id.replace(`${this.adapter.namespace}.`, '');
         const cmd = id.split('.').pop() as NotificationType.Type;
-        const service = id.split('.').slice(0, -2).join('.');
+        const service = id.split('.').slice(0, -3).join('.');
         let index = -1;
         let providers = [];
         if ((index = this.providers.findIndex((a) => a.name == service)) > -1) {
@@ -917,29 +919,59 @@ export class ProviderController extends BaseClass {
         for (const p of [...this.providers, this]) {
             const channel =
                 (p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`) +
-                '.command';
+                '.commands';
+            await this.library.writedp(
+                channel,
+                undefined,
+                definitionen.statesObjectsWarnings.allService.commands._channel,
+            );
+            await this.library.writedp(
+                channel + '.send_message',
+                undefined,
+                definitionen.statesObjectsWarnings.allService.commands.send_message._channel,
+            );
             const states = this.library.getStates(`${channel}.*`.replace('.', '\\.'));
             for (const n of this.notificationServices) {
                 if (n.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1) continue;
                 if (!(p instanceof BaseProvider) || n.options.service.indexOf(p.service) != -1) {
-                    await this.library.writedp(
-                        channel,
-                        undefined,
-                        definitionen.statesObjectsWarnings.allService.command._channel,
-                    );
-                    const dp = `${channel}.${n.name}`;
+                    const dp = `${channel}.send_message.${n.name}`;
                     states[dp] = undefined;
                     await this.library.writedp(
                         dp,
                         false,
-                        definitionen.statesObjectsWarnings.allService.command[n.name as NotificationType.Type],
+                        definitionen.statesObjectsWarnings.allService.commands.send_message[
+                            n.name as NotificationType.Type
+                        ],
                     );
                 }
             }
+            states[channel + '.clearHistory'] = undefined;
+            await this.library.writedp(
+                channel + '.clearHistory',
+                false,
+                definitionen.statesObjectsWarnings.allService.commands.clearHistory,
+            );
             for (const dp in states)
                 if (states[dp] !== undefined && definitionen.actionStates[dp] == undefined)
                     await this.adapter.delObjectAsync(dp);
             await this.adapter.subscribeStatesAsync(channel + '.*');
+        }
+    }
+
+    async clearHistory(id: string): Promise<void> {
+        if (!id.endsWith('.clearHistory')) return;
+        let targets: any[] = [];
+        this.providers.forEach((a) => {
+            if (id.includes(a.name)) targets.push(a);
+        });
+        if (targets.length == 0) targets = [...this.providers, this.name];
+        for (const a in targets) {
+            try {
+                const dp = `${targets[a].name}.history`;
+                await this.adapter.library.writedp(dp, '[]', definitionen.genericStateObjects.history);
+            } catch (error: any) {
+                this.log.error(error);
+            }
         }
     }
 
@@ -997,24 +1029,24 @@ export class ProviderController extends BaseClass {
             }
             if (isSpeakAllowed != this.silentTime.shouldSpeakAllowed) {
                 await this.library.writedp(
-                    `command.silentTime.isSpeakAllowed`,
+                    `commands.silentTime.isSpeakAllowed`,
                     isSpeakAllowed,
-                    definitionen.statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed,
+                    definitionen.statesObjectsWarnings.allService.commands.silentTime.isSpeakAllowed,
                 );
                 this.silentTime.shouldSpeakAllowed = isSpeakAllowed;
             }
         }
     }
     isSilentAuto(): boolean {
-        const result = this.library.readdp(`command.silentTime.autoMode`);
+        const result = this.library.readdp(`commands.silentTime.autoMode`);
         return result != undefined && !!result.val;
     }
     isSpeakAllowed(): boolean {
-        const result = this.library.readdp(`command.silentTime.isSpeakAllowed`);
+        const result = this.library.readdp(`commands.silentTime.isSpeakAllowed`);
         return (result != undefined && !!result.val) || result == undefined;
     }
     getSpeakProfil(): number {
-        const result = this.library.readdp(`command.silentTime.profil`);
+        const result = this.library.readdp(`commands.silentTime.profil`);
         return result != undefined && typeof result.val == 'number' ? result.val : 0;
     }
 }

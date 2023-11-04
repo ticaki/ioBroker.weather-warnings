@@ -554,7 +554,7 @@ class ProviderController extends import_library.BaseClass {
               start: 0,
               end: 0
             };
-            if (typeof item !== "object" || item === null || typeof item.start !== "string" || typeof item.end !== "string" || item.day === null || !Array.isArray(item.day))
+            if (typeof item !== "object" || item === null || typeof item.start !== "string" || typeof item.end !== "string" || item.day === null || !Array.isArray(item.day) || item.day.length == 0)
               return null;
             for (const a in item) {
               const b = a;
@@ -565,7 +565,9 @@ class ProviderController extends import_library.BaseClass {
                 if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
                   t[1] = String(parseInt(t[1]) / 60);
                   item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-                } else
+                } else if (isNaN(item[b]))
+                  return null;
+                else
                   item[b] = t[0];
               }
               if (b == "day")
@@ -578,15 +580,15 @@ class ProviderController extends import_library.BaseClass {
             this.log.info(
               `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${result.start} end: ${result.end} days: ${JSON.stringify(result.day)}`
             );
-            return result;
+            return result.day.length != 0 && result.start != result.end ? result : null;
           }).filter((f) => f != null)
         );
       }
-      definitionen.statesObjectsWarnings.allService.command.silentTime.profil.common.states = profileNames;
+      definitionen.statesObjectsWarnings.allService.commands.silentTime.profil.common.states = profileNames;
       this.library.writedp(
-        `command.silentTime`,
+        `commands.silentTime`,
         void 0,
-        definitionen.statesObjectsWarnings.allService.command.silentTime._channel
+        definitionen.statesObjectsWarnings.allService.commands.silentTime._channel
       );
       for (const a in definitionen.actionStates) {
         const dp = a;
@@ -783,7 +785,7 @@ class ProviderController extends import_library.BaseClass {
   async onStatePush(id) {
     id = id.replace(`${this.adapter.namespace}.`, "");
     const cmd = id.split(".").pop();
-    const service = id.split(".").slice(0, -2).join(".");
+    const service = id.split(".").slice(0, -3).join(".");
     let index = -1;
     let providers = [];
     if ((index = this.providers.findIndex((a) => a.name == service)) > -1) {
@@ -798,30 +800,60 @@ class ProviderController extends import_library.BaseClass {
   }
   async updateCommandStates() {
     for (const p of [...this.providers, this]) {
-      const channel = (p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`) + ".command";
+      const channel = (p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`) + ".commands";
+      await this.library.writedp(
+        channel,
+        void 0,
+        definitionen.statesObjectsWarnings.allService.commands._channel
+      );
+      await this.library.writedp(
+        channel + ".send_message",
+        void 0,
+        definitionen.statesObjectsWarnings.allService.commands.send_message._channel
+      );
       const states = this.library.getStates(`${channel}.*`.replace(".", "\\."));
       for (const n of this.notificationServices) {
         if (n.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1)
           continue;
         if (!(p instanceof BaseProvider) || n.options.service.indexOf(p.service) != -1) {
-          await this.library.writedp(
-            channel,
-            void 0,
-            definitionen.statesObjectsWarnings.allService.command._channel
-          );
-          const dp = `${channel}.${n.name}`;
+          const dp = `${channel}.send_message.${n.name}`;
           states[dp] = void 0;
           await this.library.writedp(
             dp,
             false,
-            definitionen.statesObjectsWarnings.allService.command[n.name]
+            definitionen.statesObjectsWarnings.allService.commands.send_message[n.name]
           );
         }
       }
+      states[channel + ".clearHistory"] = void 0;
+      await this.library.writedp(
+        channel + ".clearHistory",
+        false,
+        definitionen.statesObjectsWarnings.allService.commands.clearHistory
+      );
       for (const dp in states)
         if (states[dp] !== void 0 && definitionen.actionStates[dp] == void 0)
           await this.adapter.delObjectAsync(dp);
       await this.adapter.subscribeStatesAsync(channel + ".*");
+    }
+  }
+  async clearHistory(id) {
+    if (!id.endsWith(".clearHistory"))
+      return;
+    let targets = [];
+    this.providers.forEach((a) => {
+      if (id.includes(a.name))
+        targets.push(a);
+    });
+    if (targets.length == 0)
+      targets = [...this.providers, this.name];
+    for (const a in targets) {
+      try {
+        const dp = `${targets[a].name}.history`;
+        await this.adapter.library.writedp(dp, "[]", definitionen.genericStateObjects.history);
+      } catch (error) {
+        this.log.error(error);
+      }
     }
   }
   setAllowedDirs(allowedDirs) {
@@ -872,24 +904,24 @@ class ProviderController extends import_library.BaseClass {
       }
       if (isSpeakAllowed != this.silentTime.shouldSpeakAllowed) {
         await this.library.writedp(
-          `command.silentTime.isSpeakAllowed`,
+          `commands.silentTime.isSpeakAllowed`,
           isSpeakAllowed,
-          definitionen.statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed
+          definitionen.statesObjectsWarnings.allService.commands.silentTime.isSpeakAllowed
         );
         this.silentTime.shouldSpeakAllowed = isSpeakAllowed;
       }
     }
   }
   isSilentAuto() {
-    const result = this.library.readdp(`command.silentTime.autoMode`);
+    const result = this.library.readdp(`commands.silentTime.autoMode`);
     return result != void 0 && !!result.val;
   }
   isSpeakAllowed() {
-    const result = this.library.readdp(`command.silentTime.isSpeakAllowed`);
+    const result = this.library.readdp(`commands.silentTime.isSpeakAllowed`);
     return result != void 0 && !!result.val || result == void 0;
   }
   getSpeakProfil() {
-    const result = this.library.readdp(`command.silentTime.profil`);
+    const result = this.library.readdp(`commands.silentTime.profil`);
     return result != void 0 && typeof result.val == "number" ? result.val : 0;
   }
 }

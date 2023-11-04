@@ -2048,7 +2048,7 @@ const statesObjectsWarnings = {
         _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.fog" } }
       }
     },
-    command: {
+    commands: {
       _channel: {
         _id: "",
         type: "channel",
@@ -2057,101 +2057,111 @@ const statesObjectsWarnings = {
         },
         native: {}
       },
-      telegram: {
-        _id: "",
-        type: "state",
-        common: {
-          name: "Telegram",
-          type: "boolean",
-          role: "button",
-          read: false,
-          write: true
+      send_message: {
+        _channel: {
+          _id: "",
+          type: "channel",
+          common: {
+            name: "statesObjectsWarnings.allService.command"
+          },
+          native: {}
         },
-        native: {}
-      },
-      pushover: {
-        _id: "",
-        type: "state",
-        common: {
-          name: "Pushover",
-          type: "boolean",
-          role: "button",
-          read: false,
-          write: true
+        telegram: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "Telegram",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
         },
-        native: {}
-      },
-      whatsapp: {
-        _id: "",
-        type: "state",
-        common: {
-          name: "Whatsapp",
-          type: "boolean",
-          role: "button",
-          read: false,
-          write: true
+        pushover: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "Pushover",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
         },
-        native: {}
-      },
-      email: {
-        _id: "",
-        type: "state",
-        common: {
-          name: "Email",
-          type: "boolean",
-          role: "button",
-          read: false,
-          write: true
+        whatsapp: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "Whatsapp",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
         },
-        native: {}
-      },
-      history: {
-        _id: "",
-        type: "state",
-        common: {
-          name: "History",
-          type: "boolean",
-          role: "button",
-          read: false,
-          write: true
+        email: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "Email",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
         },
-        native: {}
-      },
-      json: {
-        _id: "",
-        type: "state",
-        common: {
-          name: "Json",
-          type: "boolean",
-          role: "button",
-          read: false,
-          write: true
+        history: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "History",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
         },
-        native: {}
-      },
-      alexa2: {
-        _id: "",
-        type: "state",
-        common: {
-          name: "Alexa",
-          type: "boolean",
-          role: "button",
-          read: false,
-          write: true
+        json: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "Json",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
         },
-        native: {}
-      },
-      sayit: {
-        _id: "",
-        type: "state",
-        common: {
-          name: "Alexa",
-          type: "boolean",
-          role: "button",
-          read: false,
-          write: true
+        alexa2: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "Alexa",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
         },
-        native: {}
+        sayit: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "Alexa",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
+        }
       },
       silentTime: {
         _channel: {
@@ -2197,21 +2207,33 @@ const statesObjectsWarnings = {
           },
           native: {}
         }
+      },
+      clearHistory: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.command.clearHistory",
+          type: "boolean",
+          role: "button",
+          read: false,
+          write: true
+        },
+        native: {}
       }
     }
   }
 };
 const actionStates = {
-  "command.silentTime.autoMode": {
-    def: statesObjectsWarnings.allService.command.silentTime.autoMode,
+  "commands.silentTime.autoMode": {
+    def: statesObjectsWarnings.allService.commands.silentTime.autoMode,
     default: true
   },
-  "command.silentTime.isSpeakAllowed": {
-    def: statesObjectsWarnings.allService.command.silentTime.isSpeakAllowed,
+  "commands.silentTime.isSpeakAllowed": {
+    def: statesObjectsWarnings.allService.commands.silentTime.isSpeakAllowed,
     default: true
   },
-  "command.silentTime.profil": {
-    def: statesObjectsWarnings.allService.command.silentTime.profil,
+  "commands.silentTime.profil": {
+    def: statesObjectsWarnings.allService.commands.silentTime.profil,
     default: 0
   }
 };

@@ -392,6 +392,7 @@
     "genericWarntypState.type": "Warntype",
     "genericWarntypState.active": "Warning is active.",
     "statesObjectsWarnings.allService.command": "Trigger manual notifications.",
+    "statesObjectsWarnings.allService.commands": "Commands",
     "manualAll": "Select the template to be used for warnings for manually triggered notifications.",
     "ManualTypeFilter": "The following warning types are filtered out of manually triggered notifications.",
     "ManualLevelFilter": "Warnings with lower levels are filtered out of manually triggered notifications.",
@@ -532,5 +533,6 @@
     "NoWarning": "No Warning",
     "statesObjectsWarnings.allService.formatedkeys.countdown.iconbase64": "Icons base64 coded with html tags.",
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji for the warning type of this message.",
-    "uwzRealWarncellID": "The warning cell ID used by UWZ."
+    "uwzRealWarncellID": "The warning cell ID used by UWZ.",
+    "statesObjectsWarnings.allService.command.clearHistory": "Clear history."
 }
