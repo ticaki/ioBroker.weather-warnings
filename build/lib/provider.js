@@ -846,7 +846,7 @@ class ProviderController extends import_library.BaseClass {
         targets.push(a);
     });
     if (targets.length == 0)
-      targets = [...this.providers, this.name];
+      targets = [...this.providers, this];
     for (const a in targets) {
       try {
         const dp = `${targets[a].name}.history`;

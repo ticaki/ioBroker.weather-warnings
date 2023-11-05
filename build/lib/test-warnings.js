@@ -35,27 +35,13 @@ const defaultData = {
     dtgStart: 1,
     payload: {
       translationsLongText: {
-        FR: "",
-        LU: "",
-        EN: "",
-        ES: "",
-        NL: "",
-        DE: "",
-        IT: "",
-        DK: ""
+        DE: ""
       },
       id: "1.6",
       creation: 1,
       uwzLevel: 0,
       translationsShortText: {
-        FR: "",
-        LU: "",
-        EN: "",
-        ES: "",
-        NL: "",
-        DE: "",
-        IT: "",
-        DK: ""
+        DE: ""
       },
       fileName: "",
       levelName: "alert_forewarn_green",

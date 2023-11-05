@@ -189,6 +189,44 @@ export type dataImportZamgTypeProperties = {
         end: string;
     };
 };
+export type dataImportMOWASType = Array<{
+    identifier: string;
+    sender: string;
+    sent: string;
+    status: string;
+    msgType: string;
+    scope: string;
+    code: Array<string>;
+    info: Array<{
+        language: string;
+        category: Array<string>;
+        event: string;
+        urgency: string;
+        severity: string;
+        certainty: string;
+        eventCode: Array<{
+            valueName: string;
+            value: string;
+        }>;
+        headline: string;
+        description: string;
+        instruction: string;
+        web?: string;
+        contact?: string;
+        parameter: Array<{
+            valueName: string;
+            value: string;
+        }>;
+        area: Array<{
+            areaDesc: string;
+            polygon: Array<string>;
+            geocode: Array<{
+                valueName: string;
+                value: string;
+            }>;
+        }>;
+    }>;
+}>;
 
 export type DataImportType = nullType | dataImportDwdType | dataImportZamgType | dataImportUWZType;
 

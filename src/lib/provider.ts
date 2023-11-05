@@ -964,7 +964,7 @@ export class ProviderController extends BaseClass {
         this.providers.forEach((a) => {
             if (id.includes(a.name)) targets.push(a);
         });
-        if (targets.length == 0) targets = [...this.providers, this.name];
+        if (targets.length == 0) targets = [...this.providers, this];
         for (const a in targets) {
             try {
                 const dp = `${targets[a].name}.history`;
