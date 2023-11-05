@@ -291,7 +291,7 @@
     "statesObjectsWarnings.uwzService._channel": "UWZ Warnings",
     "statesObjectsWarnings.uwzService.raw._channel": "Unchanged data",
     "statesObjectsWarnings.uwzService.raw.center": "Provider",
-    "statesObjectsWarnings.uwzService.raw.areaID": "UWZ ID",
+    "statesObjectsWarnings.uwzService.raw.areaID": "UWZ-ID (any in the affected area)",
     "statesObjectsWarnings.uwzService.raw.dtgEnd": "End Time of warning",
     "statesObjectsWarnings.uwzService.raw.areaType": "Region selection type.",
     "statesObjectsWarnings.uwzService.raw.dtgStart": "Start Time of warning.",
