@@ -139,6 +139,11 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.5.1 (2023-11-05)
+* (ticaki) Fixed: Foreign languages did not work for UWZ.
+* (ticaki) Fixed: clearHistory command didnt work on gloabl level.
+* (ticaki) Fixed: uwz colours assigned to the correct level.
+
 ### 0.5.0 (2023-11-04)
 * (ticaki) breaking changes: New UWZ configuration. reconfigure
 * (ticaki) breaking changes: Rename and move manual push command states.

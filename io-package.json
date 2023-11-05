@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "news": {
+      "0.5.1": {
+        "en": "Fixed: Foreign languages did not work for UWZ.\nFixed: clearHistory command didnt work on gloabl level.\nFixed: uwz colours assigned to the correct level.",
+        "de": "Behoben: Fremdsprachen funktionierten nicht für UWZ.\nBehoben: clearHistory Befehl funktionierte nicht auf Gloabl-Ebene.\nBehoben: uwz Farben dem richtigen Level zugeordnet.",
+        "ru": "Исправлено: Иностранные языки не работали для UWZ.\nИсправлено: команда ClearHistory не работала на уровне gloabl.\nИсправлено: цвета uwz, назначенные на правильный уровень.",
+        "pt": "Corrigido: línguas estrangeiras não funcionou para UWZ.\nCorrigido: comando clearHistory não funcionou no nível gloabl.\nCorrigido: cores uwz atribuídas ao nível correto.",
+        "nl": "Buitenlandse talen werkten niet voor UWZ.\nHet duidelijke bevel werkte niet op Gloabl niveau.\nGereserveerd: de kleuren op het juiste niveau.",
+        "fr": "Fixed: Foreign languages did not work for UWZ.\nCorrection : la commande claireHistory n'a pas fonctionné sur le niveau gloabl.\nCorrection : couleurs uwz assignées au niveau correct.",
+        "it": "Fisso: lingue straniere non ha funzionato per UWZ.\nRisolto: il comando ClearHistory non ha funzionato a livello gloabl.\nFisso: colori uwz assegnati al livello corretto.",
+        "es": "Fijo: Los idiomas extranjeros no funcionaron para UWZ.\nFijado: claroEl comandoHistory no funcionó a nivel gloabl.\nFijado: colores uwz asignados al nivel correcto.",
+        "pl": "Języki zagraniczne nie pracowały dla UWZ.\nFixed: czyste dowództwo nie działało na poziomie gloablowym.\nFixed – kolory uwz przypisane do odpowiedniego poziomu.",
+        "uk": "Виправлено: Іноземні мови не працювали для UWZ.\nВиправлено: clearHistory Команда не працювала на рівні gloabl.\nВиправлено: колір uwz, призначений для коректного рівня.",
+        "zh-cn": "固定:外语没有为乌瓦斯开展工作。.\n固定:清晰的指挥官在词汇一级工作。.\n固定:配给正确水平的色彩。."
+      },
       "0.5.0": {
         "en": "breaking changes: New UWZ configuration. reconfigure needed\nbreaking changes: Rename and move manual push command states.\nQuiet times changed, reconfigure. \nbetter DWD configuration.\nalot improvements.",
         "de": "Änderungen: Neue UWZ-Konfiguration. Rekonfiguration nötig\nÄnderungen: Umbenennen und manuelle Push-Befehlszustände verschieben.\nRuhezeiten geändert, umgestalten.\nbessere DWD-Konfiguration.\neine menge verbesserungen.",
@@ -80,19 +93,6 @@
         "pl": "Czas trwania profilu i kontroli\nFixed: Jumping of the data tree (ang.)\nBugfix",
         "uk": "Терміни викладання з профільними та контрольними станами\nВиправлено: Перемикання дерева даних\nПомилки",
         "zh-cn": "A. 概况和控制国\n固定:倾销数据树\n固定"
-      },
-      "0.4.4": {
-        "en": "Added Say-It\nUser-definable icons (path)\nEmail works, Added title for pushover and email",
-        "de": "Hinzugefügt Say-It\nBenutzerdefinierbare Icons (Pfad)\nE-Mail funktioniert, Titel hinzugefügt für Pushover und E-Mail",
-        "ru": "Добавлен Say-It\nИконки пользователя (пат)\nРаботы по электронной почте, Добавлено название для pushover и email",
-        "pt": "Adicionado Say-It\nÍcones definidos pelo usuário (caminho)\nE-mail funciona, Título adicionado para pushover e e-mail",
-        "nl": "Toegevoegd\nUser-definable iconen (path)\nE-mail werkt. Vermelding van de titel voor push-over en e-mail",
-        "fr": "Ajouté Say-It\nIcônes définis par l'utilisateur (chemin)\nE-mail fonctionne, Titre ajouté pour pushover et email",
-        "it": "Aggiunto Say-It\nIcone definibili dall'utente (percorso)\nE-mail funziona, Titolo aggiunto per pushover e email",
-        "es": "Agregado\nÍconos definidos por el usuario (path)\nCorreo electrónico funciona, Título añadido para pushover y email",
-        "pl": "Added Say-It (ang.)\nIkony nieokreślone (ang. User-definable icons, path.)\nPraca Emaila. Oficjalna strona pushover i e-mail",
-        "uk": "Доданий Сай-It\nКористувальницькі іконки (патія)\nЕлектронні роботи, Додано назву для pushover і email",
-        "zh-cn": "增 编\n使用可衡量的参数(抗体)\n电子邮件工程, 移交和电子邮件的附加名称"
       }
     },
     "titleLang": {
