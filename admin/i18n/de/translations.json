@@ -280,7 +280,7 @@
     "statesObjectsWarnings.uwzService._channel": "UWZ-Warnungen",
     "statesObjectsWarnings.uwzService.raw._channel": "Unveränderte Daten",
     "statesObjectsWarnings.uwzService.raw.center": "Anbieter",
-    "statesObjectsWarnings.uwzService.raw.areaID": "UWZ-ID",
+    "statesObjectsWarnings.uwzService.raw.areaID": "UWZ-ID (beliebige im betroffenen Gebiet)",
     "statesObjectsWarnings.uwzService.raw.dtgEnd": "Endzeitpunkt der Warnung",
     "statesObjectsWarnings.uwzService.raw.areaType": "Regionsauswahltyp.",
     "statesObjectsWarnings.uwzService.raw.dtgStart": "Startzeitpunkt der Warnung.",
