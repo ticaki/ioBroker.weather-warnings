@@ -112,11 +112,10 @@ export const textLevels = {
 export const color = {
     uwzColor: {
         0: `#00ff00`,
-        1: `#00ff00`,
-        2: `#fffc04`,
-        3: `#ffb400`,
-        4: `#ff0000`,
-        5: `#ff00ff`, // 5 - Violett Warnungen vor extremem Unwetter (nur DWD/ Weltuntergang nach aktueller Erfahrung)
+        1: `#fffc04`,
+        2: `#ffb400`,
+        3: `#ff0000`,
+        4: `#ff00ff`, // 4 - Violett Warnungen vor extremem Unwetter (nur DWD/ Weltuntergang nach aktueller Erfahrung)
     },
     zamgColor: {
         0: `#01DF3A`,
@@ -127,11 +126,10 @@ export const color = {
     },
     textuwz: {
         '0': 'color.textGeneric.0',
-        '1': 'color.textGeneric.1',
-        '2': 'color.textGeneric.2',
-        '3': 'color.textGeneric.3',
-        '4': 'color.textGeneric.4',
-        '5': 'color.textGeneric.5',
+        '1': 'color.textGeneric.2',
+        '2': 'color.textGeneric.3',
+        '3': 'color.textGeneric.4',
+        '4': 'color.textGeneric.5',
     },
     textzamg: {
         '0': 'color.textGeneric.0',
