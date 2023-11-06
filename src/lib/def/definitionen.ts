@@ -298,6 +298,7 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             type: 'device',
             common: {
                 name: 'statesObjectsWarnings.dwdService._channel',
+                icon: '/icons/dwd.png',
             },
             native: {},
         },
@@ -1258,6 +1259,7 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             type: 'device',
             common: {
                 name: 'statesObjectsWarnings.zamgService._channel',
+                icon: '/icons/zamg.svg',
             },
             native: {},
         },

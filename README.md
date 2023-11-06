@@ -126,6 +126,12 @@ Templates for 3) cannot contain `${}` Tokens.
   1) Warning is **now** active (the one with the highest level).
   
 ## Icons
+
+DWD Icon: Copyright by Deutscher Wetterdienst
+ZAMG Icon: Copyright by 
+
+others:
+
 Creator: [Adri Ansyah](https://www.youtube.com/channel/UChLOv1L-ftAFc2ZizdEAKgw?view_as=subscriber)
 
 Changes: In the original they are blue, other colours are changes to the original. 

@@ -249,7 +249,8 @@ const statesObjectsWarnings = {
       _id: "dwd",
       type: "device",
       common: {
-        name: "statesObjectsWarnings.dwdService._channel"
+        name: "statesObjectsWarnings.dwdService._channel",
+        icon: "/icons/dwd.png"
       },
       native: {}
     },
@@ -1209,7 +1210,8 @@ const statesObjectsWarnings = {
       _id: "zamg",
       type: "device",
       common: {
-        name: "statesObjectsWarnings.zamgService._channel"
+        name: "statesObjectsWarnings.zamgService._channel",
+        icon: "/icons/zamg.svg"
       },
       native: {}
     },

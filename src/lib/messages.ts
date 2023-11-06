@@ -247,25 +247,25 @@ export class MessagesClass extends library.BaseClass {
             ceiling: { node: `payload.altMax` },
             altitude: { node: `payload.altMin` },
             warnlevelcolorname: {
-                node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 0 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     MessageType.level.uwz,
                 )}, $i[2]); $lookup(${JSON.stringify(MessageType.color.textuwz)},$string($l)))`,
                 cmd: 'translate',
             },
             warnlevelnumber: {
-                node: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                node: `($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 0 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     MessageType.level.uwz,
                 )}, $i[2]))`,
             },
             warnlevelcolorhex: {
                 node: `$lookup(${JSON.stringify(
                     MessageType.color.uwzColor,
-                )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                )},$string(($i := $split(payload.levelName, '_'); $i[0] = "notice" ? 0 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     MessageType.level.uwz,
                 )}, $i[2]))))`,
             },
             warnlevelname: {
-                node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 1 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
+                node: `($i := $split(payload.levelName, '_'); $l := $i[0] = "notice" ? 0 : $i[1] = "forewarn" ? 1 : $lookup(${JSON.stringify(
                     MessageType.level.uwz,
                 )}, $i[2]); $lookup(${JSON.stringify(MessageType.textLevels.textGeneric)},$string($l)))`,
                 cmd: 'translate',

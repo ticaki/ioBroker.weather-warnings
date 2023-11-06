@@ -23,7 +23,7 @@ export const defaultData = {
                 DE: '',
             },
             fileName: '',
-            levelName: 'alert_forewarn_green',
+            levelName: 'notice_forewarn_green',
             shortText: '',
             longText: '',
             altMin: 0,
