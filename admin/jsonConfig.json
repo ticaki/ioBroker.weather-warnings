@@ -906,35 +906,6 @@
                     "lg": 4,
                     "label": "LevelFilter",
                     "newLine": true
-                },
-                "uwzTypeFilter2": {
-                    "alsoDependsOn": [
-                        "myText"
-                    ],
-                    "hidden": "false",
-                    "type": "textSendTo",
-                    "command": "deviceEncryptionKey",
-                    "jsonData": "{ \"service\": \"myText\" }",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 5,
-                    "lg": 4,
-                    "label": "TypeFilter",
-                    "tooltip": "TypeFilter",
-                    "newLine": true
-                },
-                "myText": {
-                    "type": "text",
-                    "label": "Encryption Key",
-                    "tooltip": "templateKeyTip",
-                    "default": "",
-                    "doNotSave": true,
-                    "validatorNoSaveOnError": true,
-                    "xs": 4,
-                    "sm": 4,
-                    "md": 4,
-                    "lg": 4,
-                    "newLine": true
                 }
             }
         },

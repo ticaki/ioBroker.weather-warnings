@@ -145,6 +145,11 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) Multiple Say-It instances.
+* (ticaki) Some icons added.
+* (ticaki) -no warning- Warning level for uwz corrected.
+
 ### 0.5.1 (2023-11-05)
 * (ticaki) Fixed: Foreign languages did not work for UWZ.
 * (ticaki) Fixed: clearHistory command didnt work on gloabl level.
