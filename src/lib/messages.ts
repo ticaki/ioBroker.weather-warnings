@@ -1008,7 +1008,10 @@ export class MessagesClass extends library.BaseClass {
             this.formatedData.warntypegeneric = this.genericType;
             this.formatedData.locationcustom = this.provider
                 ? this.provider.customName
-                : this.providerController.providers.map((a) => a.customName).join(', ');
+                : this.providerController.providers
+                      .map((a) => a.customName)
+                      .filter((item, pos, arr) => arr.indexOf(item) == pos)
+                      .join(', ');
             this.formatedData.provider = this.provider
                 ? this.provider.service.replace('Service', '').toUpperCase()
                 : this.providerParent
