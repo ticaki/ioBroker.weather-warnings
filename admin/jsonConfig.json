@@ -272,7 +272,7 @@
                             "lg": 12,
                             "default": [],
                             "label": "speakSilentTimeDetail",
-                            "items": [            
+                            "items": [
                                 {
                                     "type": "selectSendTo",
                                     "command": "weekdays",
@@ -719,7 +719,7 @@
                             "type": "text",
                             "width": "30% ",
                             "filter": false,
-                            "sort": false                   
+                            "sort": false
                         }
                     ]
                 },
@@ -905,6 +905,35 @@
                     "md": 8,
                     "lg": 4,
                     "label": "LevelFilter",
+                    "newLine": true
+                },
+                "uwzTypeFilter2": {
+                    "alsoDependsOn": [
+                        "myText"
+                    ],
+                    "hidden": "false",
+                    "type": "textSendTo",
+                    "command": "deviceEncryptionKey",
+                    "jsonData": "{ \"service\": \"myText\" }",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
+                    "newLine": true
+                },
+                "myText": {
+                    "type": "text",
+                    "label": "Encryption Key",
+                    "tooltip": "templateKeyTip",
+                    "default": "",
+                    "doNotSave": true,
+                    "validatorNoSaveOnError": true,
+                    "xs": 4,
+                    "sm": 4,
+                    "md": 4,
+                    "lg": 4,
                     "newLine": true
                 }
             }
@@ -2045,19 +2074,32 @@
             "label": "sayit",
             "hidden": "!data.sayit_Enabled",
             "items": {
-                "sayit_Adapter": {
-                    "type": "selectSendTo",
-                    "command": "notificationService",
-                    "jsonData": "{ \"service\": \"sayit\" }",
-                    "manual": false,
-                    "multiple": false,
-                    "default": "none",
+                "sayit_Adapter_Array": {
+                    "type": "table",
+                    "newLine": true,
                     "xs": 12,
                     "sm": 12,
-                    "md": 5,
-                    "lg": 4,
+                    "md": 12,
+                    "lg": 12,
+                    "default": [],
                     "label": "SelectNotificationService",
-                    "newLine": true
+                    "items": [
+                        {
+                            "attr": "sayit_Adapter",
+                            "type": "selectSendTo",
+                            "command": "notificationService",
+                            "jsonData": "{ \"service\": \"sayit\" }",
+                            "manual": false,
+                            "multiple": false,
+                            "default": "none",
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 5,
+                            "lg": 4,
+                            "label": "SelectNotificationService",
+                            "newLine": true
+                        }
+                    ]
                 },
                 "sayit_DwdEnabled": {
                     "type": "checkbox",
@@ -2066,7 +2108,7 @@
                     "md": 4,
                     "lg": 2,
                     "hidden": "!data.dwdEnabled",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "default": true,
                     "label": "dwdEnabled",
                     "newLine": true
@@ -2078,7 +2120,7 @@
                     "max": 100,
                     "step": 1,
                     "default": "20",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "xs": 12,
                     "sm": 8,
                     "md": 4,
@@ -2092,7 +2134,7 @@
                     "md": 4,
                     "lg": 2,
                     "hidden": "!data.uwzEnabled",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "default": true,
                     "label": "uwzEnabled",
                     "newLine": true
@@ -2104,7 +2146,7 @@
                     "md": 4,
                     "lg": 2,
                     "hidden": "!data.zamgEnabled",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "label": "zamgEnabled",
                     "default": true,
                     "newLine": true
@@ -2131,7 +2173,7 @@
                     "type": "selectSendTo",
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"sayit\" }",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0] == 'none'",
                     "manual": false,
                     "multiple": true,
                     "xs": 12,
@@ -2146,7 +2188,7 @@
                     "type": "selectSendTo",
                     "command": "filterType",
                     "jsonData": "{ \"service\": \"sayit\" }",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0] == 'none'",
                     "manual": false,
                     "multiple": true,
                     "xs": 12,
@@ -2161,7 +2203,7 @@
                     "type": "selectSendTo",
                     "command": "filterLevel",
                     "jsonData": "{ \"service\": \"sayit\" }",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0] == 'none'",
                     "manual": false,
                     "multiple": false,
                     "xs": 12,
@@ -2175,7 +2217,7 @@
                     "type": "selectSendTo",
                     "command": "filterLevel",
                     "jsonData": "{ \"service\": \"sayit\" }",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0] == 'none'",
                     "manual": false,
                     "multiple": false,
                     "xs": 12,
@@ -2189,7 +2231,7 @@
                     "type": "selectSendTo",
                     "command": "Messages",
                     "jsonData": "{ \"service\": \"sayit\" }",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0] == 'none'",
                     "manual": false,
                     "multiple": false,
                     "xs": 12,
@@ -2203,7 +2245,7 @@
                     "type": "selectSendTo",
                     "command": "Messages",
                     "jsonData": "{ \"service\": \"sayit\" }",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0] == 'none'",
                     "manual": false,
                     "multiple": false,
                     "xs": 12,
@@ -2217,7 +2259,7 @@
                     "type": "selectSendTo",
                     "command": "Messages",
                     "jsonData": "{ \"service\": \"sayit\"}",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0] == 'none'",
                     "manual": false,
                     "multiple": false,
                     "xs": 12,
@@ -2231,7 +2273,7 @@
                     "type": "selectSendTo",
                     "command": "Messages",
                     "jsonData": "{ \"service\": \"sayit\"}",
-                    "disabled": "data.sayit_Adapter == 'none'",
+                    "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0] == 'none'",
                     "manual": false,
                     "multiple": false,
                     "xs": 12,

@@ -43,6 +43,7 @@ class NotificationClass extends library.BaseClass {
     this.log.info(
       `Create notification service ${this.name}${this.options.adapter != void 0 ? this.name == "alexa2" ? " state: " + this.adapter.config.alexa2_device_ids.map((a) => `${this.options.adapter}.Echo-Devices.${a}.Commands.speak`).join(", ") : " adapter: " + this.options.adapter : ""}.`
     );
+    this.log.setLogPrefix(this.options.adapter != void 0 ? this.options.adapter : this.name);
   }
   async init() {
     switch (this.name) {

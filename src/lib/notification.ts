@@ -30,6 +30,7 @@ export class NotificationClass extends library.BaseClass {
                     : ''
             }.`,
         );
+        this.log.setLogPrefix(this.options.adapter != undefined ? this.options.adapter : this.name);
     }
 
     /**

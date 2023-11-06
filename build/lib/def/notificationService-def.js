@@ -64,7 +64,8 @@ const notificationServiceDefaults = {
     useadapter: true
   },
   sayit: {
-    useadapter: true
+    useadapter: true,
+    useadapterarray: true
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

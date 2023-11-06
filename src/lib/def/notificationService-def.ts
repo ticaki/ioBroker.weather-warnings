@@ -70,6 +70,7 @@ export type BaseType =
     | ({
           name: 'sayit';
           volumen: string;
+          useadapterarray: true;
       } & bBaseType);
 
 type bBaseType = {
@@ -82,6 +83,8 @@ type bBaseType = {
     name: Type;
     actions: ActionsType;
     useadapter: boolean;
+    useadapterarray?: boolean;
+    adapters: string[];
     notifications: ActionsUnionType[];
 };
 
@@ -171,5 +174,6 @@ export const notificationServiceDefaults: Record<NotificationType.Type, Partial<
     },
     sayit: {
         useadapter: true,
+        useadapterarray: true,
     },
 };

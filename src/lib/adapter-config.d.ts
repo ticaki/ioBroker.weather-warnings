@@ -160,7 +160,7 @@ declare global {
             alexa2_volumen: number;
             alexa2_Audio: string;
 
-            sayit_Adapter: string;
+            sayit_Adapter_Array: { sayit_Adapter: string }[];
             sayit_DwdEnabled: boolean;
             sayit_UwzEnabled: boolean;
             sayit_ZamgEnabled: boolean;

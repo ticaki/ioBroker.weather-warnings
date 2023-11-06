@@ -719,20 +719,34 @@ export class ProviderController extends BaseClass {
         for (const a in optionList) {
             const options = optionList[a as keyof NotificationType.OptionsType];
             if (options === undefined) return;
-            const objs =
-                options.adapter != ''
-                    ? await this.adapter.getObjectViewAsync('system', 'instance', {
-                          startkey: `system.adapter.${options.adapter}`,
-                          endkey: `system.adapter.${options.adapter}`,
-                      })
-                    : null;
-            if (!options.useadapter || (objs && objs.rows && objs.rows.length > 0)) {
-                const noti = new NotificationClass.NotificationClass(this.adapter, options);
-                this.notificationServices.push(noti);
-                await noti.init();
-            } else {
-                this.log.error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
-                throw new Error(`Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`);
+            let tempAdapters = [options.adapter];
+            if (options.useadapterarray && options.adapters) {
+                tempAdapters = options.adapters;
+            }
+            for (const a of tempAdapters) {
+                options.adapter = a;
+                const objs =
+                    options.adapter != ''
+                        ? await this.adapter.getObjectViewAsync('system', 'instance', {
+                              startkey: `system.adapter.${options.adapter}`,
+                              endkey: `system.adapter.${options.adapter}`,
+                          })
+                        : null;
+                if (!options.useadapter || (objs && objs.rows && objs.rows.length > 0)) {
+                    const noti = new NotificationClass.NotificationClass(
+                        this.adapter,
+                        JSON.parse(JSON.stringify(options)),
+                    );
+                    this.notificationServices.push(noti);
+                    await noti.init();
+                } else {
+                    this.log.error(
+                        `Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`,
+                    );
+                    throw new Error(
+                        `Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`,
+                    );
+                }
             }
         }
     }
