@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "news": {
+      "0.5.2": {
+        "en": "Multiple Say-It instances.\nSome icons added.\n-no warning- Warning level for uwz corrected.",
+        "de": "Mehrere Say-It-Instanzen.\nEinige Symbole hinzugefügt.\n- Keine Warnung. Warnstufe für uwz korrigiert.",
+        "ru": "Несколько примеров Say-It.\nДобавлены некоторые иконки.\n-без предупреждения- Уровень предостережения для uwz исправлен.",
+        "pt": "Várias instâncias Say-It.\nAlguns ícones adicionados.\n- Sem aviso... Nível de aviso para uwz corrigido.",
+        "nl": "Meerdere Say-It instances.\nEnkele iconen toegevoegd.\n- Geen waarschuwing. Waarschuwingsniveau voor uwz gecorrigeerd.",
+        "fr": "Plusieurs instances Say-It.\nQuelques icônes ajoutées.\n- sans avertissement... Niveau d ' avertissement pour le Koweït corrigé.",
+        "it": "Molteplici istanze Say-It.\nAlcune icone aggiunte.\n- Niente avvertimenti. Livello di avvertimento per uwz corretto.",
+        "es": "Múltiples instancias.\nAlgunos iconos añadidos.\n- sin aviso... Nivel de advertencia para Uwz corregido.",
+        "pl": "Wielokrotny przypadek.\nDodano kilka ikon.\n- no warning- Poziom uwz skorygował.",
+        "uk": "Кілька екземплярів Say-It.\nДодані іконки.\n-без попередження Рівень попередження для виправки uwz.",
+        "zh-cn": "多门Say-It案件。.\n有些方面增加了。.\n- 无警告 瓦兹的防备水平得到纠正。."
+      },
       "0.5.1": {
         "en": "Fixed: Foreign languages did not work for UWZ.\nFixed: clearHistory command didnt work on gloabl level.\nFixed: uwz colours assigned to the correct level.",
         "de": "Behoben: Fremdsprachen funktionierten nicht für UWZ.\nBehoben: clearHistory Befehl funktionierte nicht auf Gloabl-Ebene.\nBehoben: uwz Farben dem richtigen Level zugeordnet.",
@@ -80,19 +93,6 @@
         "pl": "restartacja",
         "uk": "виправлення аварійного запуску",
         "zh-cn": "f 意外开工"
-      },
-      "0.4.5": {
-        "en": "Quiet times with profile & control states\nFixed: Jumping of the data tree\nBugfixing",
-        "de": "Ruhezeiten mit Profil & Steuerstates\nBehoben: Springen des Datenbaums\nFehlerbehebung",
-        "ru": "Тихие времена с профилем и состояниями управления\nИсправлено: Прыжки дерева данных\nБугфиксирование",
-        "pt": "Tempos silenciosos com estados de perfil e controle\nCorrigido: Saltar da árvore de dados\nBugfixing",
-        "nl": "Rustige tijden met profiel controle staten\nSpringen van de data boom\nBugfix",
-        "fr": "Temps calme avec profil & états de contrôle\nFixed: Jumping of the data tree\nBugfixing",
-        "it": "Tempi silenziosi con il profilo e gli stati di controllo\nRisolto: salto dell'albero di dati\nBugfixing",
-        "es": "Tiempos tranquilos con estados de control de perfil\nFijo: Salto del árbol de datos\nBugfixing",
-        "pl": "Czas trwania profilu i kontroli\nFixed: Jumping of the data tree (ang.)\nBugfix",
-        "uk": "Терміни викладання з профільними та контрольними станами\nВиправлено: Перемикання дерева даних\nПомилки",
-        "zh-cn": "A. 概况和控制国\n固定:倾销数据树\n固定"
       }
     },
     "titleLang": {
