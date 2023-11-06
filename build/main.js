@@ -316,7 +316,7 @@ class WeatherWarnings extends utils.Adapter {
         if (self.config.sayit_Enabled && notificationServiceOpt.sayit != void 0) {
           notificationServiceOpt.sayit.volumen = self.config.sayit_volumen > 0 ? String(self.config.sayit_volumen) : "";
           if (self.config.sayit_Adapter_Array.length == 0 || self.config.sayit_Adapter_Array[0].sayit_Adapter == "none") {
-            self.log.error(`Missing adapter for alexa - deactivated`);
+            self.log.error(`Missing adapter for sayit - deactivated`);
             delete notificationServiceOpt.sayit;
             self.config.sayit_Enabled = false;
           } else {
