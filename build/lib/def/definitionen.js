@@ -2281,8 +2281,7 @@ const PROVIDER_OPTIONS = {
     url: "${warncellid}"
   },
   noService: {
-    url: "",
-    languages: [{ de: "German" }, { en: "English" }, { it: "Italy" }, { fr: "French" }, { es: "Spanish" }]
+    url: ""
   },
   metroService: {
     url: ""

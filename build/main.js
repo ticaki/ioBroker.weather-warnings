@@ -25,7 +25,7 @@ var import_dwdWarncellIdLong = require("./lib/def/dwdWarncellIdLong");
 var import_provider = require("./lib/provider.js");
 var import_library = require("./lib/library.js");
 var messagesDef = __toESM(require("./lib/def/messages-def"));
-var import_provider_def = require("./lib/def/provider-def");
+var providerDef = __toESM(require("./lib/def/provider-def"));
 var NotificationType = __toESM(require("./lib/def/notificationService-def"));
 var import_notificationService_def = require("./lib/def/notificationService-def.js");
 var import_definitionen = require("./lib/def/definitionen.js");
@@ -60,10 +60,10 @@ class WeatherWarnings extends utils.Adapter {
     let allowedDirsConfig = {};
     while (i++ < 2) {
       const allowedDirs = this.config.allowedDirs;
-      for (const a in import_provider_def.providerServicesArray) {
+      for (const a in providerDef.providerServicesArray) {
         let hit = -1;
         for (const b in allowedDirs) {
-          if (allowedDirs[b].providerService == import_provider_def.providerServicesArray[a].replace("Service", "").toUpperCase()) {
+          if (allowedDirs[b].providerService == providerDef.providerServicesArray[a].replace("Service", "").toUpperCase()) {
             hit = Number(b);
             break;
           }
@@ -71,16 +71,16 @@ class WeatherWarnings extends utils.Adapter {
         if (hit == -1) {
           change = true;
           this.config.allowedDirs.push({
-            providerService: import_provider_def.providerServicesArray[a].replace("Service", "").toUpperCase(),
+            providerService: providerDef.providerServicesArray[a].replace("Service", "").toUpperCase(),
             dpWarning: true,
             dpMessage: true,
             dpFormated: true,
             dpAlerts: true
           });
         }
-        allowedDirsConfig[import_provider_def.providerServicesArray[a]] = this.config.allowedDirs[hit == -1 ? this.config.allowedDirs.length - 1 : hit];
+        allowedDirsConfig[providerDef.providerServicesArray[a]] = this.config.allowedDirs[hit == -1 ? this.config.allowedDirs.length - 1 : hit];
       }
-      if (import_provider_def.providerServicesArray.length != this.config.allowedDirs.length) {
+      if (providerDef.providerServicesArray.length != this.config.allowedDirs.length) {
         this.config.allowedDirs = [];
         allowedDirsConfig = {};
         change = false;
@@ -385,7 +385,7 @@ class WeatherWarnings extends utils.Adapter {
           const id = self.config.uwzwarncellTable[a];
           if (self.config.uwzEnabled && id && typeof id.uwzSelectId == "string" && id.uwzSelectId.split("/").length == 2 || tempTable[a].realWarncell !== "") {
             if (tempTable[a].realWarncell !== "") {
-              const tempWarncell = await import_provider_def.UWZProvider.getWarncell(
+              const tempWarncell = await providerDef.UWZProvider.getWarncell(
                 id.uwzSelectId.split("/"),
                 "uwzService",
                 self
@@ -431,7 +431,7 @@ class WeatherWarnings extends utils.Adapter {
         holdStates.push("provider.history");
         holdStates.push("provider.activeWarnings");
         await self.library.cleanUpTree(holdStates, 3);
-        self.providerController.updateCommandStates();
+        self.providerController.finishInit();
         self.providerController.updateEndless(self.providerController);
         self.providerController.updateAlertEndless(self.providerController);
       },
@@ -464,17 +464,16 @@ class WeatherWarnings extends utils.Adapter {
     if (state.ack)
       return;
     this.library.setdb(id.replace(`${this.namespace}.`, ""), "state", state.val, void 0, state.ack, state.ts);
-    if (import_definitionen.actionStates[id.replace(`${this.namespace}.`, "")] == void 0) {
-      if (this.providerController)
-        this.providerController.onStatePush(id);
-    }
-    await this.providerController.clearHistory(id);
-    await this.library.writedp(id.replace(`${this.namespace}.`, ""), state.val);
-    await this.providerController.setSpeakAllowed();
+    if (await this.providerController.onStatePush(id))
+      return;
+    if (await this.providerController.clearHistory(id))
+      return;
+    if (await this.providerController.setSpeakAllowed(id))
+      return;
   }
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {
-      this.log.debug(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
+      console.log(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
       let connected = true;
       let state;
       switch (String(obj.command)) {
@@ -674,7 +673,7 @@ class WeatherWarnings extends utils.Adapter {
         case "filterType":
           if (obj.callback) {
             const reply = [];
-            if (obj.message && obj.message.service && import_provider_def.providerServicesArray.indexOf(obj.message.service) != -1) {
+            if (obj.message && obj.message.service && providerDef.providerServicesArray.indexOf(obj.message.service) != -1) {
               const service = obj.message.service;
               for (const b in messagesDef.genericWarntyp) {
                 const a = Number(b);

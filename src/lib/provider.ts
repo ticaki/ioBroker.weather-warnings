@@ -912,7 +912,8 @@ export class ProviderController extends BaseClass {
         );
     }
 
-    async onStatePush(id: string): Promise<void> {
+    async onStatePush(id: string): Promise<boolean> {
+        if (!id.includes('commands.send_message.')) return false;
         id = id.replace(`${this.adapter.namespace}.`, '');
         const cmd = id.split('.').pop() as NotificationType.Type;
         const service = id.split('.').slice(0, -3).join('.');
@@ -923,28 +924,41 @@ export class ProviderController extends BaseClass {
         } else {
             providers = this.providers;
         }
+        let result = false;
         for (const push of this.notificationServices) {
-            if (cmd == push.name && push.canManual())
+            if (cmd == push.name && push.canManual()) {
                 await push.sendMessage(providers, [...NotificationType.manual, 'removeAll'], true);
+                await this.library.writedp(id, false);
+                result = true;
+            }
         }
+        return result;
     }
 
-    async updateCommandStates(): Promise<void> {
+    async finishInit(): Promise<void> {
         for (const p of [...this.providers, this]) {
             const channel =
                 (p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`) +
                 '.commands';
+            const commandChannel = `${channel}.send_message`;
+
             await this.library.writedp(
                 channel,
                 undefined,
                 definitionen.statesObjectsWarnings.allService.commands._channel,
             );
-            const commandChannel = `${channel}.send_message`;
+
             await this.library.writedp(
                 commandChannel,
                 undefined,
                 definitionen.statesObjectsWarnings.allService.commands.send_message._channel,
             );
+            await this.library.writedp(
+                channel + '.clearHistory',
+                false,
+                definitionen.statesObjectsWarnings.allService.commands.clearHistory,
+            );
+
             const states = this.library.getStates(`${commandChannel}.*`.replace('.', '\\.'));
             states[`${commandChannel}`] = undefined;
             for (const n of this.notificationServices) {
@@ -967,30 +981,29 @@ export class ProviderController extends BaseClass {
                     this.log.debug(`Remove state ${dp}`);
                 }
             }
-            await this.library.writedp(
-                channel + '.clearHistory',
-                false,
-                definitionen.statesObjectsWarnings.allService.commands.clearHistory,
-            );
             await this.adapter.subscribeStatesAsync(channel + '.*');
         }
     }
 
-    async clearHistory(id: string): Promise<void> {
-        if (!id.endsWith('.clearHistory')) return;
+    async clearHistory(id: string): Promise<boolean> {
+        if (!id.endsWith('.clearHistory')) return false;
         let targets: any[] = [];
         this.providers.forEach((a) => {
             if (id.includes(a.name)) targets.push(a);
         });
         if (targets.length == 0) targets = [...this.providers, this];
+        let result = false;
         for (const a in targets) {
             try {
                 const dp = `${targets[a].name}.history`;
                 await this.adapter.library.writedp(dp, '[]', definitionen.genericStateObjects.history);
+                result = true;
             } catch (error: any) {
                 this.log.error(error);
             }
         }
+        if (result) await this.library.writedp(id.replace(`${this.adapter.namespace}.`, ''), false);
+        return result;
     }
 
     setAllowedDirs(allowedDirs: any): void {
@@ -1016,7 +1029,13 @@ export class ProviderController extends BaseClass {
             }
         }
     }
-    async setSpeakAllowed(): Promise<void> {
+    async setSpeakAllowed(id: string = ''): Promise<boolean> {
+        if (id !== '') {
+            id = id.replace(`${this.adapter.namespace}.`, '');
+            if (definitionen.actionStates[id] === undefined) return false;
+            this.log.debug(`Set speak ${id.split('.').slice(-1).join('.')} to ${this.library.readdp(id)!.val}`);
+            this.library.writedp(id, this.library.readdp(id)!.val);
+        }
         if (this.isSilentAuto()) {
             const profil = this.getSpeakProfil();
             let isSpeakAllowed = true;
@@ -1054,6 +1073,7 @@ export class ProviderController extends BaseClass {
                 this.silentTime.shouldSpeakAllowed = isSpeakAllowed;
             }
         }
+        return true;
     }
     isSilentAuto(): boolean {
         const result = this.library.readdp(`commands.silentTime.autoMode`);

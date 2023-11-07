@@ -2336,7 +2336,7 @@ export const PROVIDER_OPTIONS = {
     },
     noService: {
         url: '',
-        languages: [{ de: 'German' }, { en: 'English' }, { it: 'Italy' }, { fr: 'French' }, { es: 'Spanish' }], // definitioin für admin
+        //languages: [{ de: 'German' }, { en: 'English' }, { it: 'Italy' }, { fr: 'French' }, { es: 'Spanish' }], // definitioin für admin
     },
     metroService: {
         url: '',

@@ -12,15 +12,10 @@ import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 import * as messagesDef from './lib/def/messages-def';
-import {
-    UWZProvider,
-    messageFilterTypeWithFilter,
-    providerServices,
-    providerServicesArray,
-} from './lib/def/provider-def';
+import * as providerDef from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationService-def.js';
-import { actionStates, statesObjectsWarnings } from './lib/def/definitionen.js';
+import { statesObjectsWarnings } from './lib/def/definitionen.js';
 axios.defaults.timeout = 8000;
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -61,11 +56,12 @@ class WeatherWarnings extends utils.Adapter {
         while (i++ < 2) {
             const allowedDirs = this.config.allowedDirs;
 
-            for (const a in providerServicesArray) {
+            for (const a in providerDef.providerServicesArray) {
                 let hit = -1;
                 for (const b in allowedDirs) {
                     if (
-                        allowedDirs[b].providerService == providerServicesArray[a].replace('Service', '').toUpperCase()
+                        allowedDirs[b].providerService ==
+                        providerDef.providerServicesArray[a].replace('Service', '').toUpperCase()
                     ) {
                         hit = Number(b);
                         break;
@@ -74,7 +70,7 @@ class WeatherWarnings extends utils.Adapter {
                 if (hit == -1) {
                     change = true;
                     this.config.allowedDirs.push({
-                        providerService: providerServicesArray[a].replace('Service', '').toUpperCase(),
+                        providerService: providerDef.providerServicesArray[a].replace('Service', '').toUpperCase(),
                         dpWarning: true,
                         dpMessage: true,
                         dpFormated: true,
@@ -82,10 +78,10 @@ class WeatherWarnings extends utils.Adapter {
                     });
                 }
                 //@ts-expect-error dann so
-                allowedDirsConfig[providerServicesArray[a]] =
+                allowedDirsConfig[providerDef.providerServicesArray[a]] =
                     this.config.allowedDirs[hit == -1 ? this.config.allowedDirs.length - 1 : hit];
             }
-            if (providerServicesArray.length != this.config.allowedDirs.length) {
+            if (providerDef.providerServicesArray.length != this.config.allowedDirs.length) {
                 this.config.allowedDirs = [];
                 allowedDirsConfig = {};
                 change = false;
@@ -257,7 +253,7 @@ class WeatherWarnings extends utils.Adapter {
                 for (const a in NotificationType.Array) {
                     const notificationService = NotificationType.Array[a] as NotificationType.Type;
                     if (self.config[(notificationService + '_Enabled') as keyof ioBroker.AdapterConfig]) {
-                        const service: providerServices[] = [];
+                        const service: providerDef.providerServices[] = [];
                         if (self.config[(notificationService + '_DwdEnabled') as keyof ioBroker.AdapterConfig])
                             service.push('dwdService');
                         if (self.config[(notificationService + '_UwzEnabled') as keyof ioBroker.AdapterConfig])
@@ -432,7 +428,7 @@ class WeatherWarnings extends utils.Adapter {
                             self.log.warn(`DWD "${id.dwdSelectId}" warning cell is invalid.`);
                             continue;
                         }
-                        const options: messageFilterTypeWithFilter & {
+                        const options: providerDef.messageFilterTypeWithFilter & {
                             [key: string]: any;
                         } = {
                             filter: {
@@ -457,7 +453,7 @@ class WeatherWarnings extends utils.Adapter {
                     const id = self.config.zamgwarncellTable[a];
                     if (self.config.zamgEnabled && id && typeof id.zamgSelectId == 'string') {
                         self.log.info('ZAMG activated. Retrieve data.');
-                        const options: messageFilterTypeWithFilter & {
+                        const options: providerDef.messageFilterTypeWithFilter & {
                             [key: string]: any;
                         } = {
                             filter: {
@@ -490,7 +486,7 @@ class WeatherWarnings extends utils.Adapter {
                         tempTable[a].realWarncell !== ''
                     ) {
                         if (tempTable[a].realWarncell !== '') {
-                            const tempWarncell = await UWZProvider.getWarncell(
+                            const tempWarncell = await providerDef.UWZProvider.getWarncell(
                                 id.uwzSelectId.split('/') as [string, string],
                                 'uwzService',
                                 self,
@@ -500,7 +496,7 @@ class WeatherWarnings extends utils.Adapter {
                                 tempTable[a].realWarncell = tempWarncell;
                             }
                         }
-                        const options: messageFilterTypeWithFilter = {
+                        const options: providerDef.messageFilterTypeWithFilter = {
                             filter: {
                                 type: self.config.uwzTypeFilter,
                                 level: self.config.uwzLevelFilter,
@@ -539,7 +535,7 @@ class WeatherWarnings extends utils.Adapter {
                 holdStates.push('provider.activeWarnings');
                 await self.library.cleanUpTree(holdStates, 3);
 
-                self.providerController.updateCommandStates();
+                self.providerController.finishInit();
 
                 self.providerController.updateEndless(self.providerController);
                 self.providerController.updateAlertEndless(self.providerController);
@@ -583,11 +579,10 @@ class WeatherWarnings extends utils.Adapter {
         if (!state) return;
         if (state.ack) return;
         this.library.setdb(id.replace(`${this.namespace}.`, ''), 'state', state.val, undefined, state.ack, state.ts);
-        if (actionStates[id.replace(`${this.namespace}.`, '')] == undefined)
-            if (this.providerController) this.providerController.onStatePush(id);
-        await this.providerController!.clearHistory(id);
-        await this.library.writedp(id.replace(`${this.namespace}.`, ''), state.val);
-        await this.providerController!.setSpeakAllowed();
+
+        if (await this.providerController!.onStatePush(id)) return;
+        if (await this.providerController!.clearHistory(id)) return;
+        if (await this.providerController!.setSpeakAllowed(id)) return;
     }
 
     /**
@@ -596,7 +591,7 @@ class WeatherWarnings extends utils.Adapter {
      */
     private async onMessage(obj: ioBroker.Message): Promise<void> {
         if (typeof obj === 'object' && obj.message) {
-            this.log.debug(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
+            console.log(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
             let connected = true;
             let state;
             switch (String(obj.command)) {
@@ -814,7 +809,7 @@ class WeatherWarnings extends utils.Adapter {
                         if (
                             obj.message &&
                             obj.message.service &&
-                            providerServicesArray.indexOf(obj.message.service) != -1
+                            providerDef.providerServicesArray.indexOf(obj.message.service) != -1
                         ) {
                             const service = obj.message.service as 'dwdService' | 'uwzService' | 'zamgService';
                             for (const b in messagesDef.genericWarntyp) {
