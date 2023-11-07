@@ -409,7 +409,7 @@ class WeatherWarnings extends utils.Adapter {
                         self.config.sayit_Adapter_Array.length == 0 ||
                         self.config.sayit_Adapter_Array[0].sayit_Adapter == 'none'
                     ) {
-                        self.log.error(`Missing adapter for sayit - deactivated`);
+                        self.log.warn(`Missing adapter for sayit - deactivated`);
                         delete notificationServiceOpt.sayit;
                         self.config.sayit_Enabled = false;
                     } else {
@@ -544,7 +544,7 @@ class WeatherWarnings extends utils.Adapter {
                 self.providerController.updateEndless(self.providerController);
                 self.providerController.updateAlertEndless(self.providerController);
             },
-            4000,
+            2000,
             this,
         );
     }

@@ -2055,7 +2055,7 @@ const statesObjectsWarnings = {
         _id: "",
         type: "channel",
         common: {
-          name: "statesObjectsWarnings.allService.command"
+          name: "statesObjectsWarnings.allService.commands"
         },
         native: {}
       },
