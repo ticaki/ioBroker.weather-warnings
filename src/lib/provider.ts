@@ -939,16 +939,18 @@ export class ProviderController extends BaseClass {
                 undefined,
                 definitionen.statesObjectsWarnings.allService.commands._channel,
             );
+            const commandChannel = `${channel}.send_message`;
             await this.library.writedp(
-                channel + '.send_message',
+                commandChannel,
                 undefined,
                 definitionen.statesObjectsWarnings.allService.commands.send_message._channel,
             );
-            const states = this.library.getStates(`${channel}.*`.replace('.', '\\.'));
+            const states = this.library.getStates(`${commandChannel}.*`.replace('.', '\\.'));
+            states[`${commandChannel}`] = undefined;
             for (const n of this.notificationServices) {
                 if (n.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1) continue;
                 if (!(p instanceof BaseProvider) || n.options.service.indexOf(p.service) != -1) {
-                    const dp = `${channel}.send_message.${n.name}`;
+                    const dp = `${commandChannel}.${n.name}`;
                     states[dp] = undefined;
                     await this.library.writedp(
                         dp,
@@ -959,15 +961,17 @@ export class ProviderController extends BaseClass {
                     );
                 }
             }
-            states[channel + '.clearHistory'] = undefined;
+            for (const dp in states) {
+                if (states[dp] !== undefined) {
+                    await this.adapter.delObjectAsync(dp);
+                    this.log.debug(`Remove state ${dp}`);
+                }
+            }
             await this.library.writedp(
                 channel + '.clearHistory',
                 false,
                 definitionen.statesObjectsWarnings.allService.commands.clearHistory,
             );
-            for (const dp in states)
-                if (states[dp] !== undefined && definitionen.actionStates[dp] == undefined)
-                    await this.adapter.delObjectAsync(dp);
             await this.adapter.subscribeStatesAsync(channel + '.*');
         }
     }
