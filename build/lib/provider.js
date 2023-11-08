@@ -913,6 +913,8 @@ class ProviderController extends import_library.BaseClass {
         return false;
       this.log.debug(`Set speak ${id.split(".").slice(-1).join(".")} to ${this.library.readdp(id).val}`);
       this.library.writedp(id, this.library.readdp(id).val);
+      if (definitionen.actionStates[id].onlyAck)
+        return true;
     }
     if (this.isSilentAuto()) {
       const profil = this.getSpeakProfil();

@@ -2274,18 +2274,23 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
     },
 };
 
-export const actionStates: { [dp: string]: { def: ioBroker.StateObject; default: boolean | number | string } } = {
+export const actionStates: {
+    [dp: string]: { def: ioBroker.StateObject; default: boolean | number | string; onlyAck: boolean };
+} = {
     'commands.silentTime.autoMode': {
         def: statesObjectsWarnings.allService.commands.silentTime.autoMode,
         default: true,
+        onlyAck: false,
     },
     'commands.silentTime.isSpeakAllowed': {
         def: statesObjectsWarnings.allService.commands.silentTime.isSpeakAllowed,
         default: true,
+        onlyAck: true,
     },
     'commands.silentTime.profil': {
         def: statesObjectsWarnings.allService.commands.silentTime.profil,
         default: 0,
+        onlyAck: false,
     },
 };
 export const Defaults = {

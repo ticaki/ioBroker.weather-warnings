@@ -2228,15 +2228,18 @@ const statesObjectsWarnings = {
 const actionStates = {
   "commands.silentTime.autoMode": {
     def: statesObjectsWarnings.allService.commands.silentTime.autoMode,
-    default: true
+    default: true,
+    onlyAck: false
   },
   "commands.silentTime.isSpeakAllowed": {
     def: statesObjectsWarnings.allService.commands.silentTime.isSpeakAllowed,
-    default: true
+    default: true,
+    onlyAck: true
   },
   "commands.silentTime.profil": {
     def: statesObjectsWarnings.allService.commands.silentTime.profil,
-    default: 0
+    default: 0,
+    onlyAck: false
   }
 };
 const Defaults = {
