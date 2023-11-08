@@ -1065,7 +1065,7 @@ export class ProviderController extends BaseClass {
                     isSpeakAllowed = true;
                 }
             }
-            if (isSpeakAllowed != this.silentTime.shouldSpeakAllowed) {
+            if (isSpeakAllowed !== this.silentTime.shouldSpeakAllowed) {
                 await this.library.writedp(
                     `commands.silentTime.isSpeakAllowed`,
                     isSpeakAllowed,
@@ -1073,7 +1073,7 @@ export class ProviderController extends BaseClass {
                 );
                 this.silentTime.shouldSpeakAllowed = isSpeakAllowed;
             }
-        }
+        } else this.silentTime.shouldSpeakAllowed = undefined;
         return true;
     }
     isSilentAuto(): boolean {
