@@ -534,5 +534,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "此消息的警告类型的表情符号。",
     "uwzRealWarncellID": "UWZ 使用的警告单元 ID",
     "statesObjectsWarnings.allService.commands": "命令",
-    "statesObjectsWarnings.allService.command.clearHistory": "清除历史记录。"
+    "statesObjectsWarnings.allService.command.clearHistory": "清除历史记录。",
+    "statesObjectsWarnings.allService.alerts.asList": "活动警告类型列表。"
 }

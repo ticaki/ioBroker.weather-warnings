@@ -534,5 +534,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji para el tipo de advertencia de este mensaje.",
     "uwzRealWarncellID": "El ID de la celda de advertencia utilizado por UWZ",
     "statesObjectsWarnings.allService.commands": "Comandos",
-    "statesObjectsWarnings.allService.command.clearHistory": "Borrar historial."
+    "statesObjectsWarnings.allService.command.clearHistory": "Borrar historial.",
+    "statesObjectsWarnings.allService.alerts.asList": "Lista de tipos de advertencias activas."
 }

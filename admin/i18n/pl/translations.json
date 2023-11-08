@@ -534,5 +534,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji oznaczające typ ostrzeżenia tej wiadomości.",
     "uwzRealWarncellID": "Identyfikator komórki ostrzegawczej używany przez UWZ",
     "statesObjectsWarnings.allService.commands": "Polecenia",
-    "statesObjectsWarnings.allService.command.clearHistory": "Czysta historia."
+    "statesObjectsWarnings.allService.command.clearHistory": "Czysta historia.",
+    "statesObjectsWarnings.allService.alerts.asList": "Lista aktywnych typów ostrzeżeń."
 }

@@ -133,18 +133,11 @@ class BaseProvider extends import_library.BaseClass {
       definitionen.genericStateObjects.info.connection
     );
   }
-  async setAlerts(data) {
-    await this.library.writeFromJson(
-      this.name + ".alerts",
-      "allService.alerts",
-      definitionen.statesObjectsWarnings,
-      data,
-      false
-    );
-  }
   async getAlertsAndWrite() {
     const reply = {};
     for (const t in messagesDef.genericWarntyp) {
+      if (t == "0")
+        continue;
       reply[messagesDef.genericWarntyp[Number(t)].id] = {
         level: -1,
         start: 1,
@@ -154,6 +147,7 @@ class BaseProvider extends import_library.BaseClass {
         type: -1
       };
     }
+    const warntypeArray = [];
     if (!reply)
       throw new Error("error(234) reply not definied");
     for (const a in this.messages) {
@@ -167,7 +161,8 @@ class BaseProvider extends import_library.BaseClass {
         continue;
       if (m.endtime < Date.now())
         continue;
-      if (m.starttime <= Date.now() && reply[name].level < m.level) {
+      if (m.starttime <= Date.now() && reply[name].level < m.level || m.starttime > Date.now() && (reply[name].start === 1 || reply[name].start > m.starttime)) {
+        warntypeArray.push(this.library.getTranslation(messagesDef.genericWarntyp[m.genericType].name));
         reply[name] = {
           level: m.level,
           start: m.starttime,
@@ -178,7 +173,14 @@ class BaseProvider extends import_library.BaseClass {
         };
       }
     }
-    await this.setAlerts(reply);
+    reply["asList"] = warntypeArray.filter((item, pos, arr) => arr.indexOf(item) == pos).join(", ");
+    await this.library.writeFromJson(
+      this.name + ".alerts",
+      "allService.alerts",
+      definitionen.statesObjectsWarnings,
+      reply,
+      false
+    );
     return reply;
   }
   async getDataFromProvider() {
@@ -492,8 +494,8 @@ class METROProvider extends BaseProvider {
 }
 class ProviderController extends import_library.BaseClass {
   providers = [];
-  refreshTimeRef = null;
-  alertTimeoutRef = null;
+  refreshTimeRef = void 0;
+  alertTimeoutRef = void 0;
   connection = true;
   name = "provider";
   refreshTime = 3e5;
@@ -740,17 +742,18 @@ class ProviderController extends import_library.BaseClass {
       }
     }
   }
-  async updateAlertEndless(that) {
+  async updateAlertEndless(self) {
+    const that = self;
     if (that.unload)
       return;
     await that.setSpeakAllowed();
-    that.checkAlerts();
+    await that.checkAlerts();
     const timeout = 61333 - Date.now() % 6e4;
     that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
   }
-  checkAlerts() {
+  async checkAlerts() {
     for (const p in this.providers) {
-      this.providers[p].getAlertsAndWrite();
+      await this.providers[p].getAlertsAndWrite();
     }
   }
   async doEndOfUpdater() {

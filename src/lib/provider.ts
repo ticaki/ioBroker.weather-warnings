@@ -144,18 +144,10 @@ export class BaseProvider extends BaseClass {
         );
     }
 
-    async setAlerts(data: { [key: string]: string | number | boolean }): Promise<void> {
-        await this.library.writeFromJson(
-            this.name + '.alerts',
-            'allService.alerts',
-            definitionen.statesObjectsWarnings,
-            data,
-            false,
-        );
-    }
     async getAlertsAndWrite(): Promise<messagesDef.genericWarntypeAlertJsonType> {
         const reply: any = {};
         for (const t in messagesDef.genericWarntyp) {
+            if (t == '0') continue;
             reply[messagesDef.genericWarntyp[Number(t) as keyof messagesDef.genericWarntypeType].id] = {
                 level: -1,
                 start: 1,
@@ -165,7 +157,7 @@ export class BaseProvider extends BaseClass {
                 type: -1,
             };
         }
-
+        const warntypeArray: string[] = [];
         if (!reply) throw new Error('error(234) reply not definied');
         for (const a in this.messages) {
             const m = this.messages[a];
@@ -175,7 +167,11 @@ export class BaseProvider extends BaseClass {
             if (reply[name] === undefined) continue;
             if (m.endtime < Date.now()) continue;
 
-            if (m.starttime <= Date.now() && reply[name].level < m.level) {
+            if (
+                (m.starttime <= Date.now() && reply[name].level < m.level) ||
+                (m.starttime > Date.now() && (reply[name].start === 1 || reply[name].start > m.starttime))
+            ) {
+                warntypeArray.push(this.library.getTranslation(messagesDef.genericWarntyp[m.genericType].name));
                 reply[name] = {
                     level: m.level,
                     start: m.starttime,
@@ -186,7 +182,16 @@ export class BaseProvider extends BaseClass {
                 };
             }
         }
-        await this.setAlerts(reply);
+        reply['asList'] = warntypeArray.filter((item, pos, arr) => arr.indexOf(item) == pos).join(', ');
+
+        await this.library.writeFromJson(
+            this.name + '.alerts',
+            'allService.alerts',
+            definitionen.statesObjectsWarnings,
+            reply,
+            false,
+        );
+
         return reply;
     }
     // General function that retrieves data
@@ -529,8 +534,8 @@ export class METROProvider extends BaseProvider {
 }
 export class ProviderController extends BaseClass {
     providers: providerDef.ProviderClassType[] = [];
-    refreshTimeRef: ioBroker.Timeout | null = null;
-    alertTimeoutRef: ioBroker.Timeout | null = null;
+    refreshTimeRef: ioBroker.Timeout | undefined = undefined;
+    alertTimeoutRef: ioBroker.Timeout | undefined = undefined;
     connection = true;
     name = 'provider';
     refreshTime: number = 300000;
@@ -852,18 +857,19 @@ export class ProviderController extends BaseClass {
             }
         }
     }
-    async updateAlertEndless(that: any): Promise<void> {
+    async updateAlertEndless(self: any): Promise<void> {
+        const that = self as ProviderController;
         if (that.unload) return;
         await that.setSpeakAllowed();
-        that.checkAlerts();
+        await that.checkAlerts();
         /** update every minute after 1.333 seconds. Avoid the full minute, full second and half second :) */
         const timeout = 61333 - (Date.now() % 60000);
         that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
     }
 
-    checkAlerts(): void {
+    async checkAlerts(): Promise<void> {
         for (const p in this.providers) {
-            this.providers[p].getAlertsAndWrite();
+            await this.providers[p].getAlertsAndWrite();
         }
     }
 

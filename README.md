@@ -146,8 +146,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-* (ticaki) fix command states (text / automode)
-* (ticaki) 
+* (ticaki) Fixed: command states (text / automode)
+* (ticaki) Added: .alerts. List of warning types.
+* (ticaki) Changed: .alerts. view current event with highest level or next event
 
 ### 0.5.2 (2023-11-06)
 * (ticaki) Multiple Say-It instances.

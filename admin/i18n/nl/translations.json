@@ -534,5 +534,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji voor het waarschuwingstype van dit bericht.",
     "uwzRealWarncellID": "Het door UWZ gebruikte waarschuwingscel-ID",
     "statesObjectsWarnings.allService.commands": "Commando's",
-    "statesObjectsWarnings.allService.command.clearHistory": "Geschiedenis wissen."
+    "statesObjectsWarnings.allService.command.clearHistory": "Geschiedenis wissen.",
+    "statesObjectsWarnings.allService.alerts.asList": "Lijst met actieve waarschuwingstypen."
 }

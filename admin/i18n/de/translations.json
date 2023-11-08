@@ -534,5 +534,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji für den Warntyp dieser Nachricht.",
     "uwzRealWarncellID": "Die von UWZ verwendete Warnzellen-ID.",
     "statesObjectsWarnings.allService.commands": "Befehle",
-    "statesObjectsWarnings.allService.command.clearHistory": "Leere Verlauf."
+    "statesObjectsWarnings.allService.command.clearHistory": "Leere Verlauf.",
+    "statesObjectsWarnings.allService.alerts.asList": "Liste der Warntypen mit Ereignissen."
 }

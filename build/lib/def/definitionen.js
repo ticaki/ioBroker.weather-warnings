@@ -2048,6 +2048,18 @@ const statesObjectsWarnings = {
       fog: {
         ...messagesDef.genericWarntypState,
         _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.fog" } }
+      },
+      asList: {
+        _id: "",
+        type: "state",
+        common: {
+          name: "statesObjectsWarnings.allService.alerts.asList",
+          type: "string",
+          role: "text",
+          read: true,
+          write: false
+        },
+        native: {}
       }
     },
     commands: {

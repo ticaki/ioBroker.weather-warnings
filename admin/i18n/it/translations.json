@@ -534,5 +534,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji per il tipo di avviso di questo messaggio.",
     "uwzRealWarncellID": "L'ID cella di avviso utilizzato da UWZ",
     "statesObjectsWarnings.allService.commands": "Comandi",
-    "statesObjectsWarnings.allService.command.clearHistory": "Cancellare la cronologia."
+    "statesObjectsWarnings.allService.command.clearHistory": "Cancellare la cronologia.",
+    "statesObjectsWarnings.allService.alerts.asList": "Elenco dei tipi di avvisi attivi."
 }

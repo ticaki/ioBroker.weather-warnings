@@ -534,5 +534,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji para o tipo de aviso desta mensagem.",
     "uwzRealWarncellID": "O ID da célula de aviso usado pelo UWZ",
     "statesObjectsWarnings.allService.commands": "Comandos",
-    "statesObjectsWarnings.allService.command.clearHistory": "Apagar o histórico."
+    "statesObjectsWarnings.allService.command.clearHistory": "Apagar o histórico.",
+    "statesObjectsWarnings.allService.alerts.asList": "Lista de tipos de aviso ativos."
 }

@@ -57,7 +57,7 @@ export type statesObjectsWarningsType = {
     allService: {
         formatedkeys: customChannelType &
             ChangeTypeOfKeys<Required<messagesDef.customFormatedKeysDef>, ioBroker.StateObject>;
-        alerts: customChannelType & messagesDef.genericWarntypStatesTree;
+        alerts: customChannelType & messagesDef.genericWarntypStatesTree & { asList: ioBroker.StateObject };
         commands: customChannelType & {
             send_message: customChannelType &
                 ChangeTypeOfKeys<Required<Record<notificationServiceDef.Type, string>>, ioBroker.StateObject>;
@@ -2096,6 +2096,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
             fog: {
                 ...messagesDef.genericWarntypState,
                 _channel: { ...defaultChannel, common: { name: 'statesObjectsWarnings.allService.alerts.fog' } },
+            },
+            asList: {
+                _id: '',
+                type: 'state',
+                common: {
+                    name: 'statesObjectsWarnings.allService.alerts.asList',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
             },
         },
         commands: {

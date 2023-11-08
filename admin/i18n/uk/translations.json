@@ -534,5 +534,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Емодзі для типу попередження цього повідомлення.",
     "uwzRealWarncellID": "Ідентифікатор комірки попередження, який використовується UWZ",
     "statesObjectsWarnings.allService.commands": "Команди",
-    "statesObjectsWarnings.allService.command.clearHistory": "Чиста історія."
+    "statesObjectsWarnings.allService.command.clearHistory": "Чиста історія.",
+    "statesObjectsWarnings.allService.alerts.asList": "Список активних типів попереджень."
 }
