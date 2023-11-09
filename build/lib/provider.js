@@ -56,7 +56,7 @@ class BaseProvider extends import_library.BaseClass {
   customName = "";
   warncellIdString;
   constructor(adapter, options, name) {
-    let warncell = typeof options.warncellId == "string" ? options.warncellId : options.warncellId.join(DIV);
+    let warncell = typeof options.warncellId == "object" && Array.isArray(options.warncellId) ? options.warncellId.join(DIV) : options.warncellId;
     warncell = warncell.replaceAll(".", "_");
     super(adapter, `provider.${name}.${warncell}`);
     this.warncellIdString = warncell;

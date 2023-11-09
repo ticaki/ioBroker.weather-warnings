@@ -451,7 +451,7 @@ class WeatherWarnings extends utils.Adapter {
 
                 for (const a in self.config.zamgwarncellTable) {
                     const id = self.config.zamgwarncellTable[a];
-                    if (self.config.zamgEnabled && id && typeof id.zamgSelectId == 'string') {
+                    if (self.config.zamgEnabled && id && typeof id.zamgSelectId == 'string' && id.zamgSelectId) {
                         self.log.info('ZAMG activated. Retrieve data.');
                         const options: providerDef.messageFilterTypeWithFilter & {
                             [key: string]: any;
@@ -483,9 +483,9 @@ class WeatherWarnings extends utils.Adapter {
                             id &&
                             typeof id.uwzSelectId == 'string' &&
                             id.uwzSelectId.split('/').length == 2) ||
-                        tempTable[a].realWarncell !== ''
+                        (tempTable[a].realWarncell && typeof tempTable[a].realWarncell === 'string')
                     ) {
-                        if (tempTable[a].realWarncell !== '') {
+                        if (!tempTable[a].realWarncell) {
                             const tempWarncell = await providerDef.UWZProvider.getWarncell(
                                 id.uwzSelectId.split('/') as [string, string],
                                 'uwzService',
@@ -503,7 +503,10 @@ class WeatherWarnings extends utils.Adapter {
                                 hours: self.config.uwzHourFilter,
                             },
                         };
-
+                        if (!tempTable[a].realWarncell || typeof tempTable[a].realWarncell !== 'string') {
+                            self.log.warn(`Dont find a UWZ warncell for ${id.uwzSelectId}!`);
+                            continue;
+                        }
                         self.log.info('UWZ activated. Retrieve data.');
                         self.providerController.createProviderIfNotExist({
                             ...options,
@@ -513,7 +516,10 @@ class WeatherWarnings extends utils.Adapter {
                             language: self.config.uwzLanguage,
                             customName: id.uwzCityname,
                         });
-                    } else self.log.warn(`Something is wrong with uwz coordinates: ${id.uwzSelectId}`);
+                    } else
+                        self.log.warn(
+                            `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${tempTable[a].realWarncell}`,
+                        );
                 }
                 if (JSON.stringify(tempTable) != JSON.stringify(self.config.uwzwarncellTable)) {
                     const obj = await self.getForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`);

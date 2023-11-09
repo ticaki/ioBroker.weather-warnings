@@ -145,6 +145,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) fixed: not crash with the wrong uwz configuration.
+
 ### 0.5.3 (2023-11-09)
 * (ticaki) Fixed: command states (text / automode)
 * (ticaki) Added: .alerts. List of warning types.
