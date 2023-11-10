@@ -18,6 +18,8 @@ declare global {
             icon_color: string;
             iobrokerUrl: string;
 
+            numOfRawWarnings: number;
+
             imExpert: boolean;
             notPushAtStart: boolean;
 

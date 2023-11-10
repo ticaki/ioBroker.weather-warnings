@@ -138,6 +138,18 @@
                     "lg": 2,
                     "newLine": true
                 },
+                "numOfRawWarnings": {
+                    "type": "number",
+                    "label": "numOfRawWarnings",
+                    "min": 1,
+                    "step": 1,
+                    "default": 5,
+                    "xs": 12,
+                    "sm": 8,
+                    "md": 4,
+                    "lg": 2,
+                    "newLine": false
+                },
                 "notPushAtStart": {
                     "type": "checkbox",
                     "xs": 12,

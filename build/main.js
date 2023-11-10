@@ -217,6 +217,7 @@ class WeatherWarnings extends utils.Adapter {
         this.log.info("Update configuration: Done");
       }
     }
+    this.config.numOfRawWarnings = typeof this.config.numOfRawWarnings == "number" && this.config.numOfRawWarnings > 0 ? this.config.numOfRawWarnings : 5;
     this.setTimeout(
       async function(that) {
         const self = that;
@@ -224,7 +225,7 @@ class WeatherWarnings extends utils.Adapter {
           return;
         if (!self.providerController)
           return;
-        self.providerController.init();
+        await self.providerController.init();
         self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 6e4} minutes`);
         const notificationServiceOpt = {};
         for (const a in NotificationType.Array) {
@@ -428,15 +429,26 @@ class WeatherWarnings extends utils.Adapter {
           }
         }
         const holdStates = [];
+        const holdStates2 = [];
+        const reCheckStates = [];
         for (const a in self.providerController.providers) {
           holdStates.push(self.providerController.providers[a].name);
+          reCheckStates.push(`${self.providerController.providers[a].name}.formatedKeys`);
+          reCheckStates.push(`${self.providerController.providers[a].name}..warning`);
+          for (let b = 0; b < self.config.numOfRawWarnings; b++) {
+            holdStates2.push(
+              `${self.providerController.providers[a].name}.formatedKeys.${`00${b}`.slice(-2)}`
+            );
+            holdStates2.push(`${self.providerController.providers[a].name}..warning.${`00${b}`.slice(-2)}`);
+          }
         }
         holdStates.push("commands.");
         holdStates.push("info.connection");
         holdStates.push("provider.activeWarnings_json");
         holdStates.push("provider.history");
         holdStates.push("provider.activeWarnings");
-        await self.library.cleanUpTree(holdStates, 3);
+        await self.library.cleanUpTree(holdStates, null, 3);
+        await self.library.cleanUpTree(holdStates2, reCheckStates, 5);
         self.providerController.finishInit();
         self.providerController.updateEndless(self.providerController);
         self.providerController.updateAlertEndless(self.providerController);
@@ -459,7 +471,7 @@ class WeatherWarnings extends utils.Adapter {
       if (id == "system.config") {
         if (await this.library.setLanguage(obj.common.language)) {
           if (this.providerController)
-            this.providerController.updateMesssages();
+            await this.providerController.updateMesssages();
         }
       }
     }

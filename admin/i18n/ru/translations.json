@@ -535,5 +535,6 @@
     "uwzRealWarncellID": "Идентификатор ячейки предупреждения, используемый UWZ",
     "statesObjectsWarnings.allService.commands": "Команды",
     "statesObjectsWarnings.allService.command.clearHistory": "Чистая история.",
-    "statesObjectsWarnings.allService.alerts.asList": "Список активных типов предупреждений."
+    "statesObjectsWarnings.allService.alerts.asList": "Список активных типов предупреждений.",
+    "numOfRawWarnings": "Максимальное количество обработанных предупреждений на одного провайдера."
 }

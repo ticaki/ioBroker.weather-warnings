@@ -535,5 +535,6 @@
     "uwzRealWarncellID": "O ID da célula de aviso usado pelo UWZ",
     "statesObjectsWarnings.allService.commands": "Comandos",
     "statesObjectsWarnings.allService.command.clearHistory": "Apagar o histórico.",
-    "statesObjectsWarnings.allService.alerts.asList": "Lista de tipos de aviso ativos."
+    "statesObjectsWarnings.allService.alerts.asList": "Lista de tipos de aviso ativos.",
+    "numOfRawWarnings": "Número máximo de avisos processados ​​por provedor."
 }

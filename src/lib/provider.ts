@@ -266,11 +266,11 @@ export class BaseProvider extends BaseClass {
         this.messages.sort((a, b) => {
             return a.starttime - b.starttime;
         });
-        for (let m = 0; m < this.messages.length; m++) {
+        for (let m = 0; m < this.messages.length && m < this.adapter.config.numOfRawWarnings; m++) {
             index = m;
             await this.messages[m].writeFormatedKeys(m);
         }
-        for (index++; index < this.adapter.numOfRawWarnings; index++) {
+        for (index++; index < this.adapter.config.numOfRawWarnings; index++) {
             await this.noMessage.writeFormatedKeys(index);
         }
         await this.library.garbageColleting(
@@ -338,7 +338,7 @@ export class DWDProvider extends BaseProvider {
             return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
         });
         this.messages.forEach((a) => (a.notDeleted = false));
-        for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.features.length; a++) {
+        for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.features.length; a++) {
             const w = result.features[a];
             if (w.properties.STATUS == 'Test') continue;
             if (
@@ -407,7 +407,7 @@ export class ZAMGProvider extends BaseProvider {
             return Number(a.properties.rawinfo.start) - Number(b.properties.rawinfo.start);
         });
         this.messages.forEach((a) => (a.notDeleted = false));
-        for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
+        for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.properties.warnings.length; a++) {
             if (
                 this.filter.hours > 0 &&
                 Number(result.properties.warnings[a].properties.rawinfo.start) >
@@ -499,7 +499,7 @@ export class UWZProvider extends BaseProvider {
             return 0;
         });
         this.messages.forEach((a) => (a.notDeleted = false));
-        for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
+        for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.results.length; a++) {
             if (result.results[a] == null) continue;
             if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() / 1000 + this.filter.hours * 3600)
                 continue;
@@ -537,19 +537,20 @@ export class METROProvider extends BaseProvider {
 }
 export class ProviderController extends BaseClass {
     providers: providerDef.ProviderClassType[] = [];
+    notificationServices: NotificationClass.NotificationClass[] = [];
+    noWarning: MessagesClass;
+
     refreshTimeRef: ioBroker.Timeout | undefined = undefined;
     alertTimeoutRef: ioBroker.Timeout | undefined = undefined;
+
     connection = true;
     name = 'provider';
     refreshTime: number = 300000;
     library: Library;
-    notificationServices: NotificationClass.NotificationClass[] = [];
-    noWarning: MessagesClass;
     pushOn = false;
     //globalSpeakSilentTime: ({ profil: string; day: number[]; start: number; end: number } | null)[] = [];
     testStatus = 0;
     activeMessages = 0;
-    speakProfiles: string[] = [];
     silentTime: { shouldSpeakAllowed?: boolean; forceOff: boolean; profil: providerDef.silentTimeConfigType[][] } = {
         forceOff: false,
         profil: [],
@@ -599,7 +600,6 @@ export class ProviderController extends BaseClass {
                 if (!this.adapter.config.silentTime[p].speakProfile) continue;
                 if (this.adapter.config.silentTime[p].silentTime.length == 0) continue;
                 profileNames.push(this.adapter.config.silentTime[p].speakProfile);
-                this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
                 this.silentTime.profil.push(
                     (this.adapter.config.silentTime[p].silentTime || [])
                         .map((item): providerDef.silentTimeConfigType | null => {
@@ -620,14 +620,13 @@ export class ProviderController extends BaseClass {
                                 return null;
                             for (const a in item) {
                                 const b = a as keyof typeof item;
-                                if (b != 'day' && item[b].indexOf(':') != -1) {
+                                if (b != 'day') {
                                     const t = item[b].split(':');
                                     if (Number.isNaN(t[0])) return null;
                                     if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
                                         t[1] = String(parseInt(t[1]) / 60);
                                         item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-                                    } else if (isNaN(item[b] as unknown as number)) return null;
-                                    else item[b] = t[0];
+                                    } else item[b] = t[0];
                                 }
                                 if (b == 'day') result.day = item.day;
                                 else if (b == 'end') result.end = parseFloat(item.end);
@@ -878,7 +877,7 @@ export class ProviderController extends BaseClass {
 
     async doEndOfUpdater(): Promise<void> {
         this.setConnected();
-        await this.updateMesssages();
+        //await this.updateMesssages();
         this.activeMessages = 0;
         for (const a in this.providers) {
             let am = 0;
@@ -1032,7 +1031,7 @@ export class ProviderController extends BaseClass {
     }
     async updateMesssages(): Promise<void> {
         for (const a in this.providers) {
-            for (const b in this.providers[a].messages) {
+            for (let b = 0; b < this.providers[a].messages.length && b < this.adapter.config.numOfRawWarnings; b++) {
                 await this.providers[a].messages[b].updateFormatedData();
                 await this.providers[a].messages[b].writeFormatedKeys(Number(b));
             }

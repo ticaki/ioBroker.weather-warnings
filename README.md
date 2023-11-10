@@ -146,7 +146,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-* (ticaki) fixed: not crash with the wrong uwz configuration.
+* (ticaki) Fixed: Fixed randomly occurring errors in the first approx. 15 seconds.
+* (ticaki) Added: max number of warnings (default 5)
+* (ticaki) Fixed: not crash with the wrong uwz configuration.
+* (ticaki) Fixed: small error in quiet times.
 
 ### 0.5.3 (2023-11-09)
 * (ticaki) Fixed: command states (text / automode)

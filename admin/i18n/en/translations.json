@@ -535,5 +535,6 @@
     "statesObjectsWarnings.allService.formatedkeys.countdown.weatheremoji": "Emoji for the warning type of this message.",
     "uwzRealWarncellID": "The warning cell ID used by UWZ.",
     "statesObjectsWarnings.allService.command.clearHistory": "Clear history.",
-    "statesObjectsWarnings.allService.alerts.asList": "List of warning types with events."
+    "statesObjectsWarnings.allService.alerts.asList": "List of warning types with events.",
+    "numOfRawWarnings": "Maximum number of processed warnings per provider."
 }

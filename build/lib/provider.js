@@ -246,11 +246,11 @@ class BaseProvider extends import_library.BaseClass {
     this.messages.sort((a, b) => {
       return a.starttime - b.starttime;
     });
-    for (let m = 0; m < this.messages.length; m++) {
+    for (let m = 0; m < this.messages.length && m < this.adapter.config.numOfRawWarnings; m++) {
       index = m;
       await this.messages[m].writeFormatedKeys(m);
     }
-    for (index++; index < this.adapter.numOfRawWarnings; index++) {
+    for (index++; index < this.adapter.config.numOfRawWarnings; index++) {
       await this.noMessage.writeFormatedKeys(index);
     }
     await this.library.garbageColleting(
@@ -311,7 +311,7 @@ class DWDProvider extends BaseProvider {
       return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
     });
     this.messages.forEach((a) => a.notDeleted = false);
-    for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.features.length; a++) {
+    for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.features.length; a++) {
       const w = result.features[a];
       if (w.properties.STATUS == "Test")
         continue;
@@ -378,7 +378,7 @@ class ZAMGProvider extends BaseProvider {
       return Number(a.properties.rawinfo.start) - Number(b.properties.rawinfo.start);
     });
     this.messages.forEach((a) => a.notDeleted = false);
-    for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.properties.warnings.length; a++) {
+    for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.properties.warnings.length; a++) {
       if (this.filter.hours > 0 && Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() / 1e3 + this.filter.hours * 3600)
         continue;
       result.properties.warnings[a].properties.location = result.properties.location.properties.name;
@@ -456,7 +456,7 @@ class UWZProvider extends BaseProvider {
       return 0;
     });
     this.messages.forEach((a) => a.notDeleted = false);
-    for (let a = 0; a < this.adapter.numOfRawWarnings && a < result.results.length; a++) {
+    for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.results.length; a++) {
       if (result.results[a] == null)
         continue;
       if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() / 1e3 + this.filter.hours * 3600)
@@ -494,18 +494,17 @@ class METROProvider extends BaseProvider {
 }
 class ProviderController extends import_library.BaseClass {
   providers = [];
+  notificationServices = [];
+  noWarning;
   refreshTimeRef = void 0;
   alertTimeoutRef = void 0;
   connection = true;
   name = "provider";
   refreshTime = 3e5;
   library;
-  notificationServices = [];
-  noWarning;
   pushOn = false;
   testStatus = 0;
   activeMessages = 0;
-  speakProfiles = [];
   silentTime = {
     forceOff: false,
     profil: []
@@ -548,7 +547,6 @@ class ProviderController extends import_library.BaseClass {
         if (this.adapter.config.silentTime[p].silentTime.length == 0)
           continue;
         profileNames.push(this.adapter.config.silentTime[p].speakProfile);
-        this.speakProfiles.push(this.adapter.config.silentTime[p].speakProfile);
         this.silentTime.profil.push(
           (this.adapter.config.silentTime[p].silentTime || []).map((item) => {
             const result = {
@@ -560,16 +558,14 @@ class ProviderController extends import_library.BaseClass {
               return null;
             for (const a in item) {
               const b = a;
-              if (b != "day" && item[b].indexOf(":") != -1) {
+              if (b != "day") {
                 const t = item[b].split(":");
                 if (Number.isNaN(t[0]))
                   return null;
                 if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
                   t[1] = String(parseInt(t[1]) / 60);
                   item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-                } else if (isNaN(item[b]))
-                  return null;
-                else
+                } else
                   item[b] = t[0];
               }
               if (b == "day")
@@ -758,7 +754,6 @@ class ProviderController extends import_library.BaseClass {
   }
   async doEndOfUpdater() {
     this.setConnected();
-    await this.updateMesssages();
     this.activeMessages = 0;
     for (const a in this.providers) {
       let am = 0;
@@ -903,7 +898,7 @@ class ProviderController extends import_library.BaseClass {
   }
   async updateMesssages() {
     for (const a in this.providers) {
-      for (const b in this.providers[a].messages) {
+      for (let b = 0; b < this.providers[a].messages.length && b < this.adapter.config.numOfRawWarnings; b++) {
         await this.providers[a].messages[b].updateFormatedData();
         await this.providers[a].messages[b].writeFormatedKeys(Number(b));
       }

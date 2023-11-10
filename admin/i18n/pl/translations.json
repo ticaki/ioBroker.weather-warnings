@@ -535,5 +535,6 @@
     "uwzRealWarncellID": "Identyfikator komórki ostrzegawczej używany przez UWZ",
     "statesObjectsWarnings.allService.commands": "Polecenia",
     "statesObjectsWarnings.allService.command.clearHistory": "Czysta historia.",
-    "statesObjectsWarnings.allService.alerts.asList": "Lista aktywnych typów ostrzeżeń."
+    "statesObjectsWarnings.allService.alerts.asList": "Lista aktywnych typów ostrzeżeń.",
+    "numOfRawWarnings": "Maksymalna liczba przetworzonych ostrzeżeń na dostawcę."
 }

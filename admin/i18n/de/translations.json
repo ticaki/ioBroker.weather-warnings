@@ -535,5 +535,6 @@
     "uwzRealWarncellID": "Die von UWZ verwendete Warnzellen-ID.",
     "statesObjectsWarnings.allService.commands": "Befehle",
     "statesObjectsWarnings.allService.command.clearHistory": "Leere Verlauf.",
-    "statesObjectsWarnings.allService.alerts.asList": "Liste der Warntypen mit Ereignissen."
+    "statesObjectsWarnings.allService.alerts.asList": "Liste der Warntypen mit Ereignissen.",
+    "numOfRawWarnings": "Maximale Anzahl verarbeiteter Warnungen pro Anbieter."
 }

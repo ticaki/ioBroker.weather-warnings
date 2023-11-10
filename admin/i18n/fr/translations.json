@@ -535,5 +535,6 @@
     "uwzRealWarncellID": "L'ID de cellule d'avertissement utilisé par l'UWZ",
     "statesObjectsWarnings.allService.commands": "Commandes",
     "statesObjectsWarnings.allService.command.clearHistory": "Histoire claire.",
-    "statesObjectsWarnings.allService.alerts.asList": "Liste des types d'avertissements actifs."
+    "statesObjectsWarnings.allService.alerts.asList": "Liste des types d'avertissements actifs.",
+    "numOfRawWarnings": "Nombre maximum d'avertissements traités par fournisseur."
 }

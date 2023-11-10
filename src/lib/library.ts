@@ -254,13 +254,17 @@ export class Library extends BaseClass {
         return result;
     }
 
-    async cleanUpTree(hold: string[], deep: number): Promise<void> {
-        const del = [];
+    async cleanUpTree(hold: string[], filter: string[] | null, deep: number): Promise<void> {
+        let del = [];
         for (const dp in this.stateDataBase) {
+            if (filter && filter.filter((a) => dp.startsWith(a) || a.startsWith(dp)).length == 0) continue;
             if (hold.filter((a) => dp.startsWith(a) || a.startsWith(dp)).length > 0) continue;
             delete this.stateDataBase[dp];
             del.push(dp.split('.').slice(0, deep).join('.'));
         }
+        del = del.filter((item, pos, arr) => {
+            return arr.indexOf(item) == pos;
+        });
         for (const a in del) {
             await this.adapter.delObjectAsync(del[a], { recursive: true });
             this.log.debug(`Clean up tree delete: ${del[a]}`);
