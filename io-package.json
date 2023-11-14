@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.5.4",
+    "version": "0.5.5",
     "news": {
+      "0.5.5": {
+        "en": "Added: Missing space in emailMessage template.\nFixed: wrong status for all removed.\nAdmin: moving test options to tab general.",
+        "de": "Hinzugefügt: Fehlende Fläche in E-MailMessage Vorlage.\nBehoben: falscher Status für alle entfernt.\nAdmin: Verschieben von Testoptionen, um allgemein zu Tab.",
+        "ru": "Добавлено: Отсутствует пространство в шаблоне emailMessage.\nИсправлено: неправильный статус для всех удаленных.\nАдмин: перемещение вариантов тестирования для вкладки общего.",
+        "pt": "Adicionado: Missing space in emailMessage template.\nCorrigido: estado errado para todos removidos.\nAdmin: opções de teste em movimento para a guia geral.",
+        "nl": "Vermiste ruimte in e-mail templade.\nVerkeerde, verkeerde status voor iedereen verwijderd.\nVerplaatst test opties om generaal te tabben.",
+        "fr": "Ajouté: Espace manquant dans emailMessage template.\nCorrection : mauvais état pour tous enlevés.\nAdmin: options d'essai mobiles à l'onglet général.",
+        "it": "Aggiunto: Mancando spazio in e-mailMessage modello.\nRisolto: stato sbagliato per tutti rimossi.\nAdmin: spostare le opzioni di prova a scheda generale.",
+        "es": "Añadido: espacio perdido en la plantilla de mensajería de correo electrónico.\nArreglado: estado equivocado para todos eliminados.\nAdmin: mover opciones de prueba para ver general.",
+        "pl": "Added: Missing space in emailMessage template (ang.).\nW: Zła sytuacja dla wszystkich usuniętych.\nAdmin: poruszające opcje testowe do taba.",
+        "uk": "Додано: Місячний простір в електронній поштіОгляд шаблон.\nВиправлено: неправильний статус для всіх вилучених.\nАдміністратор: переміщення параметрів тесту в вкладці загального.",
+        "zh-cn": "添加:在电子邮件储存模板中发放空间。.\n固定:所有撤军的错误地位。.\n说明:将试验方案移到一般性表格。."
+      },
       "0.5.4": {
         "en": "Fixed: Fixed randomly occurring errors in the first approx. 15 seconds.\nAdded: max number of warnings (default 5)\nFixed: not crash with the wrong uwz configuration.\nFixed: small error in quiet times.",
         "de": "Behoben: Behoben zufällig auftretende Fehler in den ersten ca. 15 Sekunden.\nHinzugefügt: max. Anzahl der Warnungen (Standard 5)\nBehoben: nicht abstürzen mit der falschen uwz-Konfiguration.\nBehoben: kleiner Fehler in ruhigen Zeiten.",
@@ -80,19 +93,6 @@
         "pl": "złamanie się: New UWZ (ang.). konfigurować\nzłamanie się: Rename and move manual command commands.\nZmienił się czas, pogodził się.\nlepiejsza konfiguracja DWD.\nulepszenia lotu.",
         "uk": "перерву змін: Нова конфігурація UWZ. Посилання\nперерву змін: Перейменування та переміщення ручних командних станів.\nЗмінити час очікування, переналаштувати.\nкраще налаштування DWD.\nполіпшення зльоту.",
         "zh-cn": "打破变化: 新UWZ组合。 改组\n打破变化: 重新命名和搬动手指挥州。.\n基耶时间变化,重新配置。.\n更好的DWD组合。.\na 时间改进。."
-      },
-      "0.4.8": {
-        "en": "Wrong level assignment for zamg fixed\nbetter set defaults",
-        "de": "Falsche Füllstandszuweisung für zamg fix\nstandardeinstellungen besser einstellen",
-        "ru": "Неправильный уровень назначения для zamg фиксированный\nлучше установить по умолчанию",
-        "pt": "Atribuição de nível errado para zamg fixo\nmelhor definir padrões",
-        "nl": "Verkeerde niveau opdracht voor Zamg\nik kan beter defecties plaatsen",
-        "fr": "Wrong level assignment for zamg fixed\nmeilleurs paramètres par défaut",
-        "it": "Assegnazione di livello sbagliato per zamg fisso\nimpostazioni migliori",
-        "es": "Asignación de nivel equivocado para zamg fijo\nmejor configuración predeterminados",
-        "pl": "Bezpośrednie przypisanie zamówienia\nlepszy zbiór domyślności",
-        "uk": "Передача рівня ронгу для замг фіксований\nкраще встановити за замовчуванням",
-        "zh-cn": "扎姆格的固定任务\n改善规定违约情况"
       }
     },
     "titleLang": {
