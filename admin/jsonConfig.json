@@ -242,6 +242,27 @@
                     "lg": 4,
                     "label": "useTestWarnings",
                     "newLine": true
+                },
+                "useTestCase": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "label": "useTestCase",
+                    "hidden": "data.imExpert != true",
+                    "newLine": false
+                },
+                "useJsonHistory": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "disabled": "data.useTestWarnings",
+                    "label": "useJsonHistory",
+                    "hidden": "data.imExpert != true",
+                    "newLine": true
                 }
             }
         },
@@ -369,35 +390,7 @@
                     "readOnly": true,
                     "hidden": "data.imExpert != true",
                     "newLine": true
-                },
-                "dividerHdr2": {
-                    "newLine": true,
-                    "type": "header",
-                    "text": "test_diver",
-                    "hidden": "data.imExpert != true",
-                    "size": 3
-                },
-                "useJsonHistory": {
-                    "type": "checkbox",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 6,
-                    "disabled": "data.useTestWarnings",
-                    "label": "useJsonHistory",
-                    "hidden": "data.imExpert != true",
-                    "newLine": true
-                },
-                "useTestCase": {
-                    "type": "checkbox",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 6,
-                    "label": "useTestCase",
-                    "hidden": "data.imExpert != true",
-                    "newLine": false
-                }
+                }        
             }
         },
         "_templates": {

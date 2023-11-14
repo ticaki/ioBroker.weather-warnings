@@ -145,6 +145,11 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) Added: Missing space in emailMessage template.
+* (ticaki) Fixed: wrong status for all removed.
+* (ticaki) Admin: moving test options to tab general.
+
 ### 0.5.4 (2023-11-10)
 * (ticaki) Fixed: Fixed randomly occurring errors in the first approx. 15 seconds.
 * (ticaki) Added: max number of warnings (default 5)

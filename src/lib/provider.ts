@@ -558,7 +558,7 @@ export class ProviderController extends BaseClass {
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
         this.library = this.adapter.library;
-        this.noWarning = new MessagesClass(this.adapter, this.name, null, {}, this);
+        this.noWarning = new MessagesClass(this.adapter, 'noMessage', null, {}, this);
         this.noWarning.newMessage = false;
         this.noWarning.notDeleted = false;
         this.doEndOfUpdater.bind(this);
