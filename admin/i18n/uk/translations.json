@@ -536,5 +536,7 @@
     "statesObjectsWarnings.allService.commands": "Команди",
     "statesObjectsWarnings.allService.command.clearHistory": "Чиста історія.",
     "statesObjectsWarnings.allService.alerts.asList": "Список активних типів попереджень.",
-    "numOfRawWarnings": "Максимальна кількість оброблених попереджень на постачальника."
+    "numOfRawWarnings": "Максимальна кількість оброблених попереджень на постачальника.",
+    "removeManualAll": "Виберіть шаблон, який використовуватиметься для відсутності попереджень для сповіщень, ініційованих вручну.",
+    "wrongTemplateKey": "Ключ шаблону не існує. Виберіть дійсний шаблон!"
 }

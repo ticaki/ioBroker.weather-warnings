@@ -24,7 +24,7 @@ __export(notificationService_def_exports, {
   serciceCapabilities: () => serciceCapabilities
 });
 module.exports = __toCommonJS(notificationService_def_exports);
-const manual = ["manualAll"];
+const manual = ["manualAll", "removeManualAll"];
 const push = [...manual, "new", "remove", "removeAll"];
 const pushTitle = [...manual, "new", "remove", "removeAll", "title"];
 const history = ["new", "remove"];

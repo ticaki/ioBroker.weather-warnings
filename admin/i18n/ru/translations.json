@@ -536,5 +536,7 @@
     "statesObjectsWarnings.allService.commands": "Команды",
     "statesObjectsWarnings.allService.command.clearHistory": "Чистая история.",
     "statesObjectsWarnings.allService.alerts.asList": "Список активных типов предупреждений.",
-    "numOfRawWarnings": "Максимальное количество обработанных предупреждений на одного провайдера."
+    "numOfRawWarnings": "Максимальное количество обработанных предупреждений на одного провайдера.",
+    "removeManualAll": "Выберите шаблон, который будет использоваться для отсутствия предупреждений для уведомлений, запускаемых вручную.",
+    "wrongTemplateKey": "Ключ шаблона не существует. Выберите действительный шаблон!"
 }

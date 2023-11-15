@@ -536,5 +536,7 @@
     "statesObjectsWarnings.allService.commands": "Comandi",
     "statesObjectsWarnings.allService.command.clearHistory": "Cancellare la cronologia.",
     "statesObjectsWarnings.allService.alerts.asList": "Elenco dei tipi di avvisi attivi.",
-    "numOfRawWarnings": "Numero massimo di avvisi elaborati per provider."
+    "numOfRawWarnings": "Numero massimo di avvisi elaborati per provider.",
+    "removeManualAll": "Seleziona il modello da utilizzare per nessun avviso per le notifiche attivate manualmente.",
+    "wrongTemplateKey": "La chiave del modello non esiste. Seleziona un modello valido!"
 }

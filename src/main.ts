@@ -273,7 +273,7 @@ class WeatherWarnings extends utils.Adapter {
                                     ? (self.config[
                                           (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
                                       ] as string)
-                                    : '',
+                                    : 'none',
                             remove: self.config[
                                 (notificationService + '_MessageRemove') as keyof ioBroker.AdapterConfig
                             ] as string,
@@ -292,21 +292,29 @@ class WeatherWarnings extends utils.Adapter {
                                     ? (self.config[
                                           (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
                                       ] as string)
-                                    : '',
+                                    : 'none',
                             manualAll:
                                 self.config[(notificationService + '_manualAll') as keyof ioBroker.AdapterConfig] !==
                                 undefined
                                     ? (self.config[
                                           (notificationService + '_manualAll') as keyof ioBroker.AdapterConfig
                                       ] as string)
-                                    : '',
+                                    : 'none',
+                            removeManualAll:
+                                self.config[
+                                    (notificationService + '_removeManualAll') as keyof ioBroker.AdapterConfig
+                                ] !== undefined
+                                    ? (self.config[
+                                          (notificationService + '_removeManualAll') as keyof ioBroker.AdapterConfig
+                                      ] as string)
+                                    : 'none',
                             title:
                                 self.config[(notificationService + '_Title') as keyof ioBroker.AdapterConfig] !==
                                 undefined
                                     ? (self.config[
                                           (notificationService + '_Title') as keyof ioBroker.AdapterConfig
                                       ] as string)
-                                    : '',
+                                    : 'none',
                         };
                         for (const a in template) {
                             const b = a as keyof NotificationType.ActionsType;

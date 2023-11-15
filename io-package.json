@@ -1,341 +1,341 @@
 {
-  "common": {
-    "name": "weather-warnings",
-    "version": "0.5.5",
-    "news": {
-      "0.5.5": {
-        "en": "Added: Missing space in emailMessage template.\nFixed: wrong status for all removed.\nAdmin: moving test options to tab general.",
-        "de": "Hinzugefügt: Fehlende Fläche in E-MailMessage Vorlage.\nBehoben: falscher Status für alle entfernt.\nAdmin: Verschieben von Testoptionen, um allgemein zu Tab.",
-        "ru": "Добавлено: Отсутствует пространство в шаблоне emailMessage.\nИсправлено: неправильный статус для всех удаленных.\nАдмин: перемещение вариантов тестирования для вкладки общего.",
-        "pt": "Adicionado: Missing space in emailMessage template.\nCorrigido: estado errado para todos removidos.\nAdmin: opções de teste em movimento para a guia geral.",
-        "nl": "Vermiste ruimte in e-mail templade.\nVerkeerde, verkeerde status voor iedereen verwijderd.\nVerplaatst test opties om generaal te tabben.",
-        "fr": "Ajouté: Espace manquant dans emailMessage template.\nCorrection : mauvais état pour tous enlevés.\nAdmin: options d'essai mobiles à l'onglet général.",
-        "it": "Aggiunto: Mancando spazio in e-mailMessage modello.\nRisolto: stato sbagliato per tutti rimossi.\nAdmin: spostare le opzioni di prova a scheda generale.",
-        "es": "Añadido: espacio perdido en la plantilla de mensajería de correo electrónico.\nArreglado: estado equivocado para todos eliminados.\nAdmin: mover opciones de prueba para ver general.",
-        "pl": "Added: Missing space in emailMessage template (ang.).\nW: Zła sytuacja dla wszystkich usuniętych.\nAdmin: poruszające opcje testowe do taba.",
-        "uk": "Додано: Місячний простір в електронній поштіОгляд шаблон.\nВиправлено: неправильний статус для всіх вилучених.\nАдміністратор: переміщення параметрів тесту в вкладці загального.",
-        "zh-cn": "添加:在电子邮件储存模板中发放空间。.\n固定:所有撤军的错误地位。.\n说明:将试验方案移到一般性表格。."
-      },
-      "0.5.4": {
-        "en": "Fixed: Fixed randomly occurring errors in the first approx. 15 seconds.\nAdded: max number of warnings (default 5)\nFixed: not crash with the wrong uwz configuration.\nFixed: small error in quiet times.",
-        "de": "Behoben: Behoben zufällig auftretende Fehler in den ersten ca. 15 Sekunden.\nHinzugefügt: max. Anzahl der Warnungen (Standard 5)\nBehoben: nicht abstürzen mit der falschen uwz-Konfiguration.\nBehoben: kleiner Fehler in ruhigen Zeiten.",
-        "ru": "Исправлена: Исправлена случайная ошибка при первой ок. 15 секунд.\nДобавлена: макс. количество предупреждений (по умолчанию 5)\nИсправлено: не сбой с неправильной конфигурацией uwz.\nИсправлено: небольшая ошибка в тихие времена.",
-        "pt": "Corrigido: Corrigido erros ocorrendo aleatoriamente no primeiro aprox. 15 segundos.\nAdicionado: número máximo de avisos (padrão 5)\nCorrigido: não travar com a configuração errada do uwz.\nCorrigido: pequeno erro em tempos tranquilos.",
-        "nl": "Gerepareerd, willekeurig fouten in de eerste approx. 15 seconden.\nToegevoegd: maximaal gewaarschuwd\nNiet crashen met de verkeerde in beslagname.\nEen kleine fout in rustige tijden.",
-        "fr": "Correction : Correction d'erreurs aléatoires dans les 15 premières secondes.\nAjouté: nombre max d'avertissements (par défaut 5)\nCorrection : pas de crash avec la mauvaise configuration de uwz.\nCorrection : petite erreur en temps calme.",
-        "it": "Risolto: Risolto errori casuali nei primi circa 15 secondi.\nAggiunto: max numero di avvisi (default 5)\nRisolto: non crash con la configurazione uwz sbagliata.\nRisolto: piccolo errore in tempi tranquilli.",
-        "es": "Fijación: Errores aleatorios fijos en los primeros aprox. 15 segundos.\nAñadido: max number of warnings (default 5)\nArreglado: no choca con la configuración uwz equivocada.\nCorregido: pequeño error en tiempos tranquilos.",
-        "pl": "Fixed: Fixed przypadkowo pojawia się błędy w pierwszym ok.\nAddd: max number of warnings (default 5) (ang.)\nFixed: not crash with the wrong uwz configuration (ang.).\nW cichych czasach drobne błędy.",
-        "uk": "Виправлено: Виправлено випадково виникають помилки в першому приблизно 15 секунд.\nДоданий: максимальна кількість попереджень (default 5)\nВиправлено: не збиток з неправильною конфігурацією uwz.\nВиправлено: невелика помилка в тихий час.",
-        "zh-cn": "固定:第一手矛盾中随机出现的错误。.\n增 编:警告数(第5号)\n固定:与错误的乌瓦兹组合不碰撞。.\n固定:沉默时的小错误。."
-      },
-      "0.5.3": {
-        "en": "Fixed: command states (text / automode)\nAdded: .alerts. List of warning types.\nChanged: .alerts. view current event with highest level or next event",
-        "de": "Behoben: Befehlsstates (Text / Automode)\nHinzugefügt: .alerts. Liste der Warnarten mit Warnungen.\nGeändert: .alerts. zeigt aktuelles Ereignis mit höchstem Level oder nächstes Ereignis",
-        "ru": "Исправлено: командные состояния (текст / automode)\nДобавлено: alerts Список предупреждающих типов.\nИзменено: оповещения просматривают текущее событие с самым высоким уровнем или следующим событием",
-        "pt": "Corrigido: estados de comando (texto / automodo)\nAdicionado: alertas Lista de tipos de aviso.\nAlterado: alertas visualizar evento atual com nível mais alto ou próximo evento",
-        "nl": "Bevestigd:\nVertaling: Een waarschuwingstype.\nVerandering:",
-        "fr": "Correction : états de commande (texte / automode)\nAjouté : alertes Liste des types d'avertissement.\nChangement : alertes afficher l'événement courant avec le plus haut niveau ou l'événement suivant",
-        "it": "Fisso: stati di comando (testo / automode)\nAggiunto: alerts Elenco dei tipi di avvertimento.\nCambiato: gli avvisi visualizzano l'evento corrente con il più alto livello o il prossimo evento",
-        "es": "Fijo: estados de comando (texto / automodo)\nAñadido: alertas Lista de tipos de advertencia.\nCambio: alertas ver el evento actual con el nivel más alto o el próximo evento",
-        "pl": "W: Państwa dowodzenia (tekst / automode)\nAdded: alarm Lista typów ostrzeżeń.\nChanged: alarmuj bieżące zdarzenie z najwyższym poziomem lub kolejnym wydarzeniem",
-        "uk": "Виправлено: командні стани (текст / автомоде)\nДодано: повідомлення Перелік типів попередження.\nЗмінено: повідомлення перегляду поточного заходу з найвищим рівнем або наступною подією",
-        "zh-cn": "固定:指挥站(背景/汽车)\n增加:警惕 警告类型清单。.\n变化:提醒人们注意当前活动最高或下一次活动"
-      },
-      "0.5.2": {
-        "en": "Multiple Say-It instances.\nSome icons added.\n-no warning- Warning level for uwz corrected.",
-        "de": "Mehrere Say-It-Instanzen.\nEinige Symbole hinzugefügt.\n- Keine Warnung. Warnstufe für uwz korrigiert.",
-        "ru": "Несколько примеров Say-It.\nДобавлены некоторые иконки.\n-без предупреждения- Уровень предостережения для uwz исправлен.",
-        "pt": "Várias instâncias Say-It.\nAlguns ícones adicionados.\n- Sem aviso... Nível de aviso para uwz corrigido.",
-        "nl": "Meerdere Say-It instances.\nEnkele iconen toegevoegd.\n- Geen waarschuwing. Waarschuwingsniveau voor uwz gecorrigeerd.",
-        "fr": "Plusieurs instances Say-It.\nQuelques icônes ajoutées.\n- sans avertissement... Niveau d ' avertissement pour le Koweït corrigé.",
-        "it": "Molteplici istanze Say-It.\nAlcune icone aggiunte.\n- Niente avvertimenti. Livello di avvertimento per uwz corretto.",
-        "es": "Múltiples instancias.\nAlgunos iconos añadidos.\n- sin aviso... Nivel de advertencia para Uwz corregido.",
-        "pl": "Wielokrotny przypadek.\nDodano kilka ikon.\n- no warning- Poziom uwz skorygował.",
-        "uk": "Кілька екземплярів Say-It.\nДодані іконки.\n-без попередження Рівень попередження для виправки uwz.",
-        "zh-cn": "多门Say-It案件。.\n有些方面增加了。.\n- 无警告 瓦兹的防备水平得到纠正。."
-      },
-      "0.5.1": {
-        "en": "Fixed: Foreign languages did not work for UWZ.\nFixed: clearHistory command didnt work on gloabl level.\nFixed: uwz colours assigned to the correct level.",
-        "de": "Behoben: Fremdsprachen funktionierten nicht für UWZ.\nBehoben: clearHistory Befehl funktionierte nicht auf Gloabl-Ebene.\nBehoben: uwz Farben dem richtigen Level zugeordnet.",
-        "ru": "Исправлено: Иностранные языки не работали для UWZ.\nИсправлено: команда ClearHistory не работала на уровне gloabl.\nИсправлено: цвета uwz, назначенные на правильный уровень.",
-        "pt": "Corrigido: línguas estrangeiras não funcionou para UWZ.\nCorrigido: comando clearHistory não funcionou no nível gloabl.\nCorrigido: cores uwz atribuídas ao nível correto.",
-        "nl": "Buitenlandse talen werkten niet voor UWZ.\nHet duidelijke bevel werkte niet op Gloabl niveau.\nGereserveerd: de kleuren op het juiste niveau.",
-        "fr": "Fixed: Foreign languages did not work for UWZ.\nCorrection : la commande claireHistory n'a pas fonctionné sur le niveau gloabl.\nCorrection : couleurs uwz assignées au niveau correct.",
-        "it": "Fisso: lingue straniere non ha funzionato per UWZ.\nRisolto: il comando ClearHistory non ha funzionato a livello gloabl.\nFisso: colori uwz assegnati al livello corretto.",
-        "es": "Fijo: Los idiomas extranjeros no funcionaron para UWZ.\nFijado: claroEl comandoHistory no funcionó a nivel gloabl.\nFijado: colores uwz asignados al nivel correcto.",
-        "pl": "Języki zagraniczne nie pracowały dla UWZ.\nFixed: czyste dowództwo nie działało na poziomie gloablowym.\nFixed – kolory uwz przypisane do odpowiedniego poziomu.",
-        "uk": "Виправлено: Іноземні мови не працювали для UWZ.\nВиправлено: clearHistory Команда не працювала на рівні gloabl.\nВиправлено: колір uwz, призначений для коректного рівня.",
-        "zh-cn": "固定:外语没有为乌瓦斯开展工作。.\n固定:清晰的指挥官在词汇一级工作。.\n固定:配给正确水平的色彩。."
-      },
-      "0.5.0": {
-        "en": "breaking changes: New UWZ configuration. reconfigure needed\nbreaking changes: Rename and move manual push command states.\nQuiet times changed, reconfigure. \nbetter DWD configuration.\nalot improvements.",
-        "de": "Änderungen: Neue UWZ-Konfiguration. Rekonfiguration nötig\nÄnderungen: Umbenennen und manuelle Push-Befehlszustände verschieben.\nRuhezeiten geändert, umgestalten.\nbessere DWD-Konfiguration.\neine menge verbesserungen.",
-        "ru": "сломать изменения: Новая конфигурация UWZ. реконфигурация\nсломать изменения: Переименовать и переместить руководство толкать командные состояния.\nТихие времена изменились, reconfigure.\nлучшая конфигурация DWD.\nулучшения alot.",
-        "pt": "mudanças de quebra: Nova configuração UWZ. reconfigurar\nmudanças de quebra: Renomear e mover estados de comando push manual.\nOs tempos calmos mudaram, reconfiguram.\nmelhor configuração DWD.\nmuitas melhorias.",
-        "nl": "vertaling: Nieuwe UWZ configuratie. Vertaling:\nvertaling: Herhaal en zet handmatige bevelen in.\nRustige tijden veranderden, herconfigureren.\nbeter DWD-configuratie.\nveel verbetering.",
-        "fr": "changements de rupture: Nouvelle configuration UWZ. reconfigure\nchangements de rupture: Renommer et déplacer les états de commande manuels push.\nLes temps tranquilles ont changé, reconfigurer.\nmeilleure configuration DWD.\nalot améliorations.",
-        "it": "cambiamenti di rottura: Nuova configurazione UWZ. riconfigurazione\ncambiamenti di rottura: Rinominare e spostare gli stati di comando manuale push.\nI tempi silenziosi sono cambiati, riconfigurati.\nmigliore configurazione DWD.\nmolti miglioramenti.",
-        "es": "cambios de ruptura: Nueva configuración UWZ. reconfiguración\ncambios de ruptura: Renombrar y mover los estados de mando manual.\nLos tiempos tranquilos cambiaron, reconfiguran.\nmejor configuración DWD.\nmejoras.",
-        "pl": "złamanie się: New UWZ (ang.). konfigurować\nzłamanie się: Rename and move manual command commands.\nZmienił się czas, pogodził się.\nlepiejsza konfiguracja DWD.\nulepszenia lotu.",
-        "uk": "перерву змін: Нова конфігурація UWZ. Посилання\nперерву змін: Перейменування та переміщення ручних командних станів.\nЗмінити час очікування, переналаштувати.\nкраще налаштування DWD.\nполіпшення зльоту.",
-        "zh-cn": "打破变化: 新UWZ组合。 改组\n打破变化: 重新命名和搬动手指挥州。.\n基耶时间变化,重新配置。.\n更好的DWD组合。.\na 时间改进。."
-      },
-      "0.5.0-alpha.0": {
-        "en": "breaking changes: New UWZ configuration. reconfigure\nbreaking changes: Rename and move manual push command states.\nQuiet times changed, reconfigure. \nbetter DWD configuration.\nalot improvements.",
-        "de": "Änderungen: Neue UWZ-Konfiguration. Rekonfiguration\nÄnderungen: Umbenennen und manuelle Push-Befehlszustände verschieben.\nRuhezeiten geändert, umgestalten.\nbessere DWD-Konfiguration.\neine menge verbesserungen.",
-        "ru": "сломать изменения: Новая конфигурация UWZ. реконфигурация\nсломать изменения: Переименовать и переместить руководство толкать командные состояния.\nТихие времена изменились, reconfigure.\nлучшая конфигурация DWD.\nулучшения alot.",
-        "pt": "mudanças de quebra: Nova configuração UWZ. reconfigurar\nmudanças de quebra: Renomear e mover estados de comando push manual.\nOs tempos calmos mudaram, reconfiguram.\nmelhor configuração DWD.\nmuitas melhorias.",
-        "nl": "vertaling: Nieuwe UWZ configuratie. Vertaling:\nvertaling: Herhaal en zet handmatige bevelen in.\nRustige tijden veranderden, herconfigureren.\nbeter DWD-configuratie.\nveel verbetering.",
-        "fr": "changements de rupture: Nouvelle configuration UWZ. reconfigure\nchangements de rupture: Renommer et déplacer les états de commande manuels push.\nLes temps tranquilles ont changé, reconfigurer.\nmeilleure configuration DWD.\nalot améliorations.",
-        "it": "cambiamenti di rottura: Nuova configurazione UWZ. riconfigurazione\ncambiamenti di rottura: Rinominare e spostare gli stati di comando manuale push.\nI tempi silenziosi sono cambiati, riconfigurati.\nmigliore configurazione DWD.\nmolti miglioramenti.",
-        "es": "cambios de ruptura: Nueva configuración UWZ. reconfiguración\ncambios de ruptura: Renombrar y mover los estados de mando manual.\nLos tiempos tranquilos cambiaron, reconfiguran.\nmejor configuración DWD.\nmejoras.",
-        "pl": "złamanie się: New UWZ (ang.). konfigurować\nzłamanie się: Rename and move manual command commands.\nZmienił się czas, pogodził się.\nlepiejsza konfiguracja DWD.\nulepszenia lotu.",
-        "uk": "перерву змін: Нова конфігурація UWZ. Посилання\nперерву змін: Перейменування та переміщення ручних командних станів.\nЗмінити час очікування, переналаштувати.\nкраще налаштування DWD.\nполіпшення зльоту.",
-        "zh-cn": "打破变化: 新UWZ组合。 改组\n打破变化: 重新命名和搬动手指挥州。.\n基耶时间变化,重新配置。.\n更好的DWD组合。.\na 时间改进。."
-      }
+    "common": {
+        "name": "weather-warnings",
+        "version": "0.5.5",
+        "news": {
+            "0.5.5": {
+                "en": "Added: Missing space in emailMessage template.\nFixed: wrong status for all removed.\nAdmin: moving test options to tab general.",
+                "de": "Hinzugefügt: Fehlende Fläche in E-MailMessage Vorlage.\nBehoben: falscher Status für alle entfernt.\nAdmin: Verschieben von Testoptionen, um allgemein zu Tab.",
+                "ru": "Добавлено: Отсутствует пространство в шаблоне emailMessage.\nИсправлено: неправильный статус для всех удаленных.\nАдмин: перемещение вариантов тестирования для вкладки общего.",
+                "pt": "Adicionado: Missing space in emailMessage template.\nCorrigido: estado errado para todos removidos.\nAdmin: opções de teste em movimento para a guia geral.",
+                "nl": "Vermiste ruimte in e-mail templade.\nVerkeerde, verkeerde status voor iedereen verwijderd.\nVerplaatst test opties om generaal te tabben.",
+                "fr": "Ajouté: Espace manquant dans emailMessage template.\nCorrection : mauvais état pour tous enlevés.\nAdmin: options d'essai mobiles à l'onglet général.",
+                "it": "Aggiunto: Mancando spazio in e-mailMessage modello.\nRisolto: stato sbagliato per tutti rimossi.\nAdmin: spostare le opzioni di prova a scheda generale.",
+                "es": "Añadido: espacio perdido en la plantilla de mensajería de correo electrónico.\nArreglado: estado equivocado para todos eliminados.\nAdmin: mover opciones de prueba para ver general.",
+                "pl": "Added: Missing space in emailMessage template (ang.).\nW: Zła sytuacja dla wszystkich usuniętych.\nAdmin: poruszające opcje testowe do taba.",
+                "uk": "Додано: Місячний простір в електронній поштіОгляд шаблон.\nВиправлено: неправильний статус для всіх вилучених.\nАдміністратор: переміщення параметрів тесту в вкладці загального.",
+                "zh-cn": "添加:在电子邮件储存模板中发放空间。.\n固定:所有撤军的错误地位。.\n说明:将试验方案移到一般性表格。."
+            },
+            "0.5.4": {
+                "en": "Fixed: Fixed randomly occurring errors in the first approx. 15 seconds.\nAdded: max number of warnings (default 5)\nFixed: not crash with the wrong uwz configuration.\nFixed: small error in quiet times.",
+                "de": "Behoben: Behoben zufällig auftretende Fehler in den ersten ca. 15 Sekunden.\nHinzugefügt: max. Anzahl der Warnungen (Standard 5)\nBehoben: nicht abstürzen mit der falschen uwz-Konfiguration.\nBehoben: kleiner Fehler in ruhigen Zeiten.",
+                "ru": "Исправлена: Исправлена случайная ошибка при первой ок. 15 секунд.\nДобавлена: макс. количество предупреждений (по умолчанию 5)\nИсправлено: не сбой с неправильной конфигурацией uwz.\nИсправлено: небольшая ошибка в тихие времена.",
+                "pt": "Corrigido: Corrigido erros ocorrendo aleatoriamente no primeiro aprox. 15 segundos.\nAdicionado: número máximo de avisos (padrão 5)\nCorrigido: não travar com a configuração errada do uwz.\nCorrigido: pequeno erro em tempos tranquilos.",
+                "nl": "Gerepareerd, willekeurig fouten in de eerste approx. 15 seconden.\nToegevoegd: maximaal gewaarschuwd\nNiet crashen met de verkeerde in beslagname.\nEen kleine fout in rustige tijden.",
+                "fr": "Correction : Correction d'erreurs aléatoires dans les 15 premières secondes.\nAjouté: nombre max d'avertissements (par défaut 5)\nCorrection : pas de crash avec la mauvaise configuration de uwz.\nCorrection : petite erreur en temps calme.",
+                "it": "Risolto: Risolto errori casuali nei primi circa 15 secondi.\nAggiunto: max numero di avvisi (default 5)\nRisolto: non crash con la configurazione uwz sbagliata.\nRisolto: piccolo errore in tempi tranquilli.",
+                "es": "Fijación: Errores aleatorios fijos en los primeros aprox. 15 segundos.\nAñadido: max number of warnings (default 5)\nArreglado: no choca con la configuración uwz equivocada.\nCorregido: pequeño error en tiempos tranquilos.",
+                "pl": "Fixed: Fixed przypadkowo pojawia się błędy w pierwszym ok.\nAddd: max number of warnings (default 5) (ang.)\nFixed: not crash with the wrong uwz configuration (ang.).\nW cichych czasach drobne błędy.",
+                "uk": "Виправлено: Виправлено випадково виникають помилки в першому приблизно 15 секунд.\nДоданий: максимальна кількість попереджень (default 5)\nВиправлено: не збиток з неправильною конфігурацією uwz.\nВиправлено: невелика помилка в тихий час.",
+                "zh-cn": "固定:第一手矛盾中随机出现的错误。.\n增 编:警告数(第5号)\n固定:与错误的乌瓦兹组合不碰撞。.\n固定:沉默时的小错误。."
+            },
+            "0.5.3": {
+                "en": "Fixed: command states (text / automode)\nAdded: .alerts. List of warning types.\nChanged: .alerts. view current event with highest level or next event",
+                "de": "Behoben: Befehlsstates (Text / Automode)\nHinzugefügt: .alerts. Liste der Warnarten mit Warnungen.\nGeändert: .alerts. zeigt aktuelles Ereignis mit höchstem Level oder nächstes Ereignis",
+                "ru": "Исправлено: командные состояния (текст / automode)\nДобавлено: alerts Список предупреждающих типов.\nИзменено: оповещения просматривают текущее событие с самым высоким уровнем или следующим событием",
+                "pt": "Corrigido: estados de comando (texto / automodo)\nAdicionado: alertas Lista de tipos de aviso.\nAlterado: alertas visualizar evento atual com nível mais alto ou próximo evento",
+                "nl": "Bevestigd:\nVertaling: Een waarschuwingstype.\nVerandering:",
+                "fr": "Correction : états de commande (texte / automode)\nAjouté : alertes Liste des types d'avertissement.\nChangement : alertes afficher l'événement courant avec le plus haut niveau ou l'événement suivant",
+                "it": "Fisso: stati di comando (testo / automode)\nAggiunto: alerts Elenco dei tipi di avvertimento.\nCambiato: gli avvisi visualizzano l'evento corrente con il più alto livello o il prossimo evento",
+                "es": "Fijo: estados de comando (texto / automodo)\nAñadido: alertas Lista de tipos de advertencia.\nCambio: alertas ver el evento actual con el nivel más alto o el próximo evento",
+                "pl": "W: Państwa dowodzenia (tekst / automode)\nAdded: alarm Lista typów ostrzeżeń.\nChanged: alarmuj bieżące zdarzenie z najwyższym poziomem lub kolejnym wydarzeniem",
+                "uk": "Виправлено: командні стани (текст / автомоде)\nДодано: повідомлення Перелік типів попередження.\nЗмінено: повідомлення перегляду поточного заходу з найвищим рівнем або наступною подією",
+                "zh-cn": "固定:指挥站(背景/汽车)\n增加:警惕 警告类型清单。.\n变化:提醒人们注意当前活动最高或下一次活动"
+            },
+            "0.5.2": {
+                "en": "Multiple Say-It instances.\nSome icons added.\n-no warning- Warning level for uwz corrected.",
+                "de": "Mehrere Say-It-Instanzen.\nEinige Symbole hinzugefügt.\n- Keine Warnung. Warnstufe für uwz korrigiert.",
+                "ru": "Несколько примеров Say-It.\nДобавлены некоторые иконки.\n-без предупреждения- Уровень предостережения для uwz исправлен.",
+                "pt": "Várias instâncias Say-It.\nAlguns ícones adicionados.\n- Sem aviso... Nível de aviso para uwz corrigido.",
+                "nl": "Meerdere Say-It instances.\nEnkele iconen toegevoegd.\n- Geen waarschuwing. Waarschuwingsniveau voor uwz gecorrigeerd.",
+                "fr": "Plusieurs instances Say-It.\nQuelques icônes ajoutées.\n- sans avertissement... Niveau d ' avertissement pour le Koweït corrigé.",
+                "it": "Molteplici istanze Say-It.\nAlcune icone aggiunte.\n- Niente avvertimenti. Livello di avvertimento per uwz corretto.",
+                "es": "Múltiples instancias.\nAlgunos iconos añadidos.\n- sin aviso... Nivel de advertencia para Uwz corregido.",
+                "pl": "Wielokrotny przypadek.\nDodano kilka ikon.\n- no warning- Poziom uwz skorygował.",
+                "uk": "Кілька екземплярів Say-It.\nДодані іконки.\n-без попередження Рівень попередження для виправки uwz.",
+                "zh-cn": "多门Say-It案件。.\n有些方面增加了。.\n- 无警告 瓦兹的防备水平得到纠正。."
+            },
+            "0.5.1": {
+                "en": "Fixed: Foreign languages did not work for UWZ.\nFixed: clearHistory command didnt work on gloabl level.\nFixed: uwz colours assigned to the correct level.",
+                "de": "Behoben: Fremdsprachen funktionierten nicht für UWZ.\nBehoben: clearHistory Befehl funktionierte nicht auf Gloabl-Ebene.\nBehoben: uwz Farben dem richtigen Level zugeordnet.",
+                "ru": "Исправлено: Иностранные языки не работали для UWZ.\nИсправлено: команда ClearHistory не работала на уровне gloabl.\nИсправлено: цвета uwz, назначенные на правильный уровень.",
+                "pt": "Corrigido: línguas estrangeiras não funcionou para UWZ.\nCorrigido: comando clearHistory não funcionou no nível gloabl.\nCorrigido: cores uwz atribuídas ao nível correto.",
+                "nl": "Buitenlandse talen werkten niet voor UWZ.\nHet duidelijke bevel werkte niet op Gloabl niveau.\nGereserveerd: de kleuren op het juiste niveau.",
+                "fr": "Fixed: Foreign languages did not work for UWZ.\nCorrection : la commande claireHistory n'a pas fonctionné sur le niveau gloabl.\nCorrection : couleurs uwz assignées au niveau correct.",
+                "it": "Fisso: lingue straniere non ha funzionato per UWZ.\nRisolto: il comando ClearHistory non ha funzionato a livello gloabl.\nFisso: colori uwz assegnati al livello corretto.",
+                "es": "Fijo: Los idiomas extranjeros no funcionaron para UWZ.\nFijado: claroEl comandoHistory no funcionó a nivel gloabl.\nFijado: colores uwz asignados al nivel correcto.",
+                "pl": "Języki zagraniczne nie pracowały dla UWZ.\nFixed: czyste dowództwo nie działało na poziomie gloablowym.\nFixed – kolory uwz przypisane do odpowiedniego poziomu.",
+                "uk": "Виправлено: Іноземні мови не працювали для UWZ.\nВиправлено: clearHistory Команда не працювала на рівні gloabl.\nВиправлено: колір uwz, призначений для коректного рівня.",
+                "zh-cn": "固定:外语没有为乌瓦斯开展工作。.\n固定:清晰的指挥官在词汇一级工作。.\n固定:配给正确水平的色彩。."
+            },
+            "0.5.0": {
+                "en": "breaking changes: New UWZ configuration. reconfigure needed\nbreaking changes: Rename and move manual push command states.\nQuiet times changed, reconfigure. \nbetter DWD configuration.\nalot improvements.",
+                "de": "Änderungen: Neue UWZ-Konfiguration. Rekonfiguration nötig\nÄnderungen: Umbenennen und manuelle Push-Befehlszustände verschieben.\nRuhezeiten geändert, umgestalten.\nbessere DWD-Konfiguration.\neine menge verbesserungen.",
+                "ru": "сломать изменения: Новая конфигурация UWZ. реконфигурация\nсломать изменения: Переименовать и переместить руководство толкать командные состояния.\nТихие времена изменились, reconfigure.\nлучшая конфигурация DWD.\nулучшения alot.",
+                "pt": "mudanças de quebra: Nova configuração UWZ. reconfigurar\nmudanças de quebra: Renomear e mover estados de comando push manual.\nOs tempos calmos mudaram, reconfiguram.\nmelhor configuração DWD.\nmuitas melhorias.",
+                "nl": "vertaling: Nieuwe UWZ configuratie. Vertaling:\nvertaling: Herhaal en zet handmatige bevelen in.\nRustige tijden veranderden, herconfigureren.\nbeter DWD-configuratie.\nveel verbetering.",
+                "fr": "changements de rupture: Nouvelle configuration UWZ. reconfigure\nchangements de rupture: Renommer et déplacer les états de commande manuels push.\nLes temps tranquilles ont changé, reconfigurer.\nmeilleure configuration DWD.\nalot améliorations.",
+                "it": "cambiamenti di rottura: Nuova configurazione UWZ. riconfigurazione\ncambiamenti di rottura: Rinominare e spostare gli stati di comando manuale push.\nI tempi silenziosi sono cambiati, riconfigurati.\nmigliore configurazione DWD.\nmolti miglioramenti.",
+                "es": "cambios de ruptura: Nueva configuración UWZ. reconfiguración\ncambios de ruptura: Renombrar y mover los estados de mando manual.\nLos tiempos tranquilos cambiaron, reconfiguran.\nmejor configuración DWD.\nmejoras.",
+                "pl": "złamanie się: New UWZ (ang.). konfigurować\nzłamanie się: Rename and move manual command commands.\nZmienił się czas, pogodził się.\nlepiejsza konfiguracja DWD.\nulepszenia lotu.",
+                "uk": "перерву змін: Нова конфігурація UWZ. Посилання\nперерву змін: Перейменування та переміщення ручних командних станів.\nЗмінити час очікування, переналаштувати.\nкраще налаштування DWD.\nполіпшення зльоту.",
+                "zh-cn": "打破变化: 新UWZ组合。 改组\n打破变化: 重新命名和搬动手指挥州。.\n基耶时间变化,重新配置。.\n更好的DWD组合。.\na 时间改进。."
+            },
+            "0.5.0-alpha.0": {
+                "en": "breaking changes: New UWZ configuration. reconfigure\nbreaking changes: Rename and move manual push command states.\nQuiet times changed, reconfigure. \nbetter DWD configuration.\nalot improvements.",
+                "de": "Änderungen: Neue UWZ-Konfiguration. Rekonfiguration\nÄnderungen: Umbenennen und manuelle Push-Befehlszustände verschieben.\nRuhezeiten geändert, umgestalten.\nbessere DWD-Konfiguration.\neine menge verbesserungen.",
+                "ru": "сломать изменения: Новая конфигурация UWZ. реконфигурация\nсломать изменения: Переименовать и переместить руководство толкать командные состояния.\nТихие времена изменились, reconfigure.\nлучшая конфигурация DWD.\nулучшения alot.",
+                "pt": "mudanças de quebra: Nova configuração UWZ. reconfigurar\nmudanças de quebra: Renomear e mover estados de comando push manual.\nOs tempos calmos mudaram, reconfiguram.\nmelhor configuração DWD.\nmuitas melhorias.",
+                "nl": "vertaling: Nieuwe UWZ configuratie. Vertaling:\nvertaling: Herhaal en zet handmatige bevelen in.\nRustige tijden veranderden, herconfigureren.\nbeter DWD-configuratie.\nveel verbetering.",
+                "fr": "changements de rupture: Nouvelle configuration UWZ. reconfigure\nchangements de rupture: Renommer et déplacer les états de commande manuels push.\nLes temps tranquilles ont changé, reconfigurer.\nmeilleure configuration DWD.\nalot améliorations.",
+                "it": "cambiamenti di rottura: Nuova configurazione UWZ. riconfigurazione\ncambiamenti di rottura: Rinominare e spostare gli stati di comando manuale push.\nI tempi silenziosi sono cambiati, riconfigurati.\nmigliore configurazione DWD.\nmolti miglioramenti.",
+                "es": "cambios de ruptura: Nueva configuración UWZ. reconfiguración\ncambios de ruptura: Renombrar y mover los estados de mando manual.\nLos tiempos tranquilos cambiaron, reconfiguran.\nmejor configuración DWD.\nmejoras.",
+                "pl": "złamanie się: New UWZ (ang.). konfigurować\nzłamanie się: Rename and move manual command commands.\nZmienił się czas, pogodził się.\nlepiejsza konfiguracja DWD.\nulepszenia lotu.",
+                "uk": "перерву змін: Нова конфігурація UWZ. Посилання\nперерву змін: Перейменування та переміщення ручних командних станів.\nЗмінити час очікування, переналаштувати.\nкраще налаштування DWD.\nполіпшення зльоту.",
+                "zh-cn": "打破变化: 新UWZ组合。 改组\n打破变化: 重新命名和搬动手指挥州。.\n基耶时间变化,重新配置。.\n更好的DWD组合。.\na 时间改进。."
+            }
+        },
+        "titleLang": {
+            "en": "Weather Warnings",
+            "de": "Wetterwarnungen",
+            "ru": "Предупреждения о погоде",
+            "pt": "Avisos meteorológicos",
+            "nl": "Weerwaarschuwingen",
+            "fr": "Avertissements météorologiques",
+            "it": "Avvisi meteo",
+            "es": "Advertencias meteorológicas",
+            "pl": "Ostrzeżenia pogodowe",
+            "uk": "Попередження про погоду",
+            "zh-cn": "天气警告"
+        },
+        "desc": {
+            "en": "weather-warnings",
+            "de": "Wetterwarnungen",
+            "ru": "предупреждения о погоде",
+            "pt": "avisos meteorológicos",
+            "nl": "weerwaarschuwingen",
+            "fr": "avertissements météorologiques",
+            "it": "allerta meteo",
+            "es": "advertencias-meteorológicas",
+            "pl": "ostrzeżenia pogodowe",
+            "uk": "погодні попередження",
+            "zh-cn": "天气警报"
+        },
+        "authors": [
+            "ticaki <github@renopoint.de>"
+        ],
+        "keywords": [
+            "weather",
+            "dwd",
+            "uwz",
+            "zamg",
+            "warnings",
+            "push"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "build/main.js",
+        "icon": "weather-warnings.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
+        "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "weather",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "supportedMessages": {
+            "custom": true
+        },
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=5.0.12"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
     },
-    "titleLang": {
-      "en": "Weather Warnings",
-      "de": "Wetterwarnungen",
-      "ru": "Предупреждения о погоде",
-      "pt": "Avisos meteorológicos",
-      "nl": "Weerwaarschuwingen",
-      "fr": "Avertissements météorologiques",
-      "it": "Avvisi meteo",
-      "es": "Advertencias meteorológicas",
-      "pl": "Ostrzeżenia pogodowe",
-      "uk": "Попередження про погоду",
-      "zh-cn": "天气警告"
+    "native": {
+        "allowedDirs": [],
+        "useJsonHistory": false,
+        "dwdwarncellTable": [],
+        "uwzwarncellTable": [],
+        "zamgwarncellTable": [],
+        "useTestWarnings": false,
+        "dwdEnabled": false,
+        "uwzEnabled": false,
+        "zamgEnabled": false,
+        "dwdHourFilter": 0,
+        "uwzHourFilter": 0,
+        "zamgHourFilter": 0,
+        "notPushAtStart": true,
+        "refreshTime": 15,
+        "messageTemplate": [],
+        "templateTable": [
+            {
+                "templateKey": "NewMessage",
+                "template": "template.NewMessage"
+            },
+            {
+                "templateKey": "RemoveMessage",
+                "template": "template.RemoveMessage"
+            },
+            {
+                "templateKey": "RemoveAllMessage",
+                "template": "template.RemoveAllMessage"
+            },
+            {
+                "templateKey": "NewJson",
+                "template": "template.NewJson"
+            },
+            {
+                "templateKey": "RemoveJson",
+                "template": "template.RemoveJson"
+            },
+            {
+                "templateKey": "RemoveAllJson",
+                "template": "template.RemoveAllJson"
+            },
+            {
+                "templateKey": "EmailTitle",
+                "template": "template.emailTitle"
+            },
+            {
+                "templateKey": "EmailHeader",
+                "template": "template.emailHeader"
+            },
+            {
+                "templateKey": "EmailMessage",
+                "template": "template.emailMessage"
+            },
+            {
+                "templateKey": "EmailRemoveMessage",
+                "template": "template.emailRemoveMessage"
+            },
+            {
+                "templateKey": "EmailFooter",
+                "template": "template.emailFooter"
+            },
+            {
+                "templateKey": "NewMessageWithArray",
+                "template": "template.NewMessageWithArray"
+            },
+            {
+                "templateKey": "_CustomArray",
+                "template": "template._CustomArray"
+            }
+        ],
+        "dwdLanguage": "ger",
+        "uwzLanguage": "DE",
+        "zamgLanguage": "de",
+        "dwdTypeFilter": [],
+        "zamgTypeFilter": [],
+        "uwzTypeFilter": [],
+        "dwdLevelFilter": 0,
+        "uwzLevelFilter": 0,
+        "zamgLevelFilter": 0,
+        "telegram_DwdEnabled": true,
+        "telegram_UwzEnabled": true,
+        "telegram_ZamgEnabled": true,
+        "telegram_TypeFilter": [],
+        "telegram_LevelFilter": 0,
+        "telegram_ManualTypeFilter": [],
+        "telegram_ManualLevelFilter": 0,
+        "telegram_Enabled": false,
+        "telegram_Adapter": "none",
+        "telegram_MessageNew": "NewMessage",
+        "telegram_MessageRemove": "RemoveMessage",
+        "telegram_MessageAllRemove": "RemoveAllMessage",
+        "telegram_manualAll": "NewMessage",
+        "whatsapp_DwdEnabled": true,
+        "whatsapp_UwzEnabled": true,
+        "whatsapp_ZamgEnabled": true,
+        "whatsapp_TypeFilter": [],
+        "whatsapp_LevelFilter": 0,
+        "whatsapp_ManualTypeFilter": [],
+        "whatsapp_ManualLevelFilter": 0,
+        "whatsapp_Enabled": false,
+        "whatsapp_Adapter": "none",
+        "whatsapp_MessageNew": "NewMessage",
+        "whatsapp_MessageRemove": "RemoveMessage",
+        "whatsapp_MessageAllRemove": "RemoveAllMessage",
+        "whatsapp_manualAll": "NewMessage",
+        "pushover_DwdEnabled": true,
+        "pushover_UwzEnabled": true,
+        "pushover_ZamgEnabled": true,
+        "pushover_TypeFilter": [],
+        "pushover_LevelFilter": 0,
+        "pushover_ManualTypeFilter": [],
+        "pushover_ManualLevelFilter": 0,
+        "pushover_Enabled": false,
+        "pushover_Adapter": "none",
+        "pushover_MessageNew": "NewMessage",
+        "pushover_MessageRemove": "RemoveMessage",
+        "pushover_MessageAllRemove": "RemoveAllMessage",
+        "pushover_manualAll": "NewMessage",
+        "pushover_Title": "none",
+        "json_DwdEnabled": true,
+        "json_UwzEnabled": true,
+        "json_ZamgEnabled": true,
+        "json_TypeFilter": [],
+        "json_LevelFilter": 0,
+        "json_Enabled": false,
+        "json_MessageAll": "NewJson",
+        "json_parse": false,
+        "history_DwdEnabled": true,
+        "history_UwzEnabled": true,
+        "history_ZamgEnabled": true,
+        "history_TypeFilter": [],
+        "history_LevelFilter": 0,
+        "history_Enabled": false,
+        "history_MessageNew": "NewJson",
+        "history_allinOne": false,
+        "email_Adapter": "none",
+        "email_line_break": "\n",
+        "email_DwdEnabled": true,
+        "email_UwzEnabled": true,
+        "email_ZamgEnabled": true,
+        "email_TypeFilter": [],
+        "email_LevelFilter": 0,
+        "email_ManualTypeFilter": [],
+        "email_ManualLevelFilter": 0,
+        "email_Enabled": false,
+        "email_MessageNew": "EmailMessage",
+        "email_MessageRemove": "EmailRemoveMessage",
+        "email_Header": "EmailHeader",
+        "email_Footer": "EmailFooter",
+        "email_manualAll": "EmailMessage",
+        "email_Title": "EmailTitle",
+        "alexa2_Adapter": "none",
+        "alexa2_DwdEnabled": true,
+        "alexa2_UwzEnabled": true,
+        "alexa2_ZamgEnabled": true,
+        "alexa2_device_ids": [],
+        "alexa2_TypeFilter": [],
+        "alexa2_LevelFilter": 0,
+        "alexa2_ManualTypeFilter": [],
+        "alexa2_ManualLevelFilter": 0,
+        "alexa2_Enabled": false,
+        "alexa2_MessageNew": "NewMessage",
+        "alexa2_MessageRemove": "RemoveMessage",
+        "alexa2_MessageAllRemove": "RemoveAllMessage",
+        "alexa2_volumen": 15,
+        "alexa2_manualAll": "NewMessage",
+        "alexa2_sounds": [],
+        "sayit_Enabled": false,
+        "sayit_MessageNew": "NewMessage",
+        "sayit_MessageRemove": "RemoveMessage",
+        "sayit_MessageAllRemove": "RemoveAllMessage",
+        "sayit_volumen": 15,
+        "sayit_manualAll": "NewMessage"
     },
-    "desc": {
-      "en": "weather-warnings",
-      "de": "Wetterwarnungen",
-      "ru": "предупреждения о погоде",
-      "pt": "avisos meteorológicos",
-      "nl": "weerwaarschuwingen",
-      "fr": "avertissements météorologiques",
-      "it": "allerta meteo",
-      "es": "advertencias-meteorológicas",
-      "pl": "ostrzeżenia pogodowe",
-      "uk": "погодні попередження",
-      "zh-cn": "天气警报"
-    },
-    "authors": [
-      "ticaki <github@renopoint.de>"
-    ],
-    "keywords": [
-      "weather",
-      "dwd",
-      "uwz",
-      "zamg",
-      "warnings",
-      "push"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "main": "build/main.js",
-    "icon": "weather-warnings.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
-    "readme": "https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "weather",
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "supportedMessages": {
-      "custom": true
-    },
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=5.0.12"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=5.1.13"
-      }
-    ]
-  },
-  "native": {
-    "allowedDirs": [],
-    "useJsonHistory": false,
-    "dwdwarncellTable": [],
-    "uwzwarncellTable": [],
-    "zamgwarncellTable": [],
-    "useTestWarnings": false,
-    "dwdEnabled": false,
-    "uwzEnabled": false,
-    "zamgEnabled": false,
-    "dwdHourFilter": 0,
-    "uwzHourFilter": 0,
-    "zamgHourFilter": 0,
-    "notPushAtStart": true,
-    "refreshTime": 15,
-    "messageTemplate": [],
-    "templateTable": [
-      {
-        "templateKey": "NewMessage",
-        "template": "template.NewMessage"
-      },
-      {
-        "templateKey": "RemoveMessage",
-        "template": "template.RemoveMessage"
-      },
-      {
-        "templateKey": "RemoveAllMessage",
-        "template": "template.RemoveAllMessage"
-      },
-      {
-        "templateKey": "NewJson",
-        "template": "template.NewJson"
-      },
-      {
-        "templateKey": "RemoveJson",
-        "template": "template.RemoveJson"
-      },
-      {
-        "templateKey": "RemoveAllJson",
-        "template": "template.RemoveAllJson"
-      },
-      {
-        "templateKey": "EmailTitle",
-        "template": "template.emailTitle"
-      },
-      {
-        "templateKey": "EmailHeader",
-        "template": "template.emailHeader"
-      },
-      {
-        "templateKey": "EmailMessage",
-        "template": "template.emailMessage"
-      },
-      {
-        "templateKey": "EmailRemoveMessage",
-        "template": "template.emailRemoveMessage"
-      },
-      {
-        "templateKey": "EmailFooter",
-        "template": "template.emailFooter"
-      },
-      {
-        "templateKey": "NewMessageWithArray",
-        "template": "template.NewMessageWithArray"
-      },
-      {
-        "templateKey": "_CustomArray",
-        "template": "template._CustomArray"
-      }
-    ],
-    "dwdLanguage": "ger",
-    "uwzLanguage": "DE",
-    "zamgLanguage": "de",
-    "dwdTypeFilter": [],
-    "zamgTypeFilter": [],
-    "uwzTypeFilter": [],
-    "dwdLevelFilter": 0,
-    "uwzLevelFilter": 0,
-    "zamgLevelFilter": 0,
-    "telegram_DwdEnabled": true,
-    "telegram_UwzEnabled": true,
-    "telegram_ZamgEnabled": true,
-    "telegram_TypeFilter": [],
-    "telegram_LevelFilter": 0,
-    "telegram_ManualTypeFilter": [],
-    "telegram_ManualLevelFilter": 0,
-    "telegram_Enabled": false,
-    "telegram_Adapter": "none",
-    "telegram_MessageNew": "NewMessage",
-    "telegram_MessageRemove": "RemoveMessage",
-    "telegram_MessageAllRemove": "RemoveAllMessage",
-    "telegram_manualAll": "NewMessage",
-    "whatsapp_DwdEnabled": true,
-    "whatsapp_UwzEnabled": true,
-    "whatsapp_ZamgEnabled": true,
-    "whatsapp_TypeFilter": [],
-    "whatsapp_LevelFilter": 0,
-    "whatsapp_ManualTypeFilter": [],
-    "whatsapp_ManualLevelFilter": 0,
-    "whatsapp_Enabled": false,
-    "whatsapp_Adapter": "none",
-    "whatsapp_MessageNew": "NewMessage",
-    "whatsapp_MessageRemove": "RemoveMessage",
-    "whatsapp_MessageAllRemove": "RemoveAllMessage",
-    "whatsapp_manualAll": "NewMessage",
-    "pushover_DwdEnabled": true,
-    "pushover_UwzEnabled": true,
-    "pushover_ZamgEnabled": true,
-    "pushover_TypeFilter": [],
-    "pushover_LevelFilter": 0,
-    "pushover_ManualTypeFilter": [],
-    "pushover_ManualLevelFilter": 0,
-    "pushover_Enabled": false,
-    "pushover_Adapter": "none",
-    "pushover_MessageNew": "NewMessage",
-    "pushover_MessageRemove": "RemoveMessage",
-    "pushover_MessageAllRemove": "RemoveAllMessage",
-    "pushover_manualAll": "NewMessage",
-    "pushover_Title": "none",
-    "json_DwdEnabled": true,
-    "json_UwzEnabled": true,
-    "json_ZamgEnabled": true,
-    "json_TypeFilter": [],
-    "json_LevelFilter": 0,
-    "json_Enabled": false,
-    "json_MessageAll": "NewJson",
-    "json_parse": false,
-    "history_DwdEnabled": true,
-    "history_UwzEnabled": true,
-    "history_ZamgEnabled": true,
-    "history_TypeFilter": [],
-    "history_LevelFilter": 0,
-    "history_Enabled": false,
-    "history_MessageNew": "NewJson",
-    "history_allinOne": false,
-    "email_Adapter": "none",
-    "email_line_break": "\n",
-    "email_DwdEnabled": true,
-    "email_UwzEnabled": true,
-    "email_ZamgEnabled": true,
-    "email_TypeFilter": [],
-    "email_LevelFilter": 0,
-    "email_ManualTypeFilter": [],
-    "email_ManualLevelFilter": 0,
-    "email_Enabled": false,
-    "email_MessageNew": "EmailMessage",
-    "email_MessageRemove": "EmailRemoveMessage",
-    "email_Header": "EmailHeader",
-    "email_Footer": "EmailFooter",
-    "email_manualAll": "EmailMessage",
-    "email_Title": "EmailTitle",
-    "alexa2_Adapter": "none",
-    "alexa2_DwdEnabled": true,
-    "alexa2_UwzEnabled": true,
-    "alexa2_ZamgEnabled": true,
-    "alexa2_device_ids": [],
-    "alexa2_TypeFilter": [],
-    "alexa2_LevelFilter": 0,
-    "alexa2_ManualTypeFilter": [],
-    "alexa2_ManualLevelFilter": 0,
-    "alexa2_Enabled": false,
-    "alexa2_MessageNew": "NewMessage",
-    "alexa2_MessageRemove": "RemoveMessage",
-    "alexa2_MessageAllRemove": "RemoveAllMessage",
-    "alexa2_volumen": 15,
-    "alexa2_manualAll": "NewMessage",
-    "alexa2_sounds": [],
-    "sayit_Enabled": false,
-    "sayit_MessageNew": "NewMessage",
-    "sayit_MessageRemove": "RemoveMessage",
-    "sayit_MessageAllRemove": "RemoveAllMessage",
-    "sayit_volumen": 15,
-    "sayit_manualAll": "NewMessage"
-  },
-  "objects": [],
-  "instanceObjects": []
+    "objects": [],
+    "instanceObjects": []
 }

@@ -168,12 +168,14 @@ class NotificationClass extends library.BaseClass {
       await this.sendNotifications(result);
       this.removeAllSend = false;
     } else {
-      if (this.options.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && allowActions.includes("removeAll") && (manual || !this.removeAllSend && activeWarnings == 0)) {
+      if (!manual && this.options.notifications.includes("removeAll") && this.options.actions["removeAll"] != "none" && allowActions.includes("removeAll") && !this.removeAllSend && activeWarnings == 0 || this.options.notifications.includes("removeManualAll") && this.options.actions["removeManualAll"] && this.options.actions["removeManualAll"] != "none" && allowActions.includes("removeAll") && manual) {
         const templates = this.adapter.config.templateTable;
-        const tempid = templates.findIndex((a) => a.templateKey == this.options.actions["removeAll"]);
+        const tempid = templates.findIndex(
+          (a) => a.templateKey == this.options.actions[manual ? "removeManualAll" : "removeAll"]
+        );
         if (tempid != -1) {
           const result2 = await this.adapter.providerController.noWarning.getMessage(
-            this.options.actions["removeAll"],
+            this.options.actions[manual ? "removeManualAll" : "removeAll"],
             this
           );
           const msg = [

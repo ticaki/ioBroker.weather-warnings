@@ -145,6 +145,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) Added: Select template for manual notification without warnings.
+* (ticaki) Added: Configuration dialogue marks invalid template keys for most notification services.
+
 ### 0.5.5 (2023-11-14)
 * (ticaki) Added: Missing space in emailMessage template.
 * (ticaki) Fixed: wrong status for all removed.

@@ -536,5 +536,7 @@
     "statesObjectsWarnings.allService.commands": "命令",
     "statesObjectsWarnings.allService.command.clearHistory": "清除历史记录。",
     "statesObjectsWarnings.allService.alerts.asList": "活动警告类型列表。",
-    "numOfRawWarnings": "每个提供商处理的警告的最大数量。"
+    "numOfRawWarnings": "每个提供商处理的警告的最大数量。",
+    "removeManualAll": "选择用于手动触发通知的无警告模板。",
+    "wrongTemplateKey": "模板键不存在。选择有效的模板！"
 }

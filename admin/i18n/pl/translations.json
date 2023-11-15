@@ -536,5 +536,7 @@
     "statesObjectsWarnings.allService.commands": "Polecenia",
     "statesObjectsWarnings.allService.command.clearHistory": "Czysta historia.",
     "statesObjectsWarnings.allService.alerts.asList": "Lista aktywnych typów ostrzeżeń.",
-    "numOfRawWarnings": "Maksymalna liczba przetworzonych ostrzeżeń na dostawcę."
+    "numOfRawWarnings": "Maksymalna liczba przetworzonych ostrzeżeń na dostawcę.",
+    "removeManualAll": "Wybierz szablon, który ma być używany bez ostrzeżeń w przypadku powiadomień wyzwalanych ręcznie.",
+    "wrongTemplateKey": "Klucz szablonu nie istnieje. Wybierz prawidłowy szablon!"
 }

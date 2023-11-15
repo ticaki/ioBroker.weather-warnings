@@ -536,5 +536,7 @@
     "statesObjectsWarnings.allService.commands": "Commandes",
     "statesObjectsWarnings.allService.command.clearHistory": "Histoire claire.",
     "statesObjectsWarnings.allService.alerts.asList": "Liste des types d'avertissements actifs.",
-    "numOfRawWarnings": "Nombre maximum d'avertissements traités par fournisseur."
+    "numOfRawWarnings": "Nombre maximum d'avertissements traités par fournisseur.",
+    "removeManualAll": "Sélectionnez le modèle à utiliser pour aucun avertissement pour les notifications déclenchées manuellement.",
+    "wrongTemplateKey": "La clé du modèle n'existe pas. Sélectionnez un modèle valide !"
 }

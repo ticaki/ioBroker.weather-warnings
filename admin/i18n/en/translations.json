@@ -536,5 +536,7 @@
     "uwzRealWarncellID": "The warning cell ID used by UWZ.",
     "statesObjectsWarnings.allService.command.clearHistory": "Clear history.",
     "statesObjectsWarnings.allService.alerts.asList": "List of warning types with events.",
-    "numOfRawWarnings": "Maximum number of processed warnings per provider."
+    "numOfRawWarnings": "Maximum number of processed warnings per provider.",
+    "removeManualAll": "Select the template to be used for no warnings for manually triggered notifications.",
+    "wrongTemplateKey": "The template key does not exist. Select a valid template!"
 }

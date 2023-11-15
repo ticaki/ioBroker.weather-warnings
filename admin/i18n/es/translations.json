@@ -536,5 +536,7 @@
     "statesObjectsWarnings.allService.commands": "Comandos",
     "statesObjectsWarnings.allService.command.clearHistory": "Borrar historial.",
     "statesObjectsWarnings.allService.alerts.asList": "Lista de tipos de advertencias activas.",
-    "numOfRawWarnings": "Número máximo de advertencias procesadas por proveedor."
+    "numOfRawWarnings": "Número máximo de advertencias procesadas por proveedor.",
+    "removeManualAll": "Seleccione la plantilla que se utilizará sin advertencias para notificaciones activadas manualmente.",
+    "wrongTemplateKey": "La clave de la plantilla no existe. ¡Seleccione una plantilla válida!"
 }

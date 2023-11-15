@@ -239,12 +239,13 @@ class WeatherWarnings extends utils.Adapter {
             if (self.config[notificationService + "_UwzEnabled"])
               service.push("zamgService");
             const template = {
-              new: self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "",
+              new: self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "none",
               remove: self.config[notificationService + "_MessageRemove"],
               removeAll: self.config[notificationService + "_MessageAllRemove"],
-              all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "",
-              manualAll: self.config[notificationService + "_manualAll"] !== void 0 ? self.config[notificationService + "_manualAll"] : "",
-              title: self.config[notificationService + "_Title"] !== void 0 ? self.config[notificationService + "_Title"] : ""
+              all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "none",
+              manualAll: self.config[notificationService + "_manualAll"] !== void 0 ? self.config[notificationService + "_manualAll"] : "none",
+              removeManualAll: self.config[notificationService + "_removeManualAll"] !== void 0 ? self.config[notificationService + "_removeManualAll"] : "none",
+              title: self.config[notificationService + "_Title"] !== void 0 ? self.config[notificationService + "_Title"] : "none"
             };
             for (const a2 in template) {
               const b = a2;

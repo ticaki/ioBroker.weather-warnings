@@ -98,6 +98,7 @@ export type ActionsType = {
     header?: string;
     footer?: string;
     manualAll?: string;
+    removeManualAll?: string;
     title?: string;
 };
 
@@ -111,7 +112,7 @@ export type ConfigType = {
  * removeAll: send remove all messages
  * remove: send a remove message for a removed warning
  */
-export const manual: ActionsUnionType[] = ['manualAll'];
+export const manual: ActionsUnionType[] = ['manualAll', 'removeManualAll'];
 
 const push: ActionsUnionType[] = [...manual, 'new', 'remove', 'removeAll'];
 const pushTitle: ActionsUnionType[] = [...manual, 'new', 'remove', 'removeAll', 'title'];
