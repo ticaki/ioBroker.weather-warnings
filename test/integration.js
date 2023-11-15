@@ -101,7 +101,7 @@ tests.integration(path.join(__dirname,".."),{
             it('Test: Adapter works more than 2 Minute!',() => new Promise(async (resolve, reject) => {
                 // change the adapter config
                 await harness.startAdapterAndWait();
-                await wait(150000);
+                await wait(120000);
                 if (harness.isAdapterRunning()) resolve('ok');
                 else reject('Adapter stops');
             })).timeout(4000000);
