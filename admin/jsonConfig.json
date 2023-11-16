@@ -153,9 +153,9 @@
                 "notPushAtStart": {
                     "type": "checkbox",
                     "xs": 12,
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2,
+                    "sm": 8,
+                    "md": 6,
+                    "lg": 4,
                     "label": "notPushAtStart",
                     "newLine": true
                 },
@@ -165,7 +165,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
-                    "hidden": "data.imExpert",
+                    "disabled": "data.imExpert",
                     "default": false,
                     "label": "imExpert",
                     "newLine": true
