@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.5.6",
+    "version": "0.6.0",
     "news": {
+      "0.6.0": {
+        "en": "Added: global alerts.\nChanged: Token ...adverb - if no adverb, then day of the week.",
+        "de": "Hinzugefügt: globale Alarme.\nGeändert: Token .adverb - wenn kein Adverb, dann Tag der Woche.",
+        "ru": "Добавленные: глобальные оповещения.\nИзменено: Token .adverb - если нет adverb, то день недели.",
+        "pt": "Adicionado: global alerts.\nAlterado: Token .adverb - se nenhum adverb, então dia da semana.",
+        "nl": "Toegevoegd: wereldwijde alarmen.\nToken .adverb - als geen advertentie, dan dag van de week.",
+        "fr": "Ajouté : alertes mondiales.\nChanged: Token .adverb - si pas d'adverb, puis le jour de la semaine.",
+        "it": "Aggiunto: Global alerts.\nCambiato: Token .adverb - se non adverb, allora il giorno della settimana.",
+        "es": "Añadido: alertas globales.\nCambio: Token .adverb - si no hay adverbio, entonces día de la semana.",
+        "pl": "W: globalne alarmy.\nChanged: Token .adverb – if no adverb, then day of the week.",
+        "uk": "Додано: глобальні сповіщення.\nЗмінено: Token .adverb - якщо немає реклами, то день тижня.",
+        "zh-cn": "增加:全球警觉。.\n修改:Patken adverb-如果没有反对意见,周末。."
+      },
       "0.5.6": {
         "en": "Added: Select template for manual notification without warnings.\nAdded: Configuration dialogue marks invalid template keys for most notification services.",
         "de": "Hinzugefügt: Wählen Sie Vorlage für manuelle Benachrichtigung ohne Warnungen.\nHinzugefügt: Konfiguration Dialog markiert ungültige Vorlagenschlüssel für die meisten Benachrichtigungsdienste.",
@@ -80,19 +93,6 @@
         "pl": "Języki zagraniczne nie pracowały dla UWZ.\nFixed: czyste dowództwo nie działało na poziomie gloablowym.\nFixed – kolory uwz przypisane do odpowiedniego poziomu.",
         "uk": "Виправлено: Іноземні мови не працювали для UWZ.\nВиправлено: clearHistory Команда не працювала на рівні gloabl.\nВиправлено: колір uwz, призначений для коректного рівня.",
         "zh-cn": "固定:外语没有为乌瓦斯开展工作。.\n固定:清晰的指挥官在词汇一级工作。.\n固定:配给正确水平的色彩。."
-      },
-      "0.5.0": {
-        "en": "breaking changes: New UWZ configuration. reconfigure needed\nbreaking changes: Rename and move manual push command states.\nQuiet times changed, reconfigure. \nbetter DWD configuration.\nalot improvements.",
-        "de": "Änderungen: Neue UWZ-Konfiguration. Rekonfiguration nötig\nÄnderungen: Umbenennen und manuelle Push-Befehlszustände verschieben.\nRuhezeiten geändert, umgestalten.\nbessere DWD-Konfiguration.\neine menge verbesserungen.",
-        "ru": "сломать изменения: Новая конфигурация UWZ. реконфигурация\nсломать изменения: Переименовать и переместить руководство толкать командные состояния.\nТихие времена изменились, reconfigure.\nлучшая конфигурация DWD.\nулучшения alot.",
-        "pt": "mudanças de quebra: Nova configuração UWZ. reconfigurar\nmudanças de quebra: Renomear e mover estados de comando push manual.\nOs tempos calmos mudaram, reconfiguram.\nmelhor configuração DWD.\nmuitas melhorias.",
-        "nl": "vertaling: Nieuwe UWZ configuratie. Vertaling:\nvertaling: Herhaal en zet handmatige bevelen in.\nRustige tijden veranderden, herconfigureren.\nbeter DWD-configuratie.\nveel verbetering.",
-        "fr": "changements de rupture: Nouvelle configuration UWZ. reconfigure\nchangements de rupture: Renommer et déplacer les états de commande manuels push.\nLes temps tranquilles ont changé, reconfigurer.\nmeilleure configuration DWD.\nalot améliorations.",
-        "it": "cambiamenti di rottura: Nuova configurazione UWZ. riconfigurazione\ncambiamenti di rottura: Rinominare e spostare gli stati di comando manuale push.\nI tempi silenziosi sono cambiati, riconfigurati.\nmigliore configurazione DWD.\nmolti miglioramenti.",
-        "es": "cambios de ruptura: Nueva configuración UWZ. reconfiguración\ncambios de ruptura: Renombrar y mover los estados de mando manual.\nLos tiempos tranquilos cambiaron, reconfiguran.\nmejor configuración DWD.\nmejoras.",
-        "pl": "złamanie się: New UWZ (ang.). konfigurować\nzłamanie się: Rename and move manual command commands.\nZmienił się czas, pogodził się.\nlepiejsza konfiguracja DWD.\nulepszenia lotu.",
-        "uk": "перерву змін: Нова конфігурація UWZ. Посилання\nперерву змін: Перейменування та переміщення ручних командних станів.\nЗмінити час очікування, переналаштувати.\nкраще налаштування DWD.\nполіпшення зльоту.",
-        "zh-cn": "打破变化: 新UWZ组合。 改组\n打破变化: 重新命名和搬动手指挥州。.\n基耶时间变化,重新配置。.\n更好的DWD组合。.\na 时间改进。."
       }
     },
     "titleLang": {
