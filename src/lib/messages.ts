@@ -1120,7 +1120,9 @@ export class MessagesClass extends library.BaseClass {
                     const o = MessageType.temporalAdverbs[a as keyof typeof MessageType.temporalAdverbs];
                     if (o == rest) return this.library.getTranslation(a);
                 }
-                return '';
+                return new Date(data as string | number | Date).toLocaleDateString(this.library.getLocalLanguage(), {
+                    weekday: 'long',
+                });
             }
             case 'dwdcolor':
                 {

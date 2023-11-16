@@ -145,6 +145,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) Changed: Token ...adverb - if no adverb, then day of the week.
+
 ### 0.5.6 (2023-11-15)
 * (ticaki) Added: Select template for manual notification without warnings.
 * (ticaki) Added: Configuration dialogue marks invalid template keys for most notification services.
