@@ -160,11 +160,10 @@ export class BaseProvider extends BaseClass {
                 headline: '',
                 active: false,
                 type: -1,
-                provider: '',
             };
         }
         if (!reply) throw new Error('error(234) reply not definied');
-        if (allReplys === undefined) allReplys = reply;
+        if (allReplys === undefined) allReplys = JSON.parse(JSON.stringify(reply));
         [reply, allReplys].forEach((reply) => {
             let warntypeArray: string[] = [];
             for (const a in this.messages) {
@@ -187,8 +186,8 @@ export class BaseProvider extends BaseClass {
                         headline: m.formatedData !== undefined ? String(m.formatedData.headline) : '',
                         active: m.starttime <= Date.now() && m.endtime >= Date.now(),
                         type: m.genericType,
-                        provider: m.formatedData ? m.formatedData.provider : '',
                     };
+                    if (reply === allReplys) reply[name].provider = m.formatedData ? m.formatedData.provider : '';
                 }
             }
             if (reply['asList'] !== undefined) warntypeArray = warntypeArray.concat(reply['asList'].split(', '));

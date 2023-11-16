@@ -248,7 +248,7 @@ type genericWartypeAlertType = {
     headline: string;
     type: number;
     active: boolean;
-    provider: string;
+    provider?: string;
 };
 export type genericWarntypeAlertJsonType = ChangeTypeOfKeysOptional<
     genericWarnTypNameJsonType,

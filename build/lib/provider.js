@@ -144,14 +144,13 @@ class BaseProvider extends import_library.BaseClass {
         end: 1,
         headline: "",
         active: false,
-        type: -1,
-        provider: ""
+        type: -1
       };
     }
     if (!reply)
       throw new Error("error(234) reply not definied");
     if (allReplys === void 0)
-      allReplys = reply;
+      allReplys = JSON.parse(JSON.stringify(reply));
     [reply, allReplys].forEach((reply2) => {
       let warntypeArray = [];
       for (const a in this.messages) {
@@ -173,9 +172,10 @@ class BaseProvider extends import_library.BaseClass {
             end: m.endtime,
             headline: m.formatedData !== void 0 ? String(m.formatedData.headline) : "",
             active: m.starttime <= Date.now() && m.endtime >= Date.now(),
-            type: m.genericType,
-            provider: m.formatedData ? m.formatedData.provider : ""
+            type: m.genericType
           };
+          if (reply2 === allReplys)
+            reply2[name].provider = m.formatedData ? m.formatedData.provider : "";
         }
       }
       if (reply2["asList"] !== void 0)
