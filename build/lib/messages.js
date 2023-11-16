@@ -1060,7 +1060,9 @@ class MessagesClass extends library.BaseClass {
           if (o == rest)
             return this.library.getTranslation(a);
         }
-        return "";
+        return new Date(data).toLocaleDateString(this.library.getLocalLanguage(), {
+          weekday: "long"
+        });
       }
       case "dwdcolor":
         {

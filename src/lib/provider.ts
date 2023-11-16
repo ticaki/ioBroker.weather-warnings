@@ -147,8 +147,10 @@ export class BaseProvider extends BaseClass {
         );
     }
 
-    async getAlertsAndWrite(): Promise<messagesDef.genericWarntypeAlertJsonType> {
-        const reply: any = {};
+    async getAlertsAndWrite(
+        allReplys: messagesDef.genericWarntypeAlertJsonType | undefined = undefined,
+    ): Promise<messagesDef.genericWarntypeAlertJsonType> {
+        const reply: any = { asList: '' };
         for (const t in messagesDef.genericWarntyp) {
             if (t == '0') continue;
             reply[messagesDef.genericWarntyp[Number(t) as keyof messagesDef.genericWarntypeType].id] = {
@@ -158,35 +160,40 @@ export class BaseProvider extends BaseClass {
                 headline: '',
                 active: false,
                 type: -1,
+                provider: '',
             };
         }
-        const warntypeArray: string[] = [];
         if (!reply) throw new Error('error(234) reply not definied');
-        for (const a in this.messages) {
-            const m = this.messages[a];
-            if (!m) continue;
-            const name = messagesDef.genericWarntyp[m.genericType].id;
-            if (name == 'none') continue;
-            if (reply[name] === undefined) continue;
-            if (m.endtime < Date.now()) continue;
+        if (allReplys === undefined) allReplys = reply;
+        [reply, allReplys].forEach((reply) => {
+            let warntypeArray: string[] = [];
+            for (const a in this.messages) {
+                const m = this.messages[a];
+                if (!m) continue;
+                const name = messagesDef.genericWarntyp[m.genericType].id;
+                if (name == 'none') continue;
+                if (reply[name] === undefined) continue;
+                if (m.endtime < Date.now()) continue;
 
-            if (
-                (m.starttime <= Date.now() && reply[name].level < m.level) ||
-                (m.starttime > Date.now() && (reply[name].start === 1 || reply[name].start > m.starttime))
-            ) {
-                warntypeArray.push(this.library.getTranslation(messagesDef.genericWarntyp[m.genericType].name));
-                reply[name] = {
-                    level: m.level,
-                    start: m.starttime,
-                    end: m.endtime,
-                    headline: m.formatedData !== undefined ? String(m.formatedData.headline) : '',
-                    active: m.starttime <= Date.now() && m.endtime >= Date.now(),
-                    type: m.genericType,
-                };
+                if (
+                    (m.starttime <= Date.now() && reply[name].level < m.level) ||
+                    (m.starttime > Date.now() && (reply[name].start === 1 || reply[name].start > m.starttime))
+                ) {
+                    warntypeArray.push(this.library.getTranslation(messagesDef.genericWarntyp[m.genericType].name));
+                    reply[name] = {
+                        level: m.level,
+                        start: m.starttime,
+                        end: m.endtime,
+                        headline: m.formatedData !== undefined ? String(m.formatedData.headline) : '',
+                        active: m.starttime <= Date.now() && m.endtime >= Date.now(),
+                        type: m.genericType,
+                        provider: m.formatedData ? m.formatedData.provider : '',
+                    };
+                }
             }
-        }
-        reply['asList'] = warntypeArray.filter((item, pos, arr) => arr.indexOf(item) == pos).join(', ');
-
+            if (reply['asList'] !== undefined) warntypeArray = warntypeArray.concat(reply['asList'].split(', '));
+            reply['asList'] = warntypeArray.filter((item, pos, arr) => item && arr.indexOf(item) == pos).join(', ');
+        });
         await this.library.writeFromJson(
             this.name + '.alerts',
             'allService.alerts',
@@ -195,7 +202,7 @@ export class BaseProvider extends BaseClass {
             false,
         );
 
-        return reply;
+        return allReplys!;
     }
     // General function that retrieves data
     async getDataFromProvider(): Promise<providerDef.DataImportType> {
@@ -855,23 +862,34 @@ export class ProviderController extends BaseClass {
                 that.refreshTimeRef = that.adapter.setTimeout(updater, 250, that, index);
             } else {
                 await that.doEndOfUpdater();
+                that.updateAlertEndless(that, false);
                 that.refreshTimeRef = that.adapter.setTimeout(that.updateEndless, that.refreshTime || 600000, that);
             }
         }
     }
-    async updateAlertEndless(self: any): Promise<void> {
+    async updateAlertEndless(self: any, endless: boolean = true): Promise<void> {
         const that = self as ProviderController;
         if (that.unload) return;
         await that.setSpeakAllowed();
         await that.checkAlerts();
         /** update every minute after 1.333 seconds. Avoid the full minute, full second and half second :) */
         const timeout = 61333 - (Date.now() % 60000);
-        that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+        if (endless) that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
     }
 
     async checkAlerts(): Promise<void> {
+        let reply = undefined;
         for (const p in this.providers) {
-            await this.providers[p].getAlertsAndWrite();
+            reply = await this.providers[p].getAlertsAndWrite(reply);
+        }
+        if (reply !== undefined) {
+            await this.library.writeFromJson(
+                'alerts',
+                'allService.alerts',
+                definitionen.statesObjectsWarnings,
+                reply,
+                false,
+            );
         }
     }
 

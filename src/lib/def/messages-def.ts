@@ -224,6 +224,18 @@ export const genericWarntypState: genericWarntypeStatesType = {
         },
         native: {},
     },
+    provider: {
+        _id: '',
+        type: 'state',
+        common: {
+            name: 'customFormatedTokensJson.provider',
+            type: 'string',
+            role: 'text',
+            read: true,
+            write: false,
+        },
+        native: {},
+    },
 };
 export function isKeyOfObject<T extends object>(key: string | number | symbol, obj: T): key is keyof T {
     return key in obj;
@@ -236,6 +248,7 @@ type genericWartypeAlertType = {
     headline: string;
     type: number;
     active: boolean;
+    provider: string;
 };
 export type genericWarntypeAlertJsonType = ChangeTypeOfKeysOptional<
     genericWarnTypNameJsonType,

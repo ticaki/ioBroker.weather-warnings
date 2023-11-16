@@ -133,8 +133,8 @@ class BaseProvider extends import_library.BaseClass {
       definitionen.genericStateObjects.info.connection
     );
   }
-  async getAlertsAndWrite() {
-    const reply = {};
+  async getAlertsAndWrite(allReplys = void 0) {
+    const reply = { asList: "" };
     for (const t in messagesDef.genericWarntyp) {
       if (t == "0")
         continue;
@@ -144,36 +144,44 @@ class BaseProvider extends import_library.BaseClass {
         end: 1,
         headline: "",
         active: false,
-        type: -1
+        type: -1,
+        provider: ""
       };
     }
-    const warntypeArray = [];
     if (!reply)
       throw new Error("error(234) reply not definied");
-    for (const a in this.messages) {
-      const m = this.messages[a];
-      if (!m)
-        continue;
-      const name = messagesDef.genericWarntyp[m.genericType].id;
-      if (name == "none")
-        continue;
-      if (reply[name] === void 0)
-        continue;
-      if (m.endtime < Date.now())
-        continue;
-      if (m.starttime <= Date.now() && reply[name].level < m.level || m.starttime > Date.now() && (reply[name].start === 1 || reply[name].start > m.starttime)) {
-        warntypeArray.push(this.library.getTranslation(messagesDef.genericWarntyp[m.genericType].name));
-        reply[name] = {
-          level: m.level,
-          start: m.starttime,
-          end: m.endtime,
-          headline: m.formatedData !== void 0 ? String(m.formatedData.headline) : "",
-          active: m.starttime <= Date.now() && m.endtime >= Date.now(),
-          type: m.genericType
-        };
+    if (allReplys === void 0)
+      allReplys = reply;
+    [reply, allReplys].forEach((reply2) => {
+      let warntypeArray = [];
+      for (const a in this.messages) {
+        const m = this.messages[a];
+        if (!m)
+          continue;
+        const name = messagesDef.genericWarntyp[m.genericType].id;
+        if (name == "none")
+          continue;
+        if (reply2[name] === void 0)
+          continue;
+        if (m.endtime < Date.now())
+          continue;
+        if (m.starttime <= Date.now() && reply2[name].level < m.level || m.starttime > Date.now() && (reply2[name].start === 1 || reply2[name].start > m.starttime)) {
+          warntypeArray.push(this.library.getTranslation(messagesDef.genericWarntyp[m.genericType].name));
+          reply2[name] = {
+            level: m.level,
+            start: m.starttime,
+            end: m.endtime,
+            headline: m.formatedData !== void 0 ? String(m.formatedData.headline) : "",
+            active: m.starttime <= Date.now() && m.endtime >= Date.now(),
+            type: m.genericType,
+            provider: m.formatedData ? m.formatedData.provider : ""
+          };
+        }
       }
-    }
-    reply["asList"] = warntypeArray.filter((item, pos, arr) => arr.indexOf(item) == pos).join(", ");
+      if (reply2["asList"] !== void 0)
+        warntypeArray = warntypeArray.concat(reply2["asList"].split(", "));
+      reply2["asList"] = warntypeArray.filter((item, pos, arr) => item && arr.indexOf(item) == pos).join(", ");
+    });
     await this.library.writeFromJson(
       this.name + ".alerts",
       "allService.alerts",
@@ -181,7 +189,7 @@ class BaseProvider extends import_library.BaseClass {
       reply,
       false
     );
-    return reply;
+    return allReplys;
   }
   async getDataFromProvider() {
     if (!this.url || !this.warncellId) {
@@ -734,22 +742,34 @@ class ProviderController extends import_library.BaseClass {
         that2.refreshTimeRef = that2.adapter.setTimeout(updater, 250, that2, index);
       } else {
         await that2.doEndOfUpdater();
+        that2.updateAlertEndless(that2, false);
         that2.refreshTimeRef = that2.adapter.setTimeout(that2.updateEndless, that2.refreshTime || 6e5, that2);
       }
     }
   }
-  async updateAlertEndless(self) {
+  async updateAlertEndless(self, endless = true) {
     const that = self;
     if (that.unload)
       return;
     await that.setSpeakAllowed();
     await that.checkAlerts();
     const timeout = 61333 - Date.now() % 6e4;
-    that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+    if (endless)
+      that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
   }
   async checkAlerts() {
+    let reply = void 0;
     for (const p in this.providers) {
-      await this.providers[p].getAlertsAndWrite();
+      reply = await this.providers[p].getAlertsAndWrite(reply);
+    }
+    if (reply !== void 0) {
+      await this.library.writeFromJson(
+        "alerts",
+        "allService.alerts",
+        definitionen.statesObjectsWarnings,
+        reply,
+        false
+      );
     }
   }
   async doEndOfUpdater() {

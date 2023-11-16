@@ -198,6 +198,18 @@ const genericWarntypState = {
       write: false
     },
     native: {}
+  },
+  provider: {
+    _id: "",
+    type: "state",
+    common: {
+      name: "customFormatedTokensJson.provider",
+      type: "string",
+      role: "text",
+      read: true,
+      write: false
+    },
+    native: {}
   }
 };
 function isKeyOfObject(key, obj) {

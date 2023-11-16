@@ -146,6 +146,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* (ticaki) Added: global alerts and alerts.***.provider
 * (ticaki) Changed: Token ...adverb - if no adverb, then day of the week.
 
 ### 0.5.6 (2023-11-15)

@@ -444,13 +444,14 @@ class WeatherWarnings extends utils.Adapter {
           }
         }
         holdStates.push("commands.");
+        holdStates.push("alerts.");
         holdStates.push("info.connection");
         holdStates.push("provider.activeWarnings_json");
         holdStates.push("provider.history");
         holdStates.push("provider.activeWarnings");
         await self.library.cleanUpTree(holdStates, null, 3);
         await self.library.cleanUpTree(holdStates2, reCheckStates, 5);
-        self.providerController.finishInit();
+        await self.providerController.finishInit();
         self.providerController.updateEndless(self.providerController);
         self.providerController.updateAlertEndless(self.providerController);
       },
