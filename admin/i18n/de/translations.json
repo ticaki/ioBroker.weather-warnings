@@ -336,7 +336,7 @@
     "statesObjectsWarnings.zamgService.raw.rawinfo.wlevel": "Warnstufe",
     "statesObjectsWarnings.zamgService.raw.rawinfo.start": "Warnung: Startzeitpunkt als Unixzeit",
     "statesObjectsWarnings.zamgService.raw.rawinfo.end": "Warnung: Endzeitpunkt als Unixzeit",
-    "statesObjectsWarnings.allService.formatedkeys._channel": "Formatierter Datenpunkt",
+    "statesObjectsWarnings.allService.formatedkeys._channel": "Formatierte Datenpunkte",
     "statesObjectsWarnings.allService.formatedkeys.countdown": "Zeit bis/vom Start",
     "statesObjectsWarnings.allService.formatedkeys.status": "Warnzustand.",
     "statesObjectsWarnings.allService.formatedkeys.starttime": "Startzeit HH:MM der Warnung",
