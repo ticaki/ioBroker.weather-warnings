@@ -11,7 +11,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "dwdEnabled",
                     "newLine": true
                 },
@@ -20,7 +20,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "telegram_Enabled",
                     "newLine": false
                 },
@@ -29,7 +29,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "alexa2_Enabled",
                     "newLine": false
                 },
@@ -38,7 +38,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "json_Enabled",
                     "hidden": "data.imExpert != true",
                     "newLine": false
@@ -48,7 +48,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "uwzEnabled",
                     "newLine": true
                 },
@@ -57,7 +57,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "whatsapp_Enabled",
                     "newLine": false
                 },
@@ -66,7 +66,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "sayit_Enabled",
                     "newLine": false
                 },
@@ -75,7 +75,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "history_Enabled",
                     "newLine": false
                 },
@@ -84,7 +84,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "zamgEnabled",
                     "newLine": true
                 },
@@ -93,7 +93,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "pushover_Enabled",
                     "newLine": false
                 },
@@ -102,7 +102,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "label": "email_Enabled",
                     "newLine": false
                 },
@@ -124,7 +124,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "newLine": true
                 },
                 "refreshTime": {
@@ -135,7 +135,9 @@
                     "xs": 12,
                     "sm": 8,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
+                    "validator": "data.refreshTime >= 5" ,
+                    "validatorNoSaveOnError": true,
                     "newLine": true
                 },
                 "numOfRawWarnings": {
@@ -147,7 +149,9 @@
                     "xs": 12,
                     "sm": 8,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
+                    "validator": "data.numOfRawWarnings > 0" ,
+                    "validatorNoSaveOnError": true,
                     "newLine": false
                 },
                 "notPushAtStart": {
@@ -170,63 +174,6 @@
                     "label": "imExpert",
                     "newLine": true
                 },
-                "dividerDirs": {
-                    "newLine": true,
-                    "type": "header",
-                    "text": "dividerDirs",
-                    "hidden": "data.imExpert != true",
-                    "size": 3
-                },
-                "allowedDirs": {
-                    "type": "accordion",
-                    "newLine": true,
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 12,
-                    "noDelete": true,
-                    "lg": 12,
-                    "titleAttr": "providerService",
-                    "label": "allowedDirs",
-                    "hidden": "data.imExpert != true",
-                    "items": [
-                        {
-                            "attr": "providerService",
-                            "type": "text",
-                            "readOnly": true,
-                            "xs": 12,
-                            "sm": 2,
-                            "md": 2,
-                            "lg": 2
-                        },
-                        {
-                            "attr": "dpWarning",
-                            "type": "checkbox",
-                            "xs": 12,
-                            "sm": 12,
-                            "md": 2,
-                            "lg": 2,
-                            "label": ".warning"
-                        },
-                        {
-                            "attr": "dpFormated",
-                            "type": "checkbox",
-                            "xs": 12,
-                            "sm": 12,
-                            "md": 2,
-                            "lg": 2,
-                            "label": ".formatedKeys"
-                        },
-                        {
-                            "attr": "dpAlerts",
-                            "type": "checkbox",
-                            "xs": 12,
-                            "sm": 12,
-                            "md": 2,
-                            "lg": 2,
-                            "label": ".alerts"
-                        }
-                    ]
-                },
                 "dividerHdr2": {
                     "newLine": true,
                     "type": "header",
@@ -236,6 +183,7 @@
                 },
                 "useTestWarnings": {
                     "type": "checkbox",
+                    "disabled": "data.useTestCase",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -245,12 +193,13 @@
                 },
                 "useTestCase": {
                     "type": "checkbox",
+                    "disabled": "!data.useTestWarnings && !data.useTestCase",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
                     "label": "useTestCase",
-                    "hidden": "data.imExpert != true",
+                    "hidden": "data.imExpert != true && !data.useTestCase",
                     "newLine": false
                 },
                 "useJsonHistory": {
@@ -390,6 +339,63 @@
                     "readOnly": true,
                     "hidden": "data.imExpert != true",
                     "newLine": true
+                },
+                "dividerDirs": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "dividerDirs",
+                    "hidden": "data.imExpert != true",
+                    "size": 3
+                },
+                "allowedDirs": {
+                    "type": "accordion",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "noDelete": true,
+                    "lg": 12,
+                    "titleAttr": "providerService",
+                    "label": "allowedDirs",
+                    "hidden": "data.imExpert != true",
+                    "items": [
+                        {
+                            "attr": "providerService",
+                            "type": "text",
+                            "readOnly": true,
+                            "xs": 12,
+                            "sm": 2,
+                            "md": 2,
+                            "lg": 3
+                        },
+                        {
+                            "attr": "dpWarning",
+                            "type": "checkbox",
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 2,
+                            "lg": 3,
+                            "label": ".warning"
+                        },
+                        {
+                            "attr": "dpFormated",
+                            "type": "checkbox",
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 2,
+                            "lg": 3,
+                            "label": ".formatedKeys"
+                        },
+                        {
+                            "attr": "dpAlerts",
+                            "type": "checkbox",
+                            "xs": 12,
+                            "sm": 12,
+                            "md": 2,
+                            "lg": 3,
+                            "label": ".alerts"
+                        }
+                    ]
                 }        
             }
         },
@@ -437,7 +443,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "data.templateTable[0].template != 'template.NewMessage'",
                     "label": "requestReload",
                     "newLine": true
@@ -487,6 +493,7 @@
             "type": "panel",
             "label": "DWD",
             "hidden": "!data.dwdEnabled",
+            "icon": "icons/dwd.png",
             "items": {
                 "dwdwarncellTable": {
                     "type": "table",
@@ -810,6 +817,7 @@
             "type": "panel",
             "label": "ZAMG",
             "hidden": "!data.zamgEnabled",
+            "icon": "icons/zamg.svg",
             "items": {
                 "zamgwarncellTable": {
                     "type": "table",
@@ -937,7 +945,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.telegram_Adapter == 'none'",
@@ -949,7 +957,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "uwzEnabled",
@@ -960,7 +968,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -1129,7 +1137,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "default": "",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "telegram_UserId",
@@ -1140,7 +1148,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "default": true,
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "telegram_withNoSound",
@@ -1151,7 +1159,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "default": "none",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "hidden": "data.imExpert != true",
@@ -1177,7 +1185,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "default": "",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "hidden": "data.imExpert != true",
@@ -1193,7 +1201,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -1222,7 +1230,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.whatsapp_Adapter == 'none'",
@@ -1234,7 +1242,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.whatsapp_Adapter == 'none'",
                     "label": "uwzEnabled",
@@ -1245,7 +1253,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.whatsapp_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -1424,7 +1432,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -1453,7 +1461,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.pushover_Adapter == 'none'",
@@ -1465,7 +1473,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "uwzEnabled",
@@ -1476,7 +1484,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -1659,7 +1667,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "default": "none",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "pushover_Sound",
@@ -1775,7 +1783,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "default": "",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "pushover_Device",
@@ -1790,7 +1798,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -1838,7 +1846,7 @@
                     "xs": 12,
                     "sm": 8,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "newLine": false
                 },
                 "alexa2_DwdEnabled": {
@@ -1846,7 +1854,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.dwdEnabled",
                     "disabled": "data.alexa2_Adapter == 'none'",
                     "label": "dwdEnabled",
@@ -1857,7 +1865,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.alexa2_Adapter == 'none'",
                     "label": "uwzEnabled",
@@ -1868,7 +1876,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.alexa2_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -2061,7 +2069,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "data.imExpert != true",
                     "default": false,
                     "disabled": "data.alexa2_Adapter == 'none'",
@@ -2119,7 +2127,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -2162,7 +2170,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.dwdEnabled",
                     "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "default": true,
@@ -2180,7 +2188,7 @@
                     "xs": 12,
                     "sm": 8,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "newLine": false
                 },
                 "sayit_UwzEnabled": {
@@ -2188,7 +2196,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "default": true,
@@ -2200,7 +2208,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -2394,7 +2402,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "data.imExpert != true || true",
                     "default": false,
                     "disabled": "data.sayit_Adapter == 'none'",
@@ -2410,7 +2418,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -2426,7 +2434,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "label": "dwdEnabled",
@@ -2447,7 +2455,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.uwzEnabled",
                     "label": "uwzEnabled",
                     "newLine": true
@@ -2457,7 +2465,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.zamgEnabled",
                     "label": "zamgEnabled",
                     "newLine": true
@@ -2524,7 +2532,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -2540,7 +2548,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "label": "dwdEnabled",
@@ -2560,7 +2568,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.uwzEnabled",
                     "label": "uwzEnabled",
                     "newLine": true
@@ -2570,7 +2578,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.zamgEnabled",
                     "label": "zamgEnabled",
                     "newLine": true
@@ -2639,7 +2647,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -2668,7 +2676,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "label": "dwdEnabled",
@@ -2679,7 +2687,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.uwzEnabled",
                     "label": "uwzEnabled",
                     "newLine": true
@@ -2689,7 +2697,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "!data.zamgEnabled",
                     "label": "zamgEnabled",
                     "newLine": true
@@ -2909,7 +2917,7 @@
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 2,
+                    "lg": 3,
                     "hidden": "true",
                     "useNative": true
                 }
