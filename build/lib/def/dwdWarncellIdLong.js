@@ -583,105 +583,105 @@ const dwdWarncellIdLong = `WARNCELLID;NAME;KURZNAME;CCC;BL
 710041101;Saarbr\xFCcken-West;Saarbr\xFCcken-W;XSD;SL
 710041102;Saarbr\xFCcken-Mitte;Saarbr\xFCcken-M;XSE;SL
 710041103;Saarbr\xFCcken-Ost;Saarbr\xFCcken-O;XSF;SL
-711000101;Berl. - Mitte;B.-Mitte;YED;BE
-711000102;Berl. - Moabit;B.-Moabit;YEE;BE
-711000103;Berl. - Hansaviertel;B.-Hansaviertel;YEF;BE
-711000104;Berl. - Tiergarten;B.-Tiergarten;YEG;BE
-711000105;Berl. - Wedding;B.-Wedding;YEH;BE
-711000106;Berl. - Gesundbrunnen;B.-Gesundbr.;YEI;BE
-711000201;Berl. - Friedrichshain;B.-Friedrh.;YBA;BE
-711000202;Berl. - Kreuzberg;B.-Kreuzberg;YBB;BE
-711000301;Berl. - Prenzlauer Berg;B.-Prenzl. Bg;YGA;BE
-711000302;Berl. - Wei\xDFensee;B.-Wei\xDFensee;YGB;BE
-711000303;Berl. - Blankenburg;B.-Blankenburg;YGC;BE
-711000304;Berl. - Heinersdorf;B.-Heinersdorf;YGD;BE
-711000305;Berl. - Karow;B.-Karow;YGE;BE
-711000306;Berl. - Stadtrandsiedlung Malchow;B.-Malchow;YGF;BE
-711000307;Berl. - Pankow;B.-Pankow;YGG;BE
-711000308;Berl. - Blankenfelde;B.-Blankenfelde;YGH;BE
-711000309;Berl. - Buch;B.-Buch;YGI;BE
-711000310;Berl. - Franz\xF6sisch Buchholz;B.-Buchholz;YGJ;BE
-711000311;Berl. - Niedersch\xF6nhausen;B.-N.sch\xF6nh.;YGK;BE
-711000312;Berl. - Rosenthal;B.-Rosenthal;YGL;BE
-711000313;Berl. - Wilhelmsruh;B.-Wilhelmsruh;YGK;BE
-711000401;Berl. - Charlottenburg;B.-Charlottenbg;YAD;BE
-711000402;Berl. - Wilmersdorf;B.-Wilmersdorf;YAE;BE
-711000403;Berl. - Schmargendorf;B.-Schmargend.;YAF;BE
-711000404;Berl. - Grunewald;B.-Grunewald;YAG;BE
-711000405;Berl. - Westend;B.-Westend;YAH;BE
-711000406;Berl. - Charlottenburg-Nord;B.-Ch.bg-Nord;YAI;BE
-711000407;Berl. - Halensee;B.-Halensee;YAJ;BE
-711000501;Berl. - Spandau;B.-Spandau;YIA;BE
-711000502;Berl. - Haselhorst;B.-Haselhorst;YIB;BE
-711000503;Berl. - Siemensstadt;B.-Siemensst;YIC;BE
-711000504;Berl. - Staaken;B.-Staaken;YID;BE
-711000505;Berl. - Gatow;B.-Gatow;YIE;BE
-711000506;Berl. - Kladow;B.-Kladow;YIF;BE
-711000507;Berl. - Hakenfelde;B.-Hakenfelde;YIG;BE
-711000508;Berl. - Falkenhagener Feld;B.-Falkenhag. F;YIH;BE
-711000509;Berl. - Wilhelmstadt;B.-Wilhelmstadt;YII;BE
-711000601;Berl. - Steglitz;B.-Steglitz;YLA;BE
-711000602;Berl. - Lichterfelde;B.-Lichterfelde;YLB;BE
-711000603;Berl. - Lankwitz;B.-Lankwitz;YLC;BE
-711000604;Berl. - Zehlendorf;B.-Zehlendorf;YLD;BE
-711000605;Berl. - Dahlem;B.-Dahlem;YLE;BE
-711000606;Berl. - Nikolassee;B.-Nikolassee;YLF;BE
-711000607;Berl. - Wannsee;B.-Wannsee;YLG;BE
-711000608;Berl. - Schlachtensee;B.-Schlachtensee;YLH;BE
-711000701;Berl. - Sch\xF6neberg;B.-Sch\xF6neberg;YJA;BE
-711000702;Berl. - Friedenau;B.-Friedenau;YJB;BE
-711000703;Berl. - Tempelhof;B.-Tempelhof;YJC;BE
-711000704;Berl. - Mariendorf;B.-Mariendorf;YJD;BE
-711000705;Berl. - Marienfelde;B.-Marienfelde;YJE;BE
-711000706;Berl. - Lichtenrade;B.-Lichtenrade;YJF;BE
-711000801;Berl. - Neuk\xF6lln;B.-Neuk\xF6lln;YFA;BE
-711000802;Berl. - Britz;B.-Britz;YFB;BE
-711000803;Berl. - Buckow;B.-Buckow;YFC;BE
-711000804;Berl. - Rudow;B.-Rudow;YFD;BE
-711000805;Berl. - Gropiusstadt;B.-Gropiusstadt;YFE;BE
-711000901;Berl. - Alt-Treptow;B.-Alt-Treptow;YKF;BE
-711000902;Berl. - Pl\xE4nterwald;B.-Alt-Pl\xE4nterwald;YKG;BE
-711000903;Berl. - Baumschulenweg;B.-Baumsch.weg;YKH;BE
-711000904;Berl. - Johannisthal;B.-Johannisthal;YKI;BE
-711000905;Berl. - Niedersch\xF6neweide;B.-Niedersch.w.;YKJ;BE
-711000906;Berl. - Altglienicke;B.-Altglienicke;YKK;BE
-711000907;Berl. - Adlershof;B.-Adlershof;YKL;BE
-711000908;Berl. - Bohnsdorf;B.-Bohnsdorf;YKM;BE
-711000909;Berl. - Obersch\xF6neweide;B.-Obersch.w.;YKN;BE
-711000910;Berl. - K\xF6penick;B.-K\xF6penick;YKO;BE
-711000911;Berl. - Friedrichshagen;B.-Friedrichshg;YKP;BE
-711000912;Berl. - Rahnsdorf;B.-Rahnsdorf;YKQ;BE
-711000913;Berl. - Gr\xFCnau;B.-Gr\xFCnau;YKR;BE
-711000914;Berl. - M\xFCggelheim;B.-M\xFCggelheim;YKS;BE
-711000915;Berl. - Schm\xF6ckwitz;B.-Schm\xF6ckwitz;YKT;BE
-711001001;Berl. - Marzahn;B.-Marzahn;YDE;BE
-711001002;Berl. - Biesdorf;B.-Biesdorf;YDF;BE
-711001003;Berl. - Kaulsdorf;B.-Kaulsdorf;YDG;BE
-711001004;Berl. - Mahlsdorf;B.-Mahlsdorf;YDH;BE
-711001005;Berl. - Hellersdorf;B.-Hellersdorf;YDI;BE
-711001101;Berl. - Friedrichsfelde;B.-Friedrichsf.;YCA;BE
-711001102;Berl. - Karlshorst;B.-Karlshorst;YCB;BE
-711001103;Berl. - Lichtenberg;B.-Lichtenberg;YCC;BE
-711001104;Berl. - Falkenberg;B.-Falkenberg;YCD;BE
-711001105;Berl. - Malchow;B.-Malchow;YCE;BE
-711001106;Berl. - Wartenberg;B.-Wartenberg;YCF;BE
-711001107;Berl. - Neu-Hohensch\xF6nhausen;B.-Neu-Hohensch;YCG;BE
-711001108;Berl. - Alt-Hohensch\xF6nhausen;B.-Alt-Hohensch;YCH;BE
-711001109;Berl. - Fennpfuhl;B.-Fennpfuhl;YCI;BE
-711001110;Berl. - Rummelsburg;B.-Rummelsburg;YCJ;BE
-711001201;Berl. - Reinickendorf;B.-Reinickend.;YHA;BE
-711001202;Berl. - Tegel;B.-Tegel;YHB;BE
-711001203;Berl. - Konradsh\xF6he;B.-Konradsh\xF6he;YHC;BE
-711001204;Berl. - Heiligensee;B.-Heiligensee;YHD;BE
-711001205;Berl. - Frohnau;B.-Frohnau;YHE;BE
-711001206;Berl. - Hermsdorf;B.-Hermsdorf;YHF;BE
-711001207;Berl. - Waidmannslust;B.-Waidm.lust;YHG;BE
-711001208;Berl. - L\xFCbars;B.-L\xFCbars;YHH;BE
-711001209;Berl. - Wittenau;B.-Wittenau;YHI;BE
-711001210;Berl. - M\xE4rkisches Viertel;B.-M\xE4rk. Viertel;YHJ;BE
-711001211;Berl. - Borsigwalde;B.-Borsigwalde;YHK;BE
+711000101;Berlin-Mitte;B.-Mitte;YED;BE
+711000102;Berlin-Moabit;B.-Moabit;YEE;BE
+711000103;Berlin-Hansaviertel;B.-Hansaviertel;YEF;BE
+711000104;Berlin-Tiergarten;B.-Tiergarten;YEG;BE
+711000105;Berlin-Wedding;B.-Wedding;YEH;BE
+711000106;Berlin-Gesundbrunnen;B.-Gesundbr.;YEI;BE
+711000201;Berlin-Friedrichshain;B.-Friedrh.;YBA;BE
+711000202;Berlin-Kreuzberg;B.-Kreuzberg;YBB;BE
+711000301;Berlin-Prenzlauer Berg;B.-Prenzl. Bg;YGA;BE
+711000302;Berlin-Wei\xDFensee;B.-Wei\xDFensee;YGB;BE
+711000303;Berlin-Blankenburg;B.-Blankenburg;YGC;BE
+711000304;Berlin-Heinersdorf;B.-Heinersdorf;YGD;BE
+711000305;Berlin-Karow;B.-Karow;YGE;BE
+711000306;Berlin-Stadtrandsiedlung Malchow;B.-Malchow;YGF;BE
+711000307;Berlin-Pankow;B.-Pankow;YGG;BE
+711000308;Berlin-Blankenfelde;B.-Blankenfelde;YGH;BE
+711000309;Berlin-Buch;B.-Buch;YGI;BE
+711000310;Berlin-Franz\xF6sisch Buchholz;B.-Buchholz;YGJ;BE
+711000311;Berlin-Niedersch\xF6nhausen;B.-N.sch\xF6nh.;YGK;BE
+711000312;Berlin-Rosenthal;B.-Rosenthal;YGL;BE
+711000313;Berlin-Wilhelmsruh;B.-Wilhelmsruh;YGK;BE
+711000401;Berlin-Charlottenburg;B.-Charlottenbg;YAD;BE
+711000402;Berlin-Wilmersdorf;B.-Wilmersdorf;YAE;BE
+711000403;Berlin-Schmargendorf;B.-Schmargend.;YAF;BE
+711000404;Berlin-Grunewald;B.-Grunewald;YAG;BE
+711000405;Berlin-Westend;B.-Westend;YAH;BE
+711000406;Berlin-Charlottenburg-Nord;B.-Ch.bg-Nord;YAI;BE
+711000407;Berlin-Halensee;B.-Halensee;YAJ;BE
+711000501;Berlin-Spandau;B.-Spandau;YIA;BE
+711000502;Berlin-Haselhorst;B.-Haselhorst;YIB;BE
+711000503;Berlin-Siemensstadt;B.-Siemensst;YIC;BE
+711000504;Berlin-Staaken;B.-Staaken;YID;BE
+711000505;Berlin-Gatow;B.-Gatow;YIE;BE
+711000506;Berlin-Kladow;B.-Kladow;YIF;BE
+711000507;Berlin-Hakenfelde;B.-Hakenfelde;YIG;BE
+711000508;Berlin-Falkenhagener Feld;B.-Falkenhag. F;YIH;BE
+711000509;Berlin-Wilhelmstadt;B.-Wilhelmstadt;YII;BE
+711000601;Berlin-Steglitz;B.-Steglitz;YLA;BE
+711000602;Berlin-Lichterfelde;B.-Lichterfelde;YLB;BE
+711000603;Berlin-Lankwitz;B.-Lankwitz;YLC;BE
+711000604;Berlin-Zehlendorf;B.-Zehlendorf;YLD;BE
+711000605;Berlin-Dahlem;B.-Dahlem;YLE;BE
+711000606;Berlin-Nikolassee;B.-Nikolassee;YLF;BE
+711000607;Berlin-Wannsee;B.-Wannsee;YLG;BE
+711000608;Berlin-Schlachtensee;B.-Schlachtensee;YLH;BE
+711000701;Berlin-Sch\xF6neberg;B.-Sch\xF6neberg;YJA;BE
+711000702;Berlin-Friedenau;B.-Friedenau;YJB;BE
+711000703;Berlin-Tempelhof;B.-Tempelhof;YJC;BE
+711000704;Berlin-Mariendorf;B.-Mariendorf;YJD;BE
+711000705;Berlin-Marienfelde;B.-Marienfelde;YJE;BE
+711000706;Berlin-Lichtenrade;B.-Lichtenrade;YJF;BE
+711000801;Berlin-Neuk\xF6lln;B.-Neuk\xF6lln;YFA;BE
+711000802;Berlin-Britz;B.-Britz;YFB;BE
+711000803;Berlin-Buckow;B.-Buckow;YFC;BE
+711000804;Berlin-Rudow;B.-Rudow;YFD;BE
+711000805;Berlin-Gropiusstadt;B.-Gropiusstadt;YFE;BE
+711000901;Berlin-Alt-Treptow;B.-Alt-Treptow;YKF;BE
+711000902;Berlin-Pl\xE4nterwald;B.-Alt-Pl\xE4nterwald;YKG;BE
+711000903;Berlin-Baumschulenweg;B.-Baumsch.weg;YKH;BE
+711000904;Berlin-Johannisthal;B.-Johannisthal;YKI;BE
+711000905;Berlin-Niedersch\xF6neweide;B.-Niedersch.w.;YKJ;BE
+711000906;Berlin-Altglienicke;B.-Altglienicke;YKK;BE
+711000907;Berlin-Adlershof;B.-Adlershof;YKL;BE
+711000908;Berlin-Bohnsdorf;B.-Bohnsdorf;YKM;BE
+711000909;Berlin-Obersch\xF6neweide;B.-Obersch.w.;YKN;BE
+711000910;Berlin-K\xF6penick;B.-K\xF6penick;YKO;BE
+711000911;Berlin-Friedrichshagen;B.-Friedrichshg;YKP;BE
+711000912;Berlin-Rahnsdorf;B.-Rahnsdorf;YKQ;BE
+711000913;Berlin-Gr\xFCnau;B.-Gr\xFCnau;YKR;BE
+711000914;Berlin-M\xFCggelheim;B.-M\xFCggelheim;YKS;BE
+711000915;Berlin-Schm\xF6ckwitz;B.-Schm\xF6ckwitz;YKT;BE
+711001001;Berlin-Marzahn;B.-Marzahn;YDE;BE
+711001002;Berlin-Biesdorf;B.-Biesdorf;YDF;BE
+711001003;Berlin-Kaulsdorf;B.-Kaulsdorf;YDG;BE
+711001004;Berlin-Mahlsdorf;B.-Mahlsdorf;YDH;BE
+711001005;Berlin-Hellersdorf;B.-Hellersdorf;YDI;BE
+711001101;Berlin-Friedrichsfelde;B.-Friedrichsf.;YCA;BE
+711001102;Berlin-Karlshorst;B.-Karlshorst;YCB;BE
+711001103;Berlin-Lichtenberg;B.-Lichtenberg;YCC;BE
+711001104;Berlin-Falkenberg;B.-Falkenberg;YCD;BE
+711001105;Berlin-Malchow;B.-Malchow;YCE;BE
+711001106;Berlin-Wartenberg;B.-Wartenberg;YCF;BE
+711001107;Berlin-Neu-Hohensch\xF6nhausen;B.-Neu-Hohensch;YCG;BE
+711001108;Berlin-Alt-Hohensch\xF6nhausen;B.-Alt-Hohensch;YCH;BE
+711001109;Berlin-Fennpfuhl;B.-Fennpfuhl;YCI;BE
+711001110;Berlin-Rummelsburg;B.-Rummelsburg;YCJ;BE
+711001201;Berlin-Reinickendorf;B.-Reinickend.;YHA;BE
+711001202;Berlin-Tegel;B.-Tegel;YHB;BE
+711001203;Berlin-Konradsh\xF6he;B.-Konradsh\xF6he;YHC;BE
+711001204;Berlin-Heiligensee;B.-Heiligensee;YHD;BE
+711001205;Berlin-Frohnau;B.-Frohnau;YHE;BE
+711001206;Berlin-Hermsdorf;B.-Hermsdorf;YHF;BE
+711001207;Berlin-Waidmannslust;B.-Waidm.lust;YHG;BE
+711001208;Berlin-L\xFCbars;B.-L\xFCbars;YHH;BE
+711001209;Berlin-Wittenau;B.-Wittenau;YHI;BE
+711001210;Berlin-M\xE4rkisches Viertel;B.-M\xE4rk. Viertel;YHJ;BE
+711001211;Berlin-Borsigwalde;B.-Borsigwalde;YHK;BE
 712054001;Marquardt-Fahrland;Marquardt-Fahrland;PXN;BB
-712054002;Potsdam Stadt;Potsdam;PXS;BB
+712054002;Stadt Potsdam;Potsdam;PXS;BB
 714511101;Chemnitz-Nord;Chemnitz-Nord;XCA;SN
 714511102;Chemnitz-West;Chemnitz-West;XCB;SN
 714511103;Chemnitz-Mitte;Chemnitz-Mitte;XCC;SN

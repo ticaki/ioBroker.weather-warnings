@@ -146,6 +146,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) Optimise: DWD City names, adminconfiguration, translations
+
 ### 0.6.0 (2023-11-16)
 * (ticaki) Added: global alerts.
 * (ticaki) Changed: Token ...adverb - if no adverb, then day of the week.

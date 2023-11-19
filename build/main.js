@@ -797,7 +797,9 @@ class WeatherWarnings extends utils.Adapter {
           const line = element.split(";");
           const value = line[0];
           const cityArray = line[1].split(" ");
-          const typ = cityArray.length > 1 ? cityArray.shift() : void 0;
+          let typ = void 0;
+          if (["Kreis", "Stadt", "Gemeinde", "Hansestadt"].indexOf(cityArray[0]) !== -1)
+            typ = cityArray.length > 1 ? cityArray.shift() : void 0;
           let cityText = cityArray.join(" ") + " (";
           if (typ !== void 0)
             cityText += typ + "/";

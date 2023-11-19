@@ -512,7 +512,6 @@
                             "type": "autocompleteSendTo",
                             "command": "dwd.name",
                             "jsonData": "{ \"dwd\": \"${data.dwdSelectId}\" }",
-                            "freeSolo": false,
                             "default": "",
                             "width": "50% ",
                             "title": "dwdSelectId"
