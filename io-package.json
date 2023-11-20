@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.1",
+    "version": "0.6.2",
     "news": {
+      "0.6.2": {
+        "en": "Reduce zamg spam",
+        "de": "Reduzieren Sie zamg Spam",
+        "ru": "Уменьшить спам zamg",
+        "pt": "Reduzir spam zamg",
+        "nl": "Reduce Zamg spam",
+        "fr": "Réduire le spam de zamg",
+        "it": "Ridurre lo spam",
+        "es": "Reducir el spam zamg",
+        "pl": "Zamkujcie się",
+        "uk": "Зменшення zamg спам",
+        "zh-cn": "减少zamg-01"
+      },
       "0.6.1": {
         "en": "Optimise: DWD City names, adminconfiguration, translations",
         "de": "Optimise: DWD Stadtnamen, Verwaltung, Übersetzungen",
@@ -80,19 +93,6 @@
         "pl": "W: Państwa dowodzenia (tekst / automode)\nAdded: alarm Lista typów ostrzeżeń.\nChanged: alarmuj bieżące zdarzenie z najwyższym poziomem lub kolejnym wydarzeniem",
         "uk": "Виправлено: командні стани (текст / автомоде)\nДодано: повідомлення Перелік типів попередження.\nЗмінено: повідомлення перегляду поточного заходу з найвищим рівнем або наступною подією",
         "zh-cn": "固定:指挥站(背景/汽车)\n增加:警惕 警告类型清单。.\n变化:提醒人们注意当前活动最高或下一次活动"
-      },
-      "0.5.2": {
-        "en": "Multiple Say-It instances.\nSome icons added.\n-no warning- Warning level for uwz corrected.",
-        "de": "Mehrere Say-It-Instanzen.\nEinige Symbole hinzugefügt.\n- Keine Warnung. Warnstufe für uwz korrigiert.",
-        "ru": "Несколько примеров Say-It.\nДобавлены некоторые иконки.\n-без предупреждения- Уровень предостережения для uwz исправлен.",
-        "pt": "Várias instâncias Say-It.\nAlguns ícones adicionados.\n- Sem aviso... Nível de aviso para uwz corrigido.",
-        "nl": "Meerdere Say-It instances.\nEnkele iconen toegevoegd.\n- Geen waarschuwing. Waarschuwingsniveau voor uwz gecorrigeerd.",
-        "fr": "Plusieurs instances Say-It.\nQuelques icônes ajoutées.\n- sans avertissement... Niveau d ' avertissement pour le Koweït corrigé.",
-        "it": "Molteplici istanze Say-It.\nAlcune icone aggiunte.\n- Niente avvertimenti. Livello di avvertimento per uwz corretto.",
-        "es": "Múltiples instancias.\nAlgunos iconos añadidos.\n- sin aviso... Nivel de advertencia para Uwz corregido.",
-        "pl": "Wielokrotny przypadek.\nDodano kilka ikon.\n- no warning- Poziom uwz skorygował.",
-        "uk": "Кілька екземплярів Say-It.\nДодані іконки.\n-без попередження Рівень попередження для виправки uwz.",
-        "zh-cn": "多门Say-It案件。.\n有些方面增加了。.\n- 无警告 瓦兹的防备水平得到纠正。."
       }
     },
     "titleLang": {
