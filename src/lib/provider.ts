@@ -272,6 +272,17 @@ export class BaseProvider extends BaseClass {
         this.messages.sort((a, b) => {
             return a.starttime - b.starttime;
         });
+        // delete msgs that send a remove with a follow up
+        this.messages = this.messages.filter((item) => {
+            if (item.notDeleted || item.newMessage) return true;
+            if (item.endtime > Date.now()) return true;
+            for (const innerItem of this.messages) {
+                if (innerItem == item || innerItem.provider !== item.provider || innerItem.type !== item.type) continue;
+                const diff = Math.abs(innerItem.starttime - item.endtime);
+                if (diff <= this.providerController.refreshTime || innerItem.starttime <= item.endtime) return false;
+            }
+            return true;
+        });
         for (let m = 0; m < this.messages.length && m < this.adapter.config.numOfRawWarnings; m++) {
             index = m;
             await this.messages[m].writeFormatedKeys(m);
@@ -413,36 +424,27 @@ export class ZAMGProvider extends BaseProvider {
             return Number(a.properties.rawinfo.start) - Number(b.properties.rawinfo.start);
         });
         this.messages.forEach((a) => (a.notDeleted = false));
-        for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.properties.warnings.length; a++) {
+        let b = 0;
+        for (let a = 0; b < this.adapter.config.numOfRawWarnings && a < result.properties.warnings.length; a++) {
             if (
                 this.filter.hours > 0 &&
                 Number(result.properties.warnings[a].properties.rawinfo.start) >
                     Date.now() / 1000 + this.filter.hours * 3600
             )
                 continue;
+            if (Number(result.properties.warnings[a].properties.rawinfo.end) < Date.now() / 1000) continue;
+            b++;
             // special case for zamg
             result.properties.warnings[a].properties.location = result.properties.location.properties.name;
             result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
             await super.updateData(result.properties.warnings[a].properties, a);
-            const data = JSON.parse(
-                JSON.stringify(result.properties.warnings[a].properties),
-            ) as providerDef.dataImportZamgTypeProperties;
             const index = this.messages.findIndex((m) => {
-                if (this.adapter.config.zamgEveryChange) {
-                    data.chgid = m.rawWarning.chgid;
-                    data.create = m.rawWarning.create;
-                    if (data.updategrund !== '')
-                        this.log.warn(
-                            `ZAMG: result.properties.warnings[${a}].properties.updategrund: ${data.updategrund} - Please post this line in the forum or on Github.`,
-                        );
-                    return JSON.stringify(data) == JSON.stringify(m.rawWarning);
-                } else {
-                    return (
-                        m.rawWarning.warnid == result.properties.warnings[a].properties.warnid &&
-                        result.properties.warnings[a].properties.rawinfo.wlevel == m.rawWarning.rawinfo.wlevel &&
-                        result.properties.warnings[a].properties.rawinfo.wtype == m.rawWarning.rawinfo.wtype
-                    );
-                }
+                return (
+                    m.rawWarning.warnid == result.properties.warnings[a].properties.warnid &&
+                    result.properties.warnings[a].properties.rawinfo.wlevel == m.rawWarning.rawinfo.wlevel &&
+                    result.properties.warnings[a].properties.rawinfo.wtype == m.rawWarning.rawinfo.wtype &&
+                    result.properties.warnings[a].properties.rawinfo.start == m.rawWarning.rawinfo.start
+                );
             });
             if (index == -1) {
                 const nmessage = new MessagesClass(

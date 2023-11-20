@@ -872,16 +872,6 @@
                     "md": 6,
                     "lg": 4
                 },
-                "zamgEveryChange": {
-                    "type": "checkbox",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 6,
-                    "default": false,
-                    "label": "providerEveryChange",
-                    "newLine": true
-                },
                 "zamgHourFilter": {
                     "type": "number",
                     "min": 0,

@@ -41,9 +41,13 @@ Nach der Installation und dem automatischen öffnen der Konfigurationsseite dies
 
 - **Update interval:** Abrufinterval in Minuten zu dem Daten geladen werden. (minimum: 5)
 
+- **Anzahl der Warnungen** Das ist die maximale Anzahl an Warnungen die verarbeitet werden pro Provider. 
+
 - **Eingehende Warnungen ...:** Nach dem Adapterstart werden, die beim ersten Datenabruf erhaltenen Warnungen, als bekannt angesehen und lösen keine Benachrichtigung aus.
 
 - **Testwarnungen aktivieren! Adapter ist offline:** Es werden mindestens 2 Testmeldungen pro Provider bei einem Datenabruf in das System gegeben, mit Zufälligen Stand und Endzeiten
+
+- **Testwarnung mit Wechsel** Hier wird die Inverallzeit deutlich verringert, es werden 2 Warnungen 
 
 
 
