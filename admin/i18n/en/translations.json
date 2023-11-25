@@ -216,7 +216,7 @@
     "template.RemoveAllJson": "{ \"status\": \"All clear!\"\\}",
     "template.NewMessageWithArray": "Luke we got a new warning ${Warntypename} from ${starttime}, looks like a ${_CustomArray}",
     "template._CustomArray": "${[cake,stormtrooper,tie-fighter,imperial cruisers,death star]warnlevelnumber}",
-    "template.emailMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"${warnlevelcolorhex}\"><b><font color=#000000>${Status} ${headline}</font></b></td></tr><tr><td style=\"padding: 5px 0 20px 0;\">${description}</td></tr>",
+    "template.emailMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"${warnlevelcolorhex}\"><b><font color=#000000>${Status} ${headline} </font></b></td></tr><tr><td style=\"padding: 5px 0 20px 0;\">${description}</td></tr>",
     "template.emailFooter": "</table>",
     "template.emailHeader": "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">",
     "template.emailTitle": "${Status} for ${locationcustom}",
