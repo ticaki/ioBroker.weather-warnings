@@ -1,6 +1,6 @@
 import jsonata from 'jsonata';
 import _fs from 'fs';
-import { genericStateObjects, statesObjectsWarningsType } from './def/definitionen';
+import { genericStateObjects, statesObjectsWarningsType } from './def/definition';
 import WeatherWarnings from '../main';
 
 // only change this for other adapters

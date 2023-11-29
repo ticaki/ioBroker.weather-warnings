@@ -1,5 +1,5 @@
 import WeatherWarnings from '../main';
-import { statesObjectsWarnings } from './def/definitionen';
+import { statesObjectsWarnings } from './def/definition';
 import * as MessageType from './def/messages-def';
 import * as NotificationType from './def/notificationService-def';
 import { messageFilterType } from './def/provider-def';

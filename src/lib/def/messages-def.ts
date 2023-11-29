@@ -1,5 +1,5 @@
 import { MessagesClass } from '../messages';
-import { customChannelType } from './definitionen';
+import { customChannelType } from './definition';
 import { providerServices } from './provider-def';
 
 /** Bezeichnungen die in Template verwendet werden können ohne "?:string;""

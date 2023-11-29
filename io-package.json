@@ -124,6 +124,7 @@
     "authors": [
       "ticaki <github@renopoint.de>"
     ],
+    "tier": 3,
     "keywords": [
       "weather",
       "dwd",

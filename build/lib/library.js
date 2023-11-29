@@ -49,7 +49,7 @@ __export(library_exports, {
 module.exports = __toCommonJS(library_exports);
 var import_jsonata = __toESM(require("jsonata"));
 var import_fs = __toESM(require("fs"));
-var import_definitionen = require("./def/definitionen");
+var import_definition = require("./def/definition");
 var _adapter, _prefix;
 class BaseClass {
   unload = false;
@@ -160,10 +160,10 @@ class Library extends BaseClass {
     if (result === null || result === void 0) {
       const k = key.split(".");
       if (k && k[k.length - 1].startsWith("_")) {
-        result = import_definitionen.genericStateObjects.customString;
+        result = import_definition.genericStateObjects.customString;
       } else {
         this.log.warn(`No definition for ${key}!`);
-        result = import_definitionen.genericStateObjects.state;
+        result = import_definition.genericStateObjects.state;
       }
     }
     return this.cloneObject(result);

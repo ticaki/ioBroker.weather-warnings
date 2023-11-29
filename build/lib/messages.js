@@ -27,7 +27,7 @@ __export(messages_exports, {
   MessagesClass: () => MessagesClass
 });
 module.exports = __toCommonJS(messages_exports);
-var import_definitionen = require("./def/definitionen");
+var import_definition = require("./def/definition");
 var MessageType = __toESM(require("./def/messages-def"));
 var library = __toESM(require("./library"));
 var import_test_warnings = require("./test-warnings");
@@ -1121,14 +1121,14 @@ class MessagesClass extends library.BaseClass {
         this.library.writeFromJson(
           `${this.provider.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
           `allService.formatedkeys`,
-          import_definitionen.statesObjectsWarnings,
+          import_definition.statesObjectsWarnings,
           this.formatedData
         );
       } else if (this.providerParent) {
         this.library.writeFromJson(
           `${this.providerParent.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
           `allService.formatedkeys`,
-          import_definitionen.statesObjectsWarnings,
+          import_definition.statesObjectsWarnings,
           this.formatedData
         );
       }

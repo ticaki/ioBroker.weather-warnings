@@ -35,7 +35,7 @@ __export(provider_exports, {
 });
 module.exports = __toCommonJS(provider_exports);
 var import_axios = __toESM(require("axios"));
-var definitionen = __toESM(require("./def/definitionen"));
+var definitionen = __toESM(require("./def/definition"));
 var import_library = require("./library");
 var import_messages = require("./messages");
 var NotificationClass = __toESM(require("./notification"));
@@ -43,6 +43,7 @@ var import_test_warnings = require("./test-warnings");
 var NotificationType = __toESM(require("./def/notificationService-def"));
 var messagesDef = __toESM(require("./def/messages-def"));
 const DIV = "-";
+import_axios.default.defaults.timeout = 5e3;
 class BaseProvider extends import_library.BaseClass {
   service;
   url = "";

@@ -22,8 +22,8 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var definitionen_exports = {};
-__export(definitionen_exports, {
+var definition_exports = {};
+__export(definition_exports, {
   Defaults: () => Defaults,
   PROVIDER_OPTIONS: () => PROVIDER_OPTIONS,
   actionStates: () => actionStates,
@@ -31,7 +31,7 @@ __export(definitionen_exports, {
   genericStateObjects: () => genericStateObjects,
   statesObjectsWarnings: () => statesObjectsWarnings
 });
-module.exports = __toCommonJS(definitionen_exports);
+module.exports = __toCommonJS(definition_exports);
 var messagesDef = __toESM(require("./messages-def"));
 const defaultChannel = {
   _id: "",
@@ -2311,4 +2311,4 @@ const PROVIDER_OPTIONS = {
   genericStateObjects,
   statesObjectsWarnings
 });
-//# sourceMappingURL=definitionen.js.map
+//# sourceMappingURL=definition.js.map

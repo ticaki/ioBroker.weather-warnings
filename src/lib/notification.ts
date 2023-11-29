@@ -1,5 +1,5 @@
 import WeatherWarnings from '../main';
-import { genericStateObjects } from './def/definitionen';
+import { genericStateObjects } from './def/definition';
 import * as NotificationType from './def/notificationService-def';
 import * as library from './library';
 import * as Provider from './def/provider-def';

@@ -19,7 +19,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var utils = __toESM(require("@iobroker/adapter-core"));
 var import_io_package = __toESM(require("../io-package.json"));
-var import_axios = __toESM(require("axios"));
 var import_register = require("source-map-support/register");
 var import_dwdWarncellIdLong = require("./lib/def/dwdWarncellIdLong");
 var import_provider = require("./lib/provider.js");
@@ -28,9 +27,9 @@ var messagesDef = __toESM(require("./lib/def/messages-def"));
 var providerDef = __toESM(require("./lib/def/provider-def"));
 var NotificationType = __toESM(require("./lib/def/notificationService-def"));
 var import_notificationService_def = require("./lib/def/notificationService-def.js");
-var import_definitionen = require("./lib/def/definitionen.js");
-import_axios.default.defaults.timeout = 8e3;
+var import_definition = require("./lib/def/definition.js");
 class WeatherWarnings extends utils.Adapter {
+  startDelay = void 0;
   library;
   providerController = null;
   numOfRawWarnings = 5;
@@ -112,7 +111,7 @@ class WeatherWarnings extends utils.Adapter {
         keys.sort();
         for (const a in keys) {
           reply += "${" + keys[a] + "}: " + (this.library.getTranslation(
-            import_definitionen.statesObjectsWarnings.allService.formatedkeys[keys[a]].common.name
+            import_definition.statesObjectsWarnings.allService.formatedkeys[keys[a]].common.name
           ) + "\n");
         }
         reply = reply.slice(0, -1);
@@ -218,12 +217,14 @@ class WeatherWarnings extends utils.Adapter {
       }
     }
     this.config.numOfRawWarnings = typeof this.config.numOfRawWarnings == "number" && this.config.numOfRawWarnings > 0 ? this.config.numOfRawWarnings : 5;
-    this.setTimeout(
+    this.startDelay = this.setTimeout(
       async function(that) {
         const self = that;
         if (!self)
           return;
         if (!self.providerController)
+          return;
+        if (self.providerController.unload)
           return;
         await self.providerController.init();
         self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 6e4} minutes`);
@@ -461,6 +462,8 @@ class WeatherWarnings extends utils.Adapter {
   }
   onUnload(callback) {
     try {
+      if (this.startDelay)
+        this.clearTimeout(this.startDelay);
       if (this.providerController)
         this.providerController.delete();
       callback();

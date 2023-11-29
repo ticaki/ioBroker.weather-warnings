@@ -6,7 +6,6 @@
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
 import io_package from '../io-package.json';
-import axios from 'axios';
 import 'source-map-support/register';
 import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
@@ -15,12 +14,12 @@ import * as messagesDef from './lib/def/messages-def';
 import * as providerDef from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationService-def.js';
-import { statesObjectsWarnings } from './lib/def/definitionen.js';
-axios.defaults.timeout = 8000;
+import { statesObjectsWarnings } from './lib/def/definition.js';
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 
 class WeatherWarnings extends utils.Adapter {
+    startDelay: ioBroker.Timeout | undefined = undefined;
     library: Library;
     providerController: ProviderController | null = null;
     numOfRawWarnings: number = 5;
@@ -246,11 +245,12 @@ class WeatherWarnings extends utils.Adapter {
                 ? this.config.numOfRawWarnings
                 : 5;
 
-        this.setTimeout(
+        this.startDelay = this.setTimeout(
             async function (that: any) {
                 const self = that as WeatherWarnings;
                 if (!self) return;
                 if (!self.providerController) return;
+                if (self.providerController.unload) return;
 
                 await self.providerController.init();
                 self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 60000} minutes`);
@@ -582,6 +582,7 @@ class WeatherWarnings extends utils.Adapter {
      */
     private onUnload(callback: () => void): void {
         try {
+            if (this.startDelay) this.clearTimeout(this.startDelay);
             if (this.providerController) this.providerController.delete();
             callback();
         } catch (e) {

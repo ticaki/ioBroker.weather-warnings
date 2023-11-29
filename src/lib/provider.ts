@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import WeatherWarnings from '../main';
-import * as definitionen from './def/definitionen';
+import * as definitionen from './def/definition';
 import { BaseClass, Library } from './library';
 import * as providerDef from './def/provider-def';
 import { MessagesClass } from './messages';
@@ -11,6 +11,8 @@ import { getTestData } from './test-warnings';
 import * as NotificationType from './def/notificationService-def';
 import * as messagesDef from './def/messages-def';
 export const DIV = '-';
+
+axios.defaults.timeout = 5000;
 type ProviderOptionsTypeInternal = {
     service: providerDef.providerServices;
     warncellId: string | [string, string];

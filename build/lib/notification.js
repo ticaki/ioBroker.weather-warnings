@@ -27,7 +27,7 @@ __export(notification_exports, {
   NotificationClass: () => NotificationClass
 });
 module.exports = __toCommonJS(notification_exports);
-var import_definitionen = require("./def/definitionen");
+var import_definition = require("./def/definition");
 var NotificationType = __toESM(require("./def/notificationService-def"));
 var library = __toESM(require("./library"));
 var import_messages_def = require("./def/messages-def");
@@ -51,7 +51,7 @@ class NotificationClass extends library.BaseClass {
       case "json":
         {
           let dp = "";
-          let def = import_definitionen.genericStateObjects.history;
+          let def = import_definition.genericStateObjects.history;
           const providers = this.adapter.providerController.providers.filter(
             (a) => this.options.service.includes(a.service)
           );
@@ -62,13 +62,13 @@ class NotificationClass extends library.BaseClass {
                 case "history":
                   {
                     dp = `${targets[a].name}.history`;
-                    def = import_definitionen.genericStateObjects.history;
+                    def = import_definition.genericStateObjects.history;
                   }
                   break;
                 case "json":
                   {
                     dp = `${targets[a].name}.activeWarnings_json`;
-                    def = import_definitionen.genericStateObjects.activeWarningsJson;
+                    def = import_definition.genericStateObjects.activeWarningsJson;
                   }
                   break;
               }
@@ -476,7 +476,7 @@ class NotificationClass extends library.BaseClass {
                 await this.adapter.library.writedp(
                   dp,
                   JSON.stringify(json),
-                  import_definitionen.genericStateObjects.history
+                  import_definition.genericStateObjects.history
                 );
               } catch (error) {
                 this.log.error(
@@ -540,7 +540,7 @@ class NotificationClass extends library.BaseClass {
             await this.adapter.library.writedp(
               dp,
               JSON.stringify(data),
-              import_definitionen.genericStateObjects.activeWarningsJson
+              import_definition.genericStateObjects.activeWarningsJson
             );
           }
           result = result.filter((i, p) => {
@@ -555,7 +555,7 @@ class NotificationClass extends library.BaseClass {
             await this.adapter.library.writedp(
               dp,
               JSON.stringify(result.map((a) => a.message)),
-              import_definitionen.genericStateObjects.activeWarningsJson
+              import_definition.genericStateObjects.activeWarningsJson
             );
           }
         }
