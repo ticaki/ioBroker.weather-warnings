@@ -505,6 +505,7 @@ class WeatherWarnings extends utils.Adapter {
                                 'uwzService',
                                 self,
                             );
+                            if (self.providerController.unload) return;
 
                             if (tempWarncell) {
                                 tempTable[a].realWarncell = tempWarncell;

@@ -213,6 +213,8 @@ class BaseProvider extends import_library.BaseClass {
         );
       } else {
         const data = await import_axios.default.get(this.url);
+        if (this.unload)
+          return null;
         if (data.status == 200) {
           await this.setConnected(true);
           const result = typeof data.data == "object" ? data.data : JSON.parse(data.data);

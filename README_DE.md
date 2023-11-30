@@ -47,8 +47,8 @@ Nach der Installation und dem automatischen öffnen der Konfigurationsseite dies
 
 - **Testwarnungen aktivieren! Adapter ist offline:** Es werden mindestens 2 Testmeldungen pro Provider bei einem Datenabruf in das System gegeben, mit Zufälligen Stand und Endzeiten
 
-- **Testwarnung mit Wechsel** Hier wird die Inverallzeit deutlich verringert, es werden 2 Warnungen 
-
+- **Die Speicherung der Rohdatenhistorie wird aktiviert bzw. deaktiviert und gelöscht (hoher Speicherverbrauch).:** Für Debugging, nur nach Aufforderung.
+- **Intervall verkürzt, Testdaten abwechselnd aktiviert und deaktiviert:** Geänderte Funktion: Interval wird auf 1 Minute gestellt. Im ersten Durchlauf werden 2 neue Warnungen gefunden. Im zweiten wird die Hälfte aufgehoben. Im letzten werden alle aufgehoben und dann gehts wieder von vorne los. 
 
 
 
@@ -56,12 +56,11 @@ Nach der Installation und dem automatischen öffnen der Konfigurationsseite dies
 
 **Spracheinstellungen:**
 
-**Ruhezeiten für die Sprachausgabe:** Stelle hier die Ruhezeiten ein in der keine Sprachausgabe stattfinden soll. Zeiten werden alls 15:30 oder 15 oder 15:00 definiert. Bitte einen Profilnamen vergeben
+**Ruhezeiten für die Sprachausgabe:** Stelle hier die Ruhezeiten ein in der keine Sprachausgabe stattfinden soll. Zeiten werden als 15:30 oder 15 oder 15:00 definiert. Bitte einen Profilnamen vergeben
 
 **Iconeinstellungen (Alternativ):** Wenn der Prefix ausgefüllt wird ersetz dieses die Standardicons. Dort wo der Prefix hinführt müssen Dateien mit einem der gelisteten Warntypen und der Endung die in Suffix steht befinden.
 
-- **Die Speicherung der Rohdatenhistorie wird aktiviert bzw. deaktiviert und gelöscht (hoher Speicherverbrauch).:** Für Debugging, nur nach Aufforderung.
-- **Intervall verkürzt, Testdaten abwechselnd aktiviert und deaktiviert:** Geänderte Funktion: Interval wird auf 1 Minute gestellt. Im ersten Durchlauf werden 2 neue Warnungen gefunden. Im zweiten wird die Hälfte aufgehoben. Im letzten werden alle aufgehoben und dann gehts wieder von vorne los. 
+
 
 ![Vorlagen](img/template.png)
 
@@ -87,9 +86,9 @@ Das Warntypename wird z.B. durch `Gewitter`ersetzt. `startime` durch 20:15 und `
 
 ![DWD](img/DWD.png)
 
-**DWD:** Die Auswahl erfolgt nach einer Liste von 10000 Orten, nach der Eingabe in ein anderes Feld klicken und wieder zurück gehen, die Liste ist zu groß und muß aktualisiert werden.
+**DWD:** Die Auswahl erfolgt nach einer Liste von 10000 Orten, bis ein bug im Admin behoben ist, am besten den Ortsnamen schreiben, mehrere Leerzeichen anfügen und dann wieder entfernen. Jetzt sollte die Liste richtig gefilter sein.
 
-**UWZ:** Eingabe erfolgt mit Landeskennzeichen DE AT (weitere möglich muß man ausprobieren) und der Postleitzahl, also DE12345
+**UWZ:** Eingabe erfolgt über Koordinaten, die ID wird vom Adapter selbst ermittelt.
 
 **ZAMG:** Nur für Österreich. Eingabe von Koordinaten die in Österreich liegen.
 
@@ -113,6 +112,13 @@ Das Warntypename wird z.B. durch `Gewitter`ersetzt. `startime` durch 20:15 und `
 1) Neue Warnungen oder bestehende Warnungen
 2) Eine Warnung wurde entfernt und es gibt **noch** weitere Aktive.
 3) Warnungen wurden entfernt und es gibt **keine** weiteren Aktiven.
+Wird keine Vorlagen ausgewählt, wird nicht versendet.
+
+**Manuell**
+1) Auswahl einer Vorlage die für bestehende Warnungen verwendet werden soll
+3) Auswahl einer Vorlage die für keine Warnung verwendet werden soll
+
+Wird keine Vorlagen ausgewählt, wird nicht versendet.
 
 Vorlagen für 3) können keine ${} Tokens enthalten, da für diese Nachricht mehrere Warnungen in Frage kommen.
 

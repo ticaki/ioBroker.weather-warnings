@@ -230,6 +230,7 @@ export class BaseProvider extends BaseClass {
                 ) as providerDef.DataImportType;
             } else {
                 const data = await axios.get(this.url);
+                if (this.unload) return null;
                 if (data.status == 200) {
                     await this.setConnected(true);
 
@@ -476,8 +477,7 @@ export class UWZProvider extends BaseProvider {
     static async getWarncell(
         warncellId: [string, string],
         service: providerDef.providerServices,
-
-        that: any,
+        that: WeatherWarnings,
     ): Promise<string> {
         try {
             const result = await axios.get(
