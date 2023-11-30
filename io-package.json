@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.2",
+    "version": "0.6.3",
     "news": {
+      "0.6.3": {
+        "en": "add cleartimeout, add axios timeout",
+        "de": "add cleartimeout, add axios timeout",
+        "ru": "добавить cleartimeout, добавить axios timeout",
+        "pt": "add cleartimeout, adicione tempoout axios",
+        "nl": "voeg toestemming toe",
+        "fr": "ajouter l'heure d'ouverture, ajouter le timeout axios",
+        "it": "aggiungere cleartimeout, aggiungere timeout assios",
+        "es": "añadir tiempo libre, añadir axios timeout",
+        "pl": "dodać czyste czasoprzestrzeni, dodaje axios timeout",
+        "uk": "add cleartimeout, додати axios часаут",
+        "zh-cn": "增加明确时间,增加焦虑时间"
+      },
       "0.6.2": {
         "en": "Reduce zamg spam",
         "de": "Reduzieren Sie zamg Spam",
@@ -80,19 +93,6 @@
         "pl": "Fixed: Fixed przypadkowo pojawia się błędy w pierwszym ok.\nAddd: max number of warnings (default 5) (ang.)\nFixed: not crash with the wrong uwz configuration (ang.).\nW cichych czasach drobne błędy.",
         "uk": "Виправлено: Виправлено випадково виникають помилки в першому приблизно 15 секунд.\nДоданий: максимальна кількість попереджень (default 5)\nВиправлено: не збиток з неправильною конфігурацією uwz.\nВиправлено: невелика помилка в тихий час.",
         "zh-cn": "固定:第一手矛盾中随机出现的错误。.\n增 编:警告数(第5号)\n固定:与错误的乌瓦兹组合不碰撞。.\n固定:沉默时的小错误。."
-      },
-      "0.5.3": {
-        "en": "Fixed: command states (text / automode)\nAdded: .alerts. List of warning types.\nChanged: .alerts. view current event with highest level or next event",
-        "de": "Behoben: Befehlsstates (Text / Automode)\nHinzugefügt: .alerts. Liste der Warnarten mit Warnungen.\nGeändert: .alerts. zeigt aktuelles Ereignis mit höchstem Level oder nächstes Ereignis",
-        "ru": "Исправлено: командные состояния (текст / automode)\nДобавлено: alerts Список предупреждающих типов.\nИзменено: оповещения просматривают текущее событие с самым высоким уровнем или следующим событием",
-        "pt": "Corrigido: estados de comando (texto / automodo)\nAdicionado: alertas Lista de tipos de aviso.\nAlterado: alertas visualizar evento atual com nível mais alto ou próximo evento",
-        "nl": "Bevestigd:\nVertaling: Een waarschuwingstype.\nVerandering:",
-        "fr": "Correction : états de commande (texte / automode)\nAjouté : alertes Liste des types d'avertissement.\nChangement : alertes afficher l'événement courant avec le plus haut niveau ou l'événement suivant",
-        "it": "Fisso: stati di comando (testo / automode)\nAggiunto: alerts Elenco dei tipi di avvertimento.\nCambiato: gli avvisi visualizzano l'evento corrente con il più alto livello o il prossimo evento",
-        "es": "Fijo: estados de comando (texto / automodo)\nAñadido: alertas Lista de tipos de advertencia.\nCambio: alertas ver el evento actual con el nivel más alto o el próximo evento",
-        "pl": "W: Państwa dowodzenia (tekst / automode)\nAdded: alarm Lista typów ostrzeżeń.\nChanged: alarmuj bieżące zdarzenie z najwyższym poziomem lub kolejnym wydarzeniem",
-        "uk": "Виправлено: командні стани (текст / автомоде)\nДодано: повідомлення Перелік типів попередження.\nЗмінено: повідомлення перегляду поточного заходу з найвищим рівнем або наступною подією",
-        "zh-cn": "固定:指挥站(背景/汽车)\n增加:警惕 警告类型清单。.\n变化:提醒人们注意当前活动最高或下一次活动"
       }
     },
     "titleLang": {

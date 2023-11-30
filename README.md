@@ -146,7 +146,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.6.3 (2023-11-30)
 * (ticaki) add cleartimeout, add axios timeout
 
 ### 0.6.2 (2023-11-20)
