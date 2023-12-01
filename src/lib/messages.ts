@@ -963,8 +963,8 @@ export class MessagesClass extends library.BaseClass {
             const status = this.newMessage
                 ? MessageType.status.new
                 : this.notDeleted && this.name != 'noMessage'
-                ? MessageType.status.hold
-                : MessageType.status.clear;
+                  ? MessageType.status.hold
+                  : MessageType.status.clear;
             const temp: any = {};
             for (const key in this.formatedKeysJsonataDefinition) {
                 const obj = this.formatedKeysJsonataDefinition[key as keyof MessageType.customFormatedKeysDef];
@@ -1015,8 +1015,8 @@ export class MessagesClass extends library.BaseClass {
             this.formatedData.provider = this.provider
                 ? this.provider.service.replace('Service', '').toUpperCase()
                 : this.providerParent
-                ? this.providerParent.service.replace('Service', '').toUpperCase()
-                : 'unknown';
+                  ? this.providerParent.service.replace('Service', '').toUpperCase()
+                  : 'unknown';
             this.updated = false;
         }
         if (!this.formatedData) {

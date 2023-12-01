@@ -340,8 +340,8 @@ export class Library extends BaseClass {
                 stateType !== undefined
                     ? stateType
                     : this.stateDataBase[dp] !== undefined && this.stateDataBase[dp]!.stateTyp !== undefined
-                    ? this.stateDataBase[dp]!.stateTyp
-                    : undefined,
+                      ? this.stateDataBase[dp]!.stateTyp
+                      : undefined,
             val: val,
             ack: ack,
             ts: ts ? ts : Date.now(),
