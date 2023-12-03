@@ -36,6 +36,6 @@
 		"sourceMap": true,
 		"inlineSourceMap": false
 	},
-	"include": ["src/**/*.ts", ".dev-data/translations.ts"],
+	"include": ["src/**/*.ts", ".dev-data/translations.ts", "src/lib/def/DWDCityDataConverted.json"],
 	"exclude": ["build/**", "node_modules/**", "widgets/**"]
 }

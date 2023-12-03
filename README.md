@@ -148,6 +148,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 -->
 ### 0.6.3 (2023-11-30)
 * (ticaki) add cleartimeout, add axios timeout
+* (ticaki) Optimise DWD warning cell selection. Place names are being given more and more details to make them unique.
 
 ### 0.6.2 (2023-11-20)
 * (ticaki) Reduce zamg spam

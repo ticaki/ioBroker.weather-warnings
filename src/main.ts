@@ -7,14 +7,14 @@
 import * as utils from '@iobroker/adapter-core';
 import io_package from '../io-package.json';
 import 'source-map-support/register';
-import { dwdWarncellIdLong } from './lib/def/dwdWarncellIdLong';
 import { ProviderController } from './lib/provider.js';
 import { Library } from './lib/library.js';
 import * as messagesDef from './lib/def/messages-def';
 import * as providerDef from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
-import { notificationServiceDefaults } from './lib/def/notificationService-def.js';
+import { notificationServiceDefaults } from './lib/def/notificationService-def';
 import { statesObjectsWarnings } from './lib/def/definition.js';
+
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 
@@ -875,28 +875,6 @@ class WeatherWarnings extends utils.Adapter {
                         this.sendTo(obj.from, obj.command, reply, obj.callback);
                     }
                     break;
-                case 'dwd.name':
-                    {
-                        //debounce
-                        /*if (this.adminTimeoutRef) {
-                            this.clearTimeout(this.adminTimeoutRef);
-                            this.adminTimeoutRef = this.setTimeout(this.dwdWarncellIdLongHelper, 2000, {
-                                obj: obj,
-                                that: this,
-                            });
-                        } else {*/
-                        this.dwdWarncellIdLongHelper({
-                            obj: obj,
-                            that: this,
-                        });
-                        /*   this.adminTimeoutRef = this.setTimeout(
-                                (that: any) => (that.adminTimeoutRef = null),
-                                2000,
-                                this,
-                            );
-                        }*/
-                    }
-                    break;
                 case 'test':
                     this.log.debug(`Retrieve test message!`);
                     this.sendTo(obj.from, 'test', 'Test Message', obj.callback);
@@ -961,13 +939,16 @@ class WeatherWarnings extends utils.Adapter {
             }
         }
     }
-    dwdWarncellIdLongHelper(obj1: any): void {
+    /* behalten wir falls sich die ids mal ändern, das geht dann nach etwas feinarbeit wieder
+    async dwdWarncellIdLongHelper(obj1: any): Promise<void> {
         const obj = obj1.obj as ioBroker.Message;
         const that = obj1.that as WeatherWarnings;
         if (obj.callback) {
-            const data = dwdWarncellIdLong;
+            const data = ''; //dwdWarncellIdLong;
             //if (!data) data = await axios.get(that.config.dwdWarncellTextUrl);
-            const text: any[] = [];
+            const text: { label: string; value: string; cityDetails?: string }[] = JSON.parse(
+                JSON.stringify(DWDCityDataConverted.data),
+            );
             if (text.length == 0) {
                 const dataArray: string[] = data.split('\n');
 
@@ -977,11 +958,20 @@ class WeatherWarnings extends utils.Adapter {
                     const value = line[0];
                     const cityArray = line[1].split(' ');
                     let typ = undefined;
-                    if (['Kreis', 'Stadt', 'Gemeinde', 'Hansestadt'].indexOf(cityArray[0]) !== -1)
+                    if (
+                        ['Kreis', 'Stadt', 'Gemeinde', 'Hansestadt'].indexOf(cityArray[0]) !== -1 /*||
+                        (value && (value.startsWith('10') || value.startsWith('9')))
+                    ) {
                         typ = cityArray.length > 1 ? cityArray.shift() : undefined;
+                        if (value && (value.startsWith('10') || value.startsWith('9'))) {
+                            typ = 'Kreis';
+                        }
+                    }
+
                     let cityText = cityArray.join(' ') + ' (';
                     if (typ !== undefined) cityText += typ + '/';
-                    cityText += line[4] + ')';
+                    cityText += line[4] + (line[3] ? '/' + line[3] : '') + ')';
+                    const cityDetails = cityText + ` [${line[2]}]`;
 
                     //const cityText = element.split(';')[2];
                     if (
@@ -991,9 +981,24 @@ class WeatherWarnings extends utils.Adapter {
                             value.startsWith('8') ||
                             value.startsWith('7'))
                     ) {
-                        if (text) text.push({ label: cityText, value: value.trim() });
+                        text.push({ label: cityText, value: value.trim(), cityDetails: cityDetails.trim() });
                     }
                 });
+                for (let a = 0; a < text.length; a++) {
+                    const searchText = text[a].label;
+                    let index = text.findIndex((i, pos) => a != pos && i.label == searchText);
+                    if (index != -1) {
+                        while (
+                            (index = text.findIndex((i) => i.cityDetails !== i.label && i.label == searchText)) != -1
+                        ) {
+                            if (text[index].cityDetails !== undefined) {
+                                text[index].label = text[index].cityDetails!;
+                                delete text[index].cityDetails;
+                            } else text[index].label += `(${text[index].value})`;
+                        }
+                    }
+                    delete text[a].cityDetails;
+                }
                 text.sort((a, b) => {
                     const nameA = a.label.toUpperCase(); // ignore upper and lowercase
                     const nameB = b.label.toUpperCase(); // ignore upper and lowercase
@@ -1008,9 +1013,9 @@ class WeatherWarnings extends utils.Adapter {
                 });
             }
 
-            that.sendTo(obj.from, obj.command, text, obj.callback);
+            that.sendTo(obj.from, obj.command, DWDCityDataConverted.data, obj.callback);
         }
-    }
+    }*/
 }
 if (require.main !== module) {
     // Export the constructor in compact mode

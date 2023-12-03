@@ -20,13 +20,12 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var utils = __toESM(require("@iobroker/adapter-core"));
 var import_io_package = __toESM(require("../io-package.json"));
 var import_register = require("source-map-support/register");
-var import_dwdWarncellIdLong = require("./lib/def/dwdWarncellIdLong");
 var import_provider = require("./lib/provider.js");
 var import_library = require("./lib/library.js");
 var messagesDef = __toESM(require("./lib/def/messages-def"));
 var providerDef = __toESM(require("./lib/def/provider-def"));
 var NotificationType = __toESM(require("./lib/def/notificationService-def"));
-var import_notificationService_def = require("./lib/def/notificationService-def.js");
+var import_notificationService_def = require("./lib/def/notificationService-def");
 var import_definition = require("./lib/def/definition.js");
 class WeatherWarnings extends utils.Adapter {
   startDelay = void 0;
@@ -721,14 +720,6 @@ class WeatherWarnings extends utils.Adapter {
             this.sendTo(obj.from, obj.command, reply, obj.callback);
           }
           break;
-        case "dwd.name":
-          {
-            this.dwdWarncellIdLongHelper({
-              obj,
-              that: this
-            });
-          }
-          break;
         case "test":
           this.log.debug(`Retrieve test message!`);
           this.sendTo(obj.from, "test", "Test Message", obj.callback);
@@ -787,46 +778,6 @@ class WeatherWarnings extends utils.Adapter {
             `Retrieve unknown command ${obj.command} messsage: ${JSON.stringify(obj.message)} from ${obj.from}`
           );
       }
-    }
-  }
-  dwdWarncellIdLongHelper(obj1) {
-    const obj = obj1.obj;
-    const that = obj1.that;
-    if (obj.callback) {
-      const data = import_dwdWarncellIdLong.dwdWarncellIdLong;
-      const text = [];
-      if (text.length == 0) {
-        const dataArray = data.split("\n");
-        dataArray.splice(0, 1);
-        dataArray.forEach((element) => {
-          const line = element.split(";");
-          const value = line[0];
-          const cityArray = line[1].split(" ");
-          let typ = void 0;
-          if (["Kreis", "Stadt", "Gemeinde", "Hansestadt"].indexOf(cityArray[0]) !== -1)
-            typ = cityArray.length > 1 ? cityArray.shift() : void 0;
-          let cityText = cityArray.join(" ") + " (";
-          if (typ !== void 0)
-            cityText += typ + "/";
-          cityText += line[4] + ")";
-          if (value && (value.startsWith("10") || value.startsWith("9") || value.startsWith("8") || value.startsWith("7"))) {
-            if (text)
-              text.push({ label: cityText, value: value.trim() });
-          }
-        });
-        text.sort((a, b) => {
-          const nameA = a.label.toUpperCase();
-          const nameB = b.label.toUpperCase();
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          return 0;
-        });
-      }
-      that.sendTo(obj.from, obj.command, text, obj.callback);
     }
   }
 }
