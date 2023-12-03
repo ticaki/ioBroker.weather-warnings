@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.3",
+    "version": "0.6.4",
     "news": {
+      "0.6.4": {
+        "en": "Optimise DWD warning cell selection. Place names are being given more and more details to make them unique.",
+        "de": "Optimieren Sie die DWD-Warnzellenauswahl. Ortsnamen werden immer mehr Details gegeben, um sie einzigartig zu machen.",
+        "ru": "Оптимизируйте DWD предупредительный выбор ячейки. Названия мест дают больше и больше деталей для того чтобы сделать их уникальным.",
+        "pt": "Otimize a seleção de células de aviso DWD. Os nomes dos lugares estão sendo dados cada vez mais detalhes para torná-los únicos.",
+        "nl": "Optimise DWD waarschuwingscel selectie. Er worden meer en meer details gegeven om ze uniek te maken.",
+        "fr": "Optimise la sélection de cellules d'avertissement DWD. Les noms des lieux sont donnés de plus en plus de détails pour les rendre uniques.",
+        "it": "Ottimizzare la selezione delle celle di avviso DWD. I nomi dei luoghi vengono dati sempre più dettagli per renderli unici.",
+        "es": "Optimize DWD warning cell selection. Los nombres de los lugares se están dando cada vez más detalles para hacerlos únicos.",
+        "pl": "Optimise DWD (ang.). Nazwy miejscowe są podawane więcej i więcej szczegółów, które czynią je unikalnymi.",
+        "uk": "Оптимальний вибір DWD попередження. Прізвища розміщуються більш детальною інформацією, щоб зробити їх унікальними.",
+        "zh-cn": "利用DWDHD警告小组选择。 正在提供更多和更详细的资料,使之具有独特的地位。."
+      },
       "0.6.3": {
         "en": "add cleartimeout, add axios timeout",
         "de": "add cleartimeout, add axios timeout",
@@ -80,19 +93,6 @@
         "pl": "Added: Missing space in emailMessage template (ang.).\nW: Zła sytuacja dla wszystkich usuniętych.\nAdmin: poruszające opcje testowe do taba.",
         "uk": "Додано: Місячний простір в електронній поштіОгляд шаблон.\nВиправлено: неправильний статус для всіх вилучених.\nАдміністратор: переміщення параметрів тесту в вкладці загального.",
         "zh-cn": "添加:在电子邮件储存模板中发放空间。.\n固定:所有撤军的错误地位。.\n说明:将试验方案移到一般性表格。."
-      },
-      "0.5.4": {
-        "en": "Fixed: Fixed randomly occurring errors in the first approx. 15 seconds.\nAdded: max number of warnings (default 5)\nFixed: not crash with the wrong uwz configuration.\nFixed: small error in quiet times.",
-        "de": "Behoben: Behoben zufällig auftretende Fehler in den ersten ca. 15 Sekunden.\nHinzugefügt: max. Anzahl der Warnungen (Standard 5)\nBehoben: nicht abstürzen mit der falschen uwz-Konfiguration.\nBehoben: kleiner Fehler in ruhigen Zeiten.",
-        "ru": "Исправлена: Исправлена случайная ошибка при первой ок. 15 секунд.\nДобавлена: макс. количество предупреждений (по умолчанию 5)\nИсправлено: не сбой с неправильной конфигурацией uwz.\nИсправлено: небольшая ошибка в тихие времена.",
-        "pt": "Corrigido: Corrigido erros ocorrendo aleatoriamente no primeiro aprox. 15 segundos.\nAdicionado: número máximo de avisos (padrão 5)\nCorrigido: não travar com a configuração errada do uwz.\nCorrigido: pequeno erro em tempos tranquilos.",
-        "nl": "Gerepareerd, willekeurig fouten in de eerste approx. 15 seconden.\nToegevoegd: maximaal gewaarschuwd\nNiet crashen met de verkeerde in beslagname.\nEen kleine fout in rustige tijden.",
-        "fr": "Correction : Correction d'erreurs aléatoires dans les 15 premières secondes.\nAjouté: nombre max d'avertissements (par défaut 5)\nCorrection : pas de crash avec la mauvaise configuration de uwz.\nCorrection : petite erreur en temps calme.",
-        "it": "Risolto: Risolto errori casuali nei primi circa 15 secondi.\nAggiunto: max numero di avvisi (default 5)\nRisolto: non crash con la configurazione uwz sbagliata.\nRisolto: piccolo errore in tempi tranquilli.",
-        "es": "Fijación: Errores aleatorios fijos en los primeros aprox. 15 segundos.\nAñadido: max number of warnings (default 5)\nArreglado: no choca con la configuración uwz equivocada.\nCorregido: pequeño error en tiempos tranquilos.",
-        "pl": "Fixed: Fixed przypadkowo pojawia się błędy w pierwszym ok.\nAddd: max number of warnings (default 5) (ang.)\nFixed: not crash with the wrong uwz configuration (ang.).\nW cichych czasach drobne błędy.",
-        "uk": "Виправлено: Виправлено випадково виникають помилки в першому приблизно 15 секунд.\nДоданий: максимальна кількість попереджень (default 5)\nВиправлено: не збиток з неправильною конфігурацією uwz.\nВиправлено: невелика помилка в тихий час.",
-        "zh-cn": "固定:第一手矛盾中随机出现的错误。.\n增 编:警告数(第5号)\n固定:与错误的乌瓦兹组合不碰撞。.\n固定:沉默时的小错误。."
       }
     },
     "titleLang": {
