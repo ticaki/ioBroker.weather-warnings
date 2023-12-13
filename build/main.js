@@ -385,43 +385,45 @@ class WeatherWarnings extends utils.Adapter {
         const tempTable = JSON.parse(JSON.stringify(self.config.uwzwarncellTable));
         for (const a in self.config.uwzwarncellTable) {
           const id = self.config.uwzwarncellTable[a];
-          if (self.config.uwzEnabled && id && typeof id.uwzSelectId == "string" && id.uwzSelectId.split("/").length == 2 || tempTable[a].realWarncell && typeof tempTable[a].realWarncell === "string") {
-            if (!tempTable[a].realWarncell) {
-              const tempWarncell = await providerDef.UWZProvider.getWarncell(
-                id.uwzSelectId.split("/"),
-                "uwzService",
-                self
+          if (self.config.uwzEnabled) {
+            if (id && typeof id.uwzSelectId == "string" && id.uwzSelectId.split("/").length == 2 || tempTable[a].realWarncell && typeof tempTable[a].realWarncell === "string") {
+              if (!tempTable[a].realWarncell) {
+                const tempWarncell = await providerDef.UWZProvider.getWarncell(
+                  id.uwzSelectId.split("/"),
+                  "uwzService",
+                  self
+                );
+                if (self.providerController.unload)
+                  return;
+                if (tempWarncell) {
+                  tempTable[a].realWarncell = tempWarncell;
+                }
+              }
+              const options = {
+                filter: {
+                  type: self.config.uwzTypeFilter,
+                  level: self.config.uwzLevelFilter,
+                  hours: self.config.uwzHourFilter
+                }
+              };
+              if (!tempTable[a].realWarncell || typeof tempTable[a].realWarncell !== "string") {
+                self.log.warn(`Dont find a UWZ warncell for ${id.uwzSelectId}!`);
+                continue;
+              }
+              self.log.info("UWZ activated. Retrieve data.");
+              self.providerController.createProviderIfNotExist({
+                ...options,
+                service: "uwzService",
+                warncellId: tempTable[a].realWarncell,
+                providerController: self.providerController,
+                language: self.config.uwzLanguage,
+                customName: id.uwzCityname
+              });
+            } else
+              self.log.warn(
+                `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${tempTable[a].realWarncell}`
               );
-              if (self.providerController.unload)
-                return;
-              if (tempWarncell) {
-                tempTable[a].realWarncell = tempWarncell;
-              }
-            }
-            const options = {
-              filter: {
-                type: self.config.uwzTypeFilter,
-                level: self.config.uwzLevelFilter,
-                hours: self.config.uwzHourFilter
-              }
-            };
-            if (!tempTable[a].realWarncell || typeof tempTable[a].realWarncell !== "string") {
-              self.log.warn(`Dont find a UWZ warncell for ${id.uwzSelectId}!`);
-              continue;
-            }
-            self.log.info("UWZ activated. Retrieve data.");
-            self.providerController.createProviderIfNotExist({
-              ...options,
-              service: "uwzService",
-              warncellId: tempTable[a].realWarncell,
-              providerController: self.providerController,
-              language: self.config.uwzLanguage,
-              customName: id.uwzCityname
-            });
-          } else
-            self.log.warn(
-              `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${tempTable[a].realWarncell}`
-            );
+          }
         }
         if (JSON.stringify(tempTable) != JSON.stringify(self.config.uwzwarncellTable)) {
           const obj2 = await self.getForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`);

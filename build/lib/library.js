@@ -192,9 +192,14 @@ class Library extends BaseClass {
       if (typeof obj.common.name == "string")
         obj.common.name = await this.getTranslationObj(obj.common.name);
       if (!del)
-        await this.adapter.setObjectNotExistsAsync(dp, obj);
+        await this.adapter.extendObjectAsync(dp, obj);
       const stateType = obj && obj.common && obj.common.type;
       node = this.setdb(dp, obj.type, void 0, stateType, true);
+    } else if (node.init && obj) {
+      if (typeof obj.common.name == "string")
+        obj.common.name = await this.getTranslationObj(obj.common.name);
+      if (!del)
+        await this.adapter.extendObjectAsync(dp, obj);
     }
     if (obj && obj.type !== "state")
       return;
@@ -290,13 +295,14 @@ class Library extends BaseClass {
   readdp(dp) {
     return this.stateDataBase[this.cleandp(dp)];
   }
-  setdb(dp, type, val, stateType, ack = true, ts = Date.now()) {
+  setdb(dp, type, val, stateType, ack = true, ts = Date.now(), init = false) {
     this.stateDataBase[dp] = {
       type,
       stateTyp: stateType !== void 0 ? stateType : this.stateDataBase[dp] !== void 0 && this.stateDataBase[dp].stateTyp !== void 0 ? this.stateDataBase[dp].stateTyp : void 0,
       val,
       ack,
-      ts: ts ? ts : Date.now()
+      ts: ts ? ts : Date.now(),
+      init
     };
     return this.stateDataBase[dp];
   }
@@ -371,7 +377,8 @@ class Library extends BaseClass {
           states[state] && states[state].val ? states[state].val : void 0,
           obj && obj.common && obj.common.type ? obj.common.type : void 0,
           states[state] && states[state].ack,
-          states[state] && states[state].ts ? states[state].ts : Date.now()
+          states[state] && states[state].ts ? states[state].ts : Date.now(),
+          true
         );
       } else {
         if (!removedChannels.every((a) => !dp.startsWith(a)))

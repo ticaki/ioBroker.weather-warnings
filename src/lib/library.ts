@@ -13,6 +13,7 @@ type LibraryStateValJson = {
     val: ioBroker.StateValue | undefined;
     ts: number;
     ack: boolean;
+    init: boolean;
 };
 
 // Generic library module and base classes, do not insert specific adapter code here.
@@ -209,9 +210,12 @@ export class Library extends BaseClass {
             }
             obj._id = `${this.adapter.name}.${this.adapter.instance}.${dp}`;
             if (typeof obj.common.name == 'string') obj.common.name = await this.getTranslationObj(obj.common.name);
-            if (!del) await this.adapter.setObjectNotExistsAsync(dp, obj);
+            if (!del) await this.adapter.extendObjectAsync(dp, obj);
             const stateType = obj && obj.common && obj.common.type;
             node = this.setdb(dp, obj.type, undefined, stateType, true);
+        } else if (node.init && obj) {
+            if (typeof obj.common.name == 'string') obj.common.name = await this.getTranslationObj(obj.common.name);
+            if (!del) await this.adapter.extendObjectAsync(dp, obj);
         }
 
         if (obj && obj.type !== 'state') return;
@@ -333,6 +337,7 @@ export class Library extends BaseClass {
         stateType: string | undefined,
         ack: boolean = true,
         ts: number = Date.now(),
+        init: boolean = false,
     ): LibraryStateVal {
         this.stateDataBase[dp] = {
             type: type,
@@ -345,6 +350,7 @@ export class Library extends BaseClass {
             val: val,
             ack: ack,
             ts: ts ? ts : Date.now(),
+            init: init,
         };
         return this.stateDataBase[dp];
     }
@@ -428,6 +434,7 @@ export class Library extends BaseClass {
                     obj && obj.common && obj.common.type ? obj.common.type : undefined,
                     states[state] && states[state].ack,
                     states[state] && states[state].ts ? states[state].ts : Date.now(),
+                    true,
                 );
             } else {
                 if (!removedChannels.every((a) => !dp.startsWith(a))) continue;
