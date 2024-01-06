@@ -538,5 +538,6 @@
     "statesObjectsWarnings.allService.alerts.asList": "List of warning types with events.",
     "numOfRawWarnings": "Maximum number of processed warnings per provider.",
     "removeManualAll": "Select the template to be used for no warnings for manually triggered notifications.",
-    "wrongTemplateKey": "The template key does not exist. Select a valid template!"
+    "wrongTemplateKey": "The template key does not exist. Select a valid template!",
+    "zamgdayPeriod": "Warning duration from midnight to midnight"
 }

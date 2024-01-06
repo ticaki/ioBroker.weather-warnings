@@ -538,5 +538,6 @@
     "statesObjectsWarnings.allService.alerts.asList": "Lista de tipos de aviso ativos.",
     "numOfRawWarnings": "Número máximo de avisos processados ​​por provedor.",
     "removeManualAll": "Selecione o modelo a ser usado para nenhum aviso em notificações acionadas manualmente.",
-    "wrongTemplateKey": "A chave do modelo não existe. Selecione um modelo válido!"
+    "wrongTemplateKey": "A chave do modelo não existe. Selecione um modelo válido!",
+    "zamgdayPeriod": "Duração do aviso de meia-noite a meia-noite"
 }

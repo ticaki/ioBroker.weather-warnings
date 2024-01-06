@@ -1546,6 +1546,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                 },
                 native: {},
             },
+            zamgdayPeriod: {
+                _id: 'zamgdayPeriod',
+                type: 'state',
+                common: {
+                    name: 'statesObjectsWarnings.allService.formatedkeys.countdown.zamgdayPeriod',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            },
             weatheremoji: {
                 _id: 'weatheremoji',
                 type: 'state',

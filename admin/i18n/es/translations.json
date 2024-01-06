@@ -538,5 +538,6 @@
     "statesObjectsWarnings.allService.alerts.asList": "Lista de tipos de advertencias activas.",
     "numOfRawWarnings": "Número máximo de advertencias procesadas por proveedor.",
     "removeManualAll": "Seleccione la plantilla que se utilizará sin advertencias para notificaciones activadas manualmente.",
-    "wrongTemplateKey": "La clave de la plantilla no existe. ¡Seleccione una plantilla válida!"
+    "wrongTemplateKey": "La clave de la plantilla no existe. ¡Seleccione una plantilla válida!",
+    "zamgdayPeriod": "Duración del aviso desde medianoche hasta medianoche"
 }

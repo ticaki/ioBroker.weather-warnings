@@ -538,5 +538,6 @@
     "statesObjectsWarnings.allService.alerts.asList": "活动警告类型列表。",
     "numOfRawWarnings": "每个提供商处理的警告的最大数量。",
     "removeManualAll": "选择用于手动触发通知的无警告模板。",
-    "wrongTemplateKey": "模板键不存在。选择有效的模板！"
+    "wrongTemplateKey": "模板键不存在。选择有效的模板！",
+    "zamgdayPeriod": "警告持续时间从午夜到午夜"
 }

@@ -538,5 +538,6 @@
     "statesObjectsWarnings.allService.alerts.asList": "Liste der Warntypen mit Ereignissen.",
     "numOfRawWarnings": "Maximale Anzahl verarbeiteter Warnungen pro Anbieter.",
     "removeManualAll": "Wählen Sie die Vorlage aus, die für keine Warnungen bei manuell ausgelösten Benachrichtigungen verwendet werden soll.",
-    "wrongTemplateKey": "Der Vorlagenschlüssel existiert nicht. Wählen Sie eine gültige Vorlage!"
+    "wrongTemplateKey": "Der Vorlagenschlüssel existiert nicht. Wählen Sie eine gültige Vorlage!",
+    "zamgdayPeriod": "Warndauer von Mitternacht zu Mitternacht"
 }

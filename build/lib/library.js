@@ -22,24 +22,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var __accessCheck = (obj, member, msg) => {
-  if (!member.has(obj))
-    throw TypeError("Cannot " + msg);
-};
-var __privateGet = (obj, member, getter) => {
-  __accessCheck(obj, member, "read from private field");
-  return getter ? getter.call(obj) : member.get(obj);
-};
-var __privateAdd = (obj, member, value) => {
-  if (member.has(obj))
-    throw TypeError("Cannot add the same private member more than once");
-  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
-};
-var __privateSet = (obj, member, value, setter) => {
-  __accessCheck(obj, member, "write to private field");
-  setter ? setter.call(obj, value) : member.set(obj, value);
-  return value;
-};
 var library_exports = {};
 __export(library_exports, {
   BaseClass: () => BaseClass,
@@ -50,7 +32,6 @@ module.exports = __toCommonJS(library_exports);
 var import_jsonata = __toESM(require("jsonata"));
 var import_fs = __toESM(require("fs"));
 var import_definition = require("./def/definition");
-var _adapter, _prefix;
 class BaseClass {
   unload = false;
   log;
@@ -68,33 +49,31 @@ class BaseClass {
   }
 }
 class CustomLog {
+  adapter;
+  prefix;
   constructor(adapter, text = "") {
-    __privateAdd(this, _adapter, void 0);
-    __privateAdd(this, _prefix, void 0);
-    __privateSet(this, _adapter, adapter);
-    __privateSet(this, _prefix, text);
+    this.adapter = adapter;
+    this.prefix = text;
   }
   getName() {
-    return __privateGet(this, _prefix);
+    return this.prefix;
   }
   debug(log, log2 = "") {
-    __privateGet(this, _adapter).log.debug(log2 ? `[${log}] ${log2}` : `[${__privateGet(this, _prefix)}] ${log}`);
+    this.adapter.log.debug(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
   }
   info(log, log2 = "") {
-    __privateGet(this, _adapter).log.info(log2 ? `[${log}] ${log2}` : `[${__privateGet(this, _prefix)}] ${log}`);
+    this.adapter.log.info(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
   }
   warn(log, log2 = "") {
-    __privateGet(this, _adapter).log.warn(log2 ? `[${log}] ${log2}` : `[${__privateGet(this, _prefix)}] ${log}`);
+    this.adapter.log.warn(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
   }
   error(log, log2 = "") {
-    __privateGet(this, _adapter).log.error(log2 ? `[${log}] ${log2}` : `[${__privateGet(this, _prefix)}] ${log}`);
+    this.adapter.log.error(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
   }
   setLogPrefix(text) {
-    __privateSet(this, _prefix, text);
+    this.prefix = text;
   }
 }
-_adapter = new WeakMap();
-_prefix = new WeakMap();
 class Library extends BaseClass {
   stateDataBase = {};
   language = "en";
@@ -156,7 +135,7 @@ class Library extends BaseClass {
     }
   }
   async getObjectDefFromJson(key, data) {
-    let result = await (0, import_jsonata.default)(`${key}`).evaluate(data);
+    let result = this.deepJsonValue(key, data);
     if (result === null || result === void 0) {
       const k = key.split(".");
       if (k && k[k.length - 1].startsWith("_")) {
@@ -167,6 +146,17 @@ class Library extends BaseClass {
       }
     }
     return this.cloneObject(result);
+  }
+  deepJsonValue(key, data) {
+    if (!key || !data || typeof data !== "object" || typeof key !== "string") {
+      throw new Error(`Error(222) data or key are missing/wrong type!`);
+    }
+    const k = key.split(`.`);
+    let c = 0, s = data;
+    while (c < k.length) {
+      s = s[k[c++]];
+    }
+    return s;
   }
   getChannelObject(definition = null) {
     const def = definition && definition._channel || null;
@@ -257,11 +247,14 @@ class Library extends BaseClass {
       this.log.debug(`Clean up tree delete: ${del[a]}`);
     }
   }
-  cleandp(string, lowerCase = false) {
+  cleandp(string, lowerCase = false, removePoints = false) {
     if (!string && typeof string != "string")
       return string;
     string = string.replace(this.adapter.FORBIDDEN_CHARS, "_");
-    string = string.replace(/[^0-9A-Za-z\._-]/gu, "_");
+    if (removePoints)
+      string = string.replace(/[^0-9A-Za-z_-]/gu, "_");
+    else
+      string = string.replace(/[^0-9A-Za-z\._-]/gu, "_");
     return lowerCase ? string.toLowerCase() : string;
   }
   convertToType(value, type) {
