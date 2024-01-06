@@ -596,8 +596,9 @@ class NotificationClass extends library.BaseClass {
           }
           this.log.debug(`start email sending! Messagecount: ${result.length}`);
           try {
-            await this.adapter.sendToAsync(this.options.adapter, "send", opt, { timeout: 2e3 });
+            this.adapter.sendTo(this.options.adapter, "send", opt);
             this.log.debug(`Send the message: ${JSON.stringify(opt)}`);
+            await library.sleep(200);
           } catch (error) {
             if (error.message == "Timeout exceeded")
               this.log.warn(

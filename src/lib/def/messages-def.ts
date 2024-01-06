@@ -49,6 +49,7 @@ export type customFormatedTokens = {
     warningcount: string;
     htmlicon: string;
     weatheremoji: string;
+    zamgdayPeriod: string;
 };
 
 export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, string> = {
@@ -94,6 +95,7 @@ export const customFormatedTokensJson: ChangeTypeOfKeys<customFormatedTokens, st
     warningcount: 'Number of Warnings',
     htmlicon: 'Blue png icons as base64 string with html tags',
     weatheremoji: 'Emoji for each warning type.',
+    zamgdayPeriod: 'ZAMG only: if start date is 00:00 and end date is 23:59',
 };
 //{ "headline":"${headline}", "start": "${starttime}", "ende": "${endtime}", "startdayofweek": "${startdayofweek}", "warnlevelcolorname": "${warnlevelcolorname}", "warntypename":"${warntypename}" \}
 export type customFormatedKeysDef = Partial<customFormatedTokens>;

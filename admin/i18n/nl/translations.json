@@ -538,5 +538,6 @@
     "statesObjectsWarnings.allService.alerts.asList": "Lijst met actieve waarschuwingstypen.",
     "numOfRawWarnings": "Maximaal aantal verwerkte waarschuwingen per provider.",
     "removeManualAll": "Selecteer de sjabloon die moet worden gebruikt voor geen waarschuwingen voor handmatig geactiveerde meldingen.",
-    "wrongTemplateKey": "De sjabloonsleutel bestaat niet. Selecteer een geldig sjabloon!"
+    "wrongTemplateKey": "De sjabloonsleutel bestaat niet. Selecteer een geldig sjabloon!",
+    "zamgdayPeriod": "Waarschuwingsduur van middernacht tot middernacht"
 }

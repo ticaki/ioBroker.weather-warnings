@@ -33,7 +33,8 @@ type messageCmdType =
     | 'dwdcolor'
     | 'warningcount'
     | 'iconbase64'
-    | 'getEmoji';
+    | 'getEmoji'
+    | 'fullday';
 /**
  * MessageClass
  */
@@ -218,6 +219,10 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'getEmoji',
                 node: '',
             },
+            zamgdayPeriod: {
+                cmd: 'fullday',
+                node: '',
+            },
         },
 
         uwzService: {
@@ -375,6 +380,10 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'getEmoji',
                 node: '',
             },
+            zamgdayPeriod: {
+                cmd: 'fullday',
+                node: '',
+            },
         },
         zamgService: {
             starttime: {
@@ -519,6 +528,10 @@ export class MessagesClass extends library.BaseClass {
                 cmd: 'getEmoji',
                 node: '',
             },
+            zamgdayPeriod: {
+                cmd: 'fullday',
+                node: '',
+            },
         },
         default: {
             starttime: { node: `` },
@@ -633,6 +646,10 @@ export class MessagesClass extends library.BaseClass {
             },
             weatheremoji: {
                 cmd: 'getEmoji',
+                node: '',
+            },
+            zamgdayPeriod: {
+                cmd: undefined,
                 node: '',
             },
         },
@@ -1041,6 +1058,11 @@ export class MessagesClass extends library.BaseClass {
             throw new Error('readWithTypescript called without rawWarning or val!');
         }
         switch (cmd) {
+            case 'fullday': {
+                const diff = new Date(this.starttime as number).getTime() - new Date(this.endtime as number).getTime();
+                if (diff > 86700000 && diff < 86100000) return '';
+                data = this.starttime;
+            }
             case 'dayoftheweek': {
                 return new Date(data as string | number | Date).toLocaleDateString(this.library.getLocalLanguage(), {
                     weekday: 'long',
@@ -1143,6 +1165,9 @@ export class MessagesClass extends library.BaseClass {
                     return this.adapter.providerController!.activeMessages;
                 }
                 break;
+            default:
+                const _exhaustiveCheck: never = cmd;
+                return _exhaustiveCheck;
         }
         return '';
     }

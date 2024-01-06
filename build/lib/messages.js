@@ -206,6 +206,10 @@ class MessagesClass extends library.BaseClass {
       weatheremoji: {
         cmd: "getEmoji",
         node: ""
+      },
+      zamgdayPeriod: {
+        cmd: "fullday",
+        node: ""
       }
     },
     uwzService: {
@@ -362,6 +366,10 @@ class MessagesClass extends library.BaseClass {
       weatheremoji: {
         cmd: "getEmoji",
         node: ""
+      },
+      zamgdayPeriod: {
+        cmd: "fullday",
+        node: ""
       }
     },
     zamgService: {
@@ -505,6 +513,10 @@ class MessagesClass extends library.BaseClass {
       weatheremoji: {
         cmd: "getEmoji",
         node: ""
+      },
+      zamgdayPeriod: {
+        cmd: "fullday",
+        node: ""
       }
     },
     default: {
@@ -620,6 +632,10 @@ class MessagesClass extends library.BaseClass {
       },
       weatheremoji: {
         cmd: "getEmoji",
+        node: ""
+      },
+      zamgdayPeriod: {
+        cmd: void 0,
         node: ""
       }
     }
@@ -984,6 +1000,12 @@ class MessagesClass extends library.BaseClass {
       throw new Error("readWithTypescript called without rawWarning or val!");
     }
     switch (cmd) {
+      case "fullday": {
+        const diff = new Date(this.starttime).getTime() - new Date(this.endtime).getTime();
+        if (diff > 867e5 && diff < 861e5)
+          return "";
+        data = this.starttime;
+      }
       case "dayoftheweek": {
         return new Date(data).toLocaleDateString(this.library.getLocalLanguage(), {
           weekday: "long"
@@ -1079,6 +1101,9 @@ class MessagesClass extends library.BaseClass {
           return this.adapter.providerController.activeMessages;
         }
         break;
+      default:
+        const _exhaustiveCheck = cmd;
+        return _exhaustiveCheck;
     }
     return "";
   }

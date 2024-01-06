@@ -76,7 +76,8 @@ const customFormatedTokensJson = {
   iconurl: "Url to Icon",
   warningcount: "Number of Warnings",
   htmlicon: "Blue png icons as base64 string with html tags",
-  weatheremoji: "Emoji for each warning type."
+  weatheremoji: "Emoji for each warning type.",
+  zamgdayPeriod: "ZAMG only: if start date is 00:00 and end date is 23:59"
 };
 const textLevels = {
   textGeneric: {

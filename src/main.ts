@@ -667,7 +667,7 @@ class WeatherWarnings extends utils.Adapter {
                         );
                     }
                     break;
-                case 'alexa_audio':
+                /*case 'alexa_audio':
                     {
                         this.sendTo(
                             obj.from,
@@ -680,7 +680,7 @@ class WeatherWarnings extends utils.Adapter {
                             obj.callback,
                         );
                     }
-                    break;
+                    break;*/
                 case 'alexa2_device_ids':
                     {
                         const data: any[] = [];

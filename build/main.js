@@ -542,19 +542,6 @@ class WeatherWarnings extends utils.Adapter {
             );
           }
           break;
-        case "alexa_audio":
-          {
-            this.sendTo(
-              obj.from,
-              obj.command,
-              {
-                openUrl: "https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html",
-                window: "_blank"
-              },
-              obj.callback
-            );
-          }
-          break;
         case "alexa2_device_ids":
           {
             const data = [];

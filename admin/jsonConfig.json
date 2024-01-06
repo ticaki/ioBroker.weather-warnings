@@ -48810,9 +48810,9 @@
                     "newLine": true
                 },
                 "alexa2_Audio_url": {
-                    "type": "sendTo",
-                    "openUrl": true,
-                    "command": "alexa_audio",
+                    "type": "staticLink",
+                    "button": true,
+                    "href": "https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html",
                     "xs": 12,
                     "sm": 12,
                     "md": 5,

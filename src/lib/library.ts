@@ -39,29 +39,29 @@ export class BaseClass {
 }
 
 class CustomLog {
-    #adapter: AdapterClassDefinition;
-    #prefix: string;
+    private adapter: AdapterClassDefinition;
+    private prefix: string;
     constructor(adapter: AdapterClassDefinition, text: string = '') {
-        this.#adapter = adapter;
-        this.#prefix = text;
+        this.adapter = adapter;
+        this.prefix = text;
     }
     getName(): string {
-        return this.#prefix;
+        return this.prefix;
     }
     debug(log: string, log2: string = ''): void {
-        this.#adapter.log.debug(log2 ? `[${log}] ${log2}` : `[${this.#prefix}] ${log}`);
+        this.adapter.log.debug(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
     }
     info(log: string, log2: string = ''): void {
-        this.#adapter.log.info(log2 ? `[${log}] ${log2}` : `[${this.#prefix}] ${log}`);
+        this.adapter.log.info(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
     }
     warn(log: string, log2: string = ''): void {
-        this.#adapter.log.warn(log2 ? `[${log}] ${log2}` : `[${this.#prefix}] ${log}`);
+        this.adapter.log.warn(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
     }
     error(log: string, log2: string = ''): void {
-        this.#adapter.log.error(log2 ? `[${log}] ${log2}` : `[${this.#prefix}] ${log}`);
+        this.adapter.log.error(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
     }
     setLogPrefix(text: string): void {
-        this.#prefix = text;
+        this.prefix = text;
     }
 }
 
@@ -155,10 +155,11 @@ export class Library extends BaseClass {
      *
      * @param key is the deep linking key to the definition
      * @param data  is the definition dataset
-     * @returns ioBroker.ChannelObject | ioBroker.DeviceObject &| ioBroker.StateObject/s
+     * @returns ioBroker.ChannelObject | ioBroker.DeviceObject | ioBroker.StateObject
      */
     async getObjectDefFromJson(key: string, data: any): Promise<ioBroker.Object> {
-        let result = await jsonata(`${key}`).evaluate(data);
+        //let result = await jsonata(`${key}`).evaluate(data);
+        let result = this.deepJsonValue(key, data);
         if (result === null || result === undefined) {
             const k = key.split('.');
             if (k && k[k.length - 1].startsWith('_')) {
@@ -169,6 +170,19 @@ export class Library extends BaseClass {
             }
         }
         return this.cloneObject(result);
+    }
+
+    deepJsonValue(key: string, data: any): any {
+        if (!key || !data || typeof data !== 'object' || typeof key !== 'string') {
+            throw new Error(`Error(222) data or key are missing/wrong type!`);
+        }
+        const k = key.split(`.`);
+        let c = 0,
+            s = data;
+        while (c < k.length) {
+            s = s[k[c++]];
+        }
+        return s;
     }
 
     /**
@@ -281,12 +295,13 @@ export class Library extends BaseClass {
      * @param lowerCase lowerCase() first param.
      * @returns void
      */
-    cleandp(string: string, lowerCase: boolean = false): string {
+    cleandp(string: string, lowerCase: boolean = false, removePoints: boolean = false): string {
         if (!string && typeof string != 'string') return string;
 
         string = string.replace(this.adapter.FORBIDDEN_CHARS, '_');
         // hardliner
-        string = string.replace(/[^0-9A-Za-z\._-]/gu, '_');
+        if (removePoints) string = string.replace(/[^0-9A-Za-z_-]/gu, '_');
+        else string = string.replace(/[^0-9A-Za-z\._-]/gu, '_');
         return lowerCase ? string.toLowerCase() : string;
     }
 
@@ -589,6 +604,7 @@ export class Library extends BaseClass {
         );
     }
 }
+
 export async function sleep(time: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
