@@ -146,7 +146,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.6.5 (2024-01-06)
+* (ticaki) Added: ZAMG full day token
+* (ticaki) fixed: Send emails asynchron
 * (ticaki) fixed: dont ignore uwz activate setting
 * (ticaki) update dp-objects on every start.
 
@@ -297,7 +299,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 ## License
 MIT License
 
-Copyright (c) 2023 ticaki <github@renopoint.de>
+Copyright (c) 2024 ticaki <github@renopoint.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
