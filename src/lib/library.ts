@@ -67,7 +67,7 @@ class CustomLog {
 
 export class Library extends BaseClass {
     stateDataBase: { [key: string]: LibraryStateVal } = {};
-    language: ioBroker.Languages | 'uk' = 'en';
+    language: ioBroker.Languages = 'en';
     forbiddenDirs: string[] = [];
     translation: { [key: string]: string } = {};
 
