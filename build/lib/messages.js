@@ -1002,7 +1002,7 @@ class MessagesClass extends library.BaseClass {
     switch (cmd) {
       case "fullday": {
         const diff = new Date(this.starttime).getTime() - new Date(this.endtime).getTime();
-        if (diff > 867e5 && diff < 861e5)
+        if (diff > 867e5 || diff < 861e5 || !(new Date(this.starttime).getHours() <= 3))
           return "";
         data = this.starttime;
       }
