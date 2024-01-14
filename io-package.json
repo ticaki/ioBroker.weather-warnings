@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.5",
+    "version": "0.6.6",
     "news": {
+      "0.6.6": {
+        "en": "fullday(ZAMG only): If time span is 24h +/- 5 minutes and the start hour is between 0-3, day of the week from start time, otherwise blank.",
+        "de": "fullday (nur ZAMG): Wenn die Zeitspanne 24h +/- 5 Minuten beträgt und die Startstunde zwischen 0-3 liegt, Tag der Woche der Startzeit, ansonsten leer ist.",
+        "ru": "fullday (только ZAMG): Если продолжительность времени составляет 24 часа +/- 5 минут, а стартовый час - от 0 до 3, день недели от стартового времени в противном случае пуст.",
+        "pt": "dia inteiro (apenas ZAMG): Se o tempo for 24h +/- 5 minutos e a hora de início é entre 0-3, dia da semana do tempo de início de outra forma vazio.",
+        "nl": "uitsluitend fullday(ZAMG): Als de tijdspanne 24 uur +/- 5 minuten is en het startuur tussen 0-3, dag van de week vanaf de starttijd anders leeg is.",
+        "fr": "journée complète (ZAMG seulement): Si la durée est de 24h +/- 5 minutes et que l'heure de départ est comprise entre 0-3, jour de la semaine à partir de l'heure de départ autrement vide.",
+        "it": "fullday(ZAMG only): Se l'intervallo di tempo è 24h +/- 5 minuti e l'ora di inizio è tra 0-3, giorno della settimana dall'inizio altrimenti vuoto.",
+        "es": "fullday (ZAMG solamente): Si el intervalo de tiempo es de 24h +/- 5 minutos y la hora de inicio es de 0-3, día de la semana desde el tiempo de inicio vacío.",
+        "pl": "w pełni (wyłącznie ZAMG): Jeżeli czas trwania wynosi 24h + / - 5 minut, a godzina rozpoczęcia jest między 0-3, dzień tygodnia od rozpoczęcia czasu w przeciwnym razie pusty.",
+        "uk": "повне г, повне г,, показали, від, номер, XNUMX Якщо проміжок часу 24х +/- 5 хвилин, і час початку між 0-3, день тижня від часу запуску інакше порожній.",
+        "zh-cn": "全天( 仅ZAMG) : 如果时间跨度为24h +/- 5分钟,且起始时间为0-3天,则从起始时间算起为空."
+      },
       "0.6.5": {
         "en": "Added: ZAMG full day token\nfixed: Send emails asynchron\nfixed: dont ignore uwz activate setting\nupdate dp-objects on every start.",
         "de": "Hinzugefügt: ZAMG Token für ganzen Tag\nBehoben: E-Mails kommen ohne Inhalt\nBehoben: UWZ gobale Deaktivierung wurde ignoriert\nDatenpunkt-Objekte bei jedem Start aktualisieren.",
@@ -80,19 +93,6 @@
         "pl": "W: globalne alarmy.\nChanged: Token .adverb – if no adverb, then day of the week.",
         "uk": "Додано: глобальні сповіщення.\nЗмінено: Token .adverb - якщо немає реклами, то день тижня.",
         "zh-cn": "增加:全球警觉。.\n修改:Patken adverb-如果没有反对意见,周末。."
-      },
-      "0.5.6": {
-        "en": "Added: Select template for manual notification without warnings.\nAdded: Configuration dialogue marks invalid template keys for most notification services.",
-        "de": "Hinzugefügt: Wählen Sie Vorlage für manuelle Benachrichtigung ohne Warnungen.\nHinzugefügt: Konfiguration Dialog markiert ungültige Vorlagenschlüssel für die meisten Benachrichtigungsdienste.",
-        "ru": "Добавлен: Выберите шаблон для ручного уведомления без предупреждения.\nДобавлена: Конфигурация диалога отмечает недействительные шаблонные ключи для большинства услуг уведомлений.",
-        "pt": "Adicionado: Selecione o modelo para notificação manual sem avisos.\nAdicionado: O diálogo de configuração marca chaves de modelo inválidas para a maioria dos serviços de notificação.",
-        "nl": "Verkocht om handmatig kennis te maken zonder waarschuwingen.\nVermoedelijk dialoogsporen zijn ongeldige templade sleutels voor de meeste inlichtingendiensten.",
-        "fr": "Ajouté : Sélectionnez le modèle de notification manuelle sans avertissements.\nAjouté : Le dialogue de configuration marque des clés de gabarit invalides pour la plupart des services de notification.",
-        "it": "Aggiunto: Selezionare il modello per la notifica manuale senza avvisi.\nAggiunto: Configurazione dialogo contrassegna le chiavi modello non valide per la maggior parte dei servizi di notifica.",
-        "es": "Añadido: Seleccione plantilla para notificación manual sin avisos.\nAñadido: El diálogo de configuración marca claves de plantilla inválidas para la mayoría de los servicios de notificación.",
-        "pl": "Added: Wybrany szablon dla powiadomień bez ostrzeżenia.\nAdded: dialog konfiguracyjny oznacza klucze szablonów dla większości usług powiadomień.",
-        "uk": "Додано: Виберіть шаблон для ручного сповіщення без попередження.\nДодано: Налаштування діалогу позначається недійсними ключами шаблонів для більшості служб сповіщення.",
-        "zh-cn": "添加:在没有警告的情况下选择手册通知模板。.\n增加:合并对话是大多数通知服务的关键模板。."
       }
     },
     "titleLang": {
