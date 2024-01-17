@@ -297,22 +297,16 @@ class NotificationClass extends library.BaseClass {
                 if (this.options.chatid.length > 0) {
                   const chatids = this.options.chatid.split(",");
                   for (const chatid of chatids)
-                    await this.adapter.sendToAsync(
-                      this.options.adapter,
-                      "send",
-                      {
-                        ...opt,
-                        chatid
-                      },
-                      { timeout: 2e3 }
-                    );
+                    this.adapter.sendTo(this.options.adapter, "send", {
+                      ...opt,
+                      chatid
+                    });
                 } else {
-                  await this.adapter.sendToAsync(this.options.adapter, "send", opt, {
-                    timeout: 2e3
-                  });
+                  await this.adapter.sendTo(this.options.adapter, "send", opt);
                 }
               } else
-                await this.adapter.sendToAsync(this.options.adapter, "send", opt, { timeout: 2e3 });
+                this.adapter.sendTo(this.options.adapter, "send", opt);
+              await library.sleep(20);
               this.log.debug(`Send the message: ${msg.text}`);
             } catch (error) {
               if (error.message == "Timeout exceeded")
