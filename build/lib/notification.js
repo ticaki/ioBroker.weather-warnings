@@ -466,7 +466,7 @@ class NotificationClass extends library.BaseClass {
                 if (state && state.val && typeof state.val == "string" && state.val != "")
                   json = JSON.parse(state.val);
                 json.unshift(newMsg);
-                json.splice(250);
+                json.splice(100);
                 await this.adapter.library.writedp(
                   dp,
                   JSON.stringify(json),
