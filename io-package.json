@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.6",
+    "version": "0.6.7",
     "news": {
+      "0.6.7": {
+        "en": "Reduce history data to 80 entries around 4000 lines, because of jerks in the admin",
+        "de": "Reduzieren Sie die Geschichtsdaten auf 80 Einträge um 4000 Zeilen, wegen der Rucks im Admin",
+        "ru": "Уменьшить данные истории до 80 записей около 4000 строк, из-за рывков в администраторе",
+        "pt": "Reduza os dados do histórico para 80 entradas em torno de 4000 linhas, por causa de idiotas no administrador",
+        "nl": "Verminder de historische gegevens tot 80 ingangen rond 4000 regels, vanwege eikels in de admin",
+        "fr": "Réduire les données d'historique à 80 entrées autour de 4000 lignes, en raison de branles dans l'administration",
+        "it": "Ridurre i dati di storia a 80 voci intorno a 4000 linee, a causa di cretini nell'amministratore",
+        "es": "Reducir los datos de historia a 80 entradas alrededor de 4000 líneas, debido a idiotas en el administrador",
+        "pl": "Zredukuj dane historii do 80 wpisów wokół 4000 linii, z powodu palantów w admin",
+        "uk": "Зменшити дані історії до 80 записів навколо 4000 рядків, через jerks в адмін",
+        "zh-cn": "将历史数据减少到大约4000行的80个条目,因为管理员里有混蛋"
+      },
       "0.6.6": {
         "en": "fullday(ZAMG only): If time span is 24h +/- 5 minutes and the start hour is between 0-3, day of the week from start time, otherwise blank.",
         "de": "fullday (nur ZAMG): Wenn die Zeitspanne 24h +/- 5 Minuten beträgt und die Startstunde zwischen 0-3 liegt, Tag der Woche der Startzeit, ansonsten leer ist.",
@@ -80,19 +93,6 @@
         "pl": "Optimise: DWD Nazwa miasta, adminkonfiguracja, tłumaczenia",
         "uk": "Оптимізація: DWD Назва міста, адмінконфігурація, переклади",
         "zh-cn": "目标: 城市名称、专注、翻译"
-      },
-      "0.6.0": {
-        "en": "Added: global alerts.\nChanged: Token ...adverb - if no adverb, then day of the week.",
-        "de": "Hinzugefügt: globale Alarme.\nGeändert: Token .adverb - wenn kein Adverb, dann Tag der Woche.",
-        "ru": "Добавленные: глобальные оповещения.\nИзменено: Token .adverb - если нет adverb, то день недели.",
-        "pt": "Adicionado: global alerts.\nAlterado: Token .adverb - se nenhum adverb, então dia da semana.",
-        "nl": "Toegevoegd: wereldwijde alarmen.\nToken .adverb - als geen advertentie, dan dag van de week.",
-        "fr": "Ajouté : alertes mondiales.\nChanged: Token .adverb - si pas d'adverb, puis le jour de la semaine.",
-        "it": "Aggiunto: Global alerts.\nCambiato: Token .adverb - se non adverb, allora il giorno della settimana.",
-        "es": "Añadido: alertas globales.\nCambio: Token .adverb - si no hay adverbio, entonces día de la semana.",
-        "pl": "W: globalne alarmy.\nChanged: Token .adverb – if no adverb, then day of the week.",
-        "uk": "Додано: глобальні сповіщення.\nЗмінено: Token .adverb - якщо немає реклами, то день тижня.",
-        "zh-cn": "增加:全球警觉。.\n修改:Patken adverb-如果没有反对意见,周末。."
       }
     },
     "titleLang": {
