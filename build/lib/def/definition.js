@@ -18,6 +18,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -2288,6 +2292,7 @@ const PROVIDER_OPTIONS = {
     url_appendix_townlist: "&typeName=dwd%3AWarngebiete_Gemeinden",
     url_appendix_landlist: "&typeName=dwd%3AWarngebiete_Kreise",
     url_language: `&language=#+  +#`,
+    // noch nicht eingefügt
     url: `https://maps.dwd.de/geoserver/dwd/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=dwd%3AWarnungen_Gemeinden&maxFeatures=50&outputFormat=application%2Fjson`,
     language: {
       de: "ger",
@@ -2309,6 +2314,7 @@ const PROVIDER_OPTIONS = {
   },
   noService: {
     url: ""
+    //languages: [{ de: 'German' }, { en: 'English' }, { it: 'Italy' }, { fr: 'French' }, { es: 'Spanish' }], // definitioin für admin
   },
   metroService: {
     url: ""

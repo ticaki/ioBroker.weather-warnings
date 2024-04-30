@@ -14,6 +14,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -46,6 +50,9 @@ class WeatherWarnings extends utils.Adapter {
     this.library = new import_library.Library(this);
     this.providerController = new import_provider.ProviderController(this);
   }
+  /**
+   * Is called when databases are connected and adapter received configuration.
+   */
   async onReady() {
     if (!this.providerController) {
       throw new Error("Provider controller doesnt exists.");
@@ -272,6 +279,7 @@ class WeatherWarnings extends utils.Adapter {
               useadapter: true
             };
             Object.assign(
+              //@ts-expect-error verstehe ich nicht
               notificationServiceOpt[notificationService],
               import_notificationService_def.notificationServiceDefaults[notificationService]
             );
@@ -463,6 +471,9 @@ class WeatherWarnings extends utils.Adapter {
       this
     );
   }
+  /**
+   * Is called when adapter shuts down - callback has to be called under any circumstances!
+   */
   onUnload(callback) {
     try {
       if (this.startDelay)
@@ -474,6 +485,9 @@ class WeatherWarnings extends utils.Adapter {
       callback();
     }
   }
+  /**
+   * Respond to language changes.
+   */
   async onObjectChange(id, obj) {
     if (obj) {
       if (id == "system.config") {
@@ -484,6 +498,10 @@ class WeatherWarnings extends utils.Adapter {
       }
     }
   }
+  /**
+   * Is called if a subscribed state changes
+   * We need this later, dont remove
+   */
   async onStateChange(id, state) {
     if (!state)
       return;
@@ -497,6 +515,10 @@ class WeatherWarnings extends utils.Adapter {
     if (await this.providerController.setSpeakAllowed(id))
       return;
   }
+  /**
+   * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
+   * Using this method requires "common.messagebox" property to be set to true in io-package.json
+   */
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {
       console.log(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
@@ -769,9 +791,89 @@ class WeatherWarnings extends utils.Adapter {
       }
     }
   }
+  /* behalten wir falls sich die ids mal ändern, das geht dann nach etwas feinarbeit wieder
+      async dwdWarncellIdLongHelper(obj1: any): Promise<void> {
+          const obj = obj1.obj as ioBroker.Message;
+          const that = obj1.that as WeatherWarnings;
+          if (obj.callback) {
+              const data = ''; //dwdWarncellIdLong;
+              //if (!data) data = await axios.get(that.config.dwdWarncellTextUrl);
+              const text: { label: string; value: string; cityDetails?: string }[] = JSON.parse(
+                  JSON.stringify(DWDCityDataConverted.data),
+              );
+              if (text.length == 0) {
+                  const dataArray: string[] = data.split('\n');
+  
+                  dataArray.splice(0, 1);
+                  dataArray.forEach((element) => {
+                      const line = element.split(';');
+                      const value = line[0];
+                      const cityArray = line[1].split(' ');
+                      let typ = undefined;
+                      if (
+                          ['Kreis', 'Stadt', 'Gemeinde', 'Hansestadt'].indexOf(cityArray[0]) !== -1 /*||
+                          (value && (value.startsWith('10') || value.startsWith('9')))
+                      ) {
+                          typ = cityArray.length > 1 ? cityArray.shift() : undefined;
+                          if (value && (value.startsWith('10') || value.startsWith('9'))) {
+                              typ = 'Kreis';
+                          }
+                      }
+  
+                      let cityText = cityArray.join(' ') + ' (';
+                      if (typ !== undefined) cityText += typ + '/';
+                      cityText += line[4] + (line[3] ? '/' + line[3] : '') + ')';
+                      const cityDetails = cityText + ` [${line[2]}]`;
+  
+                      //const cityText = element.split(';')[2];
+                      if (
+                          value &&
+                          (value.startsWith('10') ||
+                              value.startsWith('9') ||
+                              value.startsWith('8') ||
+                              value.startsWith('7'))
+                      ) {
+                          text.push({ label: cityText, value: value.trim(), cityDetails: cityDetails.trim() });
+                      }
+                  });
+                  for (let a = 0; a < text.length; a++) {
+                      const searchText = text[a].label;
+                      let index = text.findIndex((i, pos) => a != pos && i.label == searchText);
+                      if (index != -1) {
+                          while (
+                              (index = text.findIndex((i) => i.cityDetails !== i.label && i.label == searchText)) != -1
+                          ) {
+                              if (text[index].cityDetails !== undefined) {
+                                  text[index].label = text[index].cityDetails!;
+                                  delete text[index].cityDetails;
+                              } else text[index].label += `(${text[index].value})`;
+                          }
+                      }
+                      delete text[a].cityDetails;
+                  }
+                  text.sort((a, b) => {
+                      const nameA = a.label.toUpperCase(); // ignore upper and lowercase
+                      const nameB = b.label.toUpperCase(); // ignore upper and lowercase
+                      if (nameA < nameB) {
+                          return -1;
+                      }
+                      if (nameA > nameB) {
+                          return 1;
+                      }
+  
+                      return 0;
+                  });
+              }
+  
+              that.sendTo(obj.from, obj.command, DWDCityDataConverted.data, obj.callback);
+          }
+      }*/
 }
 if (require.main !== module) {
-  module.exports = (options) => new WeatherWarnings(options);
+  module.exports = (options) => (
+    //@ts-expect-error no idea why options need log
+    new WeatherWarnings(options)
+  );
 } else {
   (() => new WeatherWarnings())();
 }

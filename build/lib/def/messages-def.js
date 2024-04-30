@@ -36,34 +36,55 @@ __export(messages_def_exports, {
 module.exports = __toCommonJS(messages_def_exports);
 const customFormatedTokensJson = {
   starttime: "Start time",
+  // Start Uhrzeit HH:MM
   startdate: "Start date",
+  // Start Datum DD.MM
   startday: "Start Day",
   startmonth: "Start Month",
   startdaytime: "Start: Time of day.",
   startadverb: "Start: temporal adverb (yesterday, today, tomorrow, day after tomorrow)",
   endtime: "End Time",
+  // Endzeitpunkt
   enddate: "End Date",
+  // Enddatum
   endday: "End Day",
   endmonth: "End Month",
   enddaytime: "End: Time of the day.",
   startdayofweek: "Start day of the week",
+  // Start Tag der Woche
   enddayofweek: "End day of the week",
+  // End Tag der Woche
   startdayofweekshort: "Start day of the week short",
+  // Start Tag der Woche (kurz)
   enddayofweekshort: "End day of the week short",
+  // End Tag der Woche (kurz)
   headline: "Headline",
+  // Schlagzeile
   description: "Description",
+  // Beschreibung
   impact: "Impact text",
+  // nur Zamg wetterbeschreibender Text
   ceiling: "Maximum validity height",
+  // max höhe
   altitude: "Minimum validity height",
+  // min höhe
   warnlevelname: "Textname of level",
+  // Textbezeichnung des Levels
   warnlevelnumber: "Number of level",
+  // Levelhöhe
   warnlevelcolorname: "Textname of level color",
+  // Farbbezeichnung des Levels
   warnlevelcolorhex: "Hexnumber of level color",
+  // RGB im Hexformat
   warntypename: "Warning type retrieved from the provider",
+  // gelieferter Warntype
   warntypegenericname: "Warntype name generic",
+  // vereinheitlichter Warntyp
   warntypegeneric: "Warntype number generic",
   location: "Location retrieved from the provider",
+  // gelieferte Location (meinst Unsinn)
   instruction: "Instructions",
+  // Anweisungen
   provider: "Provider",
   locationcustom: "Location from admin configuration",
   countdown: "Remaining time until the start of the warning.",
@@ -96,6 +117,7 @@ const color = {
     2: `#ffb400`,
     3: `#ff0000`,
     4: `#ff00ff`
+    // 4 - Violett Warnungen vor extremem Unwetter (nur DWD/ Weltuntergang nach aktueller Erfahrung)
   },
   zamgColor: {
     0: `#01DF3A`,

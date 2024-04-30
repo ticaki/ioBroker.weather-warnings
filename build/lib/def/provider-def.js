@@ -26,6 +26,7 @@ __reExport(provider_def_exports, require("../provider"), module.exports);
 const providerServicesArray = ["dwdService", "zamgService", "uwzService"];
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  providerServicesArray
+  providerServicesArray,
+  ...require("../provider")
 });
 //# sourceMappingURL=provider-def.js.map

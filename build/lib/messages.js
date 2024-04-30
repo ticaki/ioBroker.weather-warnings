@@ -18,6 +18,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -38,8 +42,11 @@ class MessagesClass extends library.BaseClass {
   formatedKeysJsonataDefinition = {};
   formatedData;
   rawWarning;
+  /** message is a new message */
   newMessage = true;
+  /** message got a update lately */
   updated = false;
+  /**Indicate if message is marked for remove. */
   notDeleted = true;
   templates;
   messages = [];
@@ -54,6 +61,7 @@ class MessagesClass extends library.BaseClass {
     ts: 0
   };
   genericType = 0;
+  /** jsonata/typscript cmd to gather data from warning json */
   formatedKeyCommand = {
     dwdService: {
       starttime: {
@@ -798,6 +806,7 @@ class MessagesClass extends library.BaseClass {
     }
     return await this.updateFormatedData();
   }
+  /** return true not filter message */
   filter(filter) {
     if (filter.level && filter.level > this.level)
       return false;
@@ -940,7 +949,7 @@ class MessagesClass extends library.BaseClass {
       throw new Error(`${this.log.getName()} error(165) rawWarning null or undefined!`);
     }
     {
-      const timeOffset = (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0 ? "+" : "-") + ("00" + Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))).slice(-2) + ("00" + Math.abs(new Date().getTimezoneOffset() % 60)).slice(-2);
+      const timeOffset = (Math.floor((/* @__PURE__ */ new Date()).getTimezoneOffset() / 60) < 0 || (/* @__PURE__ */ new Date()).getTimezoneOffset() % 60 < 0 ? "+" : "-") + ("00" + Math.abs(Math.floor((/* @__PURE__ */ new Date()).getTimezoneOffset() / 60))).slice(-2) + ("00" + Math.abs((/* @__PURE__ */ new Date()).getTimezoneOffset() % 60)).slice(-2);
       const status = this.newMessage ? MessageType.status.new : this.notDeleted && this.name != "noMessage" ? MessageType.status.hold : MessageType.status.clear;
       const temp = {};
       for (const key in this.formatedKeysJsonataDefinition) {
@@ -1107,11 +1116,13 @@ class MessagesClass extends library.BaseClass {
     }
     return "";
   }
+  //** Update rawWarning and dont delete message */
   async updateData(data) {
     this.rawWarning = data;
     this.notDeleted = true;
     await this.updateFormated();
   }
+  //** dont send a message and dont delete this*/
   silentUpdate() {
     this.newMessage = false;
     this.notDeleted = true;

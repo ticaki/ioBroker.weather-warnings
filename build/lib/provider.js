@@ -18,6 +18,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -71,6 +75,7 @@ class BaseProvider extends import_library.BaseClass {
     this.noMessage = new import_messages.MessagesClass(this.adapter, "noMessage", null, {}, this.providerController, this);
     this.noMessage.updateFormated();
     const temp = this.library.cloneGenericObject(
+      //@ts-expect-error ist vorhanden
       definitionen.statesObjectsWarnings[this.service]._channel
     );
     temp.common.name = name.toUpperCase();
@@ -105,6 +110,9 @@ class BaseProvider extends import_library.BaseClass {
     }
     return this.service;
   }
+  /*getStatesObjectsWarnings(key: string): { [key: string]: ioBroker.Object } {
+      return statesObjectsWarnings[this.service][key];
+  }*/
   setService(service) {
     if (!service || ["dwdService", "zamgService", "uwzService", "ninaService", "metroService"].indexOf(service) === -1) {
       throw new Error(`baseProvider.setService service ${service} is unknowed!`);
@@ -112,6 +120,10 @@ class BaseProvider extends import_library.BaseClass {
     this.service = service;
     return true;
   }
+  /**
+   * @param url if '' url from PROVIDER_OPTIONS is taken
+   * @param keys [string] values to replace - placeholder #  # #+  +# #++  ++# and so on
+   */
   static getUrl(url = "", keys, service) {
     let result = "";
     if (!url) {
@@ -192,9 +204,11 @@ class BaseProvider extends import_library.BaseClass {
     );
     return allReplys;
   }
+  // General function that retrieves data
   async getDataFromProvider() {
     if (!this.url || !this.warncellId) {
       this.log.debug(
+        // eslint-disable-next-line prettier/prettier
         `Warn (31) this.url: ${this.url} this.warncellid: ${this.warncellId} this.service: ${this.getService()}`
       );
     }
@@ -252,6 +266,7 @@ class BaseProvider extends import_library.BaseClass {
     await this.setConnected(false);
     return null;
   }
+  //** Called at the end of updateData() from every childclass */
   async finishUpdateData() {
     let index = -1;
     this.messages.sort((a, b) => {
@@ -298,6 +313,7 @@ class BaseProvider extends import_library.BaseClass {
       data
     );
   }
+  /** Remove marked Messages. */
   async clearMessages() {
     for (let m = 0; m < this.messages.length; m++) {
       this.messages[m].newMessage = false;
@@ -519,6 +535,7 @@ class ProviderController extends import_library.BaseClass {
   refreshTime = 3e5;
   library;
   pushOn = false;
+  //globalSpeakSilentTime: ({ profil: string; day: number[]; start: number; end: number } | null)[] = [];
   testStatus = 0;
   activeMessages = 0;
   silentTime = {
@@ -620,6 +637,11 @@ class ProviderController extends import_library.BaseClass {
       }
     }
   }
+  /**
+   * Create a notificationService
+   * @param optionList specialcase: adapter == '' then it is createn anyway
+   * @returns
+   */
   async createNotificationService(optionList) {
     for (const a in optionList) {
       const options = optionList[a];
@@ -946,8 +968,8 @@ class ProviderController extends import_library.BaseClass {
       const profil = this.getSpeakProfil();
       let isSpeakAllowed = true;
       if (this.silentTime !== void 0 && this.silentTime.profil[profil] && Array.isArray(this.silentTime.profil[profil])) {
-        const now = new Date().getHours() + new Date().getMinutes() / 60;
-        const day = String(new Date().getDay());
+        const now = (/* @__PURE__ */ new Date()).getHours() + (/* @__PURE__ */ new Date()).getMinutes() / 60;
+        const day = String((/* @__PURE__ */ new Date()).getDay());
         for (const t of this.silentTime.profil[profil]) {
           if (t === null)
             continue;

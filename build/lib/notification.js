@@ -18,6 +18,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -36,6 +40,7 @@ class NotificationClass extends library.BaseClass {
   takeThemAll = false;
   providerDB;
   removeAllSend = true;
+  //clearAll(): void {}
   constructor(adapter, notifcationOptions) {
     super(adapter, notifcationOptions.name);
     this.options = notifcationOptions;
@@ -45,6 +50,9 @@ class NotificationClass extends library.BaseClass {
     );
     this.log.setLogPrefix(this.options.adapter != void 0 ? this.options.adapter : this.name);
   }
+  /**
+   * Initialisiere class - create channel, states etc
+   */
   async init() {
     switch (this.name) {
       case "history":
@@ -82,6 +90,13 @@ class NotificationClass extends library.BaseClass {
         break;
     }
   }
+  /**
+   *  Send this message after filtering to services
+   * @param messages the message with MessageClassRef Ref can be null
+   * @param allowActions <string>[] array new, remove, removeall, all - to allow this action
+   * @param manual <boolean> manual new/removeall handling
+   * @returns
+   */
   async sendMessage(providers, allowActions, manual = false) {
     if (!manual && !this.allowSending()) {
       this.log.debug("Sending the notification is not allowed.");
@@ -115,7 +130,11 @@ class NotificationClass extends library.BaseClass {
               continue;
             if (action == "removeAll")
               continue;
-            if (manual || action == "new" && message.newMessage || action == "remove" && !message.notDeleted || action == "manualAll" || action == "all" && notifications.includes("all") && !(notifications.includes("new") && message.newMessage) && !(notifications.includes("remove") && !message.notDeleted)) {
+            if (manual || // get every message
+            action == "new" && message.newMessage || // new message
+            action == "remove" && !message.notDeleted || // remove message
+            action == "manualAll" || action == "all" && // bei Diensten mit all sollten keine neuen oder entfernten nachrichten bei all durchlaufen.
+            notifications.includes("all") && !(notifications.includes("new") && message.newMessage) && !(notifications.includes("remove") && !message.notDeleted)) {
               const msg = await message.getMessage(templateKey, this);
               if (msg.text != "") {
                 msg.action = action;
@@ -181,6 +200,7 @@ class NotificationClass extends library.BaseClass {
           const msg = [
             {
               text: result2.text,
+              // templates[tempid].template.replaceAll('\\}', '}'),
               startts: result2.startts,
               template: result2.template,
               action: result2.action
