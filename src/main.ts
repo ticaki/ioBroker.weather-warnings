@@ -885,7 +885,7 @@ class WeatherWarnings extends utils.Adapter {
                         return;
                     }
                     this.log.debug(`Retrieve test-connection message!`);
-                    connected = true;
+                    connected = false;
                     [
                         'provider.dwd.info.connection',
                         'provider.uwz.info.connection',
@@ -893,7 +893,7 @@ class WeatherWarnings extends utils.Adapter {
                         'info.connection',
                     ].forEach((a) => {
                         state = this.library.readdp(a);
-                        if (state) connected = connected && !!state.val;
+                        if (state) connected = connected || !!state.val;
                     });
                     // connected === true is right
                     this.sendTo(obj.from, obj.command, connected ? 'true' : 'false', obj.callback);

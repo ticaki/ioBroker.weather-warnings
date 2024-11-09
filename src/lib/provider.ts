@@ -827,7 +827,7 @@ export class ProviderController extends BaseClass {
             if (p) this.providers.push(p);
             return p;
         } else {
-            this.log.error('Attempt to create an existing provider.');
+            this.log.error('Attempt to create an existing provider. ' + options.service);
             return this.providers[index];
         }
     }
