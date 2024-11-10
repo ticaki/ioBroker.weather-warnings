@@ -473,7 +473,7 @@ class NotificationClass extends library.BaseClass {
               try {
                 const temp = JSON.parse(newMsg.message);
                 newMsg.message = temp;
-              } catch (e) {
+              } catch {
                 this.log.debug(" write message: " + newMsg.message);
               }
             }
@@ -492,7 +492,7 @@ class NotificationClass extends library.BaseClass {
                   JSON.stringify(json),
                   import_definition.genericStateObjects.history
                 );
-              } catch (error) {
+              } catch {
                 this.log.error(
                   `${this.name} template has wrong formate. ${this.name} deactivated! template: ${msg.action ? this.options.actions[msg.action] : "unknown"}, message: ${msg}`
                 );
@@ -516,7 +516,7 @@ class NotificationClass extends library.BaseClass {
                 provider: messages[a].provider
               });
               providers.push(messages[a].provider !== void 0 ? messages[a].provider.name : "");
-            } catch (error) {
+            } catch {
               this.log.error(
                 `Json template has wrong formate. Conversion deactivated! template: ${messages[a].template}, message: ${messages[a].text}`
               );

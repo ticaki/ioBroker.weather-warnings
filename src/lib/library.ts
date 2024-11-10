@@ -539,7 +539,7 @@ export class Library extends BaseClass {
             try {
                 const i = await import(`../../admin/i18n/${l}/translations.json`);
                 if (i[key] !== undefined) result[l as string] = i[key];
-            } catch (error) {
+            } catch {
                 return key;
             }
         }
@@ -554,7 +554,7 @@ export class Library extends BaseClass {
                 this.translation = await import(`../../admin/i18n/${language}/translations.json`);
                 this.language = language;
                 return true;
-            } catch (error) {
+            } catch {
                 this.log.error(`Language ${language} not exist!`);
             }
         }

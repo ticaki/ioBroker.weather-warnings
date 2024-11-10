@@ -879,7 +879,7 @@ export class MessagesClass extends library.BaseClass {
                                             arraykey[1] as keyof MessageType.customFormatedKeysDef
                                         ] as number
                                     ].trim();
-                            } catch (error) {
+                            } catch {
                                 this.log.error(`Array is not an array ${arraykey[0]} or index out of range ${n}.`);
                             }
                         }

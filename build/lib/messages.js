@@ -860,7 +860,7 @@ class MessagesClass extends library.BaseClass {
             if (n != "" && !Number.isNaN(n)) {
               try {
                 msg += arraykey[0].split(",")[this.formatedData[arraykey[1]]].trim();
-              } catch (error) {
+              } catch {
                 this.log.error(`Array is not an array ${arraykey[0]} or index out of range ${n}.`);
               }
             }

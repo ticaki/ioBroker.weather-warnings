@@ -430,7 +430,7 @@ class WeatherWarnings extends utils.Adapter {
                 }
                 try {
                     await self.providerController.createNotificationService(notificationServiceOpt);
-                } catch (error) {
+                } catch {
                     self.log.error('Execution interrupted - Please check your configuration. ---');
                     return;
                 }
@@ -585,7 +585,7 @@ class WeatherWarnings extends utils.Adapter {
             if (this.startDelay) this.clearTimeout(this.startDelay);
             if (this.providerController) this.providerController.delete();
             callback();
-        } catch (e) {
+        } catch {
             callback();
         }
     }

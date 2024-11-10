@@ -516,7 +516,7 @@ class Library extends BaseClass {
         const i = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${l}/translations.json`)));
         if (i[key] !== void 0)
           result[l] = i[key];
-      } catch (error) {
+      } catch {
         return key;
       }
     }
@@ -532,7 +532,7 @@ class Library extends BaseClass {
         this.translation = await Promise.resolve().then(() => __toESM(require(`../../admin/i18n/${language}/translations.json`)));
         this.language = language;
         return true;
-      } catch (error) {
+      } catch {
         this.log.error(`Language ${language} not exist!`);
       }
     }
