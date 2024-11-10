@@ -226,6 +226,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "disabled": "data.useTestWarnings",
                     "label": "useJsonHistory",
                     "hidden": "data.imExpert != true",
@@ -252,6 +253,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl":12,
                     "titleAttr": "speakProfile",
                     "label": "speakSilentTime",
                     "hidden": "data.imExpert != true || (!data.alexa2_Enabled && !data.sayit_Enabled)",
@@ -270,6 +272,7 @@
                             "sm": 12,
                             "md": 12,
                             "lg": 12,
+                            "xl": 12,
                             "default": [],
                             "label": "speakSilentTimeDetail",
                             "items": [
@@ -332,6 +335,7 @@
                     "sm": 12,
                     "md": 9,
                     "lg": 9,
+                    "xl": 9,
                     "label": "icons_prefix",
                     "default": "",
                     "hidden": "data.imExpert != true",
@@ -355,6 +359,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 12,
                     "label": "icons_description",
                     "readOnly": true,
                     "hidden": "data.imExpert != true",
@@ -375,6 +380,7 @@
                     "md": 12,
                     "noDelete": true,
                     "lg": 12,
+                    "xl": 12,
                     "titleAttr": "providerService",
                     "label": "allowedDirs",
                     "hidden": "data.imExpert != true",
@@ -386,7 +392,8 @@
                             "xs": 12,
                             "sm": 2,
                             "md": 2,
-                            "lg": 3
+                            "lg": 3,
+                            "xl": 3
                         },
                         {
                             "attr": "dpWarning",
@@ -395,6 +402,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 3,
+                            "xl": 3,
                             "label": ".warning"
                         },
                         {
@@ -404,6 +412,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 3,
+                            "xl": 3,
                             "label": ".formatedKeys"
                         },
                         {
@@ -413,6 +422,7 @@
                             "sm": 12,
                             "md": 2,
                             "lg": 3,
+                            "xl": 3,
                             "label": ".alerts"
                         }
                     ]
@@ -430,6 +440,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 12,
                     "hidden": "data.templateTable[0].template == 'template.NewMessage'",
                     "label": "",
                     "showSecondAddAt": 5,
@@ -480,6 +491,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 12,
                     "newLine": true
                 },
                 "restoreDefault": {
@@ -493,6 +505,7 @@
                     "sm": 6,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "useNative": true
                 },
                 "addDefault": {
@@ -506,6 +519,7 @@
                     "sm": 6,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "useNative": true
                 }
             }
@@ -47679,6 +47693,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "tooltip": "HourFilterTip",
                     "label": "HourFilter",
                     "newLine": false
@@ -48951,6 +48966,7 @@
                     "md": 12,
                     "noDelete": true,
                     "lg": 12,
+                    "xl": 12,
                     "titleAttr": "warntype",
                     "label": "alexa2_sounds",
                     "hidden": "data.imExpert != true",
