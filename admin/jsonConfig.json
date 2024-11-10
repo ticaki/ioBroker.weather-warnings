@@ -12,6 +12,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "dwdEnabled",
                     "newLine": true
                 },
@@ -21,6 +22,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "telegram_Enabled",
                     "newLine": false
                 },
@@ -30,6 +32,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "alexa2_Enabled",
                     "newLine": false
                 },
@@ -39,6 +42,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "json_Enabled",
                     "hidden": "data.imExpert != true",
                     "newLine": false
@@ -49,6 +53,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "uwzEnabled",
                     "newLine": true
                 },
@@ -58,6 +63,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "whatsapp_Enabled",
                     "newLine": false
                 },
@@ -67,6 +73,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "sayit_Enabled",
                     "newLine": false
                 },
@@ -76,6 +83,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "history_Enabled",
                     "newLine": false
                 },
@@ -85,6 +93,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "zamgEnabled",
                     "newLine": true
                 },
@@ -94,6 +103,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "pushover_Enabled",
                     "newLine": false
                 },
@@ -103,6 +113,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "email_Enabled",
                     "newLine": false
                 },
@@ -125,6 +136,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "newLine": true
                 },
                 "refreshTime": {
@@ -136,6 +148,7 @@
                     "sm": 8,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "validator": "data.refreshTime >= 5",
                     "validatorNoSaveOnError": true,
                     "newLine": true
@@ -150,6 +163,7 @@
                     "sm": 8,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "validator": "data.numOfRawWarnings > 0",
                     "validatorNoSaveOnError": true,
                     "newLine": false
@@ -160,6 +174,7 @@
                     "sm": 8,
                     "md": 6,
                     "lg": 4,
+                    "xl": 3,
                     "label": "notPushAtStart",
                     "newLine": true
                 },
@@ -169,6 +184,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
+                    "xl": 4,
                     "disabled": "data.imExpert",
                     "default": false,
                     "label": "imExpert",
@@ -188,6 +204,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
+                    "xl": 3,
                     "label": "useTestWarnings",
                     "newLine": true
                 },
@@ -197,7 +214,8 @@
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
-                    "lg": 6,
+                    "lg": 3,
+                    "xl": 3,
                     "label": "useTestCase",
                     "hidden": "data.imExpert != true && !data.useTestCase",
                     "newLine": false
@@ -303,6 +321,7 @@
                     "hidden": "true",
                     "md": 6,
                     "lg": 3,
+                    "xl": 3,
                     "label": "iobrokerUrl",
                     "default": "",
                     "newLine": false
@@ -324,6 +343,7 @@
                     "sm": 12,
                     "md": 3,
                     "lg": 3,
+                    "xl": 3,
                     "label": "icons_suffix",
                     "default": ".png",
                     "hidden": "data.imExpert != true",
@@ -444,6 +464,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "data.templateTable[0].template != 'template.NewMessage'",
                     "label": "requestReload",
                     "newLine": true
@@ -501,7 +522,8 @@
                     "xs": 12,
                     "sm": 12,
                     "md": 12,
-                    "lg": 8,
+                    "lg": 6,
+                    "xl": 6,
                     "label": "dwdSelectId",
                     "uniqueColumns": [
                         "dwdSelectId"
@@ -47422,6 +47444,7 @@
                     "sm": 12,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "tooltip": "HourFilterTip",
                     "label": "HourFilter",
                     "newLine": false
@@ -47436,6 +47459,7 @@
                     "sm": 12,
                     "md": 8,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -47448,6 +47472,7 @@
                     "sm": 12,
                     "md": 8,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 }
@@ -47464,7 +47489,8 @@
                     "xs": 12,
                     "sm": 12,
                     "md": 8,
-                    "lg": 8,
+                    "lg": 6,
+                    "xl": 6,
                     "label": "uwzSelectId",
                     "uniqueColumns": [
                         "uwzSelectId"
@@ -47539,7 +47565,8 @@
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
-                    "lg": 4
+                    "lg": 4,
+                    "xl": 4
                 },
                 "uwzHourFilter": {
                     "type": "number",
@@ -47548,6 +47575,7 @@
                     "sm": 12,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "tooltip": "HourFilterTip",
                     "label": "HourFilter",
                     "newLine": false
@@ -47562,6 +47590,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -47575,6 +47604,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 }
@@ -47592,7 +47622,8 @@
                     "xs": 12,
                     "sm": 12,
                     "md": 8,
-                    "lg": 8,
+                    "lg": 6,
+                    "xl": 6,
                     "label": "zamgSelectId",
                     "uniqueColumns": [
                         "zamgSelectId"
@@ -47638,7 +47669,8 @@
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
-                    "lg": 4
+                    "lg": 4,
+                    "xl": 4
                 },
                 "zamgHourFilter": {
                     "type": "number",
@@ -47661,6 +47693,7 @@
                     "sm": 12,
                     "md": 8,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -47674,6 +47707,7 @@
                     "sm": 12,
                     "md": 8,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 }
@@ -47694,6 +47728,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "SelectNotificationService",
                     "newLine": true
                 },
@@ -47703,6 +47738,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.telegram_Adapter == 'none'",
@@ -47715,6 +47751,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "uwzEnabled",
@@ -47726,6 +47763,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -47737,6 +47775,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_auto",
                     "newLine": true
                 },
@@ -47746,6 +47785,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_manual",
                     "newLine": false
                 },
@@ -47760,6 +47800,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -47775,6 +47816,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualTypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": false
@@ -47790,6 +47832,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -47804,6 +47847,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualLevelFilter",
                     "newLine": false
                 },
@@ -47819,6 +47863,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -47834,6 +47879,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "manualAll",
                     "newLine": false
                 },
@@ -47849,6 +47895,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -47864,6 +47911,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
@@ -47880,6 +47928,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "removeManualAll",
                     "newLine": false
                 },
@@ -47895,6 +47944,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "default": "",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "telegram_UserId",
@@ -47906,6 +47956,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "default": true,
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "telegram_withNoSound",
@@ -47917,6 +47968,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "default": "none",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "hidden": "data.imExpert != true",
@@ -47943,6 +47995,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "default": "",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "hidden": "data.imExpert != true",
@@ -47959,6 +48012,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -47979,6 +48033,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "SelectNotificationService",
                     "newLine": true
                 },
@@ -47988,6 +48043,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.whatsapp_Adapter == 'none'",
@@ -48000,6 +48056,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.whatsapp_Adapter == 'none'",
                     "label": "uwzEnabled",
@@ -48011,6 +48068,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.whatsapp_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -48022,6 +48080,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_auto",
                     "newLine": true
                 },
@@ -48031,6 +48090,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_manual",
                     "newLine": false
                 },
@@ -48045,6 +48105,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -48060,6 +48121,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualTypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": false
@@ -48075,6 +48137,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -48089,6 +48152,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualLevelFilter",
                     "newLine": false
                 },
@@ -48104,6 +48168,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -48119,6 +48184,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "manualAll",
                     "newLine": false
                 },
@@ -48134,6 +48200,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -48149,6 +48216,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
@@ -48165,6 +48233,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "removeManualAll",
                     "newLine": false
                 },
@@ -48190,6 +48259,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -48210,6 +48280,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "SelectNotificationService",
                     "newLine": true
                 },
@@ -48219,6 +48290,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "disabled": "data.pushover_Adapter == 'none'",
@@ -48231,6 +48303,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "uwzEnabled",
@@ -48242,6 +48315,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -48258,6 +48332,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageTitle",
                     "newLine": true
                 },
@@ -48267,6 +48342,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_auto",
                     "newLine": true
                 },
@@ -48276,6 +48352,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_manual",
                     "newLine": false
                 },
@@ -48290,6 +48367,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -48305,6 +48383,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualTypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": false
@@ -48320,6 +48399,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -48334,6 +48414,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualLevelFilter",
                     "newLine": false
                 },
@@ -48349,6 +48430,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -48364,6 +48446,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "manualAll",
                     "newLine": false
                 },
@@ -48379,6 +48462,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -48394,6 +48478,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
@@ -48410,6 +48495,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "removeManualAll",
                     "newLine": false
                 },
@@ -48425,6 +48511,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "default": "none",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "pushover_Sound",
@@ -48530,6 +48617,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "default": false,
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "pushover_Priority",
@@ -48541,6 +48629,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "default": "",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "pushover_Device",
@@ -48556,6 +48645,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -48576,6 +48666,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "SelectNotificationService",
                     "newLine": true
                 },
@@ -48590,6 +48681,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "alexa2_device_ids",
                     "newLine": true
                 },
@@ -48604,6 +48696,7 @@
                     "sm": 8,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "newLine": false
                 },
                 "alexa2_DwdEnabled": {
@@ -48612,6 +48705,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.dwdEnabled",
                     "disabled": "data.alexa2_Adapter == 'none'",
                     "label": "dwdEnabled",
@@ -48623,6 +48717,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "data.alexa2_Adapter == 'none'",
                     "label": "uwzEnabled",
@@ -48634,6 +48729,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "data.alexa2_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -48645,6 +48741,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_auto",
                     "newLine": true
                 },
@@ -48654,6 +48751,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_manual",
                     "newLine": false
                 },
@@ -48668,6 +48766,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -48683,6 +48782,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualTypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": false
@@ -48698,6 +48798,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -48712,6 +48813,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualLevelFilter",
                     "newLine": false
                 },
@@ -48727,6 +48829,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -48742,6 +48845,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "manualAll",
                     "newLine": false
                 },
@@ -48757,6 +48861,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -48772,6 +48877,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
@@ -48788,6 +48894,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "removeManualAll",
                     "newLine": false
                 },
@@ -48804,6 +48911,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4
                     "default": "",
                     "label": "alexa2_Audio",
                     "hidden": "data.imExpert != true",
@@ -48817,6 +48925,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "alexa2_Audio_url",
                     "hidden": "data.imExpert != true",
                     "newLine": false
@@ -48827,6 +48936,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "data.imExpert != true",
                     "default": false,
                     "disabled": "data.alexa2_Adapter == 'none'",
@@ -48885,6 +48995,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -48902,6 +49013,7 @@
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 12,
                     "default": [],
                     "label": "SelectNotificationService",
                     "items": [
@@ -48917,6 +49029,7 @@
                             "sm": 12,
                             "md": 5,
                             "lg": 4,
+                            "xl": 4,
                             "label": "SelectNotificationService",
                             "newLine": true
                         }
@@ -48928,6 +49041,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.dwdEnabled",
                     "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "default": true,
@@ -48946,6 +49060,7 @@
                     "sm": 8,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "newLine": false
                 },
                 "sayit_UwzEnabled": {
@@ -48954,6 +49069,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.uwzEnabled",
                     "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "default": true,
@@ -48966,6 +49082,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.zamgEnabled",
                     "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "label": "zamgEnabled",
@@ -48978,6 +49095,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_auto",
                     "newLine": true
                 },
@@ -48987,6 +49105,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_manual",
                     "newLine": false
                 },
@@ -49001,6 +49120,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -49016,6 +49136,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualTypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": false
@@ -49031,6 +49152,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -49045,6 +49167,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualLevelFilter",
                     "newLine": false
                 },
@@ -49060,6 +49183,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -49075,6 +49199,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "manualAll",
                     "newLine": false
                 },
@@ -49090,6 +49215,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -49105,6 +49231,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
@@ -49121,6 +49248,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "removeManualAll",
                     "newLine": false
                 },
@@ -49137,6 +49265,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "default": "",
                     "label": "sayit_Audio",
                     "hidden": "data.imExpert != true || true",
@@ -49150,6 +49279,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "sayit_Audio_url",
                     "hidden": "data.imExpert != true || true",
                     "newLine": false
@@ -49160,6 +49290,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "data.imExpert != true || true",
                     "default": false,
                     "disabled": "data.sayit_Adapter == 'none'",
@@ -49176,6 +49307,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -49192,6 +49324,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "label": "dwdEnabled",
@@ -49203,6 +49336,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
+                    "xl": 4
                     "default": "none",
                     "label": "json_parse",
                     "newLine": false
@@ -49213,6 +49347,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.uwzEnabled",
                     "label": "uwzEnabled",
                     "newLine": true
@@ -49223,6 +49358,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.zamgEnabled",
                     "label": "zamgEnabled",
                     "newLine": true
@@ -49237,6 +49373,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -49251,6 +49388,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -49264,6 +49402,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageAll",
                     "newLine": true
                 },
@@ -49277,6 +49416,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
@@ -49290,6 +49430,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -49306,6 +49447,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "label": "dwdEnabled",
@@ -49317,6 +49459,7 @@
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
+                    "xl": 3,
                     "label": "history_allinOne",
                     "newLine": false
                 },
@@ -49326,6 +49469,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.uwzEnabled",
                     "label": "uwzEnabled",
                     "newLine": true
@@ -49336,6 +49480,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.zamgEnabled",
                     "label": "zamgEnabled",
                     "newLine": true
@@ -49350,6 +49495,7 @@
                     "sm": 12,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -49364,6 +49510,7 @@
                     "sm": 12,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -49377,6 +49524,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 3,
+                    "xl": 3,
                     "disabled": "data.history_allinOne",
                     "label": "MessageAll",
                     "newLine": true
@@ -49391,6 +49539,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 3,
+                    "xl": 3,
                     "disabled": "data.history_allinOne",
                     "label": "MessageRemove",
                     "newLine": true
@@ -49405,6 +49554,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "true",
                     "useNative": true
                 }
@@ -49425,6 +49575,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "SelectNotificationService",
                     "newLine": true
                 },
@@ -49434,6 +49585,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.dwdEnabled",
                     "default": "none",
                     "label": "dwdEnabled",
@@ -49445,6 +49597,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.uwzEnabled",
                     "label": "uwzEnabled",
                     "newLine": true
@@ -49455,6 +49608,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "!data.zamgEnabled",
                     "label": "zamgEnabled",
                     "newLine": true
@@ -49471,6 +49625,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageTitle",
                     "newLine": true
                 },
@@ -49486,6 +49641,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "email_Header",
                     "newLine": true
                 },
@@ -49500,6 +49656,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "email_Footer",
                     "newLine": true
                 },
@@ -49509,6 +49666,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "email_line_break",
                     "newLine": false
                 },
@@ -49518,6 +49676,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_auto",
                     "newLine": true
                 },
@@ -49527,6 +49686,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "text": "header_manual",
                     "newLine": false
                 },
@@ -49541,6 +49701,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "TypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": true
@@ -49556,6 +49717,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualTypeFilter",
                     "tooltip": "TypeFilter",
                     "newLine": false
@@ -49571,6 +49733,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "LevelFilter",
                     "newLine": true
                 },
@@ -49585,6 +49748,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "ManualLevelFilter",
                     "newLine": false
                 },
@@ -49600,6 +49764,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageNew",
                     "newLine": true
                 },
@@ -49615,6 +49780,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "manualAll",
                     "newLine": false
                 },
@@ -49630,6 +49796,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageRemove",
                     "newLine": true
                 },
@@ -49646,6 +49813,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "MessageAllRemove",
                     "newLine": true
                 },
@@ -49662,6 +49830,7 @@
                     "sm": 12,
                     "md": 5,
                     "lg": 4,
+                    "xl": 4,
                     "label": "removeManualAll",
                     "newLine": false
                 },
@@ -49675,6 +49844,7 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
+                    "xl": 3,
                     "hidden": "true",
                     "useNative": true
                 }
