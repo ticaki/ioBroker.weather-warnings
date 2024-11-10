@@ -167,7 +167,7 @@ const genericWarntypState = {
     type: "state",
     common: {
       name: "genericWarntypState.start",
-      type: "string",
+      type: "number",
       role: "date",
       read: true,
       write: false
@@ -179,7 +179,7 @@ const genericWarntypState = {
     type: "state",
     common: {
       name: "genericWarntypState.end",
-      type: "string",
+      type: "number",
       role: "date",
       read: true,
       write: false
