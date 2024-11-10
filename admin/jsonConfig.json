@@ -48963,7 +48963,8 @@
                             "xs": 12,
                             "sm": 1,
                             "md": 1,
-                            "lg": 1
+                            "lg": 1,
+                            "xl": 1
                         },
                         {
                             "attr": "warntype",
@@ -48972,7 +48973,8 @@
                             "xs": 12,
                             "sm": 2,
                             "md": 2,
-                            "lg": 3
+                            "lg": 3,
+                            "xl": 3
                         },
                         {
                             "attr": "sound",
@@ -48981,7 +48983,8 @@
                             "sm": 9,
                             "md": 8,
                             "lg": 8,
-                            "label": "alexa_sound_item"
+                            "xl": 8,
+                            "label": "alexa2_sound_item"
                         }
                     ]
                 },

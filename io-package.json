@@ -134,9 +134,9 @@
       "push"
     ],
     "licenseInformation": {
-			"type": "free",
-			"license": "MIT"
-	},
+      "type": "free",
+      "license": "MIT"
+    },
     "platform": "Javascript/Node.js",
     "icon": "weather-warnings.png",
     "enabled": true,

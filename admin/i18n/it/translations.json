@@ -539,5 +539,6 @@
     "numOfRawWarnings": "Numero massimo di avvisi elaborati per provider.",
     "removeManualAll": "Seleziona il modello da utilizzare per nessun avviso per le notifiche attivate manualmente.",
     "wrongTemplateKey": "La chiave del modello non esiste. Seleziona un modello valido!",
-    "zamgdayPeriod": "Durata dell'avviso da mezzanotte a mezzanotte"
+    "zamgdayPeriod": "Durata dell'avviso da mezzanotte a mezzanotte",
+    "alexa2_sound_item": "Codice sorgente dalla libreria Alexa"
 }

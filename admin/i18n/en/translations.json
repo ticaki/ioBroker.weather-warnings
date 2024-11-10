@@ -433,6 +433,7 @@
     "imExpert": "Expert",
     "alexa2_sounds_enabled": "Use sound table",
     "alexa2_sounds": "Sounds for warntypes",
+    "alexa2_sound_item": "Source code from alexa libary",
     "warntype": "Warntype",
     "sound": "Sound",
     "useTestCase": "Interval reduced, test data alternately activated and deactivated.",

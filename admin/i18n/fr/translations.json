@@ -539,5 +539,6 @@
     "numOfRawWarnings": "Nombre maximum d'avertissements traités par fournisseur.",
     "removeManualAll": "Sélectionnez le modèle à utiliser pour aucun avertissement pour les notifications déclenchées manuellement.",
     "wrongTemplateKey": "La clé du modèle n'existe pas. Sélectionnez un modèle valide !",
-    "zamgdayPeriod": "Durée d'avertissement de minuit à minuit"
+    "zamgdayPeriod": "Durée d'avertissement de minuit à minuit",
+    "alexa2_sound_item": "Code source de la bibliothèque Alexa"
 }
