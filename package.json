@@ -15,7 +15,8 @@
     "zamg",
     "nina",
     "warnings",
-    "push"
+    "push",
+    "ioBroker"
   ],
   "repository": {
     "type": "git",
