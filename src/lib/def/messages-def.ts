@@ -425,7 +425,6 @@ export function filterWarntype(p: providerServices, f: string[], o: number): boo
         const id = i as unknown as keyof genericWarntypeType;
         const w = genericWarntyp[id];
         if (w[p] == undefined) continue;
-        //@ts-expect-error ist definiert
         if (Array.isArray(w[p]) && w[p].indexOf(o) != -1) {
             if (f.indexOf(String(id)) == -1) {
                 return false;

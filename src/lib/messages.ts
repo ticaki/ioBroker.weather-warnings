@@ -804,7 +804,6 @@ export class MessagesClass extends library.BaseClass {
             for (const t in sortedWarntypes) {
                 const o = MessageType.genericWarntyp[sortedWarntypes[t]];
                 const s = this.provider.service;
-                //@ts-expect-error keine ahnung o und s sind definiert
                 if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
                     this.genericType = sortedWarntypes[t];
                     break;
