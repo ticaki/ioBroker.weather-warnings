@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.8",
+    "version": "0.6.9",
     "news": {
+      "0.6.9": {
+        "en": "added missing text (settings - alexa - soundtable)\nfixed: alerts start/end datapoints. (string -> number)\ndependencies up to date",
+        "de": "fehlender Text (einstellungen - alexa - soundtabelle)\behoben: alarme start-/end-datenpunkte. (string -> nummer)\nAbhängigkeiten aktualisiert",
+        "ru": "добавленный недостающий текст (постановления - alexa - звуковой)\nфиксированные оповещения запуска/конечных точек данных. (строка -> номер)\nдо настоящего времени",
+        "pt": "adicionado texto faltando (settings - alexa - soundtable)\nalertas fixos start/end datapoints. (string -> número)\ndependências até à data",
+        "nl": "ontbrekende tekst toevoegen (instellingen - alexa - soundtable)\nvaste alarmen begin-/eindgegevenspunten. (tekenreeks -> nummer)\nafhankelijkheden up to date",
+        "fr": "texte manquant ajouté (réglages - alexa - soundtable)\nalertes fixes start/end datapoints. (chiffre -> numéro)\ndépendances à jour",
+        "it": "aggiunto testo mancante (impostazioni - alexa - soundtable)\navvisi fissi start/end datapoints. (stringa - > numero)\ndipendenze fino ad oggi",
+        "es": "añadido texto desaparecido (ajustes - alexa - sonidotable)\nalertas fijas start/end datapoints. (estring - número de contacto)\ndependencias hasta la fecha",
+        "pl": "dodany brakujący tekst (ustawienia - alexa - soundtable)\nstałe wpisy początkowe / końcowe punktów danych. (ciąg znaków - > liczba)\naktualna zależność",
+        "uk": "додано відсутній текст (налаштування - alexa - звуконепроникний)\nвиправлені оповіщення старту/закінчення даних. (string -> номер)\nзалежностей до дати",
+        "zh-cn": "添加缺失文本( 设置 - alexa - 音标)\n固定的提醒开始/结束数据点。 (字符串 - > 数字)\n最新的依赖关系"
+      },
       "0.6.8": {
         "en": "added missing text (settings - alexa - soundtable)\nfixed: alerts start/end datapoints. (string -> number)\ndependencies up to date",
         "de": "fehlender Text (einstellungen - alexa - soundtabelle)\behoben: alarme start-/end-datenpunkte. (string -> nummer)\nAbhängigkeiten aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "dodać czyste czasoprzestrzeni, dodaje axios timeout",
         "uk": "add cleartimeout, додати axios часаут",
         "zh-cn": "增加明确时间,增加焦虑时间"
-      },
-      "0.6.2": {
-        "en": "Reduce zamg spam",
-        "de": "Reduzieren Sie zamg Spam",
-        "ru": "Уменьшить спам zamg",
-        "pt": "Reduzir spam zamg",
-        "nl": "Reduce Zamg spam",
-        "fr": "Réduire le spam de zamg",
-        "it": "Ridurre lo spam",
-        "es": "Reducir el spam zamg",
-        "pl": "Zamkujcie się",
-        "uk": "Зменшення zamg спам",
-        "zh-cn": "减少zamg-01"
       }
     },
     "titleLang": {
