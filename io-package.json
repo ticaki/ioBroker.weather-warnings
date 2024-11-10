@@ -133,9 +133,8 @@
       "warnings",
       "push"
     ],
-    "license": "MIT",
+    "licenseInformation": "MIT",
     "platform": "Javascript/Node.js",
-    "main": "build/main.js",
     "icon": "weather-warnings.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/ticaki/ioBroker.weather-warnings/main/admin/weather-warnings.png",
