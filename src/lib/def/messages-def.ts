@@ -171,7 +171,7 @@ export const genericWarntypState: genericWarntypeStatesType = {
         type: 'state',
         common: {
             name: 'genericWarntypState.start',
-            type: 'string',
+            type: 'number',
             role: 'date',
             read: true,
             write: false,
@@ -183,7 +183,7 @@ export const genericWarntypState: genericWarntypeStatesType = {
         type: 'state',
         common: {
             name: 'genericWarntypState.end',
-            type: 'string',
+            type: 'number',
             role: 'date',
             read: true,
             write: false,
