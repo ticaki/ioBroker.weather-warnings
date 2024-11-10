@@ -47449,7 +47449,8 @@
                     "xs": 12,
                     "sm": 12,
                     "md": 10,
-                    "lg": 3
+                    "lg": 3,
+                    "xl": 3
                 },
                 "dwdHourFilter": {
                     "type": "number",
@@ -48262,7 +48263,12 @@
                     "type": "text",
                     "label": "whatsapp_Phonenumber",
                     "newLine": true,
-                    "disabled": "data.whatsapp_Adapter == 'none'"
+                    "disabled": "data.whatsapp_Adapter == 'none'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 3,
+                    "xl": 3
                 },
                 "restoreDefault": {
                     "type": "sendTo",
