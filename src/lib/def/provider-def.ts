@@ -16,7 +16,7 @@ type nullType = null | undefined | void;
 export type messageFilterTypeWithFilter = { filter: messageFilterType };
 export type messageFilterType = {
     level?: number;
-    type: string[];
+    type: number[];
     hours: number;
 };
 /** Full dwd import jsons */

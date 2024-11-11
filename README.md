@@ -146,6 +146,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) fixed: warntype filter 
+* (ticaki) fixed: if every provider except zamg is deactivated in the notifications - no message went out
+
 ### 0.6.9 (2024-11-10)
 * (ticaki) added missing text (settings - alexa - soundtable)
 * (ticaki) fixed alerts start/end datapoints. (string -> number)

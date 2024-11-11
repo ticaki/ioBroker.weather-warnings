@@ -264,7 +264,7 @@ class WeatherWarnings extends utils.Adapter {
                             service.push('dwdService');
                         if (self.config[(notificationService + '_UwzEnabled') as keyof ioBroker.AdapterConfig])
                             service.push('uwzService');
-                        if (self.config[(notificationService + '_UwzEnabled') as keyof ioBroker.AdapterConfig])
+                        if (self.config[(notificationService + '_ZamgEnabled') as keyof ioBroker.AdapterConfig])
                             service.push('zamgService');
                         const template: NotificationType.ActionsType = {
                             new:

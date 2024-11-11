@@ -355,7 +355,7 @@ function filterWarntype(p, f, o) {
     if (w[p] == void 0)
       continue;
     if (Array.isArray(w[p]) && w[p].indexOf(o) != -1) {
-      if (f.indexOf(String(id)) == -1) {
+      if (f.indexOf(parseInt(id)) == -1) {
         return false;
       }
     }

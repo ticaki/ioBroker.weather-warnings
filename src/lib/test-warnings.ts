@@ -358,6 +358,32 @@ const testData = {
             },
             warnings: [
                 {
+                    type: 'Warning',
+                    properties: {
+                        warnid: 10,
+                        chgid: 202406270,
+                        verlaufid: 31,
+                        warntypid: 6,
+                        begin: '29.06.2024 00:00',
+                        end: '29.06.2024 23:59',
+                        create: '2024-06-27 07:00:00+00',
+                        text: 'Es ist mit erhöhter Hitzebelastung zu rechnen.',
+                        auswirkungen:
+                            '* Erhöhte Körpertemperatur\n* Erhöhter Puls\n* Schwäche/Müdigkeit\n* Kopfschmerzen\n* Muskelkrämpfe\n* Trockener Mund und Hals\n* Verwirrtheit, Schwindel, Bewusstseinsstörungen\n* Übelkeit, Erbrechen, Durchfall',
+                        empfehlungen:
+                            '* Meiden Sie direktes Sonnenlicht! Achten Sie darauf, dass Kinder vor der Sonne geschützt sind!\n* Meiden Sie verbaute und versiegelte Plätze wo es keinen Schatten gibt.\n* Gehen Sie nicht in der heißesten Tageszeit nach draußen!\n* Ziehen Sie die Vorhänge zu bzw. schließen Sie die Jalousien. Öffnen Sie die Fenster vorwiegend in der Nacht bzw. in den kühlen Morgenstunden!\n* Vermeiden Sie große Anstrengungen bzw. verschieben Sie körperliche Aktivitäten im Freien auf die frühen Morgenstunden oder den Abend!\n* Tragen Sie luftige, helle Kleidung und eine Kopfbedeckung!\n* Nehmen Sie eine kühle Dusche! Auch kalte Arm- und Fußbäder wirken entlastend.\n* Trinken Sie ausreichend und regelmäßig (mindestens 2 - 3 Liter pro Tag)! Optimal sind Wasser, ungesüßter Tee oder mit Wasser verdünnte Fruchtsäfte.\n* Denken Sie an ältere Mitmenschen und Kinder, dass auch diese regelmäßig trinken. \n* Bevorzugen Sie leichtes Essen!\n* Meiden Sie Alkohol!',
+                        meteotext: null,
+                        updategrund: null,
+                        warnstufeid: 1,
+                        rawinfo: {
+                            wtype: 6,
+                            wlevel: 1,
+                            start: '1719612000',
+                            end: '1719698340',
+                        },
+                    },
+                },
+                {
                     properties: {
                         auswirkungen:
                             '* Kleine Muren, lokal überflutete Straßen\n* Punktuell kann es zu Überschwemmungen kommen, Keller können überflutet werden.\n* Blitzschlag kann zu Stromausfällen führen und Gebäude oder Bäume in Brand stecken.\n* Aufgrund von Sturmböen können Gegenstände herumgewirbelt werden, Äste abbrechen und vereinzelt auch Bäume umfallen.',
@@ -389,7 +415,7 @@ const testData = {
                         auswirkungen:
                             '* Kleine Muren, lokal überflutete Straßen\n* Punktuell kann es zu Überschwemmungen kommen, Keller können überflutet werden.\n* Blitzschlag kann zu Stromausfällen führen und Gebäude oder Bäume in Brand stecken.\n* Aufgrund von Sturmböen können Gegenstände herumgewirbelt werden, Äste abbrechen und vereinzelt auch Bäume umfallen.',
                         begin: '18.09.2023 17:00',
-                        chgid: 0,
+                        chgid: 3,
                         create: '2023-09-17 07:00:00+00',
                         empfehlungen:
                             '* Schließen Sie Fenster, Türen und Garagentore sowie Dachfenster und Lichtkuppeln!\n* Verlassen Sie bei einem herannahenden Gewitter umgehend Gewässer!\n* Suchen Sie vor allem im Gebirge rechtzeitig Schutz!\n* Beachten Sie Gewitter- und Sturmwarnungen an Seen!',
@@ -402,7 +428,7 @@ const testData = {
                             wlevel: 3,
                             wtype: 4,
                         },
-                        text: 'Gelbe Gewitterwarnung von Mo, 18.09.2023 17:00 bis Mo, 18.09.2023 23:00',
+                        text: 'Gelbe Glatteis von Mo, 18.09.2023 17:00 bis Mo, 18.09.2023 23:00',
                         updategrund: '',
                         verlaufid: 1,
                         warnid: 4266,

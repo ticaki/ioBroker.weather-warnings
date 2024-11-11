@@ -243,7 +243,7 @@ class WeatherWarnings extends utils.Adapter {
               service.push("dwdService");
             if (self.config[notificationService + "_UwzEnabled"])
               service.push("uwzService");
-            if (self.config[notificationService + "_UwzEnabled"])
+            if (self.config[notificationService + "_ZamgEnabled"])
               service.push("zamgService");
             const template = {
               new: self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "none",

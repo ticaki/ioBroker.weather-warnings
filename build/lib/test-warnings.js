@@ -371,6 +371,30 @@ const testData = {
       },
       warnings: [
         {
+          type: "Warning",
+          properties: {
+            warnid: 10,
+            chgid: 202406270,
+            verlaufid: 31,
+            warntypid: 6,
+            begin: "29.06.2024 00:00",
+            end: "29.06.2024 23:59",
+            create: "2024-06-27 07:00:00+00",
+            text: "Es ist mit erh\xF6hter Hitzebelastung zu rechnen.",
+            auswirkungen: "* Erh\xF6hte K\xF6rpertemperatur\n* Erh\xF6hter Puls\n* Schw\xE4che/M\xFCdigkeit\n* Kopfschmerzen\n* Muskelkr\xE4mpfe\n* Trockener Mund und Hals\n* Verwirrtheit, Schwindel, Bewusstseinsst\xF6rungen\n* \xDCbelkeit, Erbrechen, Durchfall",
+            empfehlungen: "* Meiden Sie direktes Sonnenlicht! Achten Sie darauf, dass Kinder vor der Sonne gesch\xFCtzt sind!\n* Meiden Sie verbaute und versiegelte Pl\xE4tze wo es keinen Schatten gibt.\n* Gehen Sie nicht in der hei\xDFesten Tageszeit nach drau\xDFen!\n* Ziehen Sie die Vorh\xE4nge zu bzw. schlie\xDFen Sie die Jalousien. \xD6ffnen Sie die Fenster vorwiegend in der Nacht bzw. in den k\xFChlen Morgenstunden!\n* Vermeiden Sie gro\xDFe Anstrengungen bzw. verschieben Sie k\xF6rperliche Aktivit\xE4ten im Freien auf die fr\xFChen Morgenstunden oder den Abend!\n* Tragen Sie luftige, helle Kleidung und eine Kopfbedeckung!\n* Nehmen Sie eine k\xFChle Dusche! Auch kalte Arm- und Fu\xDFb\xE4der wirken entlastend.\n* Trinken Sie ausreichend und regelm\xE4\xDFig (mindestens 2 - 3 Liter pro Tag)! Optimal sind Wasser, unges\xFC\xDFter Tee oder mit Wasser verd\xFCnnte Fruchts\xE4fte.\n* Denken Sie an \xE4ltere Mitmenschen und Kinder, dass auch diese regelm\xE4\xDFig trinken. \n* Bevorzugen Sie leichtes Essen!\n* Meiden Sie Alkohol!",
+            meteotext: null,
+            updategrund: null,
+            warnstufeid: 1,
+            rawinfo: {
+              wtype: 6,
+              wlevel: 1,
+              start: "1719612000",
+              end: "1719698340"
+            }
+          }
+        },
+        {
           properties: {
             auswirkungen: "* Kleine Muren, lokal \xFCberflutete Stra\xDFen\n* Punktuell kann es zu \xDCberschwemmungen kommen, Keller k\xF6nnen \xFCberflutet werden.\n* Blitzschlag kann zu Stromausf\xE4llen f\xFChren und Geb\xE4ude oder B\xE4ume in Brand stecken.\n* Aufgrund von Sturmb\xF6en k\xF6nnen Gegenst\xE4nde herumgewirbelt werden, \xC4ste abbrechen und vereinzelt auch B\xE4ume umfallen.",
             begin: "18.09.2023 17:00",
@@ -398,7 +422,7 @@ const testData = {
           properties: {
             auswirkungen: "* Kleine Muren, lokal \xFCberflutete Stra\xDFen\n* Punktuell kann es zu \xDCberschwemmungen kommen, Keller k\xF6nnen \xFCberflutet werden.\n* Blitzschlag kann zu Stromausf\xE4llen f\xFChren und Geb\xE4ude oder B\xE4ume in Brand stecken.\n* Aufgrund von Sturmb\xF6en k\xF6nnen Gegenst\xE4nde herumgewirbelt werden, \xC4ste abbrechen und vereinzelt auch B\xE4ume umfallen.",
             begin: "18.09.2023 17:00",
-            chgid: 0,
+            chgid: 3,
             create: "2023-09-17 07:00:00+00",
             empfehlungen: "* Schlie\xDFen Sie Fenster, T\xFCren und Garagentore sowie Dachfenster und Lichtkuppeln!\n* Verlassen Sie bei einem herannahenden Gewitter umgehend Gew\xE4sser!\n* Suchen Sie vor allem im Gebirge rechtzeitig Schutz!\n* Beachten Sie Gewitter- und Sturmwarnungen an Seen!",
             end: "18.09.2023 23:00",
@@ -409,7 +433,7 @@ const testData = {
               wlevel: 3,
               wtype: 4
             },
-            text: "Gelbe Gewitterwarnung von Mo, 18.09.2023 17:00 bis Mo, 18.09.2023 23:00",
+            text: "Gelbe Glatteis von Mo, 18.09.2023 17:00 bis Mo, 18.09.2023 23:00",
             updategrund: "",
             verlaufid: 1,
             warnid: 4266,

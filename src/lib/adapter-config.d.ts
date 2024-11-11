@@ -62,9 +62,9 @@ declare global {
             uwzHourFilter: number;
             zamgHourFilter: number;
 
-            dwdTypeFilter: string[];
-            zamgTypeFilter: string[];
-            uwzTypeFilter: string[];
+            dwdTypeFilter: number[];
+            zamgTypeFilter: number[];
+            uwzTypeFilter: number[];
 
             dwdLevelFilter: number;
             uwzLevelFilter: number;
