@@ -149,6 +149,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 ### **WORK IN PROGRESS**
 * (ticaki) fixed: warntype filter 
 * (ticaki) fixed: if every provider except zamg is deactivated in the notifications - no message went out
+* (ticaki) fixed: downgrade a dependency for compatibility with node 18
 
 ### 0.6.9 (2024-11-10)
 * (ticaki) added missing text (settings - alexa - soundtable)
