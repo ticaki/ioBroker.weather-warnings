@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.9",
+    "version": "0.6.10",
     "news": {
+      "0.6.10": {
+        "en": "fixed: warntype filter \nfixed: if every provider except zamg is deactivated in the notifications - no message went out\nfixed: downgrade a dependency for compatibility with node 18",
+        "de": "fix: Warntypfilter\nfix: wenn jeder Provider außer zamg in den Benachrichtigungen deaktiviert ist - keine Nachricht wurde gesendet\nfix: downgrade einer Abhängigkeit für die Kompatibilität mit Node 18 ",
+        "ru": "фиксированный: фильтр предупреждающего типа\nфиксированный: если каждый провайдер, кроме zamg, деактивируется в уведомлениях - никакого сообщения не вышло\nфиксированный: снизить зависимость от совместимости с узлом 18",
+        "pt": "fixo: filtro de avisotipo\ncorrigido: se cada provedor exceto zamg é desativado nas notificações - nenhuma mensagem saiu\nfixo: downgrade uma dependência para compatibilidade com o nó 18",
+        "nl": "vast: warntype filter\nvast: als elke provider behalve zamg is gedeactiveerd in de meldingen - geen bericht ging uit\nvast: downgrade een afhankelijkheid voor compatibiliteit met knooppunt 18",
+        "fr": "corrigé: filtre de type avertissement\ncorrigé : si chaque fournisseur sauf zamg est désactivé dans les notifications - aucun message n'est sorti\nfixe: dégrader une dépendance pour la compatibilité avec le nœud 18",
+        "it": "fisso: filtro di avvertimento\nfisso: se ogni fornitore tranne zamg viene disattivato nelle notifiche - nessun messaggio è uscito\nfisso: abbassare una dipendenza per la compatibilità con il nodo 18",
+        "es": "fijo: filtro de tipo de alarma\nfijo: si cada proveedor excepto zamg se desactiva en las notificaciones - ningún mensaje salió\nfijo: rebajar una dependencia para la compatibilidad con el nodo 18",
+        "pl": "stałe: filtr typu warntype\nstałe: jeżeli w powiadomieniach wyłącza się każdy dostawca z wyjątkiem zamga - żadna wiadomość nie została wysłana\nstałe: obniżanie zależności od zgodności z węzłem 18",
+        "uk": "фіксований: фільтр попереджувача\nвиправлено: якщо кожен провайдер, крім зазимку, деактивований в повідомленнях - повідомлення не виходив\nфіксована: зниження залежності сумісності з вершиною 18 років",
+        "zh-cn": "固定: 警告类型过滤器\n固定: 如果通知中除zamg以外的每个提供者都被关闭 - 没有消息退出\n固定: 与节点兼容的依赖性降级 第 18 条"
+      },
       "0.6.9": {
         "en": "added missing text (settings - alexa - soundtable)\nfixed: alerts start/end datapoints. (string -> number)\ndependencies up to date",
         "de": "fehlender Text (einstellungen - alexa - soundtabelle)\behoben: alarme start-/end-datenpunkte. (string -> nummer)\nAbhängigkeiten aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "Optimise DWD (ang.). Nazwy miejscowe są podawane więcej i więcej szczegółów, które czynią je unikalnymi.",
         "uk": "Оптимальний вибір DWD попередження. Прізвища розміщуються більш детальною інформацією, щоб зробити їх унікальними.",
         "zh-cn": "利用DWDHD警告小组选择。 正在提供更多和更详细的资料,使之具有独特的地位。."
-      },
-      "0.6.3": {
-        "en": "add cleartimeout, add axios timeout",
-        "de": "add cleartimeout, add axios timeout",
-        "ru": "добавить cleartimeout, добавить axios timeout",
-        "pt": "add cleartimeout, adicione tempoout axios",
-        "nl": "voeg toestemming toe",
-        "fr": "ajouter l'heure d'ouverture, ajouter le timeout axios",
-        "it": "aggiungere cleartimeout, aggiungere timeout assios",
-        "es": "añadir tiempo libre, añadir axios timeout",
-        "pl": "dodać czyste czasoprzestrzeni, dodaje axios timeout",
-        "uk": "add cleartimeout, додати axios часаут",
-        "zh-cn": "增加明确时间,增加焦虑时间"
       }
     },
     "titleLang": {
