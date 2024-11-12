@@ -370,7 +370,7 @@
     "statesObjectsWarnings.allService.alerts.snowfall": "Schneefall",
     "statesObjectsWarnings.allService.alerts.thaw": "Tauwetter",
     "statesObjectsWarnings.allService.alerts.unknown": "Unbekannt",
-    "statesObjectsWarnings.allService.alerts.cold": "Kälte",
+    "statesObjectsWarnings.allService.alerts.cold": "Frost",
     "statesObjectsWarnings.allService.alerts.forest_fire": "Waldbrand",
     "statesObjectsWarnings.allService.alerts.heat": "Hitze",
     "statesObjectsWarnings.allService.alerts.fog": "Nebel",
