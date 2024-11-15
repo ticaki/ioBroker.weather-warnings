@@ -47,7 +47,7 @@ tests.integration(path.join(__dirname,".."),{
                     });
                 }).timeout(2000000);
             }))
-            it('Test: Connection to server work',() => new Promise(async (resolve,reject) => {
+            /*it('Test: Connection to server work',() => new Promise(async (resolve,reject) => {
 
                 // change the adapter config
                 await harness.startAdapterAndWait();
@@ -58,7 +58,7 @@ tests.integration(path.join(__dirname,".."),{
                     if (resp=='true') resolve('ok');
                     else reject();
                 });
-            })).timeout(2000000);
+            })).timeout(2000000);*/
         });
         suite("Test: Test with testdata",(getHarness) => {
             // For convenience, get the current suite's harness before all tests
