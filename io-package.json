@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.10",
+    "version": "0.6.11",
     "news": {
+      "0.6.11": {
+        "en": "eslint 8 -> 9",
+        "de": "eslint 8 -> 9",
+        "ru": "eslint 8 -> 9",
+        "pt": "eslint 8 -> 9",
+        "nl": "eslint 8 -> 9",
+        "fr": "échelle 8 -> 9",
+        "it": "eslint 8 -> 9",
+        "es": "eslint 8 ->  9",
+        "pl": "eslint 8 - > 9",
+        "uk": "eslint 8 -> 10 хв",
+        "zh-cn": "eslint 8 - > 第9条"
+      },
       "0.6.10": {
         "en": "fixed: warntype filter \nfixed: if every provider except zamg is deactivated in the notifications - no message went out\nfixed: downgrade a dependency for compatibility with node 18",
         "de": "fix: Warntypfilter\nfix: wenn jeder Provider außer zamg in den Benachrichtigungen deaktiviert ist - keine Nachricht wurde gesendet\nfix: downgrade einer Abhängigkeit für die Kompatibilität mit Node 18 ",
