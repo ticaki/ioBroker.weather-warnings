@@ -1191,18 +1191,18 @@ const statesObjectsWarnings = {
           read: true,
           write: false,
           states: {
-            "0": "n_a",
-            "1": "unbekannt",
-            "2": "Sturm",
-            "3": "Schneefall",
-            "4": "Starkregen",
-            "5": "Extremfrost",
-            "6": "Waldbrandgefahr",
-            "7": "Gewitter",
-            "8": "Gl\xE4tte",
-            "9": "Hitze",
-            "10": "Glatteisregen",
-            "11": "Bodenfrost"
+            0: "n_a",
+            1: "unbekannt",
+            2: "Sturm",
+            3: "Schneefall",
+            4: "Starkregen",
+            5: "Extremfrost",
+            6: "Waldbrandgefahr",
+            7: "Gewitter",
+            8: "Gl\xE4tte",
+            9: "Hitze",
+            10: "Glatteisregen",
+            11: "Bodenfrost"
           }
         },
         native: {}

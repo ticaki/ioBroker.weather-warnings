@@ -1,5 +1,5 @@
-import WeatherWarnings from '../main';
-import { DataImportType } from './def/provider-def';
+import type WeatherWarnings from '../main';
+import type { DataImportType } from './def/provider-def';
 
 export function useTestData(): boolean {
     return true;
@@ -469,7 +469,9 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
             }
         }
         for (let i = result.dwdService.features.length - 1; i >= 0; i--) {
-            if (result.dwdService.features[i] == null) result.dwdService.features.splice(i, 1);
+            if (result.dwdService.features[i] == null) {
+                result.dwdService.features.splice(i, 1);
+            }
         }
         return result.dwdService as unknown as DataImportType;
     } else if (service == 'uwzService') {
@@ -496,7 +498,9 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
             }
         }
         for (let i = result.uwzService.results.length - 1; i >= 0; i--) {
-            if (result.uwzService.results[i] == null) result.uwzService.results.splice(i, 1);
+            if (result.uwzService.results[i] == null) {
+                result.uwzService.results.splice(i, 1);
+            }
         }
         return result.uwzService as unknown as DataImportType;
     } else if (service == 'zamgService') {
@@ -525,7 +529,9 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
             }
         }
         for (let i = result.zamgService.properties.warnings.length - 1; i >= 0; i--) {
-            if (result.zamgService.properties.warnings[i] == null) result.zamgService.properties.warnings.splice(i, 1);
+            if (result.zamgService.properties.warnings[i] == null) {
+                result.zamgService.properties.warnings.splice(i, 1);
+            }
         }
         return result.zamgService as unknown as DataImportType;
     }

@@ -474,8 +474,9 @@ function getTestData(service, _that) {
       }
     }
     for (let i = result.dwdService.features.length - 1; i >= 0; i--) {
-      if (result.dwdService.features[i] == null)
+      if (result.dwdService.features[i] == null) {
         result.dwdService.features.splice(i, 1);
+      }
     }
     return result.dwdService;
   } else if (service == "uwzService") {
@@ -502,8 +503,9 @@ function getTestData(service, _that) {
       }
     }
     for (let i = result.uwzService.results.length - 1; i >= 0; i--) {
-      if (result.uwzService.results[i] == null)
+      if (result.uwzService.results[i] == null) {
         result.uwzService.results.splice(i, 1);
+      }
     }
     return result.uwzService;
   } else if (service == "zamgService") {
@@ -530,8 +532,9 @@ function getTestData(service, _that) {
       }
     }
     for (let i = result.zamgService.properties.warnings.length - 1; i >= 0; i--) {
-      if (result.zamgService.properties.warnings[i] == null)
+      if (result.zamgService.properties.warnings[i] == null) {
         result.zamgService.properties.warnings.splice(i, 1);
+      }
     }
     return result.zamgService;
   }

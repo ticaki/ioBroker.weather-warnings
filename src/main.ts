@@ -14,7 +14,6 @@ import * as providerDef from './lib/def/provider-def';
 import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationService-def';
 import { statesObjectsWarnings } from './lib/def/definition.js';
-
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 
@@ -48,7 +47,9 @@ class WeatherWarnings extends utils.Adapter {
         this.subscribeForeignObjects('system.config');
 
         // dynamic create of configuration datapoint.
-        if (!Array.isArray(this.config.allowedDirs)) this.config.allowedDirs = [];
+        if (!Array.isArray(this.config.allowedDirs)) {
+            this.config.allowedDirs = [];
+        }
         let i = 0;
         let change = false;
         let allowedDirsConfig = {};
@@ -103,7 +104,7 @@ class WeatherWarnings extends utils.Adapter {
             this.providerController.setAllowedDirs(allowedDirsConfig);
             await this.library.initStates(await this.getStatesAsync('*'));
         } catch (error) {
-            this.log.error(`catch(1): init error while reading states! ${error}`);
+            this.log.error(`catch(1): init error while reading states! ${error as string}`);
         }
         change = false;
         const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
@@ -114,16 +115,11 @@ class WeatherWarnings extends utils.Adapter {
                 const keys = Object.keys(messagesDef.customFormatedTokensJson);
                 keys.sort();
                 for (const a in keys) {
-                    reply +=
-                        '${' +
-                        keys[a] +
-                        '}: ' +
-                        (this.library.getTranslation(
-                            statesObjectsWarnings.allService.formatedkeys[
-                                keys[a] as keyof typeof statesObjectsWarnings.allService.formatedkeys
-                            ].common.name as string,
-                        ) +
-                            '\n');
+                    reply += `\${${keys[a]}}: ${this.library.getTranslation(
+                        statesObjectsWarnings.allService.formatedkeys[
+                            keys[a] as keyof typeof statesObjectsWarnings.allService.formatedkeys
+                        ].common.name as string,
+                    )}\n`;
                 }
                 reply = reply.slice(0, -1);
                 if (obj.native.templateHelp && obj.native.templateHelp.valueOf() != reply.valueOf()) {
@@ -136,7 +132,7 @@ class WeatherWarnings extends utils.Adapter {
                 let reply = ' ';
                 reply = Object.keys(messagesDef.genericWarntyp)
                     //@ts-expect-error is keyof
-                    .map((a) => messagesDef.genericWarntyp[a].id)
+                    .map(a => messagesDef.genericWarntyp[a].id)
                     .join(', ');
                 if (this.config.icons_description != reply) {
                     obj.native.icons_description = reply;
@@ -162,7 +158,9 @@ class WeatherWarnings extends utils.Adapter {
             }
             {
                 let sounds = obj.native.alexa2_sounds || [];
-                if (!sounds || !Array.isArray(sounds)) sounds = [];
+                if (!sounds || !Array.isArray(sounds)) {
+                    sounds = [];
+                }
                 for (const w in messagesDef.genericWarntyp) {
                     const index = sounds.findIndex(
                         (a: { warntype: string; sound: string; warntypenumber: number }) =>
@@ -248,78 +246,89 @@ class WeatherWarnings extends utils.Adapter {
         this.startDelay = this.setTimeout(
             async function (that: any) {
                 const self = that as WeatherWarnings;
-                if (!self) return;
-                if (!self.providerController) return;
-                if (self.providerController.unload) return;
+                if (!self) {
+                    return;
+                }
+                if (!self.providerController) {
+                    return;
+                }
+                if (self.providerController.unload) {
+                    return;
+                }
 
                 await self.providerController.init();
                 self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 60000} minutes`);
 
                 const notificationServiceOpt: NotificationType.OptionsType = {};
                 for (const a in NotificationType.Array) {
-                    const notificationService = NotificationType.Array[a] as NotificationType.Type;
-                    if (self.config[(notificationService + '_Enabled') as keyof ioBroker.AdapterConfig]) {
+                    const notificationService = NotificationType.Array[a];
+                    if (self.config[`${notificationService}_Enabled` as keyof ioBroker.AdapterConfig]) {
                         const service: providerDef.providerServices[] = [];
-                        if (self.config[(notificationService + '_DwdEnabled') as keyof ioBroker.AdapterConfig])
+                        if (self.config[`${notificationService}_DwdEnabled` as keyof ioBroker.AdapterConfig]) {
                             service.push('dwdService');
-                        if (self.config[(notificationService + '_UwzEnabled') as keyof ioBroker.AdapterConfig])
+                        }
+                        if (self.config[`${notificationService}_UwzEnabled` as keyof ioBroker.AdapterConfig]) {
                             service.push('uwzService');
-                        if (self.config[(notificationService + '_ZamgEnabled') as keyof ioBroker.AdapterConfig])
+                        }
+                        if (self.config[`${notificationService}_ZamgEnabled` as keyof ioBroker.AdapterConfig]) {
                             service.push('zamgService');
+                        }
                         const template: NotificationType.ActionsType = {
                             new:
-                                self.config[(notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig] !==
+                                self.config[`${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig] !==
                                 undefined
                                     ? (self.config[
-                                          (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
+                                          `${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig
                                       ] as string)
                                     : 'none',
                             remove: self.config[
-                                (notificationService + '_MessageRemove') as keyof ioBroker.AdapterConfig
+                                `${notificationService}_MessageRemove` as keyof ioBroker.AdapterConfig
                             ] as string,
                             removeAll: self.config[
-                                (notificationService + '_MessageAllRemove') as keyof ioBroker.AdapterConfig
+                                `${notificationService}_MessageAllRemove` as keyof ioBroker.AdapterConfig
                             ] as string,
                             all:
-                                self.config[(notificationService + '_MessageAll') as keyof ioBroker.AdapterConfig] !==
+                                self.config[`${notificationService}_MessageAll` as keyof ioBroker.AdapterConfig] !==
                                 undefined
                                     ? (self.config[
-                                          (notificationService + '_MessageAll') as keyof ioBroker.AdapterConfig
+                                          `${notificationService}_MessageAll` as keyof ioBroker.AdapterConfig
                                       ] as string)
                                     : self.config[
-                                            (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
+                                            `${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig
                                         ] !== undefined
                                       ? (self.config[
-                                            (notificationService + '_MessageNew') as keyof ioBroker.AdapterConfig
+                                            `${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig
                                         ] as string)
                                       : 'none',
                             manualAll:
-                                self.config[(notificationService + '_manualAll') as keyof ioBroker.AdapterConfig] !==
+                                self.config[`${notificationService}_manualAll` as keyof ioBroker.AdapterConfig] !==
                                 undefined
                                     ? (self.config[
-                                          (notificationService + '_manualAll') as keyof ioBroker.AdapterConfig
+                                          `${notificationService}_manualAll` as keyof ioBroker.AdapterConfig
                                       ] as string)
                                     : 'none',
                             removeManualAll:
                                 self.config[
-                                    (notificationService + '_removeManualAll') as keyof ioBroker.AdapterConfig
+                                    `${notificationService}_removeManualAll` as keyof ioBroker.AdapterConfig
                                 ] !== undefined
                                     ? (self.config[
-                                          (notificationService + '_removeManualAll') as keyof ioBroker.AdapterConfig
+                                          `${notificationService}_removeManualAll` as keyof ioBroker.AdapterConfig
                                       ] as string)
                                     : 'none',
                             title:
-                                self.config[(notificationService + '_Title') as keyof ioBroker.AdapterConfig] !==
+                                self.config[`${notificationService}_Title` as keyof ioBroker.AdapterConfig] !==
                                 undefined
                                     ? (self.config[
-                                          (notificationService + '_Title') as keyof ioBroker.AdapterConfig
+                                          `${notificationService}_Title` as keyof ioBroker.AdapterConfig
                                       ] as string)
                                     : 'none',
                         };
                         for (const a in template) {
                             const b = a as keyof NotificationType.ActionsType;
-                            if (template[b] == undefined) continue;
-                            template[b] = template[b] ? template[b]! : 'none';
+                            if (template[b] == undefined) {
+                                continue;
+                            }
+                            template[b] = template[b] ? template[b] : 'none';
                         }
 
                         // @ts-expect-error keine ahnung :)
@@ -330,36 +339,34 @@ class WeatherWarnings extends utils.Adapter {
                                 auto: {
                                     level:
                                         (self.config[
-                                            (notificationService + '_LevelFilter') as keyof ioBroker.AdapterConfig
+                                            `${notificationService}_LevelFilter` as keyof ioBroker.AdapterConfig
                                         ] as number) || -1,
                                     type: (
                                         (self.config[
-                                            (notificationService + '_TypeFilter') as keyof ioBroker.AdapterConfig
+                                            `${notificationService}_TypeFilter` as keyof ioBroker.AdapterConfig
                                         ] as string[]) || []
-                                    ).map((a) => String(a)),
+                                    ).map(a => String(a)),
                                 },
                                 manual: {
                                     level: (self.config[
-                                        (notificationService + '_ManualLevelFilter') as keyof ioBroker.AdapterConfig
+                                        `${notificationService}_ManualLevelFilter` as keyof ioBroker.AdapterConfig
                                     ] as number)
                                         ? (self.config[
-                                              (notificationService +
-                                                  '_ManualLevelFilter') as keyof ioBroker.AdapterConfig
+                                              `${notificationService}_ManualLevelFilter` as keyof ioBroker.AdapterConfig
                                           ] as number)
                                         : -1,
                                     type: ((self.config[
-                                        (notificationService + '_ManualTypeFilter') as keyof ioBroker.AdapterConfig
+                                        `${notificationService}_ManualTypeFilter` as keyof ioBroker.AdapterConfig
                                     ] as string[])
                                         ? (self.config[
-                                              (notificationService +
-                                                  '_ManualTypeFilter') as keyof ioBroker.AdapterConfig
+                                              `${notificationService}_ManualTypeFilter` as keyof ioBroker.AdapterConfig
                                           ] as string[])
                                         : []
-                                    ).map((a) => String(a)),
+                                    ).map(a => String(a)),
                                 },
                             },
                             adapter: self.config[
-                                (notificationService + '_Adapter') as keyof ioBroker.AdapterConfig
+                                `${notificationService}_Adapter` as keyof ioBroker.AdapterConfig
                             ] as string,
                             name: notificationService,
                             actions: template,
@@ -380,8 +387,9 @@ class WeatherWarnings extends utils.Adapter {
                     notificationServiceOpt.telegram.parse_mode = self.config.telegram_parse_mode || 'none';
                 }
                 if (self.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != undefined) {
-                    if (self.config.whatsapp_Phonenumber)
+                    if (self.config.whatsapp_Phonenumber) {
                         notificationServiceOpt.whatsapp.phonenumber = self.config.whatsapp_Phonenumber;
+                    }
                 }
                 if (self.config.pushover_Enabled && notificationServiceOpt.pushover != undefined) {
                     notificationServiceOpt.pushover.sound = self.config.pushover_Sound || 'none';
@@ -424,7 +432,7 @@ class WeatherWarnings extends utils.Adapter {
                         self.config.sayit_Enabled = false;
                     } else {
                         notificationServiceOpt.sayit.adapters = self.config.sayit_Adapter_Array.map(
-                            (a) => a.sayit_Adapter,
+                            a => a.sayit_Adapter,
                         );
                     }
                 }
@@ -503,7 +511,9 @@ class WeatherWarnings extends utils.Adapter {
                                     'uwzService',
                                     self,
                                 );
-                                if (self.providerController.unload) return;
+                                if (self.providerController.unload) {
+                                    return;
+                                }
 
                                 if (tempWarncell) {
                                     tempTable[a].realWarncell = tempWarncell;
@@ -529,10 +539,11 @@ class WeatherWarnings extends utils.Adapter {
                                 language: self.config.uwzLanguage,
                                 customName: id.uwzCityname,
                             });
-                        } else
+                        } else {
                             self.log.warn(
                                 `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${tempTable[a].realWarncell}`,
                             );
+                        }
                     }
                 }
                 if (JSON.stringify(tempTable) != JSON.stringify(self.config.uwzwarncellTable)) {
@@ -570,7 +581,7 @@ class WeatherWarnings extends utils.Adapter {
                 await self.providerController.finishInit();
 
                 self.providerController.updateEndless(self.providerController);
-                self.providerController.updateAlertEndless(self.providerController);
+                await self.providerController.updateAlertEndless(self.providerController);
             },
             2000,
             this,
@@ -579,11 +590,17 @@ class WeatherWarnings extends utils.Adapter {
 
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
+     *
+     * @param callback
      */
     private onUnload(callback: () => void): void {
         try {
-            if (this.startDelay) this.clearTimeout(this.startDelay);
-            if (this.providerController) this.providerController.delete();
+            if (this.startDelay) {
+                this.clearTimeout(this.startDelay);
+            }
+            if (this.providerController) {
+                this.providerController.delete();
+            }
             callback();
         } catch {
             callback();
@@ -592,13 +609,18 @@ class WeatherWarnings extends utils.Adapter {
 
     /**
      * Respond to language changes.
+     *
+     * @param id
+     * @param obj
      */
     private async onObjectChange(id: string, obj: ioBroker.Object | null | undefined): Promise<void> {
         if (obj) {
             // The object was changed
             if (id == 'system.config') {
                 if (await this.library.setLanguage(obj.common.language)) {
-                    if (this.providerController) await this.providerController.updateMesssages();
+                    if (this.providerController) {
+                        await this.providerController.updateMesssages();
+                    }
                 }
             }
         }
@@ -607,20 +629,35 @@ class WeatherWarnings extends utils.Adapter {
     /**
      * Is called if a subscribed state changes
      * We need this later, dont remove
+     *
+     * @param id
+     * @param state
      */
     private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
-        if (!state) return;
-        if (state.ack) return;
+        if (!state) {
+            return;
+        }
+        if (state.ack) {
+            return;
+        }
         this.library.setdb(id.replace(`${this.namespace}.`, ''), 'state', state.val, undefined, state.ack, state.ts);
 
-        if (await this.providerController!.onStatePush(id)) return;
-        if (await this.providerController!.clearHistory(id)) return;
-        if (await this.providerController!.setSpeakAllowed(id)) return;
+        if (await this.providerController!.onStatePush(id)) {
+            return;
+        }
+        if (await this.providerController!.clearHistory(id)) {
+            return;
+        }
+        if (await this.providerController!.setSpeakAllowed(id)) {
+            return;
+        }
     }
 
     /**
      * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
      * Using this method requires "common.messagebox" property to be set to true in io-package.json
+     *
+     * @param obj
      */
     private async onMessage(obj: ioBroker.Message): Promise<void> {
         if (typeof obj === 'object' && obj.message) {
@@ -691,7 +728,7 @@ class WeatherWarnings extends utils.Adapter {
                                 endkey: `${obj.message.adapter}.\u9999`,
                             });
                             */
-                            const objs = await this.getForeignObjectsAsync(obj.message.adapter + '.Echo-Devices.*');
+                            const objs = await this.getForeignObjectsAsync(`${obj.message.adapter}.Echo-Devices.*`);
                             for (const a in objs) {
                                 if (a.endsWith('.Commands.speak')) {
                                     const channel = await this.getForeignObjectAsync(
@@ -747,7 +784,7 @@ class WeatherWarnings extends utils.Adapter {
                                 `${obj.message.service}_MessageRemove`,
                                 `${obj.message.service}_MessageAllRemove`,
                                 `${obj.message.service}_MessageAll`,
-                            ].forEach((a) => {
+                            ].forEach(a => {
                                 data.native[a] = io_package.native[a as keyof typeof io_package.native];
                             });
                         }
@@ -795,15 +832,15 @@ class WeatherWarnings extends utils.Adapter {
                                 });
 
                                 if (objs && objs.rows) {
-                                    for (const a in objs.rows) {
-                                        const instance = Number(objs.rows[a].id.split('.')[3]);
+                                    for (const row of objs.rows) {
+                                        const instance = Number(row.id.split('.')[3]);
                                         if (instance !== undefined) {
                                             temp[instance] = true;
                                         }
                                     }
                                 }
                             } catch (error) {
-                                this.log.error(`error(44): ${error}`);
+                                this.log.error(`error(44): ${error as string}`);
                             }
 
                             const reply = [{ label: 'none', value: 'none' }];
@@ -824,13 +861,24 @@ class WeatherWarnings extends utils.Adapter {
                         const reply = [];
                         const text = messagesDef.textLevels.textGeneric;
                         for (const a in text) {
-                            if (Number(a) == 5) break;
-                            reply.push({
-                                label: this.library.getTranslation(
-                                    messagesDef.textLevels.textGeneric[a as keyof typeof text],
-                                ),
-                                value: Number(a),
-                            });
+                            switch (a) {
+                                case '0':
+                                case '1':
+                                case '2':
+                                case '3':
+                                case '4': {
+                                    reply.push({
+                                        label: this.library.getTranslation(
+                                            messagesDef.textLevels.textGeneric[a as unknown as keyof typeof text],
+                                        ),
+                                        value: Number(a),
+                                    });
+                                    break;
+                                }
+                            }
+                            if (Number(a) == 5) {
+                                break;
+                            }
                         }
                         //this.log.debug(obj.command + ': ' + JSON.stringify(reply));
                         this.sendTo(obj.from, obj.command, reply, obj.callback);
@@ -891,9 +939,11 @@ class WeatherWarnings extends utils.Adapter {
                         'provider.uwz.info.connection',
                         'provider.zamg.info.connection',
                         'info.connection',
-                    ].forEach((a) => {
+                    ].forEach(a => {
                         state = this.library.readdp(a);
-                        if (state) connected = connected || !!state.val;
+                        if (state) {
+                            connected = connected || !!state.val;
+                        }
                     });
                     // connected === true is right
                     this.sendTo(obj.from, obj.command, connected ? 'true' : 'false', obj.callback);
@@ -910,13 +960,18 @@ class WeatherWarnings extends utils.Adapter {
                         'provider.uwz.info.connection',
                         'provider.zamg.info.connection',
                         'info.connection',
-                    ].forEach((a) => {
+                    ].forEach(a => {
                         state = this.library.readdp(a);
-                        if (state) connected = connected || !!state.val;
+                        if (state) {
+                            connected = connected || !!state.val;
+                        }
                     });
                     state = this.library.readdp('provider.activeWarnings');
-                    if (state) connected = !!connected || !(state.val && Number(state.val) >= 4);
-                    else connected = true; //error
+                    if (state) {
+                        connected = !!connected || !(state.val && Number(state.val) >= 4);
+                    } else {
+                        connected = true;
+                    } //error
                     // connected === false is right
                     this.sendTo(
                         obj.from,

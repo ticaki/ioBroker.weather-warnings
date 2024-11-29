@@ -1,10 +1,11 @@
 // Provider
 
 import axios from 'axios';
-import WeatherWarnings from '../main';
+import type WeatherWarnings from '../main';
 import * as definitionen from './def/definition';
-import { BaseClass, Library } from './library';
-import * as providerDef from './def/provider-def';
+import type { Library } from './library';
+import { BaseClass } from './library';
+import type * as providerDef from './def/provider-def';
 import { MessagesClass } from './messages';
 import * as NotificationClass from './notification';
 import { getTestData } from './test-warnings';
@@ -60,7 +61,7 @@ export class BaseProvider extends BaseClass {
         this.library = this.adapter.library;
         this.providerController = options.providerController;
         this.setService(options.service);
-        this.log.setLogPrefix(`${name}-${options.warncellId}`);
+        this.log.setLogPrefix(`${name}-${options.warncellId as string}`);
         this.filter = options.filter;
         this.customName = options.customName;
 
@@ -71,7 +72,7 @@ export class BaseProvider extends BaseClass {
             definitionen.statesObjectsWarnings[this.service]._channel,
         ) as ioBroker.DeviceObject;
         temp.common.name = name.toUpperCase();
-        this.library.writedp('provider.' + name, undefined, temp);
+        this.library.writedp(`provider.${name}`, undefined, temp);
 
         this.init();
     }
@@ -125,18 +126,19 @@ export class BaseProvider extends BaseClass {
     /**
      * @param url if '' url from PROVIDER_OPTIONS is taken
      * @param keys [string] values to replace - placeholder #  # #+  +# #++  ++# and so on
+     * @param service
      */
     static getUrl(url: string = '', keys: string[], service: keyof typeof definitionen.PROVIDER_OPTIONS): string {
         let result = '';
         if (!url) {
-            result = definitionen.PROVIDER_OPTIONS[service]['url'];
+            result = definitionen.PROVIDER_OPTIONS[service].url;
         } else {
             result = url;
         }
         let placeholder = '#  #';
         for (const k in keys) {
             result = result.replace(placeholder, keys[k]);
-            placeholder = placeholder.slice(0, 1) + '+' + placeholder.slice(1, -1) + '+' + placeholder.slice(-1);
+            placeholder = `${placeholder.slice(0, 1)}+${placeholder.slice(1, -1)}+${placeholder.slice(-1)}`;
         }
         return result;
     }
@@ -154,7 +156,9 @@ export class BaseProvider extends BaseClass {
     ): Promise<messagesDef.genericWarntypeAlertJsonType> {
         const reply: any = { asList: '' };
         for (const t in messagesDef.genericWarntyp) {
-            if (t == '0') continue;
+            if (t == '0') {
+                continue;
+            }
             reply[messagesDef.genericWarntyp[Number(t) as keyof messagesDef.genericWarntypeType].id] = {
                 level: -1,
                 start: 1,
@@ -164,17 +168,29 @@ export class BaseProvider extends BaseClass {
                 type: -1,
             };
         }
-        if (!reply) throw new Error('error(234) reply not definied');
-        if (allReplys === undefined) allReplys = JSON.parse(JSON.stringify(reply));
-        [reply, allReplys].forEach((reply) => {
+        if (!reply) {
+            throw new Error('error(234) reply not definied');
+        }
+        if (allReplys === undefined) {
+            allReplys = JSON.parse(JSON.stringify(reply));
+        }
+        [reply, allReplys].forEach(reply => {
             let warntypeArray: string[] = [];
             for (const a in this.messages) {
                 const m = this.messages[a];
-                if (!m) continue;
+                if (!m) {
+                    continue;
+                }
                 const name = messagesDef.genericWarntyp[m.genericType].id;
-                if (name == 'none') continue;
-                if (reply[name] === undefined) continue;
-                if (m.endtime < Date.now()) continue;
+                if (name == 'none') {
+                    continue;
+                }
+                if (reply[name] === undefined) {
+                    continue;
+                }
+                if (m.endtime < Date.now()) {
+                    continue;
+                }
 
                 if (
                     (m.starttime <= Date.now() && reply[name].level < m.level) ||
@@ -189,14 +205,18 @@ export class BaseProvider extends BaseClass {
                         active: m.starttime <= Date.now() && m.endtime >= Date.now(),
                         type: m.genericType,
                     };
-                    if (reply === allReplys) reply[name].provider = m.formatedData ? m.formatedData.provider : '';
+                    if (reply === allReplys) {
+                        reply[name].provider = m.formatedData ? m.formatedData.provider : '';
+                    }
                 }
             }
-            if (reply['asList'] !== undefined) warntypeArray = warntypeArray.concat(reply['asList'].split(', '));
-            reply['asList'] = warntypeArray.filter((item, pos, arr) => item && arr.indexOf(item) == pos).join(', ');
+            if (reply.asList !== undefined) {
+                warntypeArray = warntypeArray.concat(reply.asList.split(', '));
+            }
+            reply.asList = warntypeArray.filter((item, pos, arr) => item && arr.indexOf(item) == pos).join(', ');
         });
         await this.library.writeFromJson(
-            this.name + '.alerts',
+            `${this.name}.alerts`,
             'allService.alerts',
             definitionen.statesObjectsWarnings,
             reply,
@@ -209,8 +229,7 @@ export class BaseProvider extends BaseClass {
     async getDataFromProvider(): Promise<providerDef.DataImportType> {
         if (!this.url || !this.warncellId) {
             this.log.debug(
-                // eslint-disable-next-line prettier/prettier
-                `Warn (31) this.url: ${this.url} this.warncellid: ${this.warncellId} this.service: ${this.getService()}`,
+                `Warn (31) this.url: ${this.url} this.warncellid: ${this.warncellId as string} this.service: ${this.getService()}`,
             );
         }
         try {
@@ -228,42 +247,46 @@ export class BaseProvider extends BaseClass {
                 return this.library.cloneGenericObject(
                     getTestData(this.service, this.adapter) as object,
                 ) as providerDef.DataImportType;
-            } else {
-                const data = await axios.get(this.url);
-                if (this.unload) return null;
-                if (data.status == 200) {
-                    await this.setConnected(true);
-
-                    const result = typeof data.data == 'object' ? data.data : JSON.parse(data.data);
-
-                    this.library.writedp(
-                        `${this.name}.warning.warning_json`,
-                        JSON.stringify(result),
-                        definitionen.genericStateObjects.warnings_json,
-                    );
-                    if (this.adapter.config.useJsonHistory) {
-                        const dp = `${this.name}.warning.jsonHistory`;
-                        const state = this.library.readdp(dp);
-                        let history: object[] = [];
-                        if (state && state.val && typeof state.val == 'string') history = JSON.parse(state.val);
-                        history.unshift(result);
-                        this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
-                    }
-                    this.library.writedp(
-                        `${this.name}.lastUpdate`,
-                        Date.now(),
-                        definitionen.genericStateObjects.lastUpdate,
-                    );
-                    return result;
-                } else {
-                    this.log.warn('Warn(23) ' + data.statusText);
-                }
             }
+            const data = await axios.get(this.url);
+            if (this.unload) {
+                return null;
+            }
+            if (data.status == 200) {
+                await this.setConnected(true);
+
+                const result = typeof data.data == 'object' ? data.data : JSON.parse(data.data);
+
+                this.library.writedp(
+                    `${this.name}.warning.warning_json`,
+                    JSON.stringify(result),
+                    definitionen.genericStateObjects.warnings_json,
+                );
+                if (this.adapter.config.useJsonHistory) {
+                    const dp = `${this.name}.warning.jsonHistory`;
+                    const state = this.library.readdp(dp);
+                    let history: object[] = [];
+                    if (state && state.val && typeof state.val == 'string') {
+                        history = JSON.parse(state.val);
+                    }
+                    history.unshift(result);
+                    this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
+                }
+                this.library.writedp(
+                    `${this.name}.lastUpdate`,
+                    Date.now(),
+                    definitionen.genericStateObjects.lastUpdate,
+                );
+                return result;
+            }
+            this.log.warn(`Warn(23) ${data.statusText}`);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 this.log.warn(`Warn(21) axios error for ${this.getService()} url: ${this.url}`);
             } else {
-                this.log.error(`Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`);
+                this.log.error(
+                    `Error(22) no data for ${this.getService()} from ${this.url} with Error ${error as string}`,
+                );
             }
         }
         await this.setConnected(false);
@@ -276,13 +299,21 @@ export class BaseProvider extends BaseClass {
             return a.starttime - b.starttime;
         });
         // delete msgs that send a remove with a follow up
-        this.messages = this.messages.filter((item) => {
-            if (item.notDeleted || item.newMessage) return true;
-            if (item.endtime > Date.now()) return true;
+        this.messages = this.messages.filter(item => {
+            if (item.notDeleted || item.newMessage) {
+                return true;
+            }
+            if (item.endtime > Date.now()) {
+                return true;
+            }
             for (const innerItem of this.messages) {
-                if (innerItem == item || innerItem.provider !== item.provider || innerItem.type !== item.type) continue;
+                if (innerItem == item || innerItem.provider !== item.provider || innerItem.type !== item.type) {
+                    continue;
+                }
                 const diff = Math.abs(innerItem.starttime - item.endtime);
-                if (diff <= this.providerController.refreshTime || innerItem.starttime <= item.endtime) return false;
+                if (diff <= this.providerController.refreshTime || innerItem.starttime <= item.endtime) {
+                    return false;
+                }
             }
             return true;
         });
@@ -304,10 +335,12 @@ export class BaseProvider extends BaseClass {
     }
 
     async updateData(data: any, counter: number): Promise<void> {
-        if (!data) return;
+        if (!data) {
+            return;
+        }
         this.library.writedp(`${this.name}.warning`, undefined, definitionen.genericStateObjects.warningDevice);
         await this.library.writeFromJson(
-            `${this.name}.warning.${('00' + counter.toString()).slice(-2)}`,
+            `${this.name}.warning.${`00${counter.toString()}`.slice(-2)}`,
             `${this.service}.raw`,
             definitionen.statesObjectsWarnings,
             data,
@@ -331,7 +364,7 @@ export class BaseProvider extends BaseClass {
         );
         this.adapter.library.writedp(
             `${this.name}.summary.warntypes`,
-            this.messages.map((a) => (a.formatedData ? a.formatedData.warntypegenericname : '')).join(', '),
+            this.messages.map(a => (a.formatedData ? a.formatedData.warntypegenericname : '')).join(', '),
             definitionen.genericStateObjects.summary.warntypes,
         );
     }
@@ -352,26 +385,31 @@ export class DWDProvider extends BaseProvider {
     }
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as providerDef.dataImportDwdType;
-        if (!result) return;
+        if (!result) {
+            return;
+        }
         this.log.debug(`Got ${result.features.length} warnings from server`);
         result.features.sort((a, b) => {
             return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
         });
-        this.messages.forEach((a) => (a.notDeleted = false));
+        this.messages.forEach(a => (a.notDeleted = false));
         for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.features.length; a++) {
             const w = result.features[a];
-            if (w.properties.STATUS == 'Test') continue;
+            if (w.properties.STATUS == 'Test') {
+                continue;
+            }
             if (
                 this.filter.hours > 0 &&
                 new Date(w.properties.ONSET).getTime() > Date.now() + this.filter.hours * 3600000
-            )
+            ) {
                 continue;
+            }
             await super.updateData(w.properties, a);
 
             /**
              * filter messages dwd
              */
-            const index = this.messages.findIndex((m) => m.rawWarning.IDENTIFIER == w.properties.IDENTIFIER);
+            const index = this.messages.findIndex(m => m.rawWarning.IDENTIFIER == w.properties.IDENTIFIER);
 
             if (index == -1) {
                 const nmessage = new MessagesClass(
@@ -383,23 +421,37 @@ export class DWDProvider extends BaseProvider {
                 );
                 await nmessage.updateFormated();
 
-                if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
+                if (nmessage && nmessage.filter(this.filter)) {
+                    this.messages.push(nmessage);
+                }
             } else {
                 await this.messages[index].updateData(w.properties);
             }
         }
         for (let n = 0; n < this.messages.length; n++) {
             const newmsg = this.messages[n];
-            if (!newmsg.newMessage) continue;
+            if (!newmsg.newMessage) {
+                continue;
+            }
             for (let o = 0; o < this.messages.length; o++) {
                 const oldmsg = this.messages[o];
-                if (oldmsg.newMessage) continue;
-                if (oldmsg.formatedData === undefined || newmsg.formatedData === undefined) continue;
-                if (oldmsg.rawWarning.EC_II != newmsg.rawWarning.EC_II) continue;
-                if (oldmsg.starttime > newmsg.endtime || newmsg.starttime > oldmsg.endtime) continue;
+                if (oldmsg.newMessage) {
+                    continue;
+                }
+                if (oldmsg.formatedData === undefined || newmsg.formatedData === undefined) {
+                    continue;
+                }
+                if (oldmsg.rawWarning.EC_II != newmsg.rawWarning.EC_II) {
+                    continue;
+                }
+                if (oldmsg.starttime > newmsg.endtime || newmsg.starttime > oldmsg.endtime) {
+                    continue;
+                }
                 newmsg.silentUpdate();
                 this.log.debug('Remove a old warning.(Silent Update)');
-                if (o <= n) n--;
+                if (o <= n) {
+                    n--;
+                }
                 this.messages.splice(o--, 1);
                 break;
             }
@@ -417,31 +469,37 @@ export class ZAMGProvider extends BaseProvider {
 
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as providerDef.dataImportZamgType;
-        if (!result) return;
+        if (!result) {
+            return;
+        }
 
         if (!result.properties || !result.properties.warnings) {
             this.log.debug(`Got 0 warnings from server`);
             return;
-        } else this.log.debug(`Got ${result.properties.warnings.length} warnings from server`);
+        }
+        this.log.debug(`Got ${result.properties.warnings.length} warnings from server`);
         result.properties.warnings.sort((a, b) => {
             return Number(a.properties.rawinfo.start) - Number(b.properties.rawinfo.start);
         });
-        this.messages.forEach((a) => (a.notDeleted = false));
+        this.messages.forEach(a => (a.notDeleted = false));
         let b = 0;
         for (let a = 0; b < this.adapter.config.numOfRawWarnings && a < result.properties.warnings.length; a++) {
             if (
                 this.filter.hours > 0 &&
                 Number(result.properties.warnings[a].properties.rawinfo.start) >
                     Date.now() / 1000 + this.filter.hours * 3600
-            )
+            ) {
                 continue;
-            if (Number(result.properties.warnings[a].properties.rawinfo.end) < Date.now() / 1000) continue;
+            }
+            if (Number(result.properties.warnings[a].properties.rawinfo.end) < Date.now() / 1000) {
+                continue;
+            }
             b++;
             // special case for zamg
             result.properties.warnings[a].properties.location = result.properties.location.properties.name;
             result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
             await super.updateData(result.properties.warnings[a].properties, a);
-            const index = this.messages.findIndex((m) => {
+            const index = this.messages.findIndex(m => {
                 return (
                     m.rawWarning.warnid == result.properties.warnings[a].properties.warnid &&
                     result.properties.warnings[a].properties.rawinfo.wlevel == m.rawWarning.rawinfo.wlevel &&
@@ -458,7 +516,9 @@ export class ZAMGProvider extends BaseProvider {
                     this.providerController,
                 );
                 await nmessage.updateFormated();
-                if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
+                if (nmessage && nmessage.filter(this.filter)) {
+                    this.messages.push(nmessage);
+                }
             } else {
                 await this.messages[index].updateData(result.properties.warnings[a].properties);
             }
@@ -492,7 +552,7 @@ export class UWZProvider extends BaseProvider {
                     return result.data[0].AREA_ID;
                 }
             }
-            that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)!}`);
+            that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)}`);
         } catch (error: any) {
             that.log.warn(`Dont get warncell. ${JSON.stringify(error.toJSON)}`);
         }
@@ -505,17 +565,22 @@ export class UWZProvider extends BaseProvider {
             return;
         }
         result.results.sort((a, b) => {
-            if (a && b && a.dtgStart && b.dtgStart) return a.dtgStart - b.dtgStart;
+            if (a && b && a.dtgStart && b.dtgStart) {
+                return a.dtgStart - b.dtgStart;
+            }
             return 0;
         });
-        this.messages.forEach((a) => (a.notDeleted = false));
+        this.messages.forEach(a => (a.notDeleted = false));
         for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.results.length; a++) {
-            if (result.results[a] == null) continue;
-            if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() / 1000 + this.filter.hours * 3600)
+            if (result.results[a] == null) {
                 continue;
+            }
+            if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() / 1000 + this.filter.hours * 3600) {
+                continue;
+            }
             await super.updateData(result.results[a], a);
 
-            const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
+            const index = this.messages.findIndex(m => m.rawWarning.payload.id == result.results[a].payload.id);
             if (index == -1) {
                 const nmessage = new MessagesClass(
                     this.adapter,
@@ -525,7 +590,9 @@ export class UWZProvider extends BaseProvider {
                     this.providerController,
                 );
                 await nmessage.updateFormated();
-                if (nmessage && nmessage.filter(this.filter)) this.messages.push(nmessage);
+                if (nmessage && nmessage.filter(this.filter)) {
+                    this.messages.push(nmessage);
+                }
             } else {
                 await this.messages[index].updateData(result.results[a]);
             }
@@ -561,7 +628,11 @@ export class ProviderController extends BaseClass {
     //globalSpeakSilentTime: ({ profil: string; day: number[]; start: number; end: number } | null)[] = [];
     testStatus = 0;
     activeMessages = 0;
-    silentTime: { shouldSpeakAllowed?: boolean; forceOff: boolean; profil: providerDef.silentTimeConfigType[][] } = {
+    silentTime: {
+        shouldSpeakAllowed?: boolean;
+        forceOff: boolean;
+        profil: providerDef.silentTimeConfigType[][];
+    } = {
         forceOff: false,
         profil: [],
     };
@@ -607,8 +678,12 @@ export class ProviderController extends BaseClass {
         const profileNames: string[] = [];
         if (this.adapter.config.silentTime !== undefined) {
             for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
-                if (!this.adapter.config.silentTime[p].speakProfile) continue;
-                if (this.adapter.config.silentTime[p].silentTime.length == 0) continue;
+                if (!this.adapter.config.silentTime[p].speakProfile) {
+                    continue;
+                }
+                if (this.adapter.config.silentTime[p].silentTime.length == 0) {
+                    continue;
+                }
                 profileNames.push(this.adapter.config.silentTime[p].speakProfile);
                 this.silentTime.profil.push(
                     (this.adapter.config.silentTime[p].silentTime || [])
@@ -626,21 +701,30 @@ export class ProviderController extends BaseClass {
                                 item.day === null ||
                                 !Array.isArray(item.day) ||
                                 item.day.length == 0
-                            )
+                            ) {
                                 return null;
+                            }
                             for (const a in item) {
                                 const b = a as keyof typeof item;
                                 if (b != 'day') {
                                     const t = item[b].split(':');
-                                    if (Number.isNaN(t[0])) return null;
+                                    if (Number.isNaN(t[0])) {
+                                        return null;
+                                    }
                                     if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
                                         t[1] = String(parseInt(t[1]) / 60);
                                         item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-                                    } else item[b] = t[0];
+                                    } else {
+                                        item[b] = t[0];
+                                    }
                                 }
-                                if (b == 'day') result.day = item.day;
-                                else if (b == 'end') result.end = parseFloat(item.end);
-                                else result.start = parseFloat(item.start);
+                                if (b == 'day') {
+                                    result.day = item.day;
+                                } else if (b == 'end') {
+                                    result.end = parseFloat(item.end);
+                                } else {
+                                    result.start = parseFloat(item.start);
+                                }
                             }
                             this.log.info(
                                 `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${
@@ -649,7 +733,7 @@ export class ProviderController extends BaseClass {
                             );
                             return result.day.length != 0 && result.start != result.end ? result : null;
                         })
-                        .filter((f) => f != null) as providerDef.silentTimeConfigType[],
+                        .filter(f => f != null),
                 );
             }
             definitionen.statesObjectsWarnings.allService.commands.silentTime.profil.common.states = profileNames;
@@ -661,8 +745,9 @@ export class ProviderController extends BaseClass {
             for (const a in definitionen.actionStates) {
                 const dp = a as keyof typeof definitionen.actionStates;
                 const data = definitionen.actionStates[dp];
-                if (!this.library.readdp(String(dp))) await this.library.writedp(String(dp), data.default, data.def);
-                else {
+                if (!this.library.readdp(String(dp))) {
+                    await this.library.writedp(String(dp), data.default, data.def);
+                } else {
                     const def = definitionen.actionStates[dp].def;
                     const obj = await this.adapter.getObjectAsync(String(dp));
                     if (obj) {
@@ -729,13 +814,16 @@ export class ProviderController extends BaseClass {
     }
     /**
      * Create a notificationService
+     *
      * @param optionList specialcase: adapter == '' then it is createn anyway
      * @returns
      */
     async createNotificationService(optionList: NotificationType.OptionsType): Promise<void> {
         for (const a in optionList) {
             const options = optionList[a as keyof NotificationType.OptionsType];
-            if (options === undefined) return;
+            if (options === undefined) {
+                return;
+            }
             let tempAdapters = [options.adapter];
             if (options.useadapterarray && options.adapters) {
                 tempAdapters = options.adapters;
@@ -770,7 +858,7 @@ export class ProviderController extends BaseClass {
 
     createProviderIfNotExist(options: ProviderOptionsType): providerDef.ProviderClassType {
         const index = this.providers.findIndex(
-            (p) =>
+            p =>
                 p &&
                 ((typeof p.warncellId == 'string' && p.warncellIdString == options.warncellId) ||
                     (typeof options.warncellId == 'object' && options.warncellId.join(DIV) == p.warncellIdString)) &&
@@ -824,12 +912,13 @@ export class ProviderController extends BaseClass {
                     throw new Error('Error 126 service is not defined');
                 //todo add metroServicce
             }
-            if (p) this.providers.push(p);
+            if (p) {
+                this.providers.push(p);
+            }
             return p;
-        } else {
-            this.log.error('Attempt to create an existing provider. ' + options.service);
-            return this.providers[index];
         }
+        this.log.error(`Attempt to create an existing provider. ${options.service}`);
+        return this.providers[index];
     }
 
     async delete(): Promise<void> {
@@ -839,18 +928,26 @@ export class ProviderController extends BaseClass {
         this.providers = [];
         this.notificationServices = [];
         await this.setConnected(false);
-        if (this.refreshTimeRef) this.adapter.clearTimeout(this.refreshTimeRef);
-        if (this.alertTimeoutRef) this.adapter.clearTimeout(this.alertTimeoutRef);
+        if (this.refreshTimeRef) {
+            this.adapter.clearTimeout(this.refreshTimeRef);
+        }
+        if (this.alertTimeoutRef) {
+            this.adapter.clearTimeout(this.alertTimeoutRef);
+        }
     }
 
     updateEndless(that: ProviderController): void {
         if (that.adapter.config.useTestCase) {
-            if (++that.testStatus > 3) that.testStatus = 1;
+            if (++that.testStatus > 3) {
+                that.testStatus = 1;
+            }
             that.adapter.config.useTestWarnings = true;
             that.refreshTime = 60000;
         }
         that.connection = false;
-        if (that.refreshTimeRef) that.adapter.clearTimeout(that.refreshTimeRef);
+        if (that.refreshTimeRef) {
+            that.adapter.clearTimeout(that.refreshTimeRef);
+        }
         if (that.providers.length == 0) {
             that.setConnected(false);
             return;
@@ -858,9 +955,13 @@ export class ProviderController extends BaseClass {
         updater(that);
         async function updater(self: any, index: number = 0): Promise<void> {
             const that = self; //as ProviderController;
-            if (that.unload) return;
+            if (that.unload) {
+                return;
+            }
             if (index < that.providers.length) {
-                if (that.providers[index]) await that.providers[index].updateData();
+                if (that.providers[index]) {
+                    await that.providers[index].updateData();
+                }
                 index++;
                 that.refreshTimeRef = that.adapter.setTimeout(updater, 250, that, index);
             } else {
@@ -872,12 +973,16 @@ export class ProviderController extends BaseClass {
     }
     async updateAlertEndless(self: any, endless: boolean = true): Promise<void> {
         const that = self as ProviderController;
-        if (that.unload) return;
+        if (that.unload) {
+            return;
+        }
         await that.setSpeakAllowed();
         await that.checkAlerts();
         /** update every minute after 1.333 seconds. Avoid the full minute, full second and half second :) */
         const timeout = 61333 - (Date.now() % 60000);
-        if (endless) that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+        if (endless) {
+            that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+        }
     }
 
     async checkAlerts(): Promise<void> {
@@ -926,8 +1031,8 @@ export class ProviderController extends BaseClass {
             this.activeMessages,
             definitionen.genericStateObjects.activeWarnings,
         );
-        this.providers.forEach((a) => a.clearMessages());
-        this.providers.forEach((a) => a.finishTurn());
+        this.providers.forEach(a => a.clearMessages());
+        this.providers.forEach(a => a.finishTurn());
         this.log.debug(`We have ${this.activeMessages} active messages.`);
     }
     providersExist(): boolean {
@@ -942,13 +1047,15 @@ export class ProviderController extends BaseClass {
     }
 
     async onStatePush(id: string): Promise<boolean> {
-        if (!id.includes('commands.send_message.')) return false;
+        if (!id.includes('commands.send_message.')) {
+            return false;
+        }
         id = id.replace(`${this.adapter.namespace}.`, '');
         const cmd = id.split('.').pop() as NotificationType.Type;
         const service = id.split('.').slice(0, -3).join('.');
         let index = -1;
         let providers = [];
-        if ((index = this.providers.findIndex((a) => a.name == service)) > -1) {
+        if ((index = this.providers.findIndex(a => a.name == service)) > -1) {
             providers.push(this.providers[index]);
         } else {
             providers = this.providers;
@@ -966,9 +1073,9 @@ export class ProviderController extends BaseClass {
 
     async finishInit(): Promise<void> {
         for (const p of [...this.providers, this]) {
-            const channel =
-                (p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`) +
-                '.commands';
+            const channel = `${
+                p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`
+            }.commands`;
             const commandChannel = `${channel}.send_message`;
 
             await this.library.writedp(
@@ -983,7 +1090,7 @@ export class ProviderController extends BaseClass {
                 definitionen.statesObjectsWarnings.allService.commands.send_message._channel,
             );
             await this.library.writedp(
-                channel + '.clearHistory',
+                `${channel}.clearHistory`,
                 false,
                 definitionen.statesObjectsWarnings.allService.commands.clearHistory,
             );
@@ -991,7 +1098,9 @@ export class ProviderController extends BaseClass {
             const states = this.library.getStates(`${commandChannel}.*`.replace('.', '\\.'));
             states[`${commandChannel}`] = undefined;
             for (const n of this.notificationServices) {
-                if (n.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1) continue;
+                if (n.options.notifications.findIndex(a => NotificationType.manual.indexOf(a) != -1) == -1) {
+                    continue;
+                }
                 if (!(p instanceof BaseProvider) || n.options.service.indexOf(p.service) != -1) {
                     const dp = `${commandChannel}.${n.name}`;
                     states[dp] = undefined;
@@ -1010,17 +1119,23 @@ export class ProviderController extends BaseClass {
                     this.log.debug(`Remove state ${dp}`);
                 }
             }
-            await this.adapter.subscribeStatesAsync(channel + '.*');
+            await this.adapter.subscribeStatesAsync(`${channel}.*`);
         }
     }
 
     async clearHistory(id: string): Promise<boolean> {
-        if (!id.endsWith('.clearHistory')) return false;
+        if (!id.endsWith('.clearHistory')) {
+            return false;
+        }
         let targets: any[] = [];
-        this.providers.forEach((a) => {
-            if (id.includes(a.name)) targets.push(a);
+        this.providers.forEach(a => {
+            if (id.includes(a.name)) {
+                targets.push(a);
+            }
         });
-        if (targets.length == 0) targets = [...this.providers, this];
+        if (targets.length == 0) {
+            targets = [...this.providers, this];
+        }
         let result = false;
         for (const a in targets) {
             try {
@@ -1031,21 +1146,26 @@ export class ProviderController extends BaseClass {
                 this.log.error(error);
             }
         }
-        if (result) await this.library.writedp(id.replace(`${this.adapter.namespace}.`, ''), false);
+        if (result) {
+            await this.library.writedp(id.replace(`${this.adapter.namespace}.`, ''), false);
+        }
         return result;
     }
 
     setAllowedDirs(allowedDirs: any): void {
         const dirs = [];
         for (const a in allowedDirs) {
-            if (!allowedDirs[a].dpWarning)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9\-_]+\\.warning`);
-            if (!allowedDirs[a].dpAlerts)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9\-_]+\\.alerts`);
+            if (!allowedDirs[a].dpWarning) {
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.warning`);
+            }
+            if (!allowedDirs[a].dpAlerts) {
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.alerts`);
+            }
             /*if (!allowedDirs[a].dpMessage)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9\-_]+\\.messages`);*/
-            if (!allowedDirs[a].dpFormated)
-                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9\-_]+\\.formatedKeys`);
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.messages`);*/
+            if (!allowedDirs[a].dpFormated) {
+                dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.formatedKeys`);
+            }
 
             this.library.setForbiddenDirs(dirs);
         }
@@ -1061,10 +1181,14 @@ export class ProviderController extends BaseClass {
     async setSpeakAllowed(id: string = ''): Promise<boolean> {
         if (id !== '') {
             id = id.replace(`${this.adapter.namespace}.`, '');
-            if (definitionen.actionStates[id] === undefined) return false;
+            if (definitionen.actionStates[id] === undefined) {
+                return false;
+            }
             this.log.debug(`Set speak ${id.split('.').slice(-1).join('.')} to ${this.library.readdp(id)!.val}`);
             this.library.writedp(id, this.library.readdp(id)!.val);
-            if (definitionen.actionStates[id].onlyAck) return true;
+            if (definitionen.actionStates[id].onlyAck) {
+                return true;
+            }
         }
         if (this.isSilentAuto()) {
             const profil = this.getSpeakProfil();
@@ -1078,8 +1202,12 @@ export class ProviderController extends BaseClass {
                 const now = new Date().getHours() + new Date().getMinutes() / 60;
                 const day = String(new Date().getDay());
                 for (const t of this.silentTime.profil[profil]) {
-                    if (t === null) continue;
-                    if (t.day.indexOf(day) == -1) continue;
+                    if (t === null) {
+                        continue;
+                    }
+                    if (t.day.indexOf(day) == -1) {
+                        continue;
+                    }
                     if (t.start < t.end) {
                         if (t.start <= now && t.end > now) {
                             isSpeakAllowed = false;
@@ -1102,7 +1230,9 @@ export class ProviderController extends BaseClass {
                 );
                 this.silentTime.shouldSpeakAllowed = isSpeakAllowed;
             }
-        } else this.silentTime.shouldSpeakAllowed = undefined;
+        } else {
+            this.silentTime.shouldSpeakAllowed = undefined;
+        }
         return true;
     }
     isSilentAuto(): boolean {

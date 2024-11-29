@@ -1,6 +1,6 @@
-import { MessagesClass } from '../messages';
-import * as NotificationType from './notificationService-def';
-import { ProviderClassType, messageFilterType, providerServices } from './provider-def';
+import type { MessagesClass } from '../messages';
+import type * as NotificationType from './notificationService-def';
+import type { ProviderClassType, messageFilterType, providerServices } from './provider-def';
 
 //export type Type = Required<keyof OptionsType>;
 
@@ -64,7 +64,11 @@ export type BaseType =
           name: 'alexa2';
           volumen: string;
           audio: string;
-          sounds: { warntype: string; sound: string; warntypenumber: number }[];
+          sounds: {
+              warntype: string;
+              sound: string;
+              warntypenumber: number;
+          }[];
           sounds_enabled: boolean;
       } & bBaseType)
     | ({

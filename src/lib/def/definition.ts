@@ -1,6 +1,6 @@
 import * as messagesDef from './messages-def';
-import * as notificationServiceDef from './notificationService-def';
-import * as providerDef from './provider-def';
+import type * as notificationServiceDef from './notificationService-def';
+import type * as providerDef from './provider-def';
 
 type ChangeTypeToChannelAndState<Obj> = Obj extends object
     ? {
@@ -57,14 +57,23 @@ export type statesObjectsWarningsType = {
     allService: {
         formatedkeys: customChannelType &
             ChangeTypeOfKeys<Required<messagesDef.customFormatedKeysDef>, ioBroker.StateObject>;
-        alerts: customChannelType & messagesDef.genericWarntypStatesTree & { asList: ioBroker.StateObject };
+        alerts: customChannelType &
+            messagesDef.genericWarntypStatesTree & {
+                asList: ioBroker.StateObject;
+            };
         commands: customChannelType & {
             send_message: customChannelType &
                 ChangeTypeOfKeys<Required<Record<notificationServiceDef.Type, string>>, ioBroker.StateObject>;
         } & {
             silentTime: customChannelType & Record<'autoMode' | 'isSpeakAllowed' | 'profil', ioBroker.StateObject>;
-        } & { clearHistory: ioBroker.StateObject };
-    } & { ninaService?: customChannelType | undefined } & { metroService?: customChannelType | undefined };
+        } & {
+            clearHistory: ioBroker.StateObject;
+        };
+    } & {
+        ninaService?: customChannelType | undefined;
+    } & {
+        metroService?: customChannelType | undefined;
+    };
 };
 
 export const genericStateObjects: {
@@ -1235,18 +1244,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                     read: true,
                     write: false,
                     states: {
-                        '0': 'n_a',
-                        '1': 'unbekannt',
-                        '2': 'Sturm',
-                        '3': 'Schneefall',
-                        '4': 'Starkregen',
-                        '5': 'Extremfrost',
-                        '6': 'Waldbrandgefahr',
-                        '7': 'Gewitter',
-                        '8': 'Glätte',
-                        '9': 'Hitze',
-                        '10': 'Glatteisregen',
-                        '11': 'Bodenfrost',
+                        0: 'n_a',
+                        1: 'unbekannt',
+                        2: 'Sturm',
+                        3: 'Schneefall',
+                        4: 'Starkregen',
+                        5: 'Extremfrost',
+                        6: 'Waldbrandgefahr',
+                        7: 'Gewitter',
+                        8: 'Glätte',
+                        9: 'Hitze',
+                        10: 'Glatteisregen',
+                        11: 'Bodenfrost',
                     },
                 },
                 native: {},
@@ -2299,7 +2308,11 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
 };
 
 export const actionStates: {
-    [dp: string]: { def: ioBroker.StateObject; default: boolean | number | string; onlyAck: boolean };
+    [dp: string]: {
+        def: ioBroker.StateObject;
+        default: boolean | number | string;
+        onlyAck: boolean;
+    };
 } = {
     'commands.silentTime.autoMode': {
         def: statesObjectsWarnings.allService.commands.silentTime.autoMode,

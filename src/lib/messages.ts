@@ -1,11 +1,11 @@
-import WeatherWarnings from '../main';
+import type WeatherWarnings from '../main';
 import { statesObjectsWarnings } from './def/definition';
 import * as MessageType from './def/messages-def';
-import * as NotificationType from './def/notificationService-def';
-import { messageFilterType } from './def/provider-def';
+import type * as NotificationType from './def/notificationService-def';
+import type { messageFilterType } from './def/provider-def';
 import * as library from './library';
-import * as Provider from './def/provider-def';
-import { NotificationClass } from './notification';
+import type * as Provider from './def/provider-def';
+import type { NotificationClass } from './notification';
 import { defaultData } from './test-warnings';
 
 type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
@@ -688,7 +688,7 @@ export class MessagesClass extends library.BaseClass {
                 }
                 break;
             default: {
-                const json = this.formatedKeyCommand['default'];
+                const json = this.formatedKeyCommand.default;
                 for (const k in json) {
                     const key = k as keyof MessageType.customFormatedKeysDef;
                     const data = json[key];
@@ -713,8 +713,7 @@ export class MessagesClass extends library.BaseClass {
                             this.rawWarning.text = this.library.getTranslation('NoWarning');
                         }
                         break;
-                    default: {
-                    }
+                    default:
                 }
                 if (this.providerParent) {
                     const json = this.formatedKeyCommand[this.providerParent.service];
@@ -801,11 +800,11 @@ export class MessagesClass extends library.BaseClass {
             10, 7, 2, 4, 3, 8, 9, 5, 6, 11, 12, 1,
         ];
         if (this.provider) {
-            for (const t in sortedWarntypes) {
-                const o = MessageType.genericWarntyp[sortedWarntypes[t]];
+            for (const wt of sortedWarntypes) {
+                const o = MessageType.genericWarntyp[wt];
                 const s = this.provider.service;
                 if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
-                    this.genericType = sortedWarntypes[t];
+                    this.genericType = wt;
                     break;
                 }
             }
@@ -813,22 +812,32 @@ export class MessagesClass extends library.BaseClass {
 
         return await this.updateFormatedData();
     }
-    /** return true not filter message */
+    /**
+     * return true not filter message
+     *
+     * @param filter
+     */
     filter(filter: messageFilterType): boolean {
-        if (filter.level && filter.level > this.level) return false;
-        if (this.provider && MessageType.filterWarntype(this.provider.service, filter.type, this.type)) return false;
+        if (filter.level && filter.level > this.level) {
+            return false;
+        }
+        if (this.provider && MessageType.filterWarntype(this.provider.service, filter.type, this.type)) {
+            return false;
+        }
         return true;
     }
 
     async getMessage(templateKey: string, pushService: NotificationClass): Promise<NotificationType.MessageType> {
-        let msg: string = '';
+        let msg = '';
         const templates = this.adapter.config.templateTable;
-        const tempid = templates.findIndex((a) => a.templateKey == templateKey);
+        const tempid = templates.findIndex(a => a.templateKey == templateKey);
 
         if (this.cache.ts < Date.now() - 60000) {
             await this.updateFormated();
         }
-        if (this.cache.messages[templateKey as string] !== undefined) return this.cache.messages[templateKey as string];
+        if (this.cache.messages[templateKey] !== undefined) {
+            return this.cache.messages[templateKey];
+        }
 
         if (this.formatedData) {
             msg = await this.getTemplates(tempid);
@@ -845,20 +854,26 @@ export class MessagesClass extends library.BaseClass {
     private async getTemplates(tempid: number): Promise<string> {
         let msg = '';
         const templates = this.adapter.config.templateTable;
-        if (!this.formatedData) return msg;
+        if (!this.formatedData) {
+            return msg;
+        }
         // catch endless cylce
         let count = 0;
         while (count++ < 100) {
-            if (tempid == -1) break;
+            if (tempid == -1) {
+                break;
+            }
             let rerun = false;
             const template = (msg === '' ? templates[tempid].template : msg).replaceAll('iconbase64', 'htmlicon');
-            if (!template) break;
+            if (!template) {
+                break;
+            }
             const temp = template.split(/(?<!\\)\${/g);
             msg = temp[0];
             for (let b = 1; temp.length > b; b++) {
                 const t = temp[b].split(/(?<!\\)}/g);
                 const key = t[0] as keyof MessageType.customFormatedKeysDef;
-                const configTemplate = this.adapter.config.templateTable.filter((a) => a.templateKey == key);
+                const configTemplate = this.adapter.config.templateTable.filter(a => a.templateKey == key);
                 /** [a,b,c]templatekey */
                 if (key[0] == '[') {
                     const arraykey = key.split(']');
@@ -892,7 +907,9 @@ export class MessagesClass extends library.BaseClass {
                     const arraykey = key.split(')');
                     arraykey[0] = arraykey[0].slice(1);
                     for (const a of ['<', '>', '=', '!=']) {
-                        if (arraykey[0].indexOf(a) == -1) continue;
+                        if (arraykey[0].indexOf(a) == -1) {
+                            continue;
+                        }
                         const funcarray = arraykey[0].split(a);
                         const n = this.formatedData[funcarray[1].trim() as keyof MessageType.customFormatedKeysDef];
                         if (n !== undefined) {
@@ -921,9 +938,14 @@ export class MessagesClass extends library.BaseClass {
                             }
                             let temp = '';
                             if (arraykey[1].indexOf('#') != -1) {
-                                if (result) temp = arraykey[1].split('#')[0];
-                                else temp = arraykey[1].split('#')[1] !== undefined ? arraykey[1].split('#')[1] : '';
-                            } else if (result) temp = arraykey[1];
+                                if (result) {
+                                    temp = arraykey[1].split('#')[0];
+                                } else {
+                                    temp = arraykey[1].split('#')[1] !== undefined ? arraykey[1].split('#')[1] : '';
+                                }
+                            } else if (result) {
+                                temp = arraykey[1];
+                            }
                             if (temp.indexOf('\\${') != -1) {
                                 temp = temp.replace(/\\\${/g, '${');
                                 temp = temp.replace(/\\+}/g, '}');
@@ -938,8 +960,9 @@ export class MessagesClass extends library.BaseClass {
                 } else if (configTemplate.length == 1) {
                     msg += configTemplate[0].template;
                     rerun = true;
-                } else if (key && this.formatedData[key] !== undefined) msg += this.formatedData[key];
-                else if (
+                } else if (key && this.formatedData[key] !== undefined) {
+                    msg += this.formatedData[key];
+                } else if (
                     key &&
                     this.formatedData[key.toLowerCase() as keyof MessageType.customFormatedKeysDef] !== undefined
                 ) {
@@ -952,11 +975,17 @@ export class MessagesClass extends library.BaseClass {
                                 : m.slice(1));
                     }
                     msg += m;
-                } else msg += key;
-                if (t.length > 1) msg += t[1];
+                } else {
+                    msg += key;
+                }
+                if (t.length > 1) {
+                    msg += t[1];
+                }
             }
 
-            if (!rerun) break;
+            if (!rerun) {
+                break;
+            }
         }
         return msg;
     }
@@ -974,8 +1003,8 @@ export class MessagesClass extends library.BaseClass {
                 (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0
                     ? '+'
                     : '-') +
-                ('00' + Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))).slice(-2) +
-                ('00' + Math.abs(new Date().getTimezoneOffset() % 60)).slice(-2);
+                `00${Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))}`.slice(-2) +
+                `00${Math.abs(new Date().getTimezoneOffset() % 60)}`.slice(-2);
             const status = this.newMessage
                 ? MessageType.status.new
                 : this.notDeleted && this.name != 'noMessage'
@@ -998,19 +1027,25 @@ export class MessagesClass extends library.BaseClass {
                                   cmd,
                               )) as keyof MessageType.customFormatedKeysDef)
                             : '';
-                    if (obj.cmd !== undefined)
+                    if (obj.cmd !== undefined) {
                         result = (await this.readWithTypescript(
                             result,
                             obj.cmd,
                         )) as keyof MessageType.customFormatedKeysDef;
+                    }
                     // Handling for uwzService translations in jsons with different Names - but onl 1 Key here.
                     if (typeof result == 'object') {
                         for (const a in result as object) {
-                            if (temp[key]) temp[key] += ', ';
-                            else temp[key] = '';
-                            temp[key] += result[a];
+                            if (temp[key]) {
+                                temp[key] += ', ';
+                            } else {
+                                temp[key] = '';
+                            }
+                            temp[key] += result[a] as string;
                         }
-                    } else temp[key] = result;
+                    } else {
+                        temp[key] = result;
+                    }
                 }
             }
 
@@ -1025,7 +1060,7 @@ export class MessagesClass extends library.BaseClass {
             this.formatedData.locationcustom = this.provider
                 ? this.provider.customName
                 : this.providerController.providers
-                      .map((a) => a.customName)
+                      .map(a => a.customName)
                       .filter((item, pos, arr) => arr.indexOf(item) == pos)
                       .join(', ');
             this.formatedData.provider = this.provider
@@ -1058,11 +1093,13 @@ export class MessagesClass extends library.BaseClass {
         }
         switch (cmd) {
             case 'fullday': {
-                const diff = new Date(this.starttime as number).getTime() - new Date(this.endtime as number).getTime();
-                if (diff > 86700000 || diff < 86100000 || !(new Date(this.starttime as number).getHours() <= 3))
+                const diff = new Date(this.starttime).getTime() - new Date(this.endtime).getTime();
+                if (diff > 86700000 || diff < 86100000 || !(new Date(this.starttime).getHours() <= 3)) {
                     return '';
+                }
                 data = this.starttime;
             }
+            // eslint-disable-next-line
             case 'dayoftheweek': {
                 return new Date(data as string | number | Date).toLocaleDateString(this.library.getLocalLanguage(), {
                     weekday: 'long',
@@ -1127,9 +1164,13 @@ export class MessagesClass extends library.BaseClass {
                     daytime = a as MessageType.daytimesType;
                     const opt = MessageType.daytimes[daytime];
                     if (opt.start < opt.end) {
-                        if (opt.start <= hour && opt.end > hour) break;
+                        if (opt.start <= hour && opt.end > hour) {
+                            break;
+                        }
                     } else {
-                        if (opt.start <= hour || opt.end > hour) break;
+                        if (opt.start <= hour || opt.end > hour) {
+                            break;
+                        }
                     }
                 }
                 return this.library.getTranslation(daytime);
@@ -1140,7 +1181,9 @@ export class MessagesClass extends library.BaseClass {
                 rest = Math.floor(rest);
                 for (const a in MessageType.temporalAdverbs) {
                     const o = MessageType.temporalAdverbs[a as keyof typeof MessageType.temporalAdverbs];
-                    if (o == rest) return this.library.getTranslation(a);
+                    if (o == rest) {
+                        return this.library.getTranslation(a);
+                    }
                 }
                 return new Date(data as string | number | Date).toLocaleDateString(this.library.getLocalLanguage(), {
                     weekday: 'long',
@@ -1148,15 +1191,16 @@ export class MessagesClass extends library.BaseClass {
             }
             case 'dwdcolor':
                 {
-                    if (!data) return '';
+                    if (!data) {
+                        return '';
+                    }
                     const rgb = data.split(' ');
                     if (rgb && rgb.length == 3) {
-                        return (
-                            '#' +
-                            `00${Number(rgb[0]).toString(16)}`.slice(-2) +
-                            `00${Number(rgb[1]).toString(16)}`.slice(-2) +
-                            `00${Number(rgb[2]).toString(16)}`.slice(-2)
-                        );
+                        return `#${`00${Number(rgb[0]).toString(16)}`.slice(
+                            -2,
+                        )}${`00${Number(rgb[1]).toString(16)}`.slice(
+                            -2,
+                        )}${`00${Number(rgb[2]).toString(16)}`.slice(-2)}`;
                     }
                 }
                 break;
@@ -1165,9 +1209,10 @@ export class MessagesClass extends library.BaseClass {
                     return this.adapter.providerController!.activeMessages;
                 }
                 break;
-            default:
+            default: {
                 const _exhaustiveCheck: never = cmd;
                 return _exhaustiveCheck;
+            }
         }
         return '';
     }
@@ -1197,11 +1242,12 @@ export class MessagesClass extends library.BaseClass {
                 return String(remain.getUTCMinutes());
             case 'hours':
                 return String(d * 24 + remain.getUTCHours());
-            case 'full':
-                const h = d > 0 ? ('00' + String(remain.getUTCHours())).slice(2) : String(remain.getUTCHours());
-                return `${diff < 0 ? '-' : ''}${d > 0 ? `${String(d)}:` : ''}${h}:${(
-                    '00' + String(remain.getUTCMinutes())
-                ).slice(-2)}`;
+            case 'full': {
+                const h = d > 0 ? `00${String(remain.getUTCHours())}`.slice(2) : String(remain.getUTCHours());
+                return `${diff < 0 ? '-' : ''}${d > 0 ? `${String(d)}:` : ''}${h}:${`00${String(remain.getUTCMinutes())}`.slice(
+                    -2,
+                )}`;
+            }
         }
     }
     async delete(): Promise<void> {
@@ -1216,14 +1262,14 @@ export class MessagesClass extends library.BaseClass {
         if (this.notDeleted) {
             if (this.provider) {
                 this.library.writeFromJson(
-                    `${this.provider.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
+                    `${this.provider.name}.formatedKeys.${`00${index.toString()}`.slice(-2)}`,
                     `allService.formatedkeys`,
                     statesObjectsWarnings,
                     this.formatedData,
                 );
             } else if (this.providerParent) {
                 this.library.writeFromJson(
-                    `${this.providerParent.name}.formatedKeys.${('00' + index.toString()).slice(-2)}`,
+                    `${this.providerParent.name}.formatedKeys.${`00${index.toString()}`.slice(-2)}`,
                     `allService.formatedkeys`,
                     statesObjectsWarnings,
                     this.formatedData,
@@ -1232,8 +1278,12 @@ export class MessagesClass extends library.BaseClass {
         }
     }
     addFormatedDefinition(key: keyof customformatedKJDef, arg: customFormatedKDefSub | undefined): void {
-        if (arg === undefined) return;
-        if (!this.formatedKeysJsonataDefinition) this.formatedKeysJsonataDefinition = {};
+        if (arg === undefined) {
+            return;
+        }
+        if (!this.formatedKeysJsonataDefinition) {
+            this.formatedKeysJsonataDefinition = {};
+        }
         this.formatedKeysJsonataDefinition[key] = arg;
     }
 }

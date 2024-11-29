@@ -1,4 +1,4 @@
-import * as Provider from '../provider';
+import type * as Provider from '../provider';
 export * from '../provider';
 
 /**Available provider identifier strings */
@@ -13,7 +13,9 @@ export type ProviderClassType =
     | Provider.METROProvider;
 
 type nullType = null | undefined | void;
-export type messageFilterTypeWithFilter = { filter: messageFilterType };
+export type messageFilterTypeWithFilter = {
+    filter: messageFilterType;
+};
 export type messageFilterType = {
     level?: number;
     type: number[];

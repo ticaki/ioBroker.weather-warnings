@@ -674,7 +674,7 @@ class MessagesClass extends library.BaseClass {
         }
         break;
       default: {
-        const json = this.formatedKeyCommand["default"];
+        const json = this.formatedKeyCommand.default;
         for (const k in json) {
           const key = k;
           const data2 = json[key];
@@ -699,8 +699,7 @@ class MessagesClass extends library.BaseClass {
               this.rawWarning.text = this.library.getTranslation("NoWarning");
             }
             break;
-          default: {
-          }
+          default:
         }
         if (this.providerParent) {
           const json2 = this.formatedKeyCommand[this.providerParent.service];
@@ -795,23 +794,29 @@ class MessagesClass extends library.BaseClass {
       1
     ];
     if (this.provider) {
-      for (const t in sortedWarntypes) {
-        const o = MessageType.genericWarntyp[sortedWarntypes[t]];
+      for (const wt of sortedWarntypes) {
+        const o = MessageType.genericWarntyp[wt];
         const s = this.provider.service;
         if (Array.isArray(o[s]) && o[s].indexOf(this.type) != -1) {
-          this.genericType = sortedWarntypes[t];
+          this.genericType = wt;
           break;
         }
       }
     }
     return await this.updateFormatedData();
   }
-  /** return true not filter message */
+  /**
+   * return true not filter message
+   *
+   * @param filter
+   */
   filter(filter) {
-    if (filter.level && filter.level > this.level)
+    if (filter.level && filter.level > this.level) {
       return false;
-    if (this.provider && MessageType.filterWarntype(this.provider.service, filter.type, this.type))
+    }
+    if (this.provider && MessageType.filterWarntype(this.provider.service, filter.type, this.type)) {
       return false;
+    }
     return true;
   }
   async getMessage(templateKey, pushService) {
@@ -821,8 +826,9 @@ class MessagesClass extends library.BaseClass {
     if (this.cache.ts < Date.now() - 6e4) {
       await this.updateFormated();
     }
-    if (this.cache.messages[templateKey] !== void 0)
+    if (this.cache.messages[templateKey] !== void 0) {
       return this.cache.messages[templateKey];
+    }
     if (this.formatedData) {
       msg = await this.getTemplates(tempid);
       if (tempid == -1) {
@@ -836,16 +842,19 @@ class MessagesClass extends library.BaseClass {
   async getTemplates(tempid) {
     let msg = "";
     const templates = this.adapter.config.templateTable;
-    if (!this.formatedData)
+    if (!this.formatedData) {
       return msg;
+    }
     let count = 0;
     while (count++ < 100) {
-      if (tempid == -1)
+      if (tempid == -1) {
         break;
+      }
       let rerun = false;
       const template = (msg === "" ? templates[tempid].template : msg).replaceAll("iconbase64", "htmlicon");
-      if (!template)
+      if (!template) {
         break;
+      }
       const temp = template.split(/(?<!\\)\${/g);
       msg = temp[0];
       for (let b = 1; temp.length > b; b++) {
@@ -873,8 +882,9 @@ class MessagesClass extends library.BaseClass {
           const arraykey = key.split(")");
           arraykey[0] = arraykey[0].slice(1);
           for (const a of ["<", ">", "=", "!="]) {
-            if (arraykey[0].indexOf(a) == -1)
+            if (arraykey[0].indexOf(a) == -1) {
               continue;
+            }
             const funcarray = arraykey[0].split(a);
             const n = this.formatedData[funcarray[1].trim()];
             if (n !== void 0) {
@@ -903,12 +913,14 @@ class MessagesClass extends library.BaseClass {
               }
               let temp2 = "";
               if (arraykey[1].indexOf("#") != -1) {
-                if (result)
+                if (result) {
                   temp2 = arraykey[1].split("#")[0];
-                else
+                } else {
                   temp2 = arraykey[1].split("#")[1] !== void 0 ? arraykey[1].split("#")[1] : "";
-              } else if (result)
+                }
+              } else if (result) {
                 temp2 = arraykey[1];
+              }
               if (temp2.indexOf("\\${") != -1) {
                 temp2 = temp2.replace(/\\\${/g, "${");
                 temp2 = temp2.replace(/\\+}/g, "}");
@@ -923,21 +935,24 @@ class MessagesClass extends library.BaseClass {
         } else if (configTemplate.length == 1) {
           msg += configTemplate[0].template;
           rerun = true;
-        } else if (key && this.formatedData[key] !== void 0)
+        } else if (key && this.formatedData[key] !== void 0) {
           msg += this.formatedData[key];
-        else if (key && this.formatedData[key.toLowerCase()] !== void 0) {
+        } else if (key && this.formatedData[key.toLowerCase()] !== void 0) {
           let m = this.formatedData[key.toLowerCase()];
           if (typeof m == "string" && m.length > 0) {
             m = m[0].toUpperCase() + (key[key.length - 1] == key[key.length - 1].toUpperCase() ? m.slice(1).toUpperCase() : m.slice(1));
           }
           msg += m;
-        } else
+        } else {
           msg += key;
-        if (t.length > 1)
+        }
+        if (t.length > 1) {
           msg += t[1];
+        }
       }
-      if (!rerun)
+      if (!rerun) {
         break;
+      }
     }
     return msg;
   }
@@ -949,7 +964,7 @@ class MessagesClass extends library.BaseClass {
       throw new Error(`${this.log.getName()} error(165) rawWarning null or undefined!`);
     }
     {
-      const timeOffset = (Math.floor((/* @__PURE__ */ new Date()).getTimezoneOffset() / 60) < 0 || (/* @__PURE__ */ new Date()).getTimezoneOffset() % 60 < 0 ? "+" : "-") + ("00" + Math.abs(Math.floor((/* @__PURE__ */ new Date()).getTimezoneOffset() / 60))).slice(-2) + ("00" + Math.abs((/* @__PURE__ */ new Date()).getTimezoneOffset() % 60)).slice(-2);
+      const timeOffset = (Math.floor((/* @__PURE__ */ new Date()).getTimezoneOffset() / 60) < 0 || (/* @__PURE__ */ new Date()).getTimezoneOffset() % 60 < 0 ? "+" : "-") + `00${Math.abs(Math.floor((/* @__PURE__ */ new Date()).getTimezoneOffset() / 60))}`.slice(-2) + `00${Math.abs((/* @__PURE__ */ new Date()).getTimezoneOffset() % 60)}`.slice(-2);
       const status = this.newMessage ? MessageType.status.new : this.notDeleted && this.name != "noMessage" ? MessageType.status.hold : MessageType.status.clear;
       const temp = {};
       for (const key in this.formatedKeysJsonataDefinition) {
@@ -960,21 +975,24 @@ class MessagesClass extends library.BaseClass {
             this.rawWarning,
             cmd
           ) : "";
-          if (obj.cmd !== void 0)
+          if (obj.cmd !== void 0) {
             result = await this.readWithTypescript(
               result,
               obj.cmd
             );
+          }
           if (typeof result == "object") {
             for (const a in result) {
-              if (temp[key])
+              if (temp[key]) {
                 temp[key] += ", ";
-              else
+              } else {
                 temp[key] = "";
+              }
               temp[key] += result[a];
             }
-          } else
+          } else {
             temp[key] = result;
+          }
         }
       }
       this.formatedData = {
@@ -1011,8 +1029,9 @@ class MessagesClass extends library.BaseClass {
     switch (cmd) {
       case "fullday": {
         const diff = new Date(this.starttime).getTime() - new Date(this.endtime).getTime();
-        if (diff > 867e5 || diff < 861e5 || !(new Date(this.starttime).getHours() <= 3))
+        if (diff > 867e5 || diff < 861e5 || !(new Date(this.starttime).getHours() <= 3)) {
           return "";
+        }
         data = this.starttime;
       }
       case "dayoftheweek": {
@@ -1073,11 +1092,13 @@ class MessagesClass extends library.BaseClass {
           daytime = a;
           const opt = MessageType.daytimes[daytime];
           if (opt.start < opt.end) {
-            if (opt.start <= hour && opt.end > hour)
+            if (opt.start <= hour && opt.end > hour) {
               break;
+            }
           } else {
-            if (opt.start <= hour || opt.end > hour)
+            if (opt.start <= hour || opt.end > hour) {
               break;
+            }
           }
         }
         return this.library.getTranslation(daytime);
@@ -1088,8 +1109,9 @@ class MessagesClass extends library.BaseClass {
         rest = Math.floor(rest);
         for (const a in MessageType.temporalAdverbs) {
           const o = MessageType.temporalAdverbs[a];
-          if (o == rest)
+          if (o == rest) {
             return this.library.getTranslation(a);
+          }
         }
         return new Date(data).toLocaleDateString(this.library.getLocalLanguage(), {
           weekday: "long"
@@ -1097,11 +1119,16 @@ class MessagesClass extends library.BaseClass {
       }
       case "dwdcolor":
         {
-          if (!data)
+          if (!data) {
             return "";
+          }
           const rgb = data.split(" ");
           if (rgb && rgb.length == 3) {
-            return "#" + `00${Number(rgb[0]).toString(16)}`.slice(-2) + `00${Number(rgb[1]).toString(16)}`.slice(-2) + `00${Number(rgb[2]).toString(16)}`.slice(-2);
+            return `#${`00${Number(rgb[0]).toString(16)}`.slice(
+              -2
+            )}${`00${Number(rgb[1]).toString(16)}`.slice(
+              -2
+            )}${`00${Number(rgb[2]).toString(16)}`.slice(-2)}`;
           }
         }
         break;
@@ -1110,9 +1137,10 @@ class MessagesClass extends library.BaseClass {
           return this.adapter.providerController.activeMessages;
         }
         break;
-      default:
+      default: {
         const _exhaustiveCheck = cmd;
         return _exhaustiveCheck;
+      }
     }
     return "";
   }
@@ -1138,9 +1166,12 @@ class MessagesClass extends library.BaseClass {
         return String(remain.getUTCMinutes());
       case "hours":
         return String(d * 24 + remain.getUTCHours());
-      case "full":
-        const h = d > 0 ? ("00" + String(remain.getUTCHours())).slice(2) : String(remain.getUTCHours());
-        return `${diff < 0 ? "-" : ""}${d > 0 ? `${String(d)}:` : ""}${h}:${("00" + String(remain.getUTCMinutes())).slice(-2)}`;
+      case "full": {
+        const h = d > 0 ? `00${String(remain.getUTCHours())}`.slice(2) : String(remain.getUTCHours());
+        return `${diff < 0 ? "-" : ""}${d > 0 ? `${String(d)}:` : ""}${h}:${`00${String(remain.getUTCMinutes())}`.slice(
+          -2
+        )}`;
+      }
     }
   }
   async delete() {
@@ -1155,14 +1186,14 @@ class MessagesClass extends library.BaseClass {
     if (this.notDeleted) {
       if (this.provider) {
         this.library.writeFromJson(
-          `${this.provider.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
+          `${this.provider.name}.formatedKeys.${`00${index.toString()}`.slice(-2)}`,
           `allService.formatedkeys`,
           import_definition.statesObjectsWarnings,
           this.formatedData
         );
       } else if (this.providerParent) {
         this.library.writeFromJson(
-          `${this.providerParent.name}.formatedKeys.${("00" + index.toString()).slice(-2)}`,
+          `${this.providerParent.name}.formatedKeys.${`00${index.toString()}`.slice(-2)}`,
           `allService.formatedkeys`,
           import_definition.statesObjectsWarnings,
           this.formatedData
@@ -1171,10 +1202,12 @@ class MessagesClass extends library.BaseClass {
     }
   }
   addFormatedDefinition(key, arg) {
-    if (arg === void 0)
+    if (arg === void 0) {
       return;
-    if (!this.formatedKeysJsonataDefinition)
+    }
+    if (!this.formatedKeysJsonataDefinition) {
       this.formatedKeysJsonataDefinition = {};
+    }
     this.formatedKeysJsonataDefinition[key] = arg;
   }
 }

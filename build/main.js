@@ -58,8 +58,9 @@ class WeatherWarnings extends utils.Adapter {
       throw new Error("Provider controller doesnt exists.");
     }
     this.subscribeForeignObjects("system.config");
-    if (!Array.isArray(this.config.allowedDirs))
+    if (!Array.isArray(this.config.allowedDirs)) {
       this.config.allowedDirs = [];
+    }
     let i = 0;
     let change = false;
     let allowedDirsConfig = {};
@@ -116,9 +117,10 @@ class WeatherWarnings extends utils.Adapter {
         const keys = Object.keys(messagesDef.customFormatedTokensJson);
         keys.sort();
         for (const a in keys) {
-          reply += "${" + keys[a] + "}: " + (this.library.getTranslation(
+          reply += `\${${keys[a]}}: ${this.library.getTranslation(
             import_definition.statesObjectsWarnings.allService.formatedkeys[keys[a]].common.name
-          ) + "\n");
+          )}
+`;
         }
         reply = reply.slice(0, -1);
         if (obj.native.templateHelp && obj.native.templateHelp.valueOf() != reply.valueOf()) {
@@ -154,8 +156,9 @@ class WeatherWarnings extends utils.Adapter {
       }
       {
         let sounds = obj.native.alexa2_sounds || [];
-        if (!sounds || !Array.isArray(sounds))
+        if (!sounds || !Array.isArray(sounds)) {
           sounds = [];
+        }
         for (const w in messagesDef.genericWarntyp) {
           const index2 = sounds.findIndex(
             (a) => a.warntypenumber == Number(w)
@@ -226,38 +229,45 @@ class WeatherWarnings extends utils.Adapter {
     this.startDelay = this.setTimeout(
       async function(that) {
         const self = that;
-        if (!self)
+        if (!self) {
           return;
-        if (!self.providerController)
+        }
+        if (!self.providerController) {
           return;
-        if (self.providerController.unload)
+        }
+        if (self.providerController.unload) {
           return;
+        }
         await self.providerController.init();
         self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 6e4} minutes`);
         const notificationServiceOpt = {};
         for (const a in NotificationType.Array) {
           const notificationService = NotificationType.Array[a];
-          if (self.config[notificationService + "_Enabled"]) {
+          if (self.config[`${notificationService}_Enabled`]) {
             const service = [];
-            if (self.config[notificationService + "_DwdEnabled"])
+            if (self.config[`${notificationService}_DwdEnabled`]) {
               service.push("dwdService");
-            if (self.config[notificationService + "_UwzEnabled"])
+            }
+            if (self.config[`${notificationService}_UwzEnabled`]) {
               service.push("uwzService");
-            if (self.config[notificationService + "_ZamgEnabled"])
+            }
+            if (self.config[`${notificationService}_ZamgEnabled`]) {
               service.push("zamgService");
+            }
             const template = {
-              new: self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "none",
-              remove: self.config[notificationService + "_MessageRemove"],
-              removeAll: self.config[notificationService + "_MessageAllRemove"],
-              all: self.config[notificationService + "_MessageAll"] !== void 0 ? self.config[notificationService + "_MessageAll"] : self.config[notificationService + "_MessageNew"] !== void 0 ? self.config[notificationService + "_MessageNew"] : "none",
-              manualAll: self.config[notificationService + "_manualAll"] !== void 0 ? self.config[notificationService + "_manualAll"] : "none",
-              removeManualAll: self.config[notificationService + "_removeManualAll"] !== void 0 ? self.config[notificationService + "_removeManualAll"] : "none",
-              title: self.config[notificationService + "_Title"] !== void 0 ? self.config[notificationService + "_Title"] : "none"
+              new: self.config[`${notificationService}_MessageNew`] !== void 0 ? self.config[`${notificationService}_MessageNew`] : "none",
+              remove: self.config[`${notificationService}_MessageRemove`],
+              removeAll: self.config[`${notificationService}_MessageAllRemove`],
+              all: self.config[`${notificationService}_MessageAll`] !== void 0 ? self.config[`${notificationService}_MessageAll`] : self.config[`${notificationService}_MessageNew`] !== void 0 ? self.config[`${notificationService}_MessageNew`] : "none",
+              manualAll: self.config[`${notificationService}_manualAll`] !== void 0 ? self.config[`${notificationService}_manualAll`] : "none",
+              removeManualAll: self.config[`${notificationService}_removeManualAll`] !== void 0 ? self.config[`${notificationService}_removeManualAll`] : "none",
+              title: self.config[`${notificationService}_Title`] !== void 0 ? self.config[`${notificationService}_Title`] : "none"
             };
             for (const a2 in template) {
               const b = a2;
-              if (template[b] == void 0)
+              if (template[b] == void 0) {
                 continue;
+              }
               template[b] = template[b] ? template[b] : "none";
             }
             notificationServiceOpt[notificationService] = {
@@ -265,15 +275,15 @@ class WeatherWarnings extends utils.Adapter {
               service,
               filter: {
                 auto: {
-                  level: self.config[notificationService + "_LevelFilter"] || -1,
-                  type: (self.config[notificationService + "_TypeFilter"] || []).map((a2) => String(a2))
+                  level: self.config[`${notificationService}_LevelFilter`] || -1,
+                  type: (self.config[`${notificationService}_TypeFilter`] || []).map((a2) => String(a2))
                 },
                 manual: {
-                  level: self.config[notificationService + "_ManualLevelFilter"] ? self.config[notificationService + "_ManualLevelFilter"] : -1,
-                  type: (self.config[notificationService + "_ManualTypeFilter"] ? self.config[notificationService + "_ManualTypeFilter"] : []).map((a2) => String(a2))
+                  level: self.config[`${notificationService}_ManualLevelFilter`] ? self.config[`${notificationService}_ManualLevelFilter`] : -1,
+                  type: (self.config[`${notificationService}_ManualTypeFilter`] ? self.config[`${notificationService}_ManualTypeFilter`] : []).map((a2) => String(a2))
                 }
               },
-              adapter: self.config[notificationService + "_Adapter"],
+              adapter: self.config[`${notificationService}_Adapter`],
               name: notificationService,
               actions: template,
               useadapter: true
@@ -292,8 +302,9 @@ class WeatherWarnings extends utils.Adapter {
           notificationServiceOpt.telegram.parse_mode = self.config.telegram_parse_mode || "none";
         }
         if (self.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != void 0) {
-          if (self.config.whatsapp_Phonenumber)
+          if (self.config.whatsapp_Phonenumber) {
             notificationServiceOpt.whatsapp.phonenumber = self.config.whatsapp_Phonenumber;
+          }
         }
         if (self.config.pushover_Enabled && notificationServiceOpt.pushover != void 0) {
           notificationServiceOpt.pushover.sound = self.config.pushover_Sound || "none";
@@ -401,8 +412,9 @@ class WeatherWarnings extends utils.Adapter {
                   "uwzService",
                   self
                 );
-                if (self.providerController.unload)
+                if (self.providerController.unload) {
                   return;
+                }
                 if (tempWarncell) {
                   tempTable[a].realWarncell = tempWarncell;
                 }
@@ -427,10 +439,11 @@ class WeatherWarnings extends utils.Adapter {
                 language: self.config.uwzLanguage,
                 customName: id.uwzCityname
               });
-            } else
+            } else {
               self.log.warn(
                 `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${tempTable[a].realWarncell}`
               );
+            }
           }
         }
         if (JSON.stringify(tempTable) != JSON.stringify(self.config.uwzwarncellTable)) {
@@ -465,7 +478,7 @@ class WeatherWarnings extends utils.Adapter {
         await self.library.cleanUpTree(holdStates2, reCheckStates, 5);
         await self.providerController.finishInit();
         self.providerController.updateEndless(self.providerController);
-        self.providerController.updateAlertEndless(self.providerController);
+        await self.providerController.updateAlertEndless(self.providerController);
       },
       2e3,
       this
@@ -473,13 +486,17 @@ class WeatherWarnings extends utils.Adapter {
   }
   /**
    * Is called when adapter shuts down - callback has to be called under any circumstances!
+   *
+   * @param callback
    */
   onUnload(callback) {
     try {
-      if (this.startDelay)
+      if (this.startDelay) {
         this.clearTimeout(this.startDelay);
-      if (this.providerController)
+      }
+      if (this.providerController) {
         this.providerController.delete();
+      }
       callback();
     } catch {
       callback();
@@ -487,13 +504,17 @@ class WeatherWarnings extends utils.Adapter {
   }
   /**
    * Respond to language changes.
+   *
+   * @param id
+   * @param obj
    */
   async onObjectChange(id, obj) {
     if (obj) {
       if (id == "system.config") {
         if (await this.library.setLanguage(obj.common.language)) {
-          if (this.providerController)
+          if (this.providerController) {
             await this.providerController.updateMesssages();
+          }
         }
       }
     }
@@ -501,23 +522,33 @@ class WeatherWarnings extends utils.Adapter {
   /**
    * Is called if a subscribed state changes
    * We need this later, dont remove
+   *
+   * @param id
+   * @param state
    */
   async onStateChange(id, state) {
-    if (!state)
+    if (!state) {
       return;
-    if (state.ack)
+    }
+    if (state.ack) {
       return;
+    }
     this.library.setdb(id.replace(`${this.namespace}.`, ""), "state", state.val, void 0, state.ack, state.ts);
-    if (await this.providerController.onStatePush(id))
+    if (await this.providerController.onStatePush(id)) {
       return;
-    if (await this.providerController.clearHistory(id))
+    }
+    if (await this.providerController.clearHistory(id)) {
       return;
-    if (await this.providerController.setSpeakAllowed(id))
+    }
+    if (await this.providerController.setSpeakAllowed(id)) {
       return;
+    }
   }
   /**
    * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
    * Using this method requires "common.messagebox" property to be set to true in io-package.json
+   *
+   * @param obj
    */
   async onMessage(obj) {
     if (typeof obj === "object" && obj.message) {
@@ -568,7 +599,7 @@ class WeatherWarnings extends utils.Adapter {
           {
             const data = [];
             if (obj.message.adapter != "none") {
-              const objs = await this.getForeignObjectsAsync(obj.message.adapter + ".Echo-Devices.*");
+              const objs = await this.getForeignObjectsAsync(`${obj.message.adapter}.Echo-Devices.*`);
               for (const a in objs) {
                 if (a.endsWith(".Commands.speak")) {
                   const channel = await this.getForeignObjectAsync(
@@ -667,8 +698,8 @@ class WeatherWarnings extends utils.Adapter {
                   endkey: `system.adapter.${obj.message.service}.\u9999`
                 });
                 if (objs && objs.rows) {
-                  for (const a in objs.rows) {
-                    const instance = Number(objs.rows[a].id.split(".")[3]);
+                  for (const row of objs.rows) {
+                    const instance = Number(row.id.split(".")[3]);
                     if (instance !== void 0) {
                       temp[instance] = true;
                     }
@@ -693,14 +724,24 @@ class WeatherWarnings extends utils.Adapter {
             const reply = [];
             const text = messagesDef.textLevels.textGeneric;
             for (const a in text) {
-              if (Number(a) == 5)
+              switch (a) {
+                case "0":
+                case "1":
+                case "2":
+                case "3":
+                case "4": {
+                  reply.push({
+                    label: this.library.getTranslation(
+                      messagesDef.textLevels.textGeneric[a]
+                    ),
+                    value: Number(a)
+                  });
+                  break;
+                }
+              }
+              if (Number(a) == 5) {
                 break;
-              reply.push({
-                label: this.library.getTranslation(
-                  messagesDef.textLevels.textGeneric[a]
-                ),
-                value: Number(a)
-              });
+              }
             }
             this.sendTo(obj.from, obj.command, reply, obj.callback);
           }
@@ -749,8 +790,9 @@ class WeatherWarnings extends utils.Adapter {
             "info.connection"
           ].forEach((a) => {
             state = this.library.readdp(a);
-            if (state)
+            if (state) {
               connected = connected || !!state.val;
+            }
           });
           this.sendTo(obj.from, obj.command, connected ? "true" : "false", obj.callback);
           break;
@@ -767,14 +809,16 @@ class WeatherWarnings extends utils.Adapter {
             "info.connection"
           ].forEach((a) => {
             state = this.library.readdp(a);
-            if (state)
+            if (state) {
               connected = connected || !!state.val;
+            }
           });
           state = this.library.readdp("provider.activeWarnings");
-          if (state)
+          if (state) {
             connected = !!connected || !(state.val && Number(state.val) >= 4);
-          else
+          } else {
             connected = true;
+          }
           this.sendTo(
             obj.from,
             obj.command,

@@ -79,7 +79,7 @@ class BaseProvider extends import_library.BaseClass {
       definitionen.statesObjectsWarnings[this.service]._channel
     );
     temp.common.name = name.toUpperCase();
-    this.library.writedp("provider." + name, void 0, temp);
+    this.library.writedp(`provider.${name}`, void 0, temp);
     this.init();
   }
   async init() {
@@ -123,18 +123,19 @@ class BaseProvider extends import_library.BaseClass {
   /**
    * @param url if '' url from PROVIDER_OPTIONS is taken
    * @param keys [string] values to replace - placeholder #  # #+  +# #++  ++# and so on
+   * @param service
    */
   static getUrl(url = "", keys, service) {
     let result = "";
     if (!url) {
-      result = definitionen.PROVIDER_OPTIONS[service]["url"];
+      result = definitionen.PROVIDER_OPTIONS[service].url;
     } else {
       result = url;
     }
     let placeholder = "#  #";
     for (const k in keys) {
       result = result.replace(placeholder, keys[k]);
-      placeholder = placeholder.slice(0, 1) + "+" + placeholder.slice(1, -1) + "+" + placeholder.slice(-1);
+      placeholder = `${placeholder.slice(0, 1)}+${placeholder.slice(1, -1)}+${placeholder.slice(-1)}`;
     }
     return result;
   }
@@ -149,8 +150,9 @@ class BaseProvider extends import_library.BaseClass {
   async getAlertsAndWrite(allReplys = void 0) {
     const reply = { asList: "" };
     for (const t in messagesDef.genericWarntyp) {
-      if (t == "0")
+      if (t == "0") {
         continue;
+      }
       reply[messagesDef.genericWarntyp[Number(t)].id] = {
         level: -1,
         start: 1,
@@ -160,23 +162,29 @@ class BaseProvider extends import_library.BaseClass {
         type: -1
       };
     }
-    if (!reply)
+    if (!reply) {
       throw new Error("error(234) reply not definied");
-    if (allReplys === void 0)
+    }
+    if (allReplys === void 0) {
       allReplys = JSON.parse(JSON.stringify(reply));
+    }
     [reply, allReplys].forEach((reply2) => {
       let warntypeArray = [];
       for (const a in this.messages) {
         const m = this.messages[a];
-        if (!m)
+        if (!m) {
           continue;
+        }
         const name = messagesDef.genericWarntyp[m.genericType].id;
-        if (name == "none")
+        if (name == "none") {
           continue;
-        if (reply2[name] === void 0)
+        }
+        if (reply2[name] === void 0) {
           continue;
-        if (m.endtime < Date.now())
+        }
+        if (m.endtime < Date.now()) {
           continue;
+        }
         if (m.starttime <= Date.now() && reply2[name].level < m.level || m.starttime > Date.now() && (reply2[name].start === 1 || reply2[name].start > m.starttime)) {
           warntypeArray.push(this.library.getTranslation(messagesDef.genericWarntyp[m.genericType].name));
           reply2[name] = {
@@ -187,16 +195,18 @@ class BaseProvider extends import_library.BaseClass {
             active: m.starttime <= Date.now() && m.endtime >= Date.now(),
             type: m.genericType
           };
-          if (reply2 === allReplys)
+          if (reply2 === allReplys) {
             reply2[name].provider = m.formatedData ? m.formatedData.provider : "";
+          }
         }
       }
-      if (reply2["asList"] !== void 0)
-        warntypeArray = warntypeArray.concat(reply2["asList"].split(", "));
-      reply2["asList"] = warntypeArray.filter((item, pos, arr) => item && arr.indexOf(item) == pos).join(", ");
+      if (reply2.asList !== void 0) {
+        warntypeArray = warntypeArray.concat(reply2.asList.split(", "));
+      }
+      reply2.asList = warntypeArray.filter((item, pos, arr) => item && arr.indexOf(item) == pos).join(", ");
     });
     await this.library.writeFromJson(
-      this.name + ".alerts",
+      `${this.name}.alerts`,
       "allService.alerts",
       definitionen.statesObjectsWarnings,
       reply,
@@ -208,7 +218,6 @@ class BaseProvider extends import_library.BaseClass {
   async getDataFromProvider() {
     if (!this.url || !this.warncellId) {
       this.log.debug(
-        // eslint-disable-next-line prettier/prettier
         `Warn (31) this.url: ${this.url} this.warncellid: ${this.warncellId} this.service: ${this.getService()}`
       );
     }
@@ -225,42 +234,44 @@ class BaseProvider extends import_library.BaseClass {
         return this.library.cloneGenericObject(
           (0, import_test_warnings.getTestData)(this.service, this.adapter)
         );
-      } else {
-        const data = await import_axios.default.get(this.url);
-        if (this.unload)
-          return null;
-        if (data.status == 200) {
-          await this.setConnected(true);
-          const result = typeof data.data == "object" ? data.data : JSON.parse(data.data);
-          this.library.writedp(
-            `${this.name}.warning.warning_json`,
-            JSON.stringify(result),
-            definitionen.genericStateObjects.warnings_json
-          );
-          if (this.adapter.config.useJsonHistory) {
-            const dp = `${this.name}.warning.jsonHistory`;
-            const state = this.library.readdp(dp);
-            let history = [];
-            if (state && state.val && typeof state.val == "string")
-              history = JSON.parse(state.val);
-            history.unshift(result);
-            this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
-          }
-          this.library.writedp(
-            `${this.name}.lastUpdate`,
-            Date.now(),
-            definitionen.genericStateObjects.lastUpdate
-          );
-          return result;
-        } else {
-          this.log.warn("Warn(23) " + data.statusText);
-        }
       }
+      const data = await import_axios.default.get(this.url);
+      if (this.unload) {
+        return null;
+      }
+      if (data.status == 200) {
+        await this.setConnected(true);
+        const result = typeof data.data == "object" ? data.data : JSON.parse(data.data);
+        this.library.writedp(
+          `${this.name}.warning.warning_json`,
+          JSON.stringify(result),
+          definitionen.genericStateObjects.warnings_json
+        );
+        if (this.adapter.config.useJsonHistory) {
+          const dp = `${this.name}.warning.jsonHistory`;
+          const state = this.library.readdp(dp);
+          let history = [];
+          if (state && state.val && typeof state.val == "string") {
+            history = JSON.parse(state.val);
+          }
+          history.unshift(result);
+          this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
+        }
+        this.library.writedp(
+          `${this.name}.lastUpdate`,
+          Date.now(),
+          definitionen.genericStateObjects.lastUpdate
+        );
+        return result;
+      }
+      this.log.warn(`Warn(23) ${data.statusText}`);
     } catch (error) {
       if (import_axios.default.isAxiosError(error)) {
         this.log.warn(`Warn(21) axios error for ${this.getService()} url: ${this.url}`);
       } else {
-        this.log.error(`Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`);
+        this.log.error(
+          `Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`
+        );
       }
     }
     await this.setConnected(false);
@@ -273,16 +284,20 @@ class BaseProvider extends import_library.BaseClass {
       return a.starttime - b.starttime;
     });
     this.messages = this.messages.filter((item) => {
-      if (item.notDeleted || item.newMessage)
+      if (item.notDeleted || item.newMessage) {
         return true;
-      if (item.endtime > Date.now())
+      }
+      if (item.endtime > Date.now()) {
         return true;
+      }
       for (const innerItem of this.messages) {
-        if (innerItem == item || innerItem.provider !== item.provider || innerItem.type !== item.type)
+        if (innerItem == item || innerItem.provider !== item.provider || innerItem.type !== item.type) {
           continue;
+        }
         const diff = Math.abs(innerItem.starttime - item.endtime);
-        if (diff <= this.providerController.refreshTime || innerItem.starttime <= item.endtime)
+        if (diff <= this.providerController.refreshTime || innerItem.starttime <= item.endtime) {
           return false;
+        }
       }
       return true;
     });
@@ -303,11 +318,12 @@ class BaseProvider extends import_library.BaseClass {
     );
   }
   async updateData(data, counter) {
-    if (!data)
+    if (!data) {
       return;
+    }
     this.library.writedp(`${this.name}.warning`, void 0, definitionen.genericStateObjects.warningDevice);
     await this.library.writeFromJson(
-      `${this.name}.warning.${("00" + counter.toString()).slice(-2)}`,
+      `${this.name}.warning.${`00${counter.toString()}`.slice(-2)}`,
       `${this.service}.raw`,
       definitionen.statesObjectsWarnings,
       data
@@ -345,8 +361,9 @@ class DWDProvider extends BaseProvider {
   }
   async updateData() {
     const result = await this.getDataFromProvider();
-    if (!result)
+    if (!result) {
       return;
+    }
     this.log.debug(`Got ${result.features.length} warnings from server`);
     result.features.sort((a, b) => {
       return new Date(a.properties.ONSET).getTime() - new Date(b.properties.ONSET).getTime();
@@ -354,10 +371,12 @@ class DWDProvider extends BaseProvider {
     this.messages.forEach((a) => a.notDeleted = false);
     for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.features.length; a++) {
       const w = result.features[a];
-      if (w.properties.STATUS == "Test")
+      if (w.properties.STATUS == "Test") {
         continue;
-      if (this.filter.hours > 0 && new Date(w.properties.ONSET).getTime() > Date.now() + this.filter.hours * 36e5)
+      }
+      if (this.filter.hours > 0 && new Date(w.properties.ONSET).getTime() > Date.now() + this.filter.hours * 36e5) {
         continue;
+      }
       await super.updateData(w.properties, a);
       const index = this.messages.findIndex((m) => m.rawWarning.IDENTIFIER == w.properties.IDENTIFIER);
       if (index == -1) {
@@ -369,30 +388,37 @@ class DWDProvider extends BaseProvider {
           this.providerController
         );
         await nmessage.updateFormated();
-        if (nmessage && nmessage.filter(this.filter))
+        if (nmessage && nmessage.filter(this.filter)) {
           this.messages.push(nmessage);
+        }
       } else {
         await this.messages[index].updateData(w.properties);
       }
     }
     for (let n = 0; n < this.messages.length; n++) {
       const newmsg = this.messages[n];
-      if (!newmsg.newMessage)
+      if (!newmsg.newMessage) {
         continue;
+      }
       for (let o = 0; o < this.messages.length; o++) {
         const oldmsg = this.messages[o];
-        if (oldmsg.newMessage)
+        if (oldmsg.newMessage) {
           continue;
-        if (oldmsg.formatedData === void 0 || newmsg.formatedData === void 0)
+        }
+        if (oldmsg.formatedData === void 0 || newmsg.formatedData === void 0) {
           continue;
-        if (oldmsg.rawWarning.EC_II != newmsg.rawWarning.EC_II)
+        }
+        if (oldmsg.rawWarning.EC_II != newmsg.rawWarning.EC_II) {
           continue;
-        if (oldmsg.starttime > newmsg.endtime || newmsg.starttime > oldmsg.endtime)
+        }
+        if (oldmsg.starttime > newmsg.endtime || newmsg.starttime > oldmsg.endtime) {
           continue;
+        }
         newmsg.silentUpdate();
         this.log.debug("Remove a old warning.(Silent Update)");
-        if (o <= n)
+        if (o <= n) {
           n--;
+        }
         this.messages.splice(o--, 1);
         break;
       }
@@ -408,23 +434,26 @@ class ZAMGProvider extends BaseProvider {
   }
   async updateData() {
     const result = await this.getDataFromProvider();
-    if (!result)
+    if (!result) {
       return;
+    }
     if (!result.properties || !result.properties.warnings) {
       this.log.debug(`Got 0 warnings from server`);
       return;
-    } else
-      this.log.debug(`Got ${result.properties.warnings.length} warnings from server`);
+    }
+    this.log.debug(`Got ${result.properties.warnings.length} warnings from server`);
     result.properties.warnings.sort((a, b2) => {
       return Number(a.properties.rawinfo.start) - Number(b2.properties.rawinfo.start);
     });
     this.messages.forEach((a) => a.notDeleted = false);
     let b = 0;
     for (let a = 0; b < this.adapter.config.numOfRawWarnings && a < result.properties.warnings.length; a++) {
-      if (this.filter.hours > 0 && Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() / 1e3 + this.filter.hours * 3600)
+      if (this.filter.hours > 0 && Number(result.properties.warnings[a].properties.rawinfo.start) > Date.now() / 1e3 + this.filter.hours * 3600) {
         continue;
-      if (Number(result.properties.warnings[a].properties.rawinfo.end) < Date.now() / 1e3)
+      }
+      if (Number(result.properties.warnings[a].properties.rawinfo.end) < Date.now() / 1e3) {
         continue;
+      }
       b++;
       result.properties.warnings[a].properties.location = result.properties.location.properties.name;
       result.properties.warnings[a].properties.nachrichtentyp = result.properties.warnings[a].type;
@@ -441,8 +470,9 @@ class ZAMGProvider extends BaseProvider {
           this.providerController
         );
         await nmessage.updateFormated();
-        if (nmessage && nmessage.filter(this.filter))
+        if (nmessage && nmessage.filter(this.filter)) {
           this.messages.push(nmessage);
+        }
       } else {
         await this.messages[index].updateData(result.properties.warnings[a].properties);
       }
@@ -483,16 +513,19 @@ class UWZProvider extends BaseProvider {
       return;
     }
     result.results.sort((a, b) => {
-      if (a && b && a.dtgStart && b.dtgStart)
+      if (a && b && a.dtgStart && b.dtgStart) {
         return a.dtgStart - b.dtgStart;
+      }
       return 0;
     });
     this.messages.forEach((a) => a.notDeleted = false);
     for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < result.results.length; a++) {
-      if (result.results[a] == null)
+      if (result.results[a] == null) {
         continue;
-      if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() / 1e3 + this.filter.hours * 3600)
+      }
+      if (this.filter.hours > 0 && result.results[a].dtgStart > Date.now() / 1e3 + this.filter.hours * 3600) {
         continue;
+      }
       await super.updateData(result.results[a], a);
       const index = this.messages.findIndex((m) => m.rawWarning.payload.id == result.results[a].payload.id);
       if (index == -1) {
@@ -504,8 +537,9 @@ class UWZProvider extends BaseProvider {
           this.providerController
         );
         await nmessage.updateFormated();
-        if (nmessage && nmessage.filter(this.filter))
+        if (nmessage && nmessage.filter(this.filter)) {
           this.messages.push(nmessage);
+        }
       } else {
         await this.messages[index].updateData(result.results[a]);
       }
@@ -575,10 +609,12 @@ class ProviderController extends import_library.BaseClass {
     const profileNames = [];
     if (this.adapter.config.silentTime !== void 0) {
       for (let p = 0; p < this.adapter.config.silentTime.length; p++) {
-        if (!this.adapter.config.silentTime[p].speakProfile)
+        if (!this.adapter.config.silentTime[p].speakProfile) {
           continue;
-        if (this.adapter.config.silentTime[p].silentTime.length == 0)
+        }
+        if (this.adapter.config.silentTime[p].silentTime.length == 0) {
           continue;
+        }
         profileNames.push(this.adapter.config.silentTime[p].speakProfile);
         this.silentTime.profil.push(
           (this.adapter.config.silentTime[p].silentTime || []).map((item) => {
@@ -587,26 +623,30 @@ class ProviderController extends import_library.BaseClass {
               start: 0,
               end: 0
             };
-            if (typeof item !== "object" || item === null || typeof item.start !== "string" || typeof item.end !== "string" || item.day === null || !Array.isArray(item.day) || item.day.length == 0)
+            if (typeof item !== "object" || item === null || typeof item.start !== "string" || typeof item.end !== "string" || item.day === null || !Array.isArray(item.day) || item.day.length == 0) {
               return null;
+            }
             for (const a in item) {
               const b = a;
               if (b != "day") {
                 const t = item[b].split(":");
-                if (Number.isNaN(t[0]))
+                if (Number.isNaN(t[0])) {
                   return null;
+                }
                 if (!Number.isNaN(t[1]) && parseInt(t[1]) > 0) {
                   t[1] = String(parseInt(t[1]) / 60);
                   item[b] = String(parseFloat(t[0]) + parseFloat(t[1]));
-                } else
+                } else {
                   item[b] = t[0];
+                }
               }
-              if (b == "day")
+              if (b == "day") {
                 result.day = item.day;
-              else if (b == "end")
+              } else if (b == "end") {
                 result.end = parseFloat(item.end);
-              else
+              } else {
                 result.start = parseFloat(item.start);
+              }
             }
             this.log.info(
               `Silent time added: Profil: ${this.adapter.config.silentTime[p].speakProfile} start: ${result.start} end: ${result.end} days: ${JSON.stringify(result.day)}`
@@ -624,9 +664,9 @@ class ProviderController extends import_library.BaseClass {
       for (const a in definitionen.actionStates) {
         const dp = a;
         const data = definitionen.actionStates[dp];
-        if (!this.library.readdp(String(dp)))
+        if (!this.library.readdp(String(dp))) {
           await this.library.writedp(String(dp), data.default, data.def);
-        else {
+        } else {
           const def = definitionen.actionStates[dp].def;
           const obj = await this.adapter.getObjectAsync(String(dp));
           if (obj) {
@@ -639,14 +679,16 @@ class ProviderController extends import_library.BaseClass {
   }
   /**
    * Create a notificationService
+   *
    * @param optionList specialcase: adapter == '' then it is createn anyway
    * @returns
    */
   async createNotificationService(optionList) {
     for (const a in optionList) {
       const options = optionList[a];
-      if (options === void 0)
+      if (options === void 0) {
         return;
+      }
       let tempAdapters = [options.adapter];
       if (options.useadapterarray && options.adapters) {
         tempAdapters = options.adapters;
@@ -726,13 +768,13 @@ class ProviderController extends import_library.BaseClass {
         default:
           throw new Error("Error 126 service is not defined");
       }
-      if (p)
+      if (p) {
         this.providers.push(p);
+      }
       return p;
-    } else {
-      this.log.error("Attempt to create an existing provider. " + options.service);
-      return this.providers[index];
     }
+    this.log.error(`Attempt to create an existing provider. ${options.service}`);
+    return this.providers[index];
   }
   async delete() {
     super.delete();
@@ -741,21 +783,25 @@ class ProviderController extends import_library.BaseClass {
     this.providers = [];
     this.notificationServices = [];
     await this.setConnected(false);
-    if (this.refreshTimeRef)
+    if (this.refreshTimeRef) {
       this.adapter.clearTimeout(this.refreshTimeRef);
-    if (this.alertTimeoutRef)
+    }
+    if (this.alertTimeoutRef) {
       this.adapter.clearTimeout(this.alertTimeoutRef);
+    }
   }
   updateEndless(that) {
     if (that.adapter.config.useTestCase) {
-      if (++that.testStatus > 3)
+      if (++that.testStatus > 3) {
         that.testStatus = 1;
+      }
       that.adapter.config.useTestWarnings = true;
       that.refreshTime = 6e4;
     }
     that.connection = false;
-    if (that.refreshTimeRef)
+    if (that.refreshTimeRef) {
       that.adapter.clearTimeout(that.refreshTimeRef);
+    }
     if (that.providers.length == 0) {
       that.setConnected(false);
       return;
@@ -763,11 +809,13 @@ class ProviderController extends import_library.BaseClass {
     updater(that);
     async function updater(self, index = 0) {
       const that2 = self;
-      if (that2.unload)
+      if (that2.unload) {
         return;
+      }
       if (index < that2.providers.length) {
-        if (that2.providers[index])
+        if (that2.providers[index]) {
           await that2.providers[index].updateData();
+        }
         index++;
         that2.refreshTimeRef = that2.adapter.setTimeout(updater, 250, that2, index);
       } else {
@@ -779,13 +827,15 @@ class ProviderController extends import_library.BaseClass {
   }
   async updateAlertEndless(self, endless = true) {
     const that = self;
-    if (that.unload)
+    if (that.unload) {
       return;
+    }
     await that.setSpeakAllowed();
     await that.checkAlerts();
     const timeout = 61333 - Date.now() % 6e4;
-    if (endless)
+    if (endless) {
       that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+    }
   }
   async checkAlerts() {
     let reply = void 0;
@@ -845,8 +895,9 @@ class ProviderController extends import_library.BaseClass {
     );
   }
   async onStatePush(id) {
-    if (!id.includes("commands.send_message."))
+    if (!id.includes("commands.send_message.")) {
       return false;
+    }
     id = id.replace(`${this.adapter.namespace}.`, "");
     const cmd = id.split(".").pop();
     const service = id.split(".").slice(0, -3).join(".");
@@ -869,7 +920,7 @@ class ProviderController extends import_library.BaseClass {
   }
   async finishInit() {
     for (const p of [...this.providers, this]) {
-      const channel = (p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`) + ".commands";
+      const channel = `${p instanceof BaseProvider ? `${this.adapter.namespace}.${p.name}` : `${this.adapter.namespace}`}.commands`;
       const commandChannel = `${channel}.send_message`;
       await this.library.writedp(
         channel,
@@ -882,15 +933,16 @@ class ProviderController extends import_library.BaseClass {
         definitionen.statesObjectsWarnings.allService.commands.send_message._channel
       );
       await this.library.writedp(
-        channel + ".clearHistory",
+        `${channel}.clearHistory`,
         false,
         definitionen.statesObjectsWarnings.allService.commands.clearHistory
       );
       const states = this.library.getStates(`${commandChannel}.*`.replace(".", "\\."));
       states[`${commandChannel}`] = void 0;
       for (const n of this.notificationServices) {
-        if (n.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1)
+        if (n.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) == -1) {
           continue;
+        }
         if (!(p instanceof BaseProvider) || n.options.service.indexOf(p.service) != -1) {
           const dp = `${commandChannel}.${n.name}`;
           states[dp] = void 0;
@@ -907,19 +959,22 @@ class ProviderController extends import_library.BaseClass {
           this.log.debug(`Remove state ${dp}`);
         }
       }
-      await this.adapter.subscribeStatesAsync(channel + ".*");
+      await this.adapter.subscribeStatesAsync(`${channel}.*`);
     }
   }
   async clearHistory(id) {
-    if (!id.endsWith(".clearHistory"))
+    if (!id.endsWith(".clearHistory")) {
       return false;
+    }
     let targets = [];
     this.providers.forEach((a) => {
-      if (id.includes(a.name))
+      if (id.includes(a.name)) {
         targets.push(a);
+      }
     });
-    if (targets.length == 0)
+    if (targets.length == 0) {
       targets = [...this.providers, this];
+    }
     let result = false;
     for (const a in targets) {
       try {
@@ -930,19 +985,23 @@ class ProviderController extends import_library.BaseClass {
         this.log.error(error);
       }
     }
-    if (result)
+    if (result) {
       await this.library.writedp(id.replace(`${this.adapter.namespace}.`, ""), false);
+    }
     return result;
   }
   setAllowedDirs(allowedDirs) {
     const dirs = [];
     for (const a in allowedDirs) {
-      if (!allowedDirs[a].dpWarning)
+      if (!allowedDirs[a].dpWarning) {
         dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.warning`);
-      if (!allowedDirs[a].dpAlerts)
+      }
+      if (!allowedDirs[a].dpAlerts) {
         dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.alerts`);
-      if (!allowedDirs[a].dpFormated)
+      }
+      if (!allowedDirs[a].dpFormated) {
         dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.formatedKeys`);
+      }
       this.library.setForbiddenDirs(dirs);
     }
   }
@@ -957,12 +1016,14 @@ class ProviderController extends import_library.BaseClass {
   async setSpeakAllowed(id = "") {
     if (id !== "") {
       id = id.replace(`${this.adapter.namespace}.`, "");
-      if (definitionen.actionStates[id] === void 0)
+      if (definitionen.actionStates[id] === void 0) {
         return false;
+      }
       this.log.debug(`Set speak ${id.split(".").slice(-1).join(".")} to ${this.library.readdp(id).val}`);
       this.library.writedp(id, this.library.readdp(id).val);
-      if (definitionen.actionStates[id].onlyAck)
+      if (definitionen.actionStates[id].onlyAck) {
         return true;
+      }
     }
     if (this.isSilentAuto()) {
       const profil = this.getSpeakProfil();
@@ -971,10 +1032,12 @@ class ProviderController extends import_library.BaseClass {
         const now = (/* @__PURE__ */ new Date()).getHours() + (/* @__PURE__ */ new Date()).getMinutes() / 60;
         const day = String((/* @__PURE__ */ new Date()).getDay());
         for (const t of this.silentTime.profil[profil]) {
-          if (t === null)
+          if (t === null) {
             continue;
-          if (t.day.indexOf(day) == -1)
+          }
+          if (t.day.indexOf(day) == -1) {
             continue;
+          }
           if (t.start < t.end) {
             if (t.start <= now && t.end > now) {
               isSpeakAllowed = false;
@@ -997,8 +1060,9 @@ class ProviderController extends import_library.BaseClass {
         );
         this.silentTime.shouldSpeakAllowed = isSpeakAllowed;
       }
-    } else
+    } else {
       this.silentTime.shouldSpeakAllowed = void 0;
+    }
     return true;
   }
   isSilentAuto() {

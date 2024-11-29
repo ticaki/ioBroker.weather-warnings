@@ -1,8 +1,8 @@
-import WeatherWarnings from '../main';
+import type WeatherWarnings from '../main';
 import { genericStateObjects } from './def/definition';
 import * as NotificationType from './def/notificationService-def';
 import * as library from './library';
-import * as Provider from './def/provider-def';
+import type * as Provider from './def/provider-def';
 import { filterWarntype } from './def/messages-def';
 
 export class NotificationClass extends library.BaseClass {
@@ -22,11 +22,10 @@ export class NotificationClass extends library.BaseClass {
             `Create notification service ${this.name}${
                 this.options.adapter != undefined
                     ? this.name == 'alexa2'
-                        ? ' state: ' +
-                          this.adapter.config.alexa2_device_ids
-                              .map((a) => `${this.options.adapter}.Echo-Devices.${a}.Commands.speak`)
-                              .join(', ')
-                        : ' adapter: ' + this.options.adapter
+                        ? ` state: ${this.adapter.config.alexa2_device_ids
+                              .map(a => `${this.options.adapter}.Echo-Devices.${a}.Commands.speak`)
+                              .join(', ')}`
+                        : ` adapter: ${this.options.adapter}`
                     : ''
             }.`,
         );
@@ -43,7 +42,7 @@ export class NotificationClass extends library.BaseClass {
                 {
                     let dp = '';
                     let def: any = genericStateObjects.history;
-                    const providers = this.adapter.providerController!.providers.filter((a) =>
+                    const providers = this.adapter.providerController!.providers.filter(a =>
                         this.options.service.includes(a.service),
                     );
                     if (this.adapter.providerController) {
@@ -76,7 +75,9 @@ export class NotificationClass extends library.BaseClass {
 
     /**
      *  Send this message after filtering to services
+     *
      * @param messages the message with MessageClassRef Ref can be null
+     * @param providers
      * @param allowActions <string>[] array new, remove, removeall, all - to allow this action
      * @param manual <boolean> manual new/removeall handling
      * @returns
@@ -96,7 +97,9 @@ export class NotificationClass extends library.BaseClass {
         let result: NotificationType.MessageType[] = [];
         const notifications = this.options.notifications;
         for (const a in providers) {
-            if (this.options.service.indexOf(providers[a].service) == -1) continue;
+            if (this.options.service.indexOf(providers[a].service) == -1) {
+                continue;
+            }
 
             for (const b in providers[a].messages) {
                 const message = providers[a].messages[b];
@@ -105,19 +108,33 @@ export class NotificationClass extends library.BaseClass {
                     (filter.level === undefined || filter.level <= message.level) &&
                     !filterWarntype(providers[a].service, filter.type, message.type)
                 ) {
-                    if (message.notDeleted) activeWarnings++;
+                    if (message.notDeleted) {
+                        activeWarnings++;
+                    }
                     for (const c in actions) {
                         const action: keyof NotificationType.ActionsType = c as keyof NotificationType.ActionsType;
-                        if (manual && NotificationType.manual.indexOf(action) == -1) continue;
-                        if (action == undefined || actions[action] == 'none' || actions[action] == '') continue;
+                        if (manual && NotificationType.manual.indexOf(action) == -1) {
+                            continue;
+                        }
+                        if (action == undefined || actions[action] == 'none' || actions[action] == '') {
+                            continue;
+                        }
 
-                        if (!allowActions.includes(action)) continue;
+                        if (!allowActions.includes(action)) {
+                            continue;
+                        }
 
-                        if (!notifications.includes(action)) continue;
+                        if (!notifications.includes(action)) {
+                            continue;
+                        }
 
-                        const templateKey = actions[action as keyof typeof this.options.actions];
-                        if (!templateKey || templateKey == 'none') continue;
-                        if (action == 'removeAll') continue;
+                        const templateKey = actions[action];
+                        if (!templateKey || templateKey == 'none') {
+                            continue;
+                        }
+                        if (action == 'removeAll') {
+                            continue;
+                        }
                         // hier sollte nur 1 Warnungen durch gehen
                         if (
                             manual || // get every message
@@ -137,10 +154,10 @@ export class NotificationClass extends library.BaseClass {
                                 msg.message = message;
                                 if (
                                     notifications.includes('title') &&
-                                    actions['title'] !== undefined &&
-                                    actions['title'] !== 'none'
+                                    actions.title !== undefined &&
+                                    actions.title !== 'none'
                                 ) {
-                                    const title = await message.getMessage(actions['title'], this);
+                                    const title = await message.getMessage(actions.title, this);
                                     msg.title = title.text;
                                 }
                                 result.push(msg); // hier sammele die Nachrichten
@@ -165,17 +182,30 @@ export class NotificationClass extends library.BaseClass {
                 result = [];
             } else {
                 result.sort((a, b) => {
-                    if (!a.message) return 1;
-                    if (!b.message) return -1;
+                    if (!a.message) {
+                        return 1;
+                    }
+                    if (!b.message) {
+                        return -1;
+                    }
                     if (
                         (a.message.newMessage && b.message.newMessage) ||
                         (!a.message.notDeleted && !b.message.notDeleted)
-                    )
+                    ) {
                         return a.startts == b.startts ? 0 : a.startts < b.startts ? -1 : 1;
-                    if (a.message.newMessage) return -1;
-                    if (b.message.newMessage) return 1;
-                    if (!a.message.notDeleted) return -1;
-                    if (!b.message.notDeleted) return 1;
+                    }
+                    if (a.message.newMessage) {
+                        return -1;
+                    }
+                    if (b.message.newMessage) {
+                        return 1;
+                    }
+                    if (!a.message.notDeleted) {
+                        return -1;
+                    }
+                    if (!b.message.notDeleted) {
+                        return 1;
+                    }
                     return a.startts == b.startts ? 0 : a.startts < b.startts ? -1 : 1;
                 });
             }
@@ -189,19 +219,19 @@ export class NotificationClass extends library.BaseClass {
             if (
                 (!manual &&
                     this.options.notifications.includes('removeAll') &&
-                    this.options.actions['removeAll'] != 'none' &&
+                    this.options.actions.removeAll != 'none' &&
                     allowActions.includes('removeAll') &&
                     !this.removeAllSend &&
                     activeWarnings == 0) ||
                 (this.options.notifications.includes('removeManualAll') &&
-                    this.options.actions['removeManualAll'] &&
-                    this.options.actions['removeManualAll'] != 'none' &&
+                    this.options.actions.removeManualAll &&
+                    this.options.actions.removeManualAll != 'none' &&
                     allowActions.includes('removeAll') &&
                     manual)
             ) {
                 const templates = this.adapter.config.templateTable;
                 const tempid = templates.findIndex(
-                    (a) => a.templateKey == this.options.actions[manual ? 'removeManualAll' : 'removeAll'],
+                    a => a.templateKey == this.options.actions[manual ? 'removeManualAll' : 'removeAll'],
                 );
                 if (tempid != -1) {
                     const result = await this.adapter.providerController!.noWarning.getMessage(
@@ -217,15 +247,17 @@ export class NotificationClass extends library.BaseClass {
                         },
                     ];
                     const res: NotificationType.MessageType | null =
-                        this.options.actions['title'] &&
-                        this.options.actions['title'] != 'none' &&
-                        templates.findIndex((a) => a.templateKey == this.options.actions['title']) != -1
+                        this.options.actions.title &&
+                        this.options.actions.title != 'none' &&
+                        templates.findIndex(a => a.templateKey == this.options.actions.title) != -1
                             ? await this.adapter.providerController!.noWarning.getMessage(
-                                  this.options.actions['title'],
+                                  this.options.actions.title,
                                   this,
                               )
                             : null;
-                    if (res !== null && res.text) msg[0].title = res.text;
+                    if (res !== null && res.text) {
+                        msg[0].title = res.text;
+                    }
                     await this.sendNotifications(msg);
                 }
                 this.removeAllSend = true;
@@ -252,12 +284,16 @@ export class NotificationClass extends library.BaseClass {
     }
 
     canManual(): boolean {
-        if (this.options.notifications.findIndex((a) => NotificationType.manual.indexOf(a) != -1) != -1) return true;
+        if (this.options.notifications.findIndex(a => NotificationType.manual.indexOf(a) != -1) != -1) {
+            return true;
+        }
         return false;
     }
     cleanupMessage(messages: NotificationType.MessageType[]): NotificationType.MessageType[] {
         for (const message of messages) {
-            if (message === null || message == undefined) continue;
+            if (message === null || message == undefined) {
+                continue;
+            }
             switch (this.options.name) {
                 case 'telegram':
                 case 'pushover':
@@ -282,12 +318,11 @@ export class NotificationClass extends library.BaseClass {
                         case 'de':
                             {
                                 message.text = message.text.replace(/\([0-9]+.m\/s, [0-9]+.kn, Bft.[0-9]+../g, '');
-                                message.text = message.text.replace(/\°C/g, this.library.getTranslation('celsius'));
+                                message.text = message.text.replace(/°C/g, this.library.getTranslation('celsius'));
                                 message.text = message.text.replace(/km\/h/g, this.library.getTranslation('kmh'));
-                                message.text = message.text.replace(/l\/m\²/g, this.library.getTranslation('lm'));
-                                message.text = message.text.replace(
-                                    / [a-zA-Z][a-zA-Z], \d{1,2}\.\d{1,2}\.\d{4} /g,
-                                    (x) => this.library.convertSpeakDate(x, this.options.name, true),
+                                message.text = message.text.replace(/l\/m²/g, this.library.getTranslation('lm'));
+                                message.text = message.text.replace(/ [a-zA-Z][a-zA-Z], \d{1,2}\.\d{1,2}\.\d{4} /g, x =>
+                                    this.library.convertSpeakDate(x, this.options.name, true),
                                 );
                                 /* message.text = message.text.replace(/\d{1,2}\.\d{1,2}\... /gi, (x) =>
                                         this.library.convertSpeakDate(x),
@@ -300,10 +335,16 @@ export class NotificationClass extends library.BaseClass {
                                 while (pos <= message.text.length && count++ < 50) {
                                     const oldpos = pos;
                                     pos = message.text.lastIndexOf(';', oldpos);
-                                    if (pos == -1 || pos == oldpos - 250) pos = message.text.lastIndexOf('.', oldpos);
-                                    if (pos == -1) pos = message.text.lastIndexOf(' ', oldpos);
-                                    if (pos == -1) break;
-                                    message.text = message.text.slice(0, pos) + ';' + message.text.slice(pos + 1);
+                                    if (pos == -1 || pos == oldpos - 250) {
+                                        pos = message.text.lastIndexOf('.', oldpos);
+                                    }
+                                    if (pos == -1) {
+                                        pos = message.text.lastIndexOf(' ', oldpos);
+                                    }
+                                    if (pos == -1) {
+                                        break;
+                                    }
+                                    message.text = `${message.text.slice(0, pos)};${message.text.slice(pos + 1)}`;
                                     pos += 250;
                                 }
                             }
@@ -335,29 +376,38 @@ export class NotificationClass extends library.BaseClass {
                     );*/
                     for (const msg of messages) {
                         const opt: any = { text: msg.text, disable_notification: this.options.withNoSound };
-                        if (this.options.parse_mode != 'none') opt.parse_mode = this.options.parse_mode;
+                        if (this.options.parse_mode != 'none') {
+                            opt.parse_mode = this.options.parse_mode;
+                        }
                         try {
                             if (this.options.userid.length > 0 || this.options.chatid.length > 0) {
-                                if (this.options.userid.length > 0) opt.user = this.options.userid;
+                                if (this.options.userid.length > 0) {
+                                    opt.user = this.options.userid;
+                                }
                                 if (this.options.chatid.length > 0) {
                                     const chatids = this.options.chatid.split(',');
-                                    for (const chatid of chatids)
+                                    for (const chatid of chatids) {
                                         this.adapter.sendTo(this.options.adapter, 'send', {
                                             ...opt,
                                             chatid: chatid,
                                         });
+                                    }
                                 } else {
-                                    await this.adapter.sendTo(this.options.adapter, 'send', opt);
+                                    this.adapter.sendTo(this.options.adapter, 'send', opt);
                                 }
-                            } else this.adapter.sendTo(this.options.adapter, 'send', opt);
+                            } else {
+                                this.adapter.sendTo(this.options.adapter, 'send', opt);
+                            }
                             await library.sleep(20);
                             this.log.debug(`Send the message: ${msg.text}`);
                         } catch (error: any) {
-                            if (error.message == 'Timeout exceeded')
+                            if (error.message == 'Timeout exceeded') {
                                 this.log.warn(
                                     `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
                                 );
-                            else throw error;
+                            } else {
+                                throw error;
+                            }
                         }
                     }
                 }
@@ -372,18 +422,24 @@ export class NotificationClass extends library.BaseClass {
                         if (msg.title !== undefined && msg.title != '') {
                             opt.title = msg.title;
                         }
-                        if (this.options.priority) opt.priority = msg.message ? msg.message.level - 2 : -1;
-                        if (this.options.device.length > 0) opt.device = this.options.device;
+                        if (this.options.priority) {
+                            opt.priority = msg.message ? msg.message.level - 2 : -1;
+                        }
+                        if (this.options.device.length > 0) {
+                            opt.device = this.options.device;
+                        }
                         // stupid pushover adapter dont callback if he runs into a "dont do this"
                         try {
                             await this.adapter.sendToAsync(this.options.adapter, 'send', opt, { timeout: 2000 });
                             this.log.debug(`Send the message: ${msg.text}`);
                         } catch (error: any) {
-                            if (error.message == 'Timeout exceeded')
+                            if (error.message == 'Timeout exceeded') {
                                 this.log.warn(
                                     `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
                                 );
-                            else throw error;
+                            } else {
+                                throw error;
+                            }
                         }
                     }
                 }
@@ -391,18 +447,27 @@ export class NotificationClass extends library.BaseClass {
             case 'whatsapp':
                 {
                     for (const msg of messages) {
-                        if (Array.isArray(msg)) return false;
-                        const opt: { text: string; phone?: string } = { text: msg.text };
-                        if (this.options.phonenumber) opt.phone = this.options.phonenumber;
+                        if (Array.isArray(msg)) {
+                            return false;
+                        }
+                        const opt: {
+                            text: string;
+                            phone?: string;
+                        } = { text: msg.text };
+                        if (this.options.phonenumber) {
+                            opt.phone = this.options.phonenumber;
+                        }
                         try {
                             await this.adapter.sendToAsync(this.options.adapter, 'send', opt, { timeout: 2000 });
                             this.log.debug(`Send the message: ${msg.text}`);
                         } catch (error: any) {
-                            if (error.message == 'Timeout exceeded')
+                            if (error.message == 'Timeout exceeded') {
                                 this.log.warn(
                                     `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
                                 );
-                            else throw error;
+                            } else {
+                                throw error;
+                            }
                         }
                     }
                 }
@@ -411,43 +476,54 @@ export class NotificationClass extends library.BaseClass {
                 {
                     const devices = this.adapter.config.alexa2_device_ids;
 
-                    if (devices.length == 0) break;
+                    if (devices.length == 0) {
+                        break;
+                    }
 
                     let opt = '';
                     if (this.options.sounds_enabled) {
                         const prefix = `${this.options.volumen}`;
-                        for (const a in devices) {
+                        for (const device of devices) {
                             for (const msg of messages) {
-                                if (Array.isArray(msg)) continue;
+                                if (Array.isArray(msg)) {
+                                    continue;
+                                }
                                 let index = -1;
-                                if (msg.message !== undefined && msg.message.notDeleted)
+                                if (msg.message !== undefined && msg.message.notDeleted) {
                                     index = this.options.sounds.findIndex(
-                                        (a) => a.warntypenumber == Number(msg.message!.genericType),
+                                        a => a.warntypenumber == Number(msg.message!.genericType),
                                     );
-                                else index = this.options.sounds.findIndex((a) => a.warntypenumber == 0);
+                                } else {
+                                    index = this.options.sounds.findIndex(a => a.warntypenumber == 0);
+                                }
                                 const sound = this.options.sounds[index].sound;
-                                if (sound) opt += `;${sound};${msg.text}`;
-                                else opt += `;${msg.text}`;
+                                if (sound) {
+                                    opt += `;${sound};${msg.text}`;
+                                } else {
+                                    opt += `;${msg.text}`;
+                                }
                             }
                             this.log.debug(`Send to alexa2: ${prefix + opt}`);
                             if (opt != '') {
                                 await this.adapter.setForeignStateAsync(
-                                    `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
+                                    `${this.options.adapter}.Echo-Devices.${device}.Commands.speak`,
                                     prefix + opt,
                                 );
                             }
                         }
                     } else {
                         const prefix = `${this.options.volumen}${this.options.audio ? `;${this.options.audio}` : ''}`;
-                        for (const a in devices) {
+                        for (const device of devices) {
                             for (const msg of messages) {
-                                if (Array.isArray(msg)) continue;
+                                if (Array.isArray(msg)) {
+                                    continue;
+                                }
                                 opt += `;${msg.text}`;
                             }
                             this.log.debug(`Send to alexa2: ${prefix + opt}`);
                             if (opt != '') {
                                 await this.adapter.setForeignStateAsync(
-                                    `${this.options.adapter}.Echo-Devices.${devices[a]}.Commands.speak`,
+                                    `${this.options.adapter}.Echo-Devices.${device}.Commands.speak`,
                                     prefix + opt,
                                 );
                             }
@@ -489,7 +565,9 @@ export class NotificationClass extends library.BaseClass {
                     let d = '';
                     const prefix = `${this.options.volumen};`;
                     for (const msg of messages) {
-                        if (Array.isArray(msg)) continue;
+                        if (Array.isArray(msg)) {
+                            continue;
+                        }
                         if (msg.text != '') {
                             await this.adapter.setForeignStateAsync(
                                 `${this.options.adapter}.tts.text`,
@@ -504,8 +582,12 @@ export class NotificationClass extends library.BaseClass {
             case 'history':
                 {
                     for (const msg of messages) {
-                        if (Array.isArray(msg)) return false;
-                        if (!msg || !msg.provider || !this.adapter.config.history_Enabled || !msg.message) return false;
+                        if (Array.isArray(msg)) {
+                            return false;
+                        }
+                        if (!msg || !msg.provider || !this.adapter.config.history_Enabled || !msg.message) {
+                            return false;
+                        }
                         let newMsg: any = { message: msg.text };
                         if (this.adapter.config.history_allinOne) {
                             newMsg = { ...msg.message.formatedData, ts: Date.now() };
@@ -515,7 +597,7 @@ export class NotificationClass extends library.BaseClass {
                                 newMsg.message = temp;
                             } catch {
                                 //all good :)
-                                this.log.debug(' write message: ' + newMsg.message);
+                                this.log.debug(` write message: ${newMsg.message}`);
                             }
                         }
                         const targets = [msg.provider.name, msg.provider.providerController.name];
@@ -524,8 +606,9 @@ export class NotificationClass extends library.BaseClass {
                                 const dp = `${targets[a]}.history`;
                                 const state = this.adapter.library.readdp(dp);
                                 let json: object[] = [];
-                                if (state && state.val && typeof state.val == 'string' && state.val != '')
+                                if (state && state.val && typeof state.val == 'string' && state.val != '') {
                                     json = JSON.parse(state.val);
+                                }
                                 json.unshift(newMsg);
                                 json.splice(100);
                                 await this.adapter.library.writedp(
@@ -537,7 +620,7 @@ export class NotificationClass extends library.BaseClass {
                                 this.log.error(
                                     `${this.name} template has wrong formate. ${this.name} deactivated! template: ${
                                         msg.action ? this.options.actions[msg.action] : 'unknown'
-                                    }, message: ${msg}`,
+                                    }, message: ${JSON.stringify(msg)}`,
                                 );
                                 this.adapter.config.history_Enabled = false;
                                 return false;
@@ -561,7 +644,7 @@ export class NotificationClass extends library.BaseClass {
                                 message: temp,
                                 provider: messages[a].provider,
                             });
-                            providers.push(messages[a].provider !== undefined ? messages[a].provider!.name : '');
+                            providers.push(messages[a].provider !== undefined ? messages[a].provider.name : '');
                         } catch {
                             this.log.error(
                                 `Json template has wrong formate. Conversion deactivated! template: ${messages[a].template}, message: ${messages[a].text}`,
@@ -573,7 +656,9 @@ export class NotificationClass extends library.BaseClass {
                     // double providers
                     providers = providers.filter((i, p) => {
                         if (i != '') {
-                            if (providers.indexOf(i) == p) return true;
+                            if (providers.indexOf(i) == p) {
+                                return true;
+                            }
                         }
                         return false;
                     });
@@ -582,22 +667,26 @@ export class NotificationClass extends library.BaseClass {
                         if (i.message != '' && i.provider) {
                             if (
                                 result.findIndex(
-                                    (i2) => i2.provider.name == i.provider.name && i2.message == i.message,
+                                    i2 => i2.provider.name == i.provider.name && i2.message == i.message,
                                 ) == p
-                            )
+                            ) {
                                 return true;
+                            }
                         }
                         return false;
                     });
                     // sort
                     result.sort((a, b) => {
-                        if (a.provider > b.provider) return 1;
-                        else if (a.provider < b.provider) return -1;
-                        else return a.startts - b.startts;
+                        if (a.provider > b.provider) {
+                            return 1;
+                        } else if (a.provider < b.provider) {
+                            return -1;
+                        }
+                        return a.startts - b.startts;
                     });
                     for (const p of providers) {
-                        const dp = p + '.activeWarnings_json';
-                        const data = result.filter((a) => a.provider && a.provider.name == p).map((a) => a.message);
+                        const dp = `${p}.activeWarnings_json`;
+                        const data = result.filter(a => a.provider && a.provider.name == p).map(a => a.message);
                         await this.adapter.library.writedp(
                             dp,
                             JSON.stringify(data),
@@ -607,15 +696,17 @@ export class NotificationClass extends library.BaseClass {
                     // filter double all
                     result = result.filter((i, p) => {
                         if (i.message != '' && i.provider) {
-                            if (result.findIndex((i2) => i2.message == i.message) == p) return true;
+                            if (result.findIndex(i2 => i2.message == i.message) == p) {
+                                return true;
+                            }
                         }
                         return false;
                     });
                     if (this.adapter.providerController) {
-                        const dp = this.adapter.providerController.name + '.activeWarnings_json';
+                        const dp = `${this.adapter.providerController.name}.activeWarnings_json`;
                         await this.adapter.library.writedp(
                             dp,
-                            JSON.stringify(result.map((a) => a.message)),
+                            JSON.stringify(result.map(a => a.message)),
                             genericStateObjects.activeWarningsJson,
                         );
                     }
@@ -625,7 +716,9 @@ export class NotificationClass extends library.BaseClass {
                 {
                     const result = messages.filter((i, p) => {
                         if (i.text != '') {
-                            if (messages.findIndex((i2) => i2.text == i.text) == p) return true;
+                            if (messages.findIndex(i2 => i2.text == i.text) == p) {
+                                return true;
+                            }
                         }
                         return false;
                     });
@@ -633,23 +726,25 @@ export class NotificationClass extends library.BaseClass {
                     if (result.length > 0 && messages.length > 0 && messages[0].title) {
                         opt.subject = messages[0].title;
                     }
-                    opt.html = result.map((a) => a.text).join(this.adapter.config.email_line_break);
+                    opt.html = result.map(a => a.text).join(this.adapter.config.email_line_break);
                     const templates = this.adapter.config.templateTable;
                     // das hier ist noch nicht gut, subject sollte vom Nutzer besser bestimmbar sein.
                     let token = 'message.status.new';
-                    if (messages[0].action == 'removeAll') token = 'message.status.clear';
+                    if (messages[0].action == 'removeAll') {
+                        token = 'message.status.clear';
+                    }
                     if (this.adapter.config.email_Header !== 'none') {
-                        const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Header);
+                        const tempid = templates.findIndex(a => a.templateKey == this.adapter.config.email_Header);
                         if (tempid != -1) {
                             const temp = templates[tempid].template.replace(
                                 '${emailheader}',
-                                await this.adapter.library.getTranslation(token),
+                                this.adapter.library.getTranslation(token),
                             );
                             opt.html = temp + opt.html;
                         }
                     }
                     if (this.adapter.config.email_Footer !== 'none') {
-                        const tempid = templates.findIndex((a) => a.templateKey == this.adapter.config.email_Footer);
+                        const tempid = templates.findIndex(a => a.templateKey == this.adapter.config.email_Footer);
                         if (tempid != -1) {
                             opt.html = opt.html + templates[tempid].template;
                         }
@@ -660,11 +755,13 @@ export class NotificationClass extends library.BaseClass {
                         this.log.debug(`Send the message: ${JSON.stringify(opt)}`);
                         await library.sleep(200);
                     } catch (error: any) {
-                        if (error.message == 'Timeout exceeded')
+                        if (error.message == 'Timeout exceeded') {
                             this.log.warn(
                                 `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
                             );
-                        else throw error;
+                        } else {
+                            throw error;
+                        }
                     }
                 }
                 break;
