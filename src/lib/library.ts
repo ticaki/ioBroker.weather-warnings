@@ -28,12 +28,21 @@ export class BaseClass {
     adapter: AdapterClassDefinition;
     library: Library;
     name: string = ``;
+
+    /**
+     * Create a new instance of the BaseClass.
+     *
+     * @param adapter The adapter instance.
+     * @param name The name of the instance, used for logging.
+     */
     constructor(adapter: AdapterClassDefinition, name: string = '') {
         this.name = name;
         this.log = new CustomLog(adapter, this.name);
         this.adapter = adapter;
         this.library = adapter.library;
     }
+    // hier lassen wir das async nicht das eine übergeordnete Version was mit await aufrufen will.
+    //eslint-disable-next-line
     async delete(): Promise<void> {
         this.unload = true;
     }
@@ -42,41 +51,106 @@ export class BaseClass {
 class CustomLog {
     private adapter: AdapterClassDefinition;
     private prefix: string;
+
+    /**
+     * Create a new instance of the CustomLog class.
+     *
+     * @param adapter The adapter instance.
+     * @param text The prefix for the log messages.
+     */
     constructor(adapter: AdapterClassDefinition, text: string = '') {
         this.adapter = adapter;
         this.prefix = text;
     }
+    /**
+     * Return the prefix string used for log messages.
+     *
+     * @returns The prefix string.
+     */
     getName(): string {
         return this.prefix;
     }
+    /**
+     * Writes a debug message to the log.
+     *
+     * @param log The debug message.
+     * @param log2 An additional debug message.
+     */
     debug(log: string, log2: string = ''): void {
         this.adapter.log.debug(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
     }
-    info(log: string, log2: string = ''): void {
-        this.adapter.log.info(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
+    info(message: string, additionalMessage: string = ''): void {
+        const formattedMessage = additionalMessage
+            ? `[${message}] ${additionalMessage}`
+            : `[${this.prefix}] ${message}`;
+        /**
+         * Writes an info message to the log.
+         *
+         * @param message The info message.
+         * @param additionalMessage An additional info message.
+         */
+        this.adapter.log.info(formattedMessage);
     }
-    warn(log: string, log2: string = ''): void {
-        this.adapter.log.warn(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
+    /**
+     * Writes a warning message to the log.
+     *
+     * @param message The warning message.
+     * @param additionalMessage An additional warning message.
+     */
+    warn(message: string, additionalMessage: string = ''): void {
+        const formattedMessage = additionalMessage
+            ? `[${message}] ${additionalMessage}`
+            : `[${this.prefix}] ${message}`;
+        this.adapter.log.warn(formattedMessage);
     }
-    error(log: string, log2: string = ''): void {
-        this.adapter.log.error(log2 ? `[${log}] ${log2}` : `[${this.prefix}] ${log}`);
+    /**
+     * Writes an error message to the log.
+     *
+     * @param errorMessage The error message.
+     * @param additionalErrorMessage An additional error message.
+     */
+    error(errorMessage: string, additionalErrorMessage: string = ''): void {
+        const formattedErrorMessage = additionalErrorMessage
+            ? `[${errorMessage}] ${additionalErrorMessage}`
+            : `[${this.prefix}] ${errorMessage}`;
+        this.adapter.log.error(formattedErrorMessage);
     }
-    setLogPrefix(text: string): void {
-        this.prefix = text;
+    /**
+     * Sets the prefix for log messages.
+     *
+     * @param prefix - The prefix to be used for log messages. Leading and trailing whitespace are trimmed.
+     */
+    setLogPrefix(prefix: string): void {
+        this.prefix = prefix.trim();
     }
 }
-
+/**
+ * The Library class is a base class that provides common functionality for the adapter.
+ * It extends the BaseClass and provides additional properties and methods for managing the adapter's state.
+ */
 export class Library extends BaseClass {
     stateDataBase: { [key: string]: LibraryStateVal } = {};
     language: ioBroker.Languages = 'en';
     forbiddenDirs: string[] = [];
     translation: { [key: string]: string } = {};
 
+    /**
+     * Creates a new instance of the Library class.
+     *
+     * @param adapter The adapter instance.
+     * @param _options The configuration options for the adapter. Not used.
+     */
     constructor(adapter: AdapterClassDefinition, _options: any = null) {
         super(adapter, 'library');
         this.stateDataBase = {};
     }
 
+    /**
+     * Initializes the Library by setting the language based on the system configuration.
+     * If the system configuration's language is not available, defaults to English.
+     *
+     * @returns A promise that resolves when initialization is complete.
+     */
     async init(): Promise<void> {
         const obj = await this.adapter.getForeignObjectAsync('system.config');
         if (obj) {
@@ -111,7 +185,7 @@ export class Library extends BaseClass {
             return;
         }
 
-        const objectDefinition = objNode ? await this.getObjectDefFromJson(`${objNode}`, def) : null;
+        const objectDefinition = objNode ? this.getObjectDefFromJson(`${objNode}`, def) : null;
 
         if (objectDefinition) {
             objectDefinition.native = {
@@ -128,17 +202,17 @@ export class Library extends BaseClass {
                 }
                 if (this.adapter.config.expandArray || objectDefinition.type !== 'state' || expandTree) {
                     let a = 0;
-                    for (const k in data) {
+                    for (const k of data) {
                         const defChannel = this.getChannelObject(objectDefinition);
 
                         const dp = `${prefix}${`00${a++}`.slice(-2)}`;
                         // create folder
                         await this.writedp(dp, null, defChannel);
 
-                        await this.writeFromJson(dp, `${objNode}`, def, data[k], expandTree);
+                        await this.writeFromJson(dp, `${objNode}`, def, k, expandTree);
                     }
                 } else {
-                    this.writeFromJson(prefix, objNode, def, JSON.stringify(data) || '[]', expandTree);
+                    await this.writeFromJson(prefix, objNode, def, JSON.stringify(data) || '[]', expandTree);
                 }
                 //objectDefinition._id = `${this.adapter.name}.${this.adapter.instance}.${prefix}.${key}`;
             } else {
@@ -170,7 +244,7 @@ export class Library extends BaseClass {
      * @param data  is the definition dataset
      * @returns ioBroker.ChannelObject | ioBroker.DeviceObject | ioBroker.StateObject
      */
-    async getObjectDefFromJson(key: string, data: any): Promise<ioBroker.Object> {
+    getObjectDefFromJson(key: string, data: any): ioBroker.Object {
         //let result = await jsonata(`${key}`).evaluate(data);
         let result = this.deepJsonValue(key, data);
         if (result === null || result === undefined) {
@@ -185,6 +259,13 @@ export class Library extends BaseClass {
         return this.cloneObject(result);
     }
 
+    /**
+     * Retrieve a value from a nested object.
+     *
+     * @param key string of dot-separated keys to traverse the object.
+     * @param data The object to traverse.
+     * @returns The value at the key. If the key does not exist, throws an error.
+     */
     deepJsonValue(key: string, data: any): any {
         if (!key || !data || typeof data !== 'object' || typeof key !== 'string') {
             throw new Error(`Error(222) data or key are missing/wrong type!`);
@@ -199,11 +280,11 @@ export class Library extends BaseClass {
     }
 
     /**
-     * Get a channel/device definition from property _channel out of a getObjectDefFromJson() result or a default definition.
+     * Create a ioBroker.ChannelObject or ioBroker.DeviceObject out of a
+     * ioBroker.Object definition.
      *
-     * @param def the data coming from getObjectDefFromJson()
-     * @param definition
-     * @returns ioBroker.ChannelObject | ioBroker.DeviceObject or a default channel obj
+     * @param definition the ioBroker.Object definition
+     * @returns ioBroker.ChannelObject | ioBroker.DeviceObject
      */
     getChannelObject(
         definition:
@@ -282,22 +363,45 @@ export class Library extends BaseClass {
         }
     }
 
+    /**
+     * Concatenates the given array of forbidden directory patterns with the current array of patterns.
+     * The given array elements are strings which are used to create a regular expression, so special characters should be escaped.
+     *
+     * @param dirs Array of strings which are used to create a regular expression to check if a directory is allowed.
+     */
     setForbiddenDirs(dirs: any[]): void {
         this.forbiddenDirs = this.forbiddenDirs.concat(dirs);
     }
 
+    /**
+     * Checks if the given directory path is allowed to be used.
+     * The rules are as follows:
+     * - The path must not contain any of the strings from the `forbiddenDirs` array.
+     * - The path must not consist of more than 2 parts (i.e. it must not contain any dots).
+     *
+     * @param dp The directory path to check.
+     * @returns true if the directory path is allowed, false otherwise.
+     */
     isDirAllowed(dp: string): boolean {
         if (dp && dp.split('.').length <= 2) {
             return true;
         }
-        for (const a in this.forbiddenDirs) {
-            if (dp.search(new RegExp(this.forbiddenDirs[a], 'g')) != -1) {
+        for (const a of this.forbiddenDirs) {
+            if (dp.search(new RegExp(a, 'g')) != -1) {
                 return false;
             }
         }
         return true;
     }
 
+    /**
+     * Get all states that match the given string.
+     * The string is used as a regular expression to filter the state paths.
+     * The result is an object where the keys are the state paths and the values are the state values.
+     *
+     * @param str The string to filter the states with.
+     * @returns An object with the state paths as keys and the state values as values.
+     */
     getStates(str: string): { [key: string]: LibraryStateVal } {
         const result: { [key: string]: LibraryStateVal } = {};
         for (const dp in this.stateDataBase) {
@@ -308,6 +412,18 @@ export class Library extends BaseClass {
         return result;
     }
 
+    /**
+     * Clean up the state data base by deleting all states that do not have a hold object in the given array
+     * and do not match any of the given filter strings.
+     * Additionally, the given deep parameter is used to slice the state path and delete the resulting object
+     * from the adapter object list.
+     *
+     * @param hold An array of strings which are used to determine if a state should be kept or deleted.
+     * @param filter An array of strings which are used to filter the states to be deleted. If a state's path
+     * starts with any of the strings in this array, it will not be deleted.
+     * @param deep The number of path parts to slice from the state path to delete from the adapter object list.
+     * @returns A promise that resolves when all states have been deleted.
+     */
     async cleanUpTree(hold: string[], filter: string[] | null, deep: number): Promise<void> {
         let del = [];
         for (const dp in this.stateDataBase) {
@@ -323,19 +439,20 @@ export class Library extends BaseClass {
         del = del.filter((item, pos, arr) => {
             return arr.indexOf(item) == pos;
         });
-        for (const a in del) {
-            await this.adapter.delObjectAsync(del[a], { recursive: true });
-            this.log.debug(`Clean up tree delete: ${del[a]}`);
+        for (const a of del) {
+            await this.adapter.delObjectAsync(a, { recursive: true });
+            this.log.debug(`Clean up tree delete: ${a}`);
         }
     }
 
     /**
-     * Remove forbidden chars from datapoint string.
+     * Cleans a given string by replacing forbidden characters with underscores.
      *
-     * @param string Datapoint string to clean
-     * @param lowerCase lowerCase() first param.
-     * @param removePoints
-     * @returns void
+     * @param string - The input string to be cleaned.
+     * @param lowerCase - If true, converts the string to lowercase after cleaning.
+     * @param removePoints - If true, removes all non-alphanumeric characters except underscores and hyphens.
+     *                       If false, retains periods as valid characters.
+     * @returns The cleaned string with forbidden characters replaced and optionally converted to lowercase.
      */
     cleandp(string: string, lowerCase: boolean = false, removePoints: boolean = false): string {
         if (!string && typeof string != 'string') {
@@ -394,10 +511,28 @@ export class Library extends BaseClass {
         return newValue;
     }
 
+    /**
+     * reads a datapoint from the state database
+     *
+     * @param dp the datapointname
+     * @returns the data of the datapoint
+     */
     readdp(dp: string): LibraryStateVal {
         return this.stateDataBase[this.cleandp(dp)];
     }
 
+    /**
+     * Stores a datapoint in the state database
+     *
+     * @param dp datapoint name
+     * @param type type of the datapoint
+     * @param val the value
+     * @param stateType the state type
+     * @param [ack] ack flag
+     * @param [ts] timestamp
+     * @param [init] init flag
+     * @returns the new state
+     */
     setdb(
         dp: string,
         type: ioBroker.ObjectType,
@@ -423,12 +558,25 @@ export class Library extends BaseClass {
         return this.stateDataBase[dp];
     }
 
+    /**
+     * Delete all objects in data array
+     *
+     * @param data array of ioBroker objects
+     * @returns Promise that resolves when all objects are deleted
+     */
     async memberDeleteAsync(data: any[]): Promise<void> {
         for (const d of data) {
             await d.delete();
         }
     }
 
+    /**
+     * Clones a ioBroker object.
+     *
+     * @param obj the object to clone
+     * @returns the cloned object
+     * @throws {Error} if target is not an object
+     */
     cloneObject(obj: ioBroker.Object): ioBroker.Object {
         if (typeof obj !== 'object') {
             this.log.error(`Error clone object target is type: ${typeof obj}`);
@@ -437,6 +585,12 @@ export class Library extends BaseClass {
         return JSON.parse(JSON.stringify(obj));
     }
 
+    /**
+     * Deep clones a generic object.
+     *
+     * @param obj the object to clone
+     * @returns the cloned object
+     */
     cloneGenericObject(obj: object): object {
         if (typeof obj !== 'object') {
             this.log.error(`Error clone object target is type: ${typeof obj}`);
@@ -445,12 +599,43 @@ export class Library extends BaseClass {
         return JSON.parse(JSON.stringify(obj));
     }
 
-    async fileExistAsync(file: string): Promise<boolean> {
+    /**
+     * Checks if a file exists in the './admin/' directory.
+     *
+     * @param file - The name of the file to check.
+     * @returns True if the file exists, otherwise false.
+     */
+    fileExistAsync(file: string): boolean {
         if (_fs.existsSync(`./admin/${file}`)) {
             return true;
         }
         return false;
     }
+    /**
+     * Evaluate a jsonata command on given data.
+     *
+     * @param data The data which is used to evaluate the jsonata command.
+     * @param cmd The jsonata command or an object with multiple commands.
+     * @returns The result of the jsonata command. If the command is invalid or
+     * the jsonata command returns undefined, an empty string is returned. If
+     * an object with multiple commands is given, the result is an object with
+     * the same keys as the input object, but with the results of the jsonata
+     * commands as values. If an error occurs during evaluation, an error is
+     * logged and an empty string is returned for the corresponding key.
+     */
+
+    /**
+     * Evaluates a jsonata command on given data.
+     *
+     * @param data The data which is used to evaluate the jsonata command.
+     * @param cmd The jsonata command or an object with multiple commands.
+     * @returns The result of the jsonata command. If the command is invalid or
+     * the jsonata command returns undefined, an empty string is returned. If
+     * an object with multiple commands is given, the result is an object with
+     * the same keys as the input object, but with the results of the jsonata
+     * commands as values. If an error occurs during evaluation, an error is
+     * logged and an empty string is returned for the corresponding key.
+     */
     async readWithJsonata(
         data: object,
         cmd: { [key: string]: string } | string,
@@ -591,22 +776,48 @@ export class Library extends BaseClass {
         }
     }
 
+    /**
+     * Get the local language as a string
+     * The language is determined from the admin settings and is 'en-En' if no language is set
+     *
+     * @returns The local language as a string
+     */
     getLocalLanguage(): string {
         if (this.language) {
             return this.language;
         }
         return 'en-En';
     }
+    /**
+     * Return the translation of the given key
+     * If no translation is found the key itself is returned
+     *
+     * @param key The key to translate
+     * @returns The translated string
+     */
     getTranslation(key: string): string {
         if (this.translation[key] !== undefined) {
             return this.translation[key];
         }
         return key;
     }
+    /**
+     * Checks if a translation exists for the given key.
+     *
+     * @param key The key to check for translation.
+     * @returns True if the translation exists, otherwise false.
+     */
     existTranslation(key: string): boolean {
         return this.translation[key] !== undefined;
     }
 
+    /**
+     * Return the translation of the given key for all languages
+     * If no translation is found the key itself is returned
+     *
+     * @param key The key to translate
+     * @returns The translated string or a object with the translations for all languages
+     */
     async getTranslationObj(key: string): Promise<ioBroker.StringOrTranslated> {
         const language: (ioBroker.Languages | 'uk')[] = [
             'en',
@@ -638,6 +849,15 @@ export class Library extends BaseClass {
         return result as ioBroker.StringOrTranslated;
     }
 
+    /**
+     * Sets the language for all getTranslation and getTranslationObj calls.
+     * If the language does not exist, it will not be changed and an error message will be logged.
+     * If force is true, the language will be changed even if it is already set.
+     *
+     * @param language The language to set.
+     * @param force Set to true to force the language to be changed.
+     * @returns True if the language was changed, otherwise false.
+     */
     async setLanguage(language: ioBroker.Languages | 'uk', force = false): Promise<boolean> {
         if (!language) {
             language = 'en';
@@ -653,6 +873,12 @@ export class Library extends BaseClass {
         }
         return false;
     }
+    /**
+     * Sorts an array of strings in an alphabetical order, ignoring case.
+     *
+     * @param text The array of strings to sort.
+     * @returns The sorted array.
+     */
     sortText(text: string[]): string[] {
         text.sort((a, b) => {
             const nameA = a.toUpperCase(); // ignore upper and lowercase
@@ -697,6 +923,12 @@ export class Library extends BaseClass {
     }
 }
 
+/**
+ * Pauses execution for a specified amount of time.
+ *
+ * @param time The duration to sleep in milliseconds.
+ * @returns A promise that resolves after the specified duration.
+ */
 export async function sleep(time: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, time));
 }

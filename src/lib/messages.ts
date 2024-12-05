@@ -655,6 +655,16 @@ export class MessagesClass extends library.BaseClass {
         },
     };
     providerParent: Provider.ProviderClassType | null = null;
+    /**
+     * Creates a new MessagesClass object.
+     *
+     * @param adapter the adapter instance
+     * @param name the name of the object
+     * @param [provider] the provider object
+     * @param [data] the raw data of the warning
+     * @param pcontroller the provider controller
+     * @param [providerParent] the provider parent
+     */
     constructor(
         adapter: WeatherWarnings,
         name: string,
@@ -727,6 +737,11 @@ export class MessagesClass extends library.BaseClass {
             }
         }
     }
+    /**
+     * Update the formated Data.
+     *
+     * @returns the updated data
+     */
     async updateFormated(): Promise<customFormatedKR> {
         switch (this.provider ? this.provider.service : this.providerParent ? this.providerParent.service : 'default') {
             case 'dwdService':
@@ -840,7 +855,7 @@ export class MessagesClass extends library.BaseClass {
         }
 
         if (this.formatedData) {
-            msg = await this.getTemplates(tempid);
+            msg = this.getTemplates(tempid);
             if (tempid == -1) {
                 this.log.error(`${pushService.name}`, `No template for key: ${templateKey}!`);
             } else {
@@ -851,7 +866,7 @@ export class MessagesClass extends library.BaseClass {
         return this.returnMessage(msg, this.starttime, templateKey);
     }
 
-    private async getTemplates(tempid: number): Promise<string> {
+    private getTemplates(tempid: number): string {
         let msg = '';
         const templates = this.adapter.config.templateTable;
         if (!this.formatedData) {
@@ -1028,10 +1043,7 @@ export class MessagesClass extends library.BaseClass {
                               )) as keyof MessageType.customFormatedKeysDef)
                             : '';
                     if (obj.cmd !== undefined) {
-                        result = (await this.readWithTypescript(
-                            result,
-                            obj.cmd,
-                        )) as keyof MessageType.customFormatedKeysDef;
+                        result = this.readWithTypescript(result, obj.cmd) as keyof MessageType.customFormatedKeysDef;
                     }
                     // Handling for uwzService translations in jsons with different Names - but onl 1 Key here.
                     if (typeof result == 'object') {
@@ -1080,14 +1092,14 @@ export class MessagesClass extends library.BaseClass {
         for (let a = 0; a < this.adapter.config.templateTable.length; a++) {
             const t = this.adapter.config.templateTable[a];
             if (t.templateKey.startsWith('_')) {
-                this.formatedData[t.templateKey as keyof typeof this.formatedData] = await this.getTemplates(a);
+                this.formatedData[t.templateKey as keyof typeof this.formatedData] = this.getTemplates(a);
             }
         }
 
         return this.formatedData;
     }
 
-    async readWithTypescript(data: any, cmd: messageCmdType): Promise<string | number> {
+    readWithTypescript(data: any, cmd: messageCmdType): string | number {
         if (!this.rawWarning && !cmd) {
             throw new Error('readWithTypescript called without rawWarning or val!');
         }
@@ -1130,7 +1142,7 @@ export class MessagesClass extends library.BaseClass {
                 const color = this.adapter.config.icon_color || 'blue';
                 if (this.adapter.config.icons_prefix && this.adapter.config.icons_suffix) {
                     return this.adapter.config.icons_prefix + id + this.adapter.config.icons_suffix;
-                } else if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
+                } else if (this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
                     return `/adapter/${this.adapter.name}/icons/${color}/${id}.png`;
                 }
                 return '';
@@ -1251,7 +1263,7 @@ export class MessagesClass extends library.BaseClass {
         }
     }
     async delete(): Promise<void> {
-        super.delete();
+        await super.delete();
         this.rawWarning = undefined;
         this.formatedData = undefined;
         this.notDeleted = false;
@@ -1261,14 +1273,14 @@ export class MessagesClass extends library.BaseClass {
     async writeFormatedKeys(index: number): Promise<void> {
         if (this.notDeleted) {
             if (this.provider) {
-                this.library.writeFromJson(
+                await this.library.writeFromJson(
                     `${this.provider.name}.formatedKeys.${`00${index.toString()}`.slice(-2)}`,
                     `allService.formatedkeys`,
                     statesObjectsWarnings,
                     this.formatedData,
                 );
             } else if (this.providerParent) {
-                this.library.writeFromJson(
+                await this.library.writeFromJson(
                     `${this.providerParent.name}.formatedKeys.${`00${index.toString()}`.slice(-2)}`,
                     `allService.formatedkeys`,
                     statesObjectsWarnings,

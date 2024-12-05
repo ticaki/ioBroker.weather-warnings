@@ -26,11 +26,11 @@ export default [
         // as this improves maintainability. jsdoc warnings will not block buiuld process.
         rules: {
             // Note: you must disable the base rule as it can report incorrect errors
-            "require-await": "off",
-            "@typescript-eslint/require-await": "off",
+            //"require-await": "off",
+            //"@typescript-eslint/require-await": "error",
             "no-duplicate-imports": "off",
             "no-empty": "warn",
-            "jsdoc/require-jsdoc": 'off',
+            "jsdoc/require-jsdoc": 'warn',
         },
     },
     

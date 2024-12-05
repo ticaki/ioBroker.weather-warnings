@@ -66,15 +66,15 @@ export class BaseProvider extends BaseClass {
         this.customName = options.customName;
 
         this.noMessage = new MessagesClass(this.adapter, 'noMessage', null, {}, this.providerController, this);
-        this.noMessage.updateFormated();
+        this.noMessage.updateFormated().catch(() => {});
         const temp = this.library.cloneGenericObject(
             //@ts-expect-error ist vorhanden
             definitionen.statesObjectsWarnings[this.service]._channel,
         ) as ioBroker.DeviceObject;
         temp.common.name = name.toUpperCase();
-        this.library.writedp(`provider.${name}`, undefined, temp);
+        this.library.writedp(`provider.${name}`, undefined, temp).catch(() => {});
 
-        this.init();
+        this.init().catch(() => {});
     }
     async init(): Promise<void> {
         const temp = this.library.cloneGenericObject(definitionen.defaultChannel) as ioBroker.ChannelObject;
@@ -91,11 +91,11 @@ export class BaseProvider extends BaseClass {
             definitionen.genericStateObjects.formatedKeysDevice,
         );
 
-        this.setConnected(false);
+        this.setConnected(false).catch(() => {});
     }
 
     async delete(): Promise<void> {
-        super.delete();
+        await super.delete();
         this.rawData = null;
         await this.library.memberDeleteAsync(this.messages);
         this.messages = [];
@@ -347,7 +347,7 @@ export class BaseProvider extends BaseClass {
         );
     }
     /** Remove marked Messages. */
-    async clearMessages(): Promise<void> {
+    clearMessages(): void {
         for (let m = 0; m < this.messages.length; m++) {
             this.messages[m].newMessage = false;
             if (this.messages[m].notDeleted == false) {
@@ -357,12 +357,12 @@ export class BaseProvider extends BaseClass {
         }
     }
     async finishTurn(): Promise<void> {
-        this.adapter.library.writedp(
+        await this.adapter.library.writedp(
             `${this.name}.summary`,
             undefined,
             definitionen.genericStateObjects.summary._channel,
         );
-        this.adapter.library.writedp(
+        await this.adapter.library.writedp(
             `${this.name}.summary.warntypes`,
             this.messages.map(a => (a.formatedData ? a.formatedData.warntypegenericname : '')).join(', '),
             definitionen.genericStateObjects.summary.warntypes,
