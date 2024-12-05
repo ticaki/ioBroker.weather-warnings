@@ -827,10 +827,12 @@ export class MessagesClass extends library.BaseClass {
 
         return await this.updateFormatedData();
     }
+
     /**
-     * return true not filter message
+     * filters the message against a messageFilterType
      *
-     * @param filter
+     * @param filter messageFilterType
+     * @returns true if the message is not filtered, false otherwise
      */
     filter(filter: messageFilterType): boolean {
         if (filter.level && filter.level > this.level) {
@@ -842,6 +844,15 @@ export class MessagesClass extends library.BaseClass {
         return true;
     }
 
+    /**
+     * @description
+     * Returns a message object based on the templateKey and caches the result for 1 minute.
+     * If the templateKey is not found in the templateTable, it will log an error.
+     * If the this.formatedData is not set, it will return an empty message.
+     * @param templateKey The key of the template to use from the templateTable.
+     * @param pushService The notification service object.
+     * @returns A message object with the message text, start time and end time.
+     */
     async getMessage(templateKey: string, pushService: NotificationClass): Promise<NotificationType.MessageType> {
         let msg = '';
         const templates = this.adapter.config.templateTable;
@@ -1008,6 +1019,11 @@ export class MessagesClass extends library.BaseClass {
         return { startts: time, text: msg.replace(/\\+}/g, '}').replace(/\\+n/g, '\n'), template: template };
     };
 
+    /**
+     * Update the formated Data.
+     *
+     * @returns the updated data
+     */
     async updateFormatedData(): Promise<customFormatedKR> {
         if (!this.rawWarning) {
             throw new Error(`${this.log.getName()} error(165) rawWarning null or undefined!`);
@@ -1099,6 +1115,13 @@ export class MessagesClass extends library.BaseClass {
         return this.formatedData;
     }
 
+    /**
+     * Execute a command on the data of the raw warning.
+     *
+     * @param data the data to execute the command on
+     * @param cmd the command to execute
+     * @returns the result of the command
+     */
     readWithTypescript(data: any, cmd: messageCmdType): string | number {
         if (!this.rawWarning && !cmd) {
             throw new Error('readWithTypescript called without rawWarning or val!');
@@ -1229,19 +1252,36 @@ export class MessagesClass extends library.BaseClass {
         return '';
     }
 
-    //** Update rawWarning and dont delete message */
+    /**
+     * Update the raw warning data and then update the formated data as well.
+     *
+     * @param data - The new raw warning data
+     */
     async updateData(data: object): Promise<void> {
         this.rawWarning = data;
         this.notDeleted = true;
         await this.updateFormated();
     }
 
-    //** dont send a message and dont delete this*/
+    /**
+     * Resets the state of the message by marking it as not new and not deleted.
+     */
     silentUpdate(): void {
         this.newMessage = false;
         this.notDeleted = true;
     }
 
+    /**
+     * Calculate the time difference between the given time and now.
+     *
+     * @param time - The time to calculate the difference from
+     * @param typ - The type of countdown to return
+     *  - 'minutes': The number of minutes until the time
+     *  - 'hours': The number of hours until the time, including days
+     *  - 'full': A string in the format `'-DD:HH:MM'` or `'+DD:HH:MM'`
+     *  - 'future': `'-1'` if the time is in the past, `'1'` if the time is in the future
+     * @returns The calculated countdown
+     */
     getCountdown(time: number, typ: 'minutes' | 'hours' | 'full' | 'future'): string {
         const diff = time - Date.now();
         const remain = new Date(Math.abs(diff));
@@ -1262,6 +1302,12 @@ export class MessagesClass extends library.BaseClass {
             }
         }
     }
+
+    /**
+     * Delete the message and remove it from the list of active messages.
+     *
+     * @returns A promise that resolves when the deletion is complete.
+     */
     async delete(): Promise<void> {
         await super.delete();
         this.rawWarning = undefined;
@@ -1270,6 +1316,13 @@ export class MessagesClass extends library.BaseClass {
         this.newMessage = false;
         this.updated = false;
     }
+
+    /**
+     * Writes the formated warning keys to the state `*.formatedKeys.*`
+     *
+     * @param index The index of the message in the list of active messages
+     * @returns A promise that resolves when the write is complete
+     */
     async writeFormatedKeys(index: number): Promise<void> {
         if (this.notDeleted) {
             if (this.provider) {
@@ -1289,6 +1342,12 @@ export class MessagesClass extends library.BaseClass {
             }
         }
     }
+    /**
+     * Adds a formatted definition to the JSONata definitions map.
+     *
+     * @param key - The key under which the formatted definition will be stored.
+     * @param arg - The formatted definition to be added. If undefined, the function returns immediately.
+     */
     addFormatedDefinition(key: keyof customformatedKJDef, arg: customFormatedKDefSub | undefined): void {
         if (arg === undefined) {
             return;

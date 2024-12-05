@@ -48,6 +48,13 @@ export class BaseProvider extends BaseClass {
     customName: string = '';
     warncellIdString: string;
 
+    /**
+     * Initializes the provider.
+     *
+     * @param adapter The adapter instance.
+     * @param options The options for the provider.
+     * @param name The name of the provider.
+     */
     constructor(adapter: WeatherWarnings, options: ProviderOptionsTypeInternal, name: string) {
         let warncell =
             typeof options.warncellId == 'object' && Array.isArray(options.warncellId)
@@ -76,6 +83,13 @@ export class BaseProvider extends BaseClass {
 
         this.init().catch(() => {});
     }
+    /**
+     * Initializes the provider.
+     *
+     * Writes the channel and device objects, and sets the connection status to false.
+     *
+     * @returns A promise that resolves when initialization is complete.
+     */
     async init(): Promise<void> {
         const temp = this.library.cloneGenericObject(definitionen.defaultChannel) as ioBroker.ChannelObject;
         temp.common.name = this.customName;
@@ -94,6 +108,13 @@ export class BaseProvider extends BaseClass {
         this.setConnected(false).catch(() => {});
     }
 
+    /**
+     * Deletes the provider.
+     *
+     * Calls the parent's delete function, deletes all messages, and sets the connection status to false.
+     *
+     * @returns A promise that resolves when deletion is complete.
+     */
     async delete(): Promise<void> {
         await super.delete();
         this.rawData = null;
@@ -102,6 +123,12 @@ export class BaseProvider extends BaseClass {
         await this.setConnected(false);
     }
 
+    /**
+     * Returns the provider service of the provider.
+     *
+     * @throws if service is invalid
+     * @returns the provider service
+     */
     getService(): providerDef.providerServices {
         if (!this.service) {
             throw new Error(`baseProvider.getService service is ${this.service == '' ? `''` : `undefined`}`);
@@ -112,6 +139,12 @@ export class BaseProvider extends BaseClass {
         return statesObjectsWarnings[this.service][key];
     }*/
 
+    /**
+     * @param service providerDef.providerServices to set
+     * @returns true on success
+     * @throws if service is invalid
+     * @description Sets the provider service. Checks if service is valid.
+     */
     setService(service: providerDef.providerServices): boolean {
         if (
             !service ||
@@ -124,9 +157,15 @@ export class BaseProvider extends BaseClass {
     }
 
     /**
-     * @param url if '' url from PROVIDER_OPTIONS is taken
-     * @param keys [string] values to replace - placeholder #  # #+  +# #++  ++# and so on
-     * @param service
+     * Returns the URL for the provider, replacing placeholders with keys.
+     * If `url` is not given, the default URL for the provider is used.
+     * The placeholder is '#  #' and is replaced with each key in `keys`.
+     * The placeholder is then changed to '#+# #'#'.
+     *
+     * @param url the URL to use (default is the default URL for the provider)
+     * @param keys the keys to replace in the URL
+     * @param service the provider service
+     * @returns the resulting URL
      */
     static getUrl(url: string = '', keys: string[], service: keyof typeof definitionen.PROVIDER_OPTIONS): string {
         let result = '';
@@ -136,12 +175,18 @@ export class BaseProvider extends BaseClass {
             result = url;
         }
         let placeholder = '#  #';
-        for (const k in keys) {
-            result = result.replace(placeholder, keys[k]);
+        for (const k of keys) {
+            result = result.replace(placeholder, k);
             placeholder = `${placeholder.slice(0, 1)}+${placeholder.slice(1, -1)}+${placeholder.slice(-1)}`;
         }
         return result;
     }
+    /**
+     * Set the connection status for the provider.
+     *
+     * @param status - the status to set
+     * @returns a promise that resolves when the status is set
+     */
     async setConnected(status: boolean): Promise<void> {
         this.providerController.connection = this.providerController.connection || status;
         await this.library.writedp(
@@ -151,6 +196,14 @@ export class BaseProvider extends BaseClass {
         );
     }
 
+    /**
+     * Write the alerts to statesObjectsWarnings and returns the alerts as a
+     * genericWarntypeAlertJsonType.
+     *
+     * @param allReplys - the alerts to write, if not given, a new one is created
+     * @returns the alerts as a genericWarntypeAlertJsonType
+     * @throws if error occurs
+     */
     async getAlertsAndWrite(
         allReplys: messagesDef.genericWarntypeAlertJsonType | undefined = undefined,
     ): Promise<messagesDef.genericWarntypeAlertJsonType> {
@@ -176,8 +229,7 @@ export class BaseProvider extends BaseClass {
         }
         [reply, allReplys].forEach(reply => {
             let warntypeArray: string[] = [];
-            for (const a in this.messages) {
-                const m = this.messages[a];
+            for (const m of this.messages) {
                 if (!m) {
                     continue;
                 }
@@ -225,7 +277,17 @@ export class BaseProvider extends BaseClass {
 
         return allReplys!;
     }
-    // General function that retrieves data
+
+    /**
+     * Downloads data from the selected provider.
+     *
+     * Downloads data from the provider selected via service and warncellId.
+     * If useTestWarnings is set, test data will be returned.
+     * If the provider is unavailable, errors will be logged and the function will return null.
+     * If the provider does not send data, the lastUpdate state will not be updated.
+     *
+     * @returns  The data from the provider as a generic object.
+     */
     async getDataFromProvider(): Promise<providerDef.DataImportType> {
         if (!this.url || !this.warncellId) {
             this.log.debug(
@@ -238,7 +300,7 @@ export class BaseProvider extends BaseClass {
             }
 
             // show test mode in Info states
-            this.library.writedp(
+            await this.library.writedp(
                 `${this.name}.info.testMode`,
                 this.adapter.config.useTestWarnings,
                 definitionen.genericStateObjects.info.testMode,
@@ -257,7 +319,7 @@ export class BaseProvider extends BaseClass {
 
                 const result = typeof data.data == 'object' ? data.data : JSON.parse(data.data);
 
-                this.library.writedp(
+                await this.library.writedp(
                     `${this.name}.warning.warning_json`,
                     JSON.stringify(result),
                     definitionen.genericStateObjects.warnings_json,
@@ -270,9 +332,13 @@ export class BaseProvider extends BaseClass {
                         history = JSON.parse(state.val);
                     }
                     history.unshift(result);
-                    this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
+                    await this.library.writedp(
+                        dp,
+                        JSON.stringify(history),
+                        definitionen.genericStateObjects.jsonHistory,
+                    );
                 }
-                this.library.writedp(
+                await this.library.writedp(
                     `${this.name}.lastUpdate`,
                     Date.now(),
                     definitionen.genericStateObjects.lastUpdate,
@@ -292,7 +358,11 @@ export class BaseProvider extends BaseClass {
         await this.setConnected(false);
         return null;
     }
-    //** Called at the end of updateData() from every childclass */
+
+    /**
+     * after updating data, this function sorts the messages, deletes the messages that send a remove with a follow up and
+     * writes the formated keys to the states.
+     */
     async finishUpdateData(): Promise<void> {
         let index = -1;
         this.messages.sort((a, b) => {
@@ -334,11 +404,17 @@ export class BaseProvider extends BaseClass {
         );
     }
 
+    /**
+     * Writes the raw warning data to the states.
+     *
+     * @param data - raw warning data
+     * @param counter - counter of the raw warning
+     */
     async updateData(data: any, counter: number): Promise<void> {
         if (!data) {
             return;
         }
-        this.library.writedp(`${this.name}.warning`, undefined, definitionen.genericStateObjects.warningDevice);
+        await this.library.writedp(`${this.name}.warning`, undefined, definitionen.genericStateObjects.warningDevice);
         await this.library.writeFromJson(
             `${this.name}.warning.${`00${counter.toString()}`.slice(-2)}`,
             `${this.service}.raw`,
@@ -356,6 +432,13 @@ export class BaseProvider extends BaseClass {
             }
         }
     }
+    /**
+     * Called at the end of a turn.
+     *
+     * Writes the summary warning data to the states.
+     *
+     * @returns A Promise that resolves when the data has been written.
+     */
     async finishTurn(): Promise<void> {
         await this.adapter.library.writedp(
             `${this.name}.summary`,
@@ -370,8 +453,18 @@ export class BaseProvider extends BaseClass {
     }
 }
 
-// nuzte klassen um Daten zu parsen
+/**
+ * Represents a DWD provider.
+ *
+ * This class extends the [BaseProvider](cci:2://file:///home/tim/ioBroker.weather-warnings/src/lib/provider.ts:37:0-454:1) class and provides specific functionality for the DWD provider.
+ */
 export class DWDProvider extends BaseProvider {
+    /**
+     * Initializes the DWD provider.
+     *
+     * @param adapter The adapter instance.
+     * @param options The options for the provider.
+     */
     constructor(adapter: WeatherWarnings, options: StringProviderOptionsType) {
         super(adapter, { ...options, service: 'dwdService' }, `dwd`);
         this.warncellId = options.warncellId;
@@ -383,6 +476,11 @@ export class DWDProvider extends BaseProvider {
             definitionen.PROVIDER_OPTIONS.dwdService.url_language;
         this.url = DWDProvider.getUrl(url, [this.warncellId, options.language], this.service);
     }
+    /**
+     * Retrieves the data from the DWD provider and updates the messages array.
+     *
+     * @returns A Promise that resolves when the data has been written.
+     */
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as providerDef.dataImportDwdType;
         if (!result) {
@@ -460,13 +558,33 @@ export class DWDProvider extends BaseProvider {
     }
 }
 
+/**
+ * Represents a ZAMG provider.
+ *
+ * This class extends the BaseProvider class and provides specific functionality for the ZAMG provider.
+ */
 export class ZAMGProvider extends BaseProvider {
+    /**
+     * Initializes a new instance of the ZAMGProvider class.
+     *
+     * @param adapter The WeatherWarnings adapter instance.
+     * @param options The options for configuring the ZAMG provider, including warncellId and language.
+     */
     constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
         super(adapter, { ...options, service: 'zamgService' }, `zamg`);
         this.warncellId = options.warncellId;
         this.url = ZAMGProvider.getUrl('', [this.warncellId[0], this.warncellId[1], options.language], this.service);
     }
 
+    /**
+     * Updates the data for the ZAMG provider.
+     *
+     * Retrieves the data from the ZAMG server and updates the messages.
+     * If the filter is set to only show warnings in the next X hours, ignores the warnings that are outside of this time frame.
+     * Also ignores warnings that are already expired.
+     *
+     * @returns A promise that resolves when the update is complete.
+     */
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as providerDef.dataImportZamgType;
         if (!result) {
@@ -527,13 +645,34 @@ export class ZAMGProvider extends BaseProvider {
     }
 }
 
+/**
+ * Represents a UWZ provider.
+ *
+ * This class extends the BaseProvider class and provides specific functionality for the UWZ provider.
+ */
 export class UWZProvider extends BaseProvider {
+    /**
+     * Initializes the UWZ provider.
+     *
+     * @param adapter The adapter instance.
+     * @param options The options for the provider.
+     */
     constructor(adapter: WeatherWarnings, options: StringProviderOptionsType) {
         super(adapter, { ...options, service: 'uwzService' }, `uwz`);
         this.warncellId = options.warncellId.toUpperCase();
         this.url = BaseProvider.getUrl('', [this.warncellId, options.language], this.service);
     }
 
+    /**
+     * Gets the warncell for the given warncellId.
+     *
+     * The warncell is retrieved by querying the UWZ provider's API.
+     *
+     * @param warncellId The warncellId to retrieve the warncell for.
+     * @param service The service to use for retrieving the warncell.
+     * @param that The WeatherWarnings instance to use for logging errors.
+     * @returns The warncell for the given warncellId, or an empty string if no valid warncell could be found.
+     */
     static async getWarncell(
         warncellId: [string, string],
         service: providerDef.providerServices,
@@ -558,6 +697,15 @@ export class UWZProvider extends BaseProvider {
         }
         return '';
     }
+    /**
+     * Updates the data for the UWZ provider.
+     *
+     * Retrieves the data from the UWZ server and updates the messages.
+     * If the filter is set to only show warnings in the next X hours, ignores the warnings that are outside of this time frame.
+     * Also ignores warnings that are already expired.
+     *
+     * @returns A promise that resolves when the update is complete.
+     */
     async updateData(): Promise<void> {
         const result = (await this.getDataFromProvider()) as providerDef.dataImportUWZType;
         if (!result || !result.results || result.results == null) {
@@ -602,16 +750,45 @@ export class UWZProvider extends BaseProvider {
         await this.finishUpdateData();
     }
 }
+
+/**
+ * Represents a NINA provider.
+ *
+ * This class extends the BaseProvider class and provides specific functionality for the NINA provider.
+ */
 export class NINAProvider extends BaseProvider {
+    /**
+     * Initializes a new instance of the NINAProvider class.
+     *
+     * @param adapter The WeatherWarnings adapter instance.
+     * @param options The options for the provider.
+     */
     constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
         super(adapter, { ...options, service: 'ninaService' }, `nina`);
     }
 }
+
+/**
+ * Represents a METRO provider.
+ *
+ * This class extends the BaseProvider class and provides specific functionality for the METRO provider.
+ */
 export class METROProvider extends BaseProvider {
+    /**
+     * Initializes a new instance of the METROProvider class.
+     *
+     * @param adapter The WeatherWarnings adapter instance.
+     * @param options The options for the provider.
+     */
     constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
         super(adapter, { ...options, service: 'metroService' }, `nina`);
     }
 }
+/**
+ * Represents a provider controller.
+ *
+ * This class extends the BaseClass and provides functionality for managing providers.
+ */
 export class ProviderController extends BaseClass {
     providers: providerDef.ProviderClassType[] = [];
     notificationServices: NotificationClass.NotificationClass[] = [];
@@ -636,6 +813,11 @@ export class ProviderController extends BaseClass {
         forceOff: false,
         profil: [],
     };
+    /**
+     * Initializes a new instance of the ProviderController class.
+     *
+     * @param adapter The WeatherWarnings adapter instance.
+     */
     constructor(adapter: WeatherWarnings) {
         super(adapter, 'provider');
         this.library = this.adapter.library;
@@ -644,14 +826,23 @@ export class ProviderController extends BaseClass {
         this.noWarning.notDeleted = false;
         this.doEndOfUpdater.bind(this);
     }
+    /**
+     * Initializes the provider controller.
+     *
+     * Reads the config, sets some states and updates the formated data objects.
+     * Also sets the silent time based on the config.
+     *
+     * @returns A promise that resolves when initialization is complete.
+     */
     async init(): Promise<void> {
         this.pushOn = !this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
         this.refreshTime = this.adapter.config.refreshTime * 60000;
 
         const typeStates: string[] = [];
         for (const a in messagesDef.genericWarntyp) {
-            //@ts-expect-error dann so
-            typeStates[a] = this.library.getTranslation(messagesDef.genericWarntyp[a].name);
+            typeStates[parseInt(a)] = this.library.getTranslation(
+                messagesDef.genericWarntyp[a as unknown as keyof messagesDef.genericWarntypeType].name,
+            );
         }
         definitionen.statesObjectsWarnings.allService.formatedkeys.warntypegeneric.common.states = typeStates;
         //update FormatedDataObjects
@@ -737,7 +928,7 @@ export class ProviderController extends BaseClass {
                 );
             }
             definitionen.statesObjectsWarnings.allService.commands.silentTime.profil.common.states = profileNames;
-            this.library.writedp(
+            await this.library.writedp(
                 `commands.silentTime`,
                 undefined,
                 definitionen.statesObjectsWarnings.allService.commands.silentTime._channel,
@@ -812,11 +1003,12 @@ export class ProviderController extends BaseClass {
         }
         this.log.debug(JSON.stringify(result));*/
     }
+
     /**
-     * Create a notificationService
+     * Create notification services from the given configuration.
      *
-     * @param optionList specialcase: adapter == '' then it is createn anyway
-     * @returns
+     * @param optionList A dictionary of notification service configuration options.
+     * @returns A promise that resolves when the notification services have been created.
      */
     async createNotificationService(optionList: NotificationType.OptionsType): Promise<void> {
         for (const a in optionList) {
@@ -856,6 +1048,19 @@ export class ProviderController extends BaseClass {
         }
     }
 
+    /**
+     * Creates a new provider instance if it does not already exist.
+     *
+     * Checks the list of existing providers to see if one already exists with the specified
+     * `warncellId` and `service`. If no such provider exists, it creates a new provider
+     * instance based on the specified service type ('dwdService', 'uwzService', 'zamgService', or 'ninaService').
+     *
+     * Throws an error if the `warncellId` type does not match the expected type for the service.
+     *
+     * @param options - The options used to configure the provider, including `warncellId` and `service`.
+     * @returns The newly created provider instance or the existing provider if it already exists.
+     * @throws An error if the service type is not defined or if the `warncellId` type is incorrect.
+     */
     createProviderIfNotExist(options: ProviderOptionsType): providerDef.ProviderClassType {
         const index = this.providers.findIndex(
             p =>
@@ -921,8 +1126,13 @@ export class ProviderController extends BaseClass {
         return this.providers[index];
     }
 
+    /**
+     * Deletes the provider controller and all of its providers and notification services.
+     *
+     * @returns A promise that resolves when the deletion is complete.
+     */
     async delete(): Promise<void> {
-        super.delete();
+        await super.delete();
         await this.library.memberDeleteAsync(this.providers);
         await this.library.memberDeleteAsync(this.notificationServices);
         this.providers = [];
@@ -936,7 +1146,12 @@ export class ProviderController extends BaseClass {
         }
     }
 
-    updateEndless(that: ProviderController): void {
+    /**
+     * Updates all providers in endless loop.
+     *
+     * @param that - The provider controller to use.
+     */
+    async updateEndless(that: ProviderController): Promise<void> {
         if (that.adapter.config.useTestCase) {
             if (++that.testStatus > 3) {
                 that.testStatus = 1;
@@ -949,10 +1164,10 @@ export class ProviderController extends BaseClass {
             that.adapter.clearTimeout(that.refreshTimeRef);
         }
         if (that.providers.length == 0) {
-            that.setConnected(false);
+            await that.setConnected(false);
             return;
         }
-        updater(that);
+        updater(that).catch(() => {});
         async function updater(self: any, index: number = 0): Promise<void> {
             const that = self; //as ProviderController;
             if (that.unload) {
@@ -971,6 +1186,19 @@ export class ProviderController extends BaseClass {
             }
         }
     }
+    /**
+     * Periodically updates alerts in an endless loop.
+     *
+     * This function sets the `speakAllowed` status and checks for alerts.
+     * It avoids updating alerts on exact minute, second, and half-second intervals
+     * by scheduling the next update 1.333 seconds after the last full minute.
+     * If `endless` is true, it continues scheduling updates indefinitely.
+     *
+     * @param self - The current context, expected to be an instance of `ProviderController`.
+     * @param endless - A boolean indicating whether to continue updating alerts endlessly.
+     *                  Defaults to true.
+     * @returns A promise that resolves when the alert update is complete.
+     */
     async updateAlertEndless(self: any, endless: boolean = true): Promise<void> {
         const that = self as ProviderController;
         if (that.unload) {
@@ -985,10 +1213,18 @@ export class ProviderController extends BaseClass {
         }
     }
 
+    /**
+     * Updates the alerts for all providers.
+     *
+     * Iterates over all providers, calling their `getAlertsAndWrite` method and passing the result to the next provider.
+     * After all providers have been called, it writes the resulting alerts to the `allService.alerts` state.
+     *
+     * @returns A promise that resolves when the alerts have been written.
+     */
     async checkAlerts(): Promise<void> {
         let reply = undefined;
-        for (const p in this.providers) {
-            reply = await this.providers[p].getAlertsAndWrite(reply);
+        for (const p of this.providers) {
+            reply = await p.getAlertsAndWrite(reply);
         }
         if (reply !== undefined) {
             await this.library.writeFromJson(
@@ -1001,19 +1237,29 @@ export class ProviderController extends BaseClass {
         }
     }
 
+    /**
+     * Completes the update process for all providers.
+     *
+     * Sets the connection status and counts active messages across all providers.
+     * Writes the number of active warnings to the data points for each provider and the controller.
+     * If push notifications are enabled, sends notifications for new, removed, or all messages.
+     * Clears messages and finishes the turn for each provider.
+     *
+     * @returns A promise that resolves when the update process is complete.
+     */
     async doEndOfUpdater(): Promise<void> {
-        this.setConnected();
+        await this.setConnected();
         //await this.updateMesssages();
         this.activeMessages = 0;
-        for (const a in this.providers) {
+        for (const a of this.providers) {
             let am = 0;
-            for (const b in this.providers[a].messages) {
-                if (this.providers[a].messages[b].notDeleted) {
+            for (const b of a.messages) {
+                if (b.notDeleted) {
                     am++;
                 }
             }
-            this.adapter.library.writedp(
-                `${this.providers[a].name}.activeWarnings`,
+            await this.adapter.library.writedp(
+                `${a.name}.activeWarnings`,
                 am,
                 definitionen.genericStateObjects.activeWarnings,
             );
@@ -1035,9 +1281,20 @@ export class ProviderController extends BaseClass {
         this.providers.forEach(a => a.finishTurn());
         this.log.debug(`We have ${this.activeMessages} active messages.`);
     }
+    /**
+     * Returns true if there are providers.
+     *
+     * @returns If there are providers.
+     */
     providersExist(): boolean {
         return this.providers.length > 0;
     }
+    /**
+     * Sets the connection status.
+     *
+     * @param status - the status to set, defaults to the current status
+     * @returns a promise that resolves when the status is set
+     */
     async setConnected(status: boolean = this.connection): Promise<void> {
         await this.adapter.library.writedp(
             `info.connection`,
@@ -1046,6 +1303,17 @@ export class ProviderController extends BaseClass {
         );
     }
 
+    /**
+     * Handles the state push command for sending messages.
+     *
+     * This function listens for changes in the state that include the command
+     * 'commands.send_message.'. If such a command is detected, it attempts to
+     * send a message through the appropriate notification service.
+     *
+     * @param id - The identifier of the state change event.
+     * @returns A promise that resolves to a boolean indicating whether the
+     *          message was successfully sent through a notification service.
+     */
     async onStatePush(id: string): Promise<boolean> {
         if (!id.includes('commands.send_message.')) {
             return false;
@@ -1071,6 +1339,15 @@ export class ProviderController extends BaseClass {
         return result;
     }
 
+    /**
+     * Completes the initialization process by writing the state objects for commands.
+     *
+     * This function writes the commands channel and device objects, and sets up the
+     * send_message state objects for each notification service. Then, it subscribes to
+     * the commands state objects and cleans up any state objects that should not exist.
+     *
+     * @returns A promise that resolves when initialization is complete.
+     */
     async finishInit(): Promise<void> {
         for (const p of [...this.providers, this]) {
             const channel = `${
@@ -1123,6 +1400,17 @@ export class ProviderController extends BaseClass {
         }
     }
 
+    /**
+     * Handles the clearHistory command for sending messages.
+     *
+     * This function listens for changes in the state that include the command
+     * 'commands.send_message.'. If such a command is detected, it attempts to
+     * send a message through the appropriate notification service.
+     *
+     * @param id - The identifier of the state change event.
+     * @returns A promise that resolves to a boolean indicating whether the
+     *          message was successfully sent through a notification service.
+     */
     async clearHistory(id: string): Promise<boolean> {
         if (!id.endsWith('.clearHistory')) {
             return false;
@@ -1137,9 +1425,9 @@ export class ProviderController extends BaseClass {
             targets = [...this.providers, this];
         }
         let result = false;
-        for (const a in targets) {
+        for (const a of targets) {
             try {
-                const dp = `${targets[a].name}.history`;
+                const dp = `${a.name}.history`;
                 await this.adapter.library.writedp(dp, '[]', definitionen.genericStateObjects.history);
                 result = true;
             } catch (error: any) {
@@ -1152,6 +1440,12 @@ export class ProviderController extends BaseClass {
         return result;
     }
 
+    /**
+     * Set the forbidden directories for the library. This method is used to prevent certain states from being written to the database.
+     *
+     * @param allowedDirs - An object with the provider name as key and a boolean value for each datapoint category (warning, alerts, messages, formatedKeys).
+     *                     If the value is false, the corresponding datapoints will be forbidden.
+     */
     setAllowedDirs(allowedDirs: any): void {
         const dirs = [];
         for (const a in allowedDirs) {
@@ -1170,14 +1464,36 @@ export class ProviderController extends BaseClass {
             this.library.setForbiddenDirs(dirs);
         }
     }
+    /**
+     * Updates formatted data and writes formatted keys for messages across all providers.
+     *
+     * Iterates over each provider's messages and updates their formatted data.
+     * Also writes the formatted keys for each message up to the configured
+     * maximum number of raw warnings.
+     *
+     * @returns A promise that resolves when the messages have been updated.
+     */
     async updateMesssages(): Promise<void> {
-        for (const a in this.providers) {
-            for (let b = 0; b < this.providers[a].messages.length && b < this.adapter.config.numOfRawWarnings; b++) {
-                await this.providers[a].messages[b].updateFormatedData();
-                await this.providers[a].messages[b].writeFormatedKeys(Number(b));
+        for (const a of this.providers) {
+            for (let b = 0; b < a.messages.length && b < this.adapter.config.numOfRawWarnings; b++) {
+                await a.messages[b].updateFormatedData();
+                await a.messages[b].writeFormatedKeys(Number(b));
             }
         }
     }
+    /**
+     * Sets the speak allowed state based on the provided identifier or silent time profile.
+     *
+     * If an ID is provided, it updates the speak state for that ID if it exists in actionStates.
+     * If the ID's onlyAck property is true, the function returns immediately after writing the state.
+     *
+     * If no ID is provided or the silent time is in automatic mode, it checks the current time and
+     * day against the configured silent time profiles to determine if speaking is allowed.
+     * Updates the state if the allowed status has changed.
+     *
+     * @param id - (Optional) The identifier for the speak state to be updated.
+     * @returns A promise that resolves to true if the operation is successful.
+     */
     async setSpeakAllowed(id: string = ''): Promise<boolean> {
         if (id !== '') {
             id = id.replace(`${this.adapter.namespace}.`, '');
@@ -1185,7 +1501,7 @@ export class ProviderController extends BaseClass {
                 return false;
             }
             this.log.debug(`Set speak ${id.split('.').slice(-1).join('.')} to ${this.library.readdp(id)!.val}`);
-            this.library.writedp(id, this.library.readdp(id)!.val);
+            await this.library.writedp(id, this.library.readdp(id)!.val);
             if (definitionen.actionStates[id].onlyAck) {
                 return true;
             }
@@ -1235,14 +1551,39 @@ export class ProviderController extends BaseClass {
         }
         return true;
     }
+    /**
+     * Returns true if the silent time is in automatic mode, false otherwise.
+     *
+     * In automatic mode, the adapter will check the current time and day against the configured silent time profiles
+     * to determine if speaking is allowed. If not in automatic mode, the adapter will not check the silent time profiles
+     * and will allow speaking if the silent time commands are not defined.
+     *
+     * @returns true if the silent time is in automatic mode, false otherwise.
+     */
     isSilentAuto(): boolean {
         const result = this.library.readdp(`commands.silentTime.autoMode`);
         return result != undefined && !!result.val;
     }
+    /**
+     * Returns true if speaking is allowed, false otherwise.
+     *
+     * This method reads the value of the `commands.silentTime.isSpeakAllowed` state and returns its value.
+     * If the state is not defined, it returns true, meaning that speaking is allowed.
+     *
+     * @returns true if speaking is allowed, false otherwise.
+     */
     isSpeakAllowed(): boolean {
         const result = this.library.readdp(`commands.silentTime.isSpeakAllowed`);
         return (result != undefined && !!result.val) || result == undefined;
     }
+    /**
+     * Returns the currently active speak profile.
+     *
+     * This method reads the value of the `commands.silentTime.profil` state and returns its value.
+     * If the state is not defined or is not a number, it returns 0.
+     *
+     * @returns the currently active speak profile.
+     */
     getSpeakProfil(): number {
         const result = this.library.readdp(`commands.silentTime.profil`);
         return result != undefined && typeof result.val == 'number' ? result.val : 0;

@@ -2,54 +2,92 @@ import type { MessagesClass } from '../messages';
 import type { customChannelType } from './definition';
 import type { providerServices } from './provider-def';
 
-/**
- * Bezeichnungen die in Template verwendet werden können ohne "?:string;""
- * Erste Buchstabe großgeschrieben erzeugt auch im Ergebnis, das der erste Buchstabe großgeschrieben ist.
- * Ist der letzte Buchstabe großgeschrieben, wird die komplette Zeichenkette in Großbuchstaben umgewandelt.
- */
 export type customFormatedTokens = {
+    // eslint-disable-next-line
     starttime: string; // Start Uhrzeit HH:MM
+    // eslint-disable-next-line
     startdate: string; // Start Datum DD.MM
+    // eslint-disable-next-line
     startday: string;
+    // eslint-disable-next-line
     startmonth: string;
+    // eslint-disable-next-line
     startdaytime: string;
+    // eslint-disable-next-line
     startadverb: string;
+    // eslint-disable-next-line
     endtime: string; // Endzeitpunkt
+    // eslint-disable-next-line
     enddate: string; // Enddatum
+    // eslint-disable-next-line
     endday: string;
+    // eslint-disable-next-line
     endmonth: string;
+    // eslint-disable-next-line
     enddaytime: string;
+    // eslint-disable-next-line
     startdayofweek: string; // Start Tag der Woche
+    // eslint-disable-next-line
     enddayofweek: string; // End Tag der Woche
+    // eslint-disable-next-line
     startdayofweekshort: string; // Start Tag der Woche (kurz)
+    // eslint-disable-next-line
     enddayofweekshort: string; // End Tag der Woche (kurz)
+    // eslint-disable-next-line
     headline: string; // Schlagzeile
+    // eslint-disable-next-line
     description: string; // Beschreibung
+    // eslint-disable-next-line
     impact: string; // nur Zamg Auswirkungen
+    // eslint-disable-next-line
     ceiling: string; // max höhe
+    // eslint-disable-next-line
     altitude: string; // min höhe
+    // eslint-disable-next-line
     warnlevelname: string; // Textbezeichnung des Levels
+    // eslint-disable-next-line
     warnlevelnumber: string; // Levelhöhe
+    // eslint-disable-next-line
     warnlevelcolorname: string; // Farbbezeichnung des Levels
+    // eslint-disable-next-line
     warnlevelcolorhex: string; // RGB im Hexformat
+    // eslint-disable-next-line
     warntypename: string; // gelieferter Warntype
+    // eslint-disable-next-line
     warntypegenericname: string; // vereinheitlichter Warntyp
+    // eslint-disable-next-line
     warntypegeneric: string;
+    // eslint-disable-next-line
     location: string; // gelieferte Location (meinst Unsinn)
+    // eslint-disable-next-line
     instruction: string; // Anweisungen
+    // eslint-disable-next-line
     provider: string;
+    // eslint-disable-next-line
     locationcustom: string;
+    // eslint-disable-next-line
     countdown: string;
+    // eslint-disable-next-line
     cdminute: string;
+    // eslint-disable-next-line
     cdhour: string;
+    // eslint-disable-next-line
     cdfuture: string;
+    // eslint-disable-next-line
     status: string;
+    // eslint-disable-next-line
     starttimems: number;
+    // eslint-disable-next-line
     endtimems: number;
+    // eslint-disable-next-line
     iconurl: string;
+    // eslint-disable-next-line
     warningcount: string;
+    // eslint-disable-next-line
     htmlicon: string;
+    // eslint-disable-next-line
     weatheremoji: string;
+    // eslint-disable-next-line
     zamgdayPeriod: string;
 };
 
@@ -240,6 +278,13 @@ export const genericWarntypState: genericWarntypeStatesType = {
         native: {},
     },
 };
+/**
+ * Checks if the given key is part of the given object.
+ *
+ * @param key - the key to check
+ * @param obj - the object to check in
+ * @returns true if key is part of obj, false otherwise
+ */
 export function isKeyOfObject<T extends object>(key: string | number | symbol, obj: T): key is keyof T {
     return key in obj;
 }
@@ -291,8 +336,11 @@ type genericWarnTypNameJsonType = {
     fog: string;
     thaw: string;
 };
+
 export type notificationMessageType = {
+    /** An object that maps string keys to string values. */
     msgs: { [key: string]: string };
+    /** An object that maps string keys to string values. */
     obj: MessagesClass | null;
 };
 /*type genericWarnTypNameType =
@@ -421,6 +469,14 @@ export const warnTypeIconsBase64: Partial<Record<keyof genericWarntypeType, stri
     12: '<img src="data:image/png;base64,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" />',
 };
 
+/**
+ * Checks if a warning type is in a filter array.
+ *
+ * @param p - The provider service.
+ * @param f - The filter array.
+ * @param o - The warning type.
+ * @returns true if the warning type is in the filter array.
+ */
 export function filterWarntype(p: providerServices, f: number[], o: number): boolean {
     for (const i in genericWarntyp) {
         const id = i as unknown as keyof genericWarntypeType;
