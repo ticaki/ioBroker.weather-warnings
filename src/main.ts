@@ -56,13 +56,10 @@ class WeatherWarnings extends utils.Adapter {
         while (i++ < 2) {
             const allowedDirs = this.config.allowedDirs;
 
-            for (const a in providerDef.providerServicesArray) {
+            for (const a of providerDef.providerServicesArray) {
                 let hit = -1;
-                for (const b in allowedDirs) {
-                    if (
-                        allowedDirs[b].providerService ==
-                        providerDef.providerServicesArray[a].replace('Service', '').toUpperCase()
-                    ) {
+                for (const b of allowedDirs) {
+                    if (b.providerService == a.replace('Service', '').toUpperCase()) {
                         hit = Number(b);
                         break;
                     }
@@ -70,7 +67,7 @@ class WeatherWarnings extends utils.Adapter {
                 if (hit == -1) {
                     change = true;
                     this.config.allowedDirs.push({
-                        providerService: providerDef.providerServicesArray[a].replace('Service', '').toUpperCase(),
+                        providerService: a.replace('Service', '').toUpperCase(),
                         dpWarning: true,
                         dpMessage: true,
                         dpFormated: true,
@@ -78,8 +75,7 @@ class WeatherWarnings extends utils.Adapter {
                     });
                 }
                 //@ts-expect-error dann so
-                allowedDirsConfig[providerDef.providerServicesArray[a]] =
-                    this.config.allowedDirs[hit == -1 ? this.config.allowedDirs.length - 1 : hit];
+                allowedDirsConfig[a] = this.config.allowedDirs[hit == -1 ? this.config.allowedDirs.length - 1 : hit];
             }
             if (providerDef.providerServicesArray.length != this.config.allowedDirs.length) {
                 this.config.allowedDirs = [];
@@ -114,10 +110,10 @@ class WeatherWarnings extends utils.Adapter {
                 let reply = 'Tokens:\n';
                 const keys = Object.keys(messagesDef.customFormatedTokensJson);
                 keys.sort();
-                for (const a in keys) {
-                    reply += `\${${keys[a]}}: ${this.library.getTranslation(
+                for (const a of keys) {
+                    reply += `\${${a}}: ${this.library.getTranslation(
                         statesObjectsWarnings.allService.formatedkeys[
-                            keys[a] as keyof typeof statesObjectsWarnings.allService.formatedkeys
+                            a as keyof typeof statesObjectsWarnings.allService.formatedkeys
                         ].common.name as string,
                     )}\n`;
                 }
@@ -260,8 +256,8 @@ class WeatherWarnings extends utils.Adapter {
                 self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 60000} minutes`);
 
                 const notificationServiceOpt: NotificationType.OptionsType = {};
-                for (const a in NotificationType.Array) {
-                    const notificationService = NotificationType.Array[a];
+                for (const n of NotificationType.Array) {
+                    const notificationService = n;
                     if (self.config[`${notificationService}_Enabled` as keyof ioBroker.AdapterConfig]) {
                         const service: providerDef.providerServices[] = [];
                         if (self.config[`${notificationService}_DwdEnabled` as keyof ioBroker.AdapterConfig]) {
@@ -397,8 +393,10 @@ class WeatherWarnings extends utils.Adapter {
                     notificationServiceOpt.pushover.device = self.config.pushover_Device || '';
                 }
                 if (self.config.json_Enabled && notificationServiceOpt.json != undefined) {
+                    // empty
                 }
                 if (self.config.history_Enabled && notificationServiceOpt.history != undefined) {
+                    // empty
                 }
                 if (self.config.email_Enabled && notificationServiceOpt.email != undefined) {
                     notificationServiceOpt.email.actions.header = self.config.email_Header;
@@ -443,8 +441,7 @@ class WeatherWarnings extends utils.Adapter {
                     return;
                 }
                 // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
-                for (const a in self.config.dwdwarncellTable) {
-                    const id = self.config.dwdwarncellTable[a];
+                for (const id of self.config.dwdwarncellTable) {
                     if (self.config.dwdEnabled) {
                         if (isNaN(id.dwdSelectId) || Number(id.dwdSelectId) < 10000) {
                             self.log.warn(`DWD "${id.dwdSelectId}" warning cell is invalid.`);
@@ -471,8 +468,7 @@ class WeatherWarnings extends utils.Adapter {
                     }
                 }
 
-                for (const a in self.config.zamgwarncellTable) {
-                    const id = self.config.zamgwarncellTable[a];
+                for (const id of self.config.zamgwarncellTable) {
                     if (self.config.zamgEnabled && id && typeof id.zamgSelectId == 'string' && id.zamgSelectId) {
                         self.log.info('ZAMG activated. Retrieve data.');
                         const options: providerDef.messageFilterTypeWithFilter & {
@@ -498,14 +494,13 @@ class WeatherWarnings extends utils.Adapter {
                     }
                 }
                 const tempTable: any = JSON.parse(JSON.stringify(self.config.uwzwarncellTable));
-                for (const a in self.config.uwzwarncellTable) {
-                    const id = self.config.uwzwarncellTable[a];
+                for (const id of self.config.uwzwarncellTable) {
                     if (self.config.uwzEnabled) {
                         if (
                             (id && typeof id.uwzSelectId == 'string' && id.uwzSelectId.split('/').length == 2) ||
-                            (tempTable[a].realWarncell && typeof tempTable[a].realWarncell === 'string')
+                            (id.realWarncell && typeof id.realWarncell === 'string')
                         ) {
-                            if (!tempTable[a].realWarncell) {
+                            if (!id.realWarncell) {
                                 const tempWarncell = await providerDef.UWZProvider.getWarncell(
                                     id.uwzSelectId.split('/') as [string, string],
                                     'uwzService',
@@ -516,7 +511,7 @@ class WeatherWarnings extends utils.Adapter {
                                 }
 
                                 if (tempWarncell) {
-                                    tempTable[a].realWarncell = tempWarncell;
+                                    id.realWarncell = tempWarncell;
                                 }
                             }
                             const options: providerDef.messageFilterTypeWithFilter = {
@@ -526,7 +521,7 @@ class WeatherWarnings extends utils.Adapter {
                                     hours: self.config.uwzHourFilter,
                                 },
                             };
-                            if (!tempTable[a].realWarncell || typeof tempTable[a].realWarncell !== 'string') {
+                            if (!id.realWarncell || typeof id.realWarncell !== 'string') {
                                 self.log.warn(`Dont find a UWZ warncell for ${id.uwzSelectId}!`);
                                 continue;
                             }
@@ -534,14 +529,14 @@ class WeatherWarnings extends utils.Adapter {
                             self.providerController.createProviderIfNotExist({
                                 ...options,
                                 service: 'uwzService',
-                                warncellId: tempTable[a].realWarncell,
+                                warncellId: id.realWarncell,
                                 providerController: self.providerController,
                                 language: self.config.uwzLanguage,
                                 customName: id.uwzCityname,
                             });
                         } else {
                             self.log.warn(
-                                `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${tempTable[a].realWarncell}`,
+                                `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${id.realWarncell}`,
                             );
                         }
                     }
@@ -558,15 +553,13 @@ class WeatherWarnings extends utils.Adapter {
                 const holdStates = [];
                 const holdStates2 = [];
                 const reCheckStates = [];
-                for (const a in self.providerController.providers) {
-                    holdStates.push(self.providerController.providers[a].name);
-                    reCheckStates.push(`${self.providerController.providers[a].name}.formatedKeys`);
-                    reCheckStates.push(`${self.providerController.providers[a].name}..warning`);
+                for (const a of self.providerController.providers) {
+                    holdStates.push(a.name);
+                    reCheckStates.push(`${a.name}.formatedKeys`);
+                    reCheckStates.push(`${a.name}..warning`);
                     for (let b = 0; b < self.config.numOfRawWarnings; b++) {
-                        holdStates2.push(
-                            `${self.providerController.providers[a].name}.formatedKeys.${`00${b}`.slice(-2)}`,
-                        );
-                        holdStates2.push(`${self.providerController.providers[a].name}..warning.${`00${b}`.slice(-2)}`);
+                        holdStates2.push(`${a.name}.formatedKeys.${`00${b}`.slice(-2)}`);
+                        holdStates2.push(`${a.name}..warning.${`00${b}`.slice(-2)}`);
                     }
                 }
                 holdStates.push('commands.');
@@ -580,7 +573,7 @@ class WeatherWarnings extends utils.Adapter {
 
                 await self.providerController.finishInit();
 
-                self.providerController.updateEndless(self.providerController);
+                self.providerController.updateEndless(self.providerController).catch(() => {});
                 await self.providerController.updateAlertEndless(self.providerController);
             },
             2000,
@@ -589,17 +582,18 @@ class WeatherWarnings extends utils.Adapter {
     }
 
     /**
-     * Is called when adapter shuts down - callback has to be called under any circumstances!
+     * Is called when the adapter is unloaded.
      *
-     * @param callback
+     * @param callback - function that must be called when the unload is finished.
+     *                  The callback is called with one argument: `null`.
      */
-    private onUnload(callback: () => void): void {
+    private async onUnload(callback: () => void): Promise<void> {
         try {
             if (this.startDelay) {
                 this.clearTimeout(this.startDelay);
             }
             if (this.providerController) {
-                this.providerController.delete();
+                await this.providerController.delete();
             }
             callback();
         } catch {
@@ -608,10 +602,11 @@ class WeatherWarnings extends utils.Adapter {
     }
 
     /**
-     * Respond to language changes.
+     * Is called when an object is changed
      *
-     * @param id
-     * @param obj
+     * @param id - id of the object that changed
+     * @param obj - the changed object
+     * @returns - a promise that resolves to void
      */
     private async onObjectChange(id: string, obj: ioBroker.Object | null | undefined): Promise<void> {
         if (obj) {
@@ -627,11 +622,11 @@ class WeatherWarnings extends utils.Adapter {
     }
 
     /**
-     * Is called if a subscribed state changes
-     * We need this later, dont remove
+     * Is called when a state changes
      *
-     * @param id
-     * @param state
+     * @param id - id of the state that changed
+     * @param state - the new state
+     * @returns - a promise that resolves to void
      */
     private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
         if (!state) {
@@ -653,12 +648,6 @@ class WeatherWarnings extends utils.Adapter {
         }
     }
 
-    /**
-     * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-     * Using this method requires "common.messagebox" property to be set to true in io-package.json
-     *
-     * @param obj
-     */
     private async onMessage(obj: ioBroker.Message): Promise<void> {
         if (typeof obj === 'object' && obj.message) {
             console.log(`Retrieve ${obj.command} from ${obj.from} message: ${JSON.stringify(obj)}`);
@@ -801,8 +790,7 @@ class WeatherWarnings extends utils.Adapter {
                                     value: `none`,
                                 },
                             ];
-                            for (const a in templates) {
-                                const t = templates[a];
+                            for (const t of templates) {
                                 if (t.templateKey !== '' && !t.templateKey.startsWith('_')) {
                                     reply.push({
                                         label: `${t.templateKey}`,

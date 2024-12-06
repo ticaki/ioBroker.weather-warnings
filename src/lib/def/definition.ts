@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 import * as messagesDef from './messages-def';
 import type * as notificationServiceDef from './notificationService-def';
 import type * as providerDef from './provider-def';

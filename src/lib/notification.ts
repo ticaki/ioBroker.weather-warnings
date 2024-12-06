@@ -5,6 +5,9 @@ import * as library from './library';
 import type * as Provider from './def/provider-def';
 import { filterWarntype } from './def/messages-def';
 
+/**
+ * Represents a notification class.
+ */
 export class NotificationClass extends library.BaseClass {
     options: NotificationType.BaseType;
     takeThemAll = false;
@@ -13,6 +16,12 @@ export class NotificationClass extends library.BaseClass {
 
     //clearAll(): void {}
 
+    /**
+     * Creates a new notification class.
+     *
+     * @param adapter The adapter instance.
+     * @param notifcationOptions The options for the notification service.
+     */
     constructor(adapter: WeatherWarnings, notifcationOptions: NotificationType.BaseType) {
         super(adapter, notifcationOptions.name);
 
@@ -47,17 +56,17 @@ export class NotificationClass extends library.BaseClass {
                     );
                     if (this.adapter.providerController) {
                         const targets = [...providers, this.adapter.providerController];
-                        for (const a in targets) {
+                        for (const a of targets) {
                             switch (this.options.name as NotificationType.Type) {
                                 case 'history':
                                     {
-                                        dp = `${targets[a].name}.history`;
+                                        dp = `${a.name}.history`;
                                         def = genericStateObjects.history;
                                     }
                                     break;
                                 case 'json':
                                     {
-                                        dp = `${targets[a].name}.activeWarnings_json`;
+                                        dp = `${a.name}.activeWarnings_json`;
                                         def = genericStateObjects.activeWarningsJson;
                                     }
                                     break;
@@ -74,13 +83,11 @@ export class NotificationClass extends library.BaseClass {
     }
 
     /**
-     *  Send this message after filtering to services
+     * Sends notifications based on the `allowActions` array.
      *
-     * @param messages the message with MessageClassRef Ref can be null
-     * @param providers
-     * @param allowActions <string>[] array new, remove, removeall, all - to allow this action
-     * @param manual <boolean> manual new/removeall handling
-     * @returns
+     * @param providers - The providers to get messages from.
+     * @param allowActions - The actions that are allowed to be sent.
+     * @param manual - If true, sends all messages, otherwise only sends messages that have changed.
      */
     async sendMessage(
         providers: Provider.BaseProvider[],
@@ -96,17 +103,16 @@ export class NotificationClass extends library.BaseClass {
         const actions = this.options.actions;
         let result: NotificationType.MessageType[] = [];
         const notifications = this.options.notifications;
-        for (const a in providers) {
-            if (this.options.service.indexOf(providers[a].service) == -1) {
+        for (const a of providers) {
+            if (this.options.service.indexOf(a.service) == -1) {
                 continue;
             }
 
-            for (const b in providers[a].messages) {
-                const message = providers[a].messages[b];
+            for (const message of a.messages) {
                 if (
                     message &&
                     (filter.level === undefined || filter.level <= message.level) &&
-                    !filterWarntype(providers[a].service, filter.type, message.type)
+                    !filterWarntype(a.service, filter.type, message.type)
                 ) {
                     if (message.notDeleted) {
                         activeWarnings++;
@@ -150,7 +156,7 @@ export class NotificationClass extends library.BaseClass {
                             const msg = await message.getMessage(templateKey, this);
                             if (msg.text != '') {
                                 msg.action = action;
-                                msg.provider = providers[a];
+                                msg.provider = a;
                                 msg.message = message;
                                 if (
                                     notifications.includes('title') &&
@@ -265,6 +271,12 @@ export class NotificationClass extends library.BaseClass {
         }
     }
 
+    /**
+     * Returns true if the given notification service is allowed to send notifications.
+     *
+     * For some services like alexa2 and sayit, the result of `isSpeakAllowed` is used.
+     * For all other services, always true is returned.
+     */
     allowSending(): boolean {
         switch (this.options.name) {
             case 'telegram':
@@ -283,12 +295,27 @@ export class NotificationClass extends library.BaseClass {
         return true;
     }
 
+    /**
+     * Checks if the given notification service is allowed to send manual messages.
+     *
+     * A notification service is allowed to send manual messages if its configuration
+     * includes at least one of the following actions: 'manualAll', 'removeManualAll'.
+     *
+     * @returns true if the given notification service is allowed to send manual messages, false otherwise.
+     */
     canManual(): boolean {
         if (this.options.notifications.findIndex(a => NotificationType.manual.indexOf(a) != -1) != -1) {
             return true;
         }
         return false;
     }
+    /**
+     * Goes through all messages and removes unwanted information from sayit and alexa2 messages.
+     * This function is used to clean up the messages before sending them to the user.
+     *
+     * @param messages The array of messages to clean up.
+     * @returns The cleaned up messages.
+     */
     cleanupMessage(messages: NotificationType.MessageType[]): NotificationType.MessageType[] {
         for (const message of messages) {
             if (message === null || message == undefined) {
@@ -356,6 +383,20 @@ export class NotificationClass extends library.BaseClass {
         return messages;
     }
 
+    /**
+     * @description Send notifications based on the settings of the adapter.
+     * @param  messages - The messages to be sent.
+     * @returns A promise that resolves to True if the sending was successful, false if not.
+     * @example
+     * adapter.sendNotifications([
+     *     {
+     *         text: 'Hello World',
+     *     },
+     *     {
+     *         text: 'Hello Universe',
+     *     },
+     * ]);
+     */
     async sendNotifications(messages: NotificationType.MessageType[]): Promise<boolean> {
         if (!Array.isArray(messages) || messages.length == 0) {
             this.log.debug(`no messages`);
@@ -601,9 +642,9 @@ export class NotificationClass extends library.BaseClass {
                             }
                         }
                         const targets = [msg.provider.name, msg.provider.providerController.name];
-                        for (const a in targets) {
+                        for (const a of targets) {
                             try {
-                                const dp = `${targets[a]}.history`;
+                                const dp = `${a}.history`;
                                 const state = this.adapter.library.readdp(dp);
                                 let json: object[] = [];
                                 if (state && state.val && typeof state.val == 'string' && state.val != '') {
@@ -634,20 +675,18 @@ export class NotificationClass extends library.BaseClass {
                     // testrun to get a good error
                     let result: any[] = [];
                     let providers: string[] = [];
-                    for (const a in messages) {
+                    for (const msg of messages) {
                         try {
-                            const temp = this.adapter.config.json_parse
-                                ? JSON.parse(messages[a].text)
-                                : messages[a].text;
+                            const temp = this.adapter.config.json_parse ? JSON.parse(msg.text) : msg.text;
                             result.push({
-                                startts: messages[a].startts,
+                                startts: msg.startts,
                                 message: temp,
-                                provider: messages[a].provider,
+                                provider: msg.provider,
                             });
-                            providers.push(messages[a].provider !== undefined ? messages[a].provider.name : '');
+                            providers.push(msg.provider !== undefined ? msg.provider.name : '');
                         } catch {
                             this.log.error(
-                                `Json template has wrong formate. Conversion deactivated! template: ${messages[a].template}, message: ${messages[a].text}`,
+                                `Json template has wrong formate. Conversion deactivated! template: ${msg.template}, message: ${msg.text}`,
                             );
                             this.adapter.config.json_parse = false;
                             continue;

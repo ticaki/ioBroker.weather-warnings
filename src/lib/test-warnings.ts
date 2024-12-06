@@ -1,6 +1,11 @@
 import type WeatherWarnings from '../main';
 import type { DataImportType } from './def/provider-def';
 
+/**
+ * Returns true, if test data shall be used.
+ *
+ * @returns useTestData - true or false
+ */
 export function useTestData(): boolean {
     return true;
 }
@@ -442,11 +447,23 @@ const testData = {
         type: 'Feature',
     },
 };
+/**
+ * Returns test data for a specific service. The test data is modified in various ways according to the value of
+ * `_that.providerController!.testStatus`:
+ * - 0: Return the test data unchanged.
+ * - 1: Return the test data with the expiration time of each feature randomly shifted forward in time.
+ * - 2: Return the test data with half of the features randomly removed.
+ * - 3: Return the test data with all features removed.
+ *
+ * @param service The name of the service to return test data for.
+ * @param _that The WeatherWarnings instance to get the test status from.
+ * @returns The test data for the specified service.
+ */
 export function getTestData(service: string, _that: WeatherWarnings): DataImportType {
     const result = JSON.parse(JSON.stringify(testData));
     const random = Math.round(Math.random());
     if (service == 'dwdService') {
-        for (const i in testData.dwdService.features) {
+        for (let i = 0; i < testData.dwdService.features.length; i++) {
             if (_that.providerController!.testStatus == 2) {
                 if (Number(i) % 2 == random) {
                     result.dwdService.features[i] = null;
@@ -475,7 +492,7 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
         }
         return result.dwdService as unknown as DataImportType;
     } else if (service == 'uwzService') {
-        for (const i in testData.uwzService.results) {
+        for (let i = 0; i < testData.uwzService.results.length; i++) {
             if (_that.providerController!.testStatus == 2) {
                 if (Number(i) % 2 == random) {
                     result.uwzService.results[i] = null;
@@ -504,7 +521,7 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
         }
         return result.uwzService as unknown as DataImportType;
     } else if (service == 'zamgService') {
-        for (const i in testData.zamgService.properties.warnings) {
+        for (let i = 0; i < testData.zamgService.properties.warnings.length; i++) {
             if (_that.providerController!.testStatus == 2) {
                 if (Number(i) % 2 == random) {
                     result.zamgService.properties.warnings[i] = null;

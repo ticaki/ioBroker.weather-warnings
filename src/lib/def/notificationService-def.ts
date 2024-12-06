@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 import type { MessagesClass } from '../messages';
 import type * as NotificationType from './notificationService-def';
 import type { ProviderClassType, messageFilterType, providerServices } from './provider-def';
