@@ -451,7 +451,7 @@ function getTestData(service, _that) {
   const result = JSON.parse(JSON.stringify(testData));
   const random = Math.round(Math.random());
   if (service == "dwdService") {
-    for (const i in testData.dwdService.features) {
+    for (let i = 0; i < testData.dwdService.features.length; i++) {
       if (_that.providerController.testStatus == 2) {
         if (Number(i) % 2 == random) {
           result.dwdService.features[i] = null;
@@ -480,7 +480,7 @@ function getTestData(service, _that) {
     }
     return result.dwdService;
   } else if (service == "uwzService") {
-    for (const i in testData.uwzService.results) {
+    for (let i = 0; i < testData.uwzService.results.length; i++) {
       if (_that.providerController.testStatus == 2) {
         if (Number(i) % 2 == random) {
           result.uwzService.results[i] = null;
@@ -509,7 +509,7 @@ function getTestData(service, _that) {
     }
     return result.uwzService;
   } else if (service == "zamgService") {
-    for (const i in testData.zamgService.properties.warnings) {
+    for (let i = 0; i < testData.zamgService.properties.warnings.length; i++) {
       if (_that.providerController.testStatus == 2) {
         if (Number(i) % 2 == random) {
           result.zamgService.properties.warnings[i] = null;

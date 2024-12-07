@@ -649,6 +649,16 @@ class MessagesClass extends library.BaseClass {
     }
   };
   providerParent = null;
+  /**
+   * Creates a new MessagesClass object.
+   *
+   * @param adapter the adapter instance
+   * @param name the name of the object
+   * @param [provider] the provider object
+   * @param [data] the raw data of the warning
+   * @param pcontroller the provider controller
+   * @param [providerParent] the provider parent
+   */
   constructor(adapter, name, provider, data, pcontroller, providerParent = null) {
     super(adapter, name);
     if (!data && provider) {
@@ -713,6 +723,11 @@ class MessagesClass extends library.BaseClass {
       }
     }
   }
+  /**
+   * Update the formated Data.
+   *
+   * @returns the updated data
+   */
   async updateFormated() {
     switch (this.provider ? this.provider.service : this.providerParent ? this.providerParent.service : "default") {
       case "dwdService":
@@ -806,9 +821,10 @@ class MessagesClass extends library.BaseClass {
     return await this.updateFormatedData();
   }
   /**
-   * return true not filter message
+   * filters the message against a messageFilterType
    *
-   * @param filter
+   * @param filter messageFilterType
+   * @returns true if the message is not filtered, false otherwise
    */
   filter(filter) {
     if (filter.level && filter.level > this.level) {
@@ -819,6 +835,15 @@ class MessagesClass extends library.BaseClass {
     }
     return true;
   }
+  /**
+   * @description
+   * Returns a message object based on the templateKey and caches the result for 1 minute.
+   * If the templateKey is not found in the templateTable, it will log an error.
+   * If the this.formatedData is not set, it will return an empty message.
+   * @param templateKey The key of the template to use from the templateTable.
+   * @param pushService The notification service object.
+   * @returns A message object with the message text, start time and end time.
+   */
   async getMessage(templateKey, pushService) {
     let msg = "";
     const templates = this.adapter.config.templateTable;
@@ -830,7 +855,7 @@ class MessagesClass extends library.BaseClass {
       return this.cache.messages[templateKey];
     }
     if (this.formatedData) {
-      msg = await this.getTemplates(tempid);
+      msg = this.getTemplates(tempid);
       if (tempid == -1) {
         this.log.error(`${pushService.name}`, `No template for key: ${templateKey}!`);
       } else {
@@ -839,7 +864,7 @@ class MessagesClass extends library.BaseClass {
     }
     return this.returnMessage(msg, this.starttime, templateKey);
   }
-  async getTemplates(tempid) {
+  getTemplates(tempid) {
     let msg = "";
     const templates = this.adapter.config.templateTable;
     if (!this.formatedData) {
@@ -959,6 +984,11 @@ class MessagesClass extends library.BaseClass {
   returnMessage = (msg, time, template) => {
     return { startts: time, text: msg.replace(/\\+}/g, "}").replace(/\\+n/g, "\n"), template };
   };
+  /**
+   * Update the formated Data.
+   *
+   * @returns the updated data
+   */
   async updateFormatedData() {
     if (!this.rawWarning) {
       throw new Error(`${this.log.getName()} error(165) rawWarning null or undefined!`);
@@ -976,10 +1006,7 @@ class MessagesClass extends library.BaseClass {
             cmd
           ) : "";
           if (obj.cmd !== void 0) {
-            result = await this.readWithTypescript(
-              result,
-              obj.cmd
-            );
+            result = this.readWithTypescript(result, obj.cmd);
           }
           if (typeof result == "object") {
             for (const a in result) {
@@ -1017,12 +1044,19 @@ class MessagesClass extends library.BaseClass {
     for (let a = 0; a < this.adapter.config.templateTable.length; a++) {
       const t = this.adapter.config.templateTable[a];
       if (t.templateKey.startsWith("_")) {
-        this.formatedData[t.templateKey] = await this.getTemplates(a);
+        this.formatedData[t.templateKey] = this.getTemplates(a);
       }
     }
     return this.formatedData;
   }
-  async readWithTypescript(data, cmd) {
+  /**
+   * Execute a command on the data of the raw warning.
+   *
+   * @param data the data to execute the command on
+   * @param cmd the command to execute
+   * @returns the result of the command
+   */
+  readWithTypescript(data, cmd) {
     if (!this.rawWarning && !cmd) {
       throw new Error("readWithTypescript called without rawWarning or val!");
     }
@@ -1064,7 +1098,7 @@ class MessagesClass extends library.BaseClass {
         const color = this.adapter.config.icon_color || "blue";
         if (this.adapter.config.icons_prefix && this.adapter.config.icons_suffix) {
           return this.adapter.config.icons_prefix + id + this.adapter.config.icons_suffix;
-        } else if (await this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
+        } else if (this.library.fileExistAsync(`icons/${color}/${id}.png`)) {
           return `/adapter/${this.adapter.name}/icons/${color}/${id}.png`;
         }
         return "";
@@ -1144,17 +1178,34 @@ class MessagesClass extends library.BaseClass {
     }
     return "";
   }
-  //** Update rawWarning and dont delete message */
+  /**
+   * Update the raw warning data and then update the formated data as well.
+   *
+   * @param data - The new raw warning data
+   */
   async updateData(data) {
     this.rawWarning = data;
     this.notDeleted = true;
     await this.updateFormated();
   }
-  //** dont send a message and dont delete this*/
+  /**
+   * Resets the state of the message by marking it as not new and not deleted.
+   */
   silentUpdate() {
     this.newMessage = false;
     this.notDeleted = true;
   }
+  /**
+   * Calculate the time difference between the given time and now.
+   *
+   * @param time - The time to calculate the difference from
+   * @param typ - The type of countdown to return
+   *  - 'minutes': The number of minutes until the time
+   *  - 'hours': The number of hours until the time, including days
+   *  - 'full': A string in the format `'-DD:HH:MM'` or `'+DD:HH:MM'`
+   *  - 'future': `'-1'` if the time is in the past, `'1'` if the time is in the future
+   * @returns The calculated countdown
+   */
   getCountdown(time, typ) {
     const diff = time - Date.now();
     const remain = new Date(Math.abs(diff));
@@ -1174,25 +1225,36 @@ class MessagesClass extends library.BaseClass {
       }
     }
   }
+  /**
+   * Delete the message and remove it from the list of active messages.
+   *
+   * @returns A promise that resolves when the deletion is complete.
+   */
   async delete() {
-    super.delete();
+    await super.delete();
     this.rawWarning = void 0;
     this.formatedData = void 0;
     this.notDeleted = false;
     this.newMessage = false;
     this.updated = false;
   }
+  /**
+   * Writes the formated warning keys to the state `*.formatedKeys.*`
+   *
+   * @param index The index of the message in the list of active messages
+   * @returns A promise that resolves when the write is complete
+   */
   async writeFormatedKeys(index) {
     if (this.notDeleted) {
       if (this.provider) {
-        this.library.writeFromJson(
+        await this.library.writeFromJson(
           `${this.provider.name}.formatedKeys.${`00${index.toString()}`.slice(-2)}`,
           `allService.formatedkeys`,
           import_definition.statesObjectsWarnings,
           this.formatedData
         );
       } else if (this.providerParent) {
-        this.library.writeFromJson(
+        await this.library.writeFromJson(
           `${this.providerParent.name}.formatedKeys.${`00${index.toString()}`.slice(-2)}`,
           `allService.formatedkeys`,
           import_definition.statesObjectsWarnings,
@@ -1201,6 +1263,12 @@ class MessagesClass extends library.BaseClass {
       }
     }
   }
+  /**
+   * Adds a formatted definition to the JSONata definitions map.
+   *
+   * @param key - The key under which the formatted definition will be stored.
+   * @param arg - The formatted definition to be added. If undefined, the function returns immediately.
+   */
   addFormatedDefinition(key, arg) {
     if (arg === void 0) {
       return;
