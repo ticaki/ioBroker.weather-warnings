@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.6.11",
+    "version": "0.7.0",
     "news": {
+      "0.7.0": {
+        "en": "added gotify (notificationservice)",
+        "de": "Gotify hinzugefügt",
+        "ru": "добавочная (уведомление услуги)",
+        "pt": "adicionado gotify (serviço de notificação)",
+        "nl": "toegevoegd gotify (kennisgevingsdienst)",
+        "fr": "(service de notification)",
+        "it": "aggiunto ottenuto (servizio di notifica)",
+        "es": "(notificación)",
+        "pl": "dodano contributification (notification service)",
+        "uk": "додано (notificationservice)",
+        "zh-cn": "添加加码(通知服务)"
+      },
       "0.6.11": {
         "en": "eslint 8 -> 9",
         "de": "eslint 8 -> 9",
@@ -80,19 +93,6 @@
         "pl": "Dodano: żeton pełnodzienny ZAMG\nstałe: Wyślij e-maile asynchron\nstałe: nie ignoruj ustawienia aktywacji uwz\naktualizuje obiekty dp- na każdym starcie.",
         "uk": "Доданий: ZAMG повний день токен\nфіксована: Надіслати листи asynchron\nвиправлено: не ігноруйте налаштування uwz\nоновлення dp-objects на кожному старті.",
         "zh-cn": "添加: ZAMG 全天令牌\n固定: 发送电子邮件同步\n固定: 不要忽略 uwz 激活设置\n在每次启动时更新 dp 对象 ."
-      },
-      "0.6.4": {
-        "en": "Optimise DWD warning cell selection. Place names are being given more and more details to make them unique.",
-        "de": "Optimieren Sie die DWD-Warnzellenauswahl. Ortsnamen werden immer mehr Details gegeben, um sie einzigartig zu machen.",
-        "ru": "Оптимизируйте DWD предупредительный выбор ячейки. Названия мест дают больше и больше деталей для того чтобы сделать их уникальным.",
-        "pt": "Otimize a seleção de células de aviso DWD. Os nomes dos lugares estão sendo dados cada vez mais detalhes para torná-los únicos.",
-        "nl": "Optimise DWD waarschuwingscel selectie. Er worden meer en meer details gegeven om ze uniek te maken.",
-        "fr": "Optimise la sélection de cellules d'avertissement DWD. Les noms des lieux sont donnés de plus en plus de détails pour les rendre uniques.",
-        "it": "Ottimizzare la selezione delle celle di avviso DWD. I nomi dei luoghi vengono dati sempre più dettagli per renderli unici.",
-        "es": "Optimize DWD warning cell selection. Los nombres de los lugares se están dando cada vez más detalles para hacerlos únicos.",
-        "pl": "Optimise DWD (ang.). Nazwy miejscowe są podawane więcej i więcej szczegółów, które czynią je unikalnymi.",
-        "uk": "Оптимальний вибір DWD попередження. Прізвища розміщуються більш детальною інформацією, щоб зробити їх унікальними.",
-        "zh-cn": "利用DWDHD警告小组选择。 正在提供更多和更详细的资料,使之具有独特的地位。."
       }
     },
     "titleLang": {
