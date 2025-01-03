@@ -541,6 +541,7 @@
     "wrongTemplateKey": "Der Vorlagenschlüssel existiert nicht. Wählen Sie eine gültige Vorlage!",
     "zamgdayPeriod": "Warndauer von Mitternacht zu Mitternacht",
     "alexa2_sound_item": "Quellcode aus der Alexa-Bibliothek",
-    "gotify_Enabled": "Aktivieren Sie gotify",
-    "gotify_Priority": "Wählen Sie Ihre Benachrichtigungspriorität aus."
+    "gotify_Enabled": "Gotify aktivieren",
+    "gotify_Priority": "Wählen Sie Ihre Benachrichtigungspriorität aus.",
+    "gotify_contentType": "Wählen Sie Ihren Inhaltstyp aus."
 }

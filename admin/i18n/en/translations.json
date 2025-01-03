@@ -430,6 +430,7 @@
     "pushover_Device": "Device ID (separated by ,)",
     "pushover_Priority": "Use warning level as notification priority.",
     "gotify_Priority": "Select your notification priority.",
+    "gotify_contentType": "Select your content type.",
     "alexa2_Audio_url": "Open external link to Amazon Audio Library.",
     "alexa2_Audio": "Add audio command or blank for nothing.",
     "imExpert": "Expert",

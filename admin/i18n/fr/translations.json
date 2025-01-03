@@ -542,5 +542,6 @@
     "zamgdayPeriod": "Durée d'avertissement de minuit à minuit",
     "alexa2_sound_item": "Code source de la bibliothèque Alexa",
     "gotify_Enabled": "Activer gotify",
-    "gotify_Priority": "Sélectionnez votre priorité de notification."
+    "gotify_Priority": "Sélectionnez votre priorité de notification.",
+    "gotify_contentType": "Sélectionnez votre type de contenu."
 }

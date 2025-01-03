@@ -542,5 +542,6 @@
     "zamgdayPeriod": "Тривалість попередження з півночі до півночі",
     "alexa2_sound_item": "Вихідний код з бібліотеки Alexa",
     "gotify_Enabled": "Активувати gotify",
-    "gotify_Priority": "Виберіть пріоритет сповіщень."
+    "gotify_Priority": "Виберіть пріоритет сповіщень.",
+    "gotify_contentType": "Виберіть тип вмісту."
 }

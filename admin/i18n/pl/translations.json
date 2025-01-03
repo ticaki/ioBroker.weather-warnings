@@ -542,5 +542,6 @@
     "zamgdayPeriod": "Czas trwania ostrzeżenia od północy do północy",
     "alexa2_sound_item": "Kod źródłowy z biblioteki Alexa",
     "gotify_Enabled": "Aktywuj Gotify",
-    "gotify_Priority": "Wybierz priorytet powiadomień."
+    "gotify_Priority": "Wybierz priorytet powiadomień.",
+    "gotify_contentType": "Wybierz typ treści."
 }

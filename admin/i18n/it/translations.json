@@ -542,5 +542,6 @@
     "zamgdayPeriod": "Durata dell'avviso da mezzanotte a mezzanotte",
     "alexa2_sound_item": "Codice sorgente dalla libreria Alexa",
     "gotify_Enabled": "Attiva gotify",
-    "gotify_Priority": "Seleziona la priorità delle notifiche."
+    "gotify_Priority": "Seleziona la priorità delle notifiche.",
+    "gotify_contentType": "Seleziona il tipo di contenuto."
 }

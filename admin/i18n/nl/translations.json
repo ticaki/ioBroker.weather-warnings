@@ -542,5 +542,6 @@
     "zamgdayPeriod": "Waarschuwingsduur van middernacht tot middernacht",
     "alexa2_sound_item": "Broncode van Alexa Libary",
     "gotify_Enabled": "Activeer gotify",
-    "gotify_Priority": "Selecteer uw meldingsprioriteit."
+    "gotify_Priority": "Selecteer uw meldingsprioriteit.",
+    "gotify_contentType": "Selecteer uw inhoudstype."
 }

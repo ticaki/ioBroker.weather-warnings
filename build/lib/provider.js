@@ -1259,6 +1259,9 @@ class ProviderController extends import_library.BaseClass {
   setAllowedDirs(allowedDirs) {
     const dirs = [];
     for (const a in allowedDirs) {
+      if (allowedDirs[a] === void 0) {
+        continue;
+      }
       if (!allowedDirs[a].dpWarning) {
         dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.warning`);
       }

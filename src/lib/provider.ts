@@ -1449,6 +1449,9 @@ export class ProviderController extends BaseClass {
     setAllowedDirs(allowedDirs: any): void {
         const dirs = [];
         for (const a in allowedDirs) {
+            if (allowedDirs[a] === undefined) {
+                continue;
+            }
             if (!allowedDirs[a].dpWarning) {
                 dirs.push(`^provider\\.${a.replace(`Service`, ``)}\\.[a-zA-Z0-9-_]+\\.warning`);
             }
