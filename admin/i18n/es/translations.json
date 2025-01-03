@@ -540,5 +540,7 @@
     "removeManualAll": "Seleccione la plantilla que se utilizará sin advertencias para notificaciones activadas manualmente.",
     "wrongTemplateKey": "La clave de la plantilla no existe. ¡Seleccione una plantilla válida!",
     "zamgdayPeriod": "Duración del aviso desde medianoche hasta medianoche",
-    "alexa2_sound_item": "Código fuente de la biblioteca alexa"
+    "alexa2_sound_item": "Código fuente de la biblioteca alexa",
+    "gotify_Enabled": "Activar gotify",
+    "gotify_Priority": "Seleccione su prioridad de notificación."
 }

@@ -540,5 +540,7 @@
     "removeManualAll": "Wybierz szablon, który ma być używany bez ostrzeżeń w przypadku powiadomień wyzwalanych ręcznie.",
     "wrongTemplateKey": "Klucz szablonu nie istnieje. Wybierz prawidłowy szablon!",
     "zamgdayPeriod": "Czas trwania ostrzeżenia od północy do północy",
-    "alexa2_sound_item": "Kod źródłowy z biblioteki Alexa"
+    "alexa2_sound_item": "Kod źródłowy z biblioteki Alexa",
+    "gotify_Enabled": "Aktywuj Gotify",
+    "gotify_Priority": "Wybierz priorytet powiadomień."
 }

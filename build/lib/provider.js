@@ -843,7 +843,7 @@ class ProviderController extends import_library.BaseClass {
   /**
    * Create notification services from the given configuration.
    *
-   * @param optionList A dictionary of notification service configuration options.
+   * @param optionList A dictionary of notification service configuration options
    * @returns A promise that resolves when the notification services have been created.
    */
   async createNotificationService(optionList) {

@@ -540,5 +540,7 @@
     "removeManualAll": "Selecione o modelo a ser usado para nenhum aviso em notificações acionadas manualmente.",
     "wrongTemplateKey": "A chave do modelo não existe. Selecione um modelo válido!",
     "zamgdayPeriod": "Duração do aviso de meia-noite a meia-noite",
-    "alexa2_sound_item": "Código fonte da biblioteca Alexa"
+    "alexa2_sound_item": "Código fonte da biblioteca Alexa",
+    "gotify_Enabled": "Ativar gotify",
+    "gotify_Priority": "Selecione sua prioridade de notificação."
 }

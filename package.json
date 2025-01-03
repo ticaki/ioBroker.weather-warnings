@@ -71,10 +71,10 @@
     "LICENSE"
   ],
   "scripts": {
-    "prebuild": "rimraf build",
+    "prebuild": "node ./node_modules/@iobroker/adapter-dev/bin/clean-dir.js ./build",
     "build": "build-adapter ts",
     "watch": "build-adapter ts --watch",
-    "prebuild:ts": "rimraf build",
+    "prebuild:ts": "node ./node_modules/@iobroker/adapter-dev/bin/clean-dir.js ./build",
     "build:ts": "build-adapter ts",
     "watch:ts": "build-adapter ts --watch",
     "test:ts": "mocha --config test/mocharc.custom.json src/**/*.test.ts",

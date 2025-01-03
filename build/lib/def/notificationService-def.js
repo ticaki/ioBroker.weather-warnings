@@ -31,6 +31,7 @@ const history = ["new", "remove"];
 const json = ["all", "removeAll"];
 const email = [...manual, "new", "all", "removeAll", "remove", "title"];
 const serciceCapabilities = {
+  gotify: { notifications: pushTitle },
   telegram: { notifications: push },
   email: { notifications: email },
   json: { notifications: json },
@@ -40,9 +41,22 @@ const serciceCapabilities = {
   alexa2: { notifications: push },
   sayit: { notifications: push }
 };
-const Array = ["telegram", "pushover", "whatsapp", "json", "history", "email", "alexa2", "sayit"];
+const Array = [
+  "telegram",
+  "gotify",
+  "pushover",
+  "whatsapp",
+  "json",
+  "history",
+  "email",
+  "alexa2",
+  "sayit"
+];
 const notificationServiceDefaults = {
   telegram: {
+    useadapter: true
+  },
+  gotify: {
     useadapter: true
   },
   pushover: {

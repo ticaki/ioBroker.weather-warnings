@@ -248,6 +248,7 @@ class NotificationClass extends library.BaseClass {
   allowSending() {
     switch (this.options.name) {
       case "telegram":
+      case "gotify":
       case "pushover":
       case "whatsapp":
       case "json":
@@ -289,6 +290,7 @@ class NotificationClass extends library.BaseClass {
       }
       switch (this.options.name) {
         case "telegram":
+        case "gotify":
         case "pushover":
         case "whatsapp":
         case "json":
@@ -345,7 +347,7 @@ class NotificationClass extends library.BaseClass {
     return messages;
   }
   /**
-   * @description Send notifications based on the settings of the adapter.
+   * @description Send notifications based on the settings of the adapter
    * @param  messages - The messages to be sent.
    * @returns A promise that resolves to True if the sending was successful, false if not.
    * @example
@@ -448,6 +450,34 @@ class NotificationClass extends library.BaseClass {
             }
             try {
               await this.adapter.sendToAsync(this.options.adapter, "send", opt, { timeout: 2e3 });
+              this.log.debug(`Send the message: ${msg.text}`);
+            } catch (error) {
+              if (error.message == "Timeout exceeded") {
+                this.log.warn(
+                  `Error sending a notification: ${this.options.adapter} does not react in the given time.`
+                );
+              } else {
+                throw error;
+              }
+            }
+          }
+        }
+        break;
+      case "gotify":
+        {
+          for (const msg of messages) {
+            if (Array.isArray(msg)) {
+              return false;
+            }
+            const opt = { message: msg.text, contentType: this.options.contentType };
+            if (this.options.priority) {
+              opt.priority = this.options.priority;
+            }
+            if (this.options.actions.title && msg.title) {
+              opt.title = msg.title;
+            }
+            try {
+              this.adapter.sendTo(this.options.adapter, "send", opt);
               this.log.debug(`Send the message: ${msg.text}`);
             } catch (error) {
               if (error.message == "Timeout exceeded") {

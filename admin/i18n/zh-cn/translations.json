@@ -540,5 +540,7 @@
     "removeManualAll": "选择用于手动触发通知的无警告模板。",
     "wrongTemplateKey": "模板键不存在。选择有效的模板！",
     "zamgdayPeriod": "警告持续时间从午夜到午夜",
-    "alexa2_sound_item": "源代码来自 Alexa 库"
+    "alexa2_sound_item": "源代码来自 Alexa 库",
+    "gotify_Enabled": "激活 Gotify",
+    "gotify_Priority": "选择您的通知优先级。"
 }

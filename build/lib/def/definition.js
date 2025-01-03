@@ -2108,6 +2108,18 @@ const statesObjectsWarnings = {
           },
           native: {}
         },
+        gotify: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "Gotify",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
+        },
         pushover: {
           _id: "",
           type: "state",

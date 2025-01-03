@@ -311,6 +311,10 @@ class WeatherWarnings extends utils.Adapter {
           notificationServiceOpt.pushover.priority = self.config.pushover_Priority || false;
           notificationServiceOpt.pushover.device = self.config.pushover_Device || "";
         }
+        if (self.config.gotify_Enabled && notificationServiceOpt.gotify != void 0) {
+          notificationServiceOpt.gotify.priority = self.config.gotify_Priority !== void 0 ? parseInt(self.config.gotify_Priority) : 0;
+          notificationServiceOpt.gotify.contentType = self.config.gotify_contentType || "text/plain";
+        }
         if (self.config.json_Enabled && notificationServiceOpt.json != void 0) {
         }
         if (self.config.history_Enabled && notificationServiceOpt.history != void 0) {

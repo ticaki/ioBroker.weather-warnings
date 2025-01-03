@@ -540,5 +540,7 @@
     "removeManualAll": "Selecteer de sjabloon die moet worden gebruikt voor geen waarschuwingen voor handmatig geactiveerde meldingen.",
     "wrongTemplateKey": "De sjabloonsleutel bestaat niet. Selecteer een geldig sjabloon!",
     "zamgdayPeriod": "Waarschuwingsduur van middernacht tot middernacht",
-    "alexa2_sound_item": "Broncode van Alexa Libary"
+    "alexa2_sound_item": "Broncode van Alexa Libary",
+    "gotify_Enabled": "Activeer gotify",
+    "gotify_Priority": "Selecteer uw meldingsprioriteit."
 }

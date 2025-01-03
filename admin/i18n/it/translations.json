@@ -540,5 +540,7 @@
     "removeManualAll": "Seleziona il modello da utilizzare per nessun avviso per le notifiche attivate manualmente.",
     "wrongTemplateKey": "La chiave del modello non esiste. Seleziona un modello valido!",
     "zamgdayPeriod": "Durata dell'avviso da mezzanotte a mezzanotte",
-    "alexa2_sound_item": "Codice sorgente dalla libreria Alexa"
+    "alexa2_sound_item": "Codice sorgente dalla libreria Alexa",
+    "gotify_Enabled": "Attiva gotify",
+    "gotify_Priority": "Seleziona la priorità delle notifiche."
 }

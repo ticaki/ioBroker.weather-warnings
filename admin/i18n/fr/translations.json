@@ -540,5 +540,7 @@
     "removeManualAll": "Sélectionnez le modèle à utiliser pour aucun avertissement pour les notifications déclenchées manuellement.",
     "wrongTemplateKey": "La clé du modèle n'existe pas. Sélectionnez un modèle valide !",
     "zamgdayPeriod": "Durée d'avertissement de minuit à minuit",
-    "alexa2_sound_item": "Code source de la bibliothèque Alexa"
+    "alexa2_sound_item": "Code source de la bibliothèque Alexa",
+    "gotify_Enabled": "Activer gotify",
+    "gotify_Priority": "Sélectionnez votre priorité de notification."
 }

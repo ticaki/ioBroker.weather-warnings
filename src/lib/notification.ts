@@ -280,6 +280,7 @@ export class NotificationClass extends library.BaseClass {
     allowSending(): boolean {
         switch (this.options.name) {
             case 'telegram':
+            case 'gotify':
             case 'pushover':
             case 'whatsapp':
             case 'json':
@@ -323,6 +324,7 @@ export class NotificationClass extends library.BaseClass {
             }
             switch (this.options.name) {
                 case 'telegram':
+                case 'gotify':
                 case 'pushover':
                 case 'whatsapp':
                 case 'json':
@@ -384,7 +386,7 @@ export class NotificationClass extends library.BaseClass {
     }
 
     /**
-     * @description Send notifications based on the settings of the adapter.
+     * @description Send notifications based on the settings of the adapter
      * @param  messages - The messages to be sent.
      * @returns A promise that resolves to True if the sending was successful, false if not.
      * @example
@@ -408,13 +410,6 @@ export class NotificationClass extends library.BaseClass {
         switch (this.options.name) {
             case 'telegram':
                 {
-                    /*this.log.debug(
-                        JSON.stringify(
-                            messages.map((a) => {
-                                if (a.message) return a.message.rawWarning;
-                            }),
-                        ),
-                    );*/
                     for (const msg of messages) {
                         const opt: any = { text: msg.text, disable_notification: this.options.withNoSound };
                         if (this.options.parse_mode != 'none') {
@@ -513,6 +508,39 @@ export class NotificationClass extends library.BaseClass {
                     }
                 }
                 break;
+            case 'gotify':
+                {
+                    for (const msg of messages) {
+                        if (Array.isArray(msg)) {
+                            return false;
+                        }
+                        const opt: {
+                            message: string;
+                            priority?: number;
+                            title?: string;
+                            contentType: string;
+                        } = { message: msg.text, contentType: this.options.contentType };
+                        if (this.options.priority) {
+                            opt.priority = this.options.priority;
+                        }
+                        if (this.options.actions.title && msg.title) {
+                            opt.title = msg.title;
+                        }
+                        try {
+                            this.adapter.sendTo(this.options.adapter, 'send', opt);
+                            this.log.debug(`Send the message: ${msg.text}`);
+                        } catch (error: any) {
+                            if (error.message == 'Timeout exceeded') {
+                                this.log.warn(
+                                    `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
+                                );
+                            } else {
+                                throw error;
+                            }
+                        }
+                    }
+                }
+                break;
             case 'alexa2':
                 {
                     const devices = this.adapter.config.alexa2_device_ids;
@@ -570,35 +598,6 @@ export class NotificationClass extends library.BaseClass {
                             }
                         }
                     }
-                    /* Alexa code ask Apollon later
-                        const opt: any = {
-                            // value
-                            deviceSerialNumber: devices[0], // Serial number of one device to get Meta data which will be used if no device is pecified on the commands
-                            sequenceNodes: [], // list of sequences or commands
-                            sequenceType: 'ParallelNode', // "SerialNode" or "ParallelNode" for the provided sequenceNodes on main level. Default is "SerialNode"
-                        };
-                        for (const a in devices) {
-                            const optsub: any = { sequenceType: 'SerialNode', nodes: [] };
-                            optsub.nodes.push({
-                                command: 'speak-volume',
-                                value: 1, //this.adapter.config.alexa2_volumen,
-                                device: devices[a],
-                            });
-                            for (const msg of messages) {
-                                if (Array.isArray(msg)) continue;
-                                optsub.nodes.push({
-                                    command: 'speak',
-                                    value: `${this.adapter.config.alexa2_volumen};${msg.text}`,
-                                    device: devices[a],
-                                });
-                            }
-                            opt.sequenceNodes.push(optsub);
-                        }
-                        this.log.debug(
-                            JSON.stringify(
-                                await this.adapter.sendToAsync(this.options.adapter, 'sendSequenceCommand', opt, { timeout: 2000 }),
-                            ),
-                        );*/
                 }
                 break;
             case 'sayit':

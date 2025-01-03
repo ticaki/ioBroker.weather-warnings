@@ -7,6 +7,9 @@ import type { ProviderClassType, messageFilterType, providerServices } from './p
 
 export type Type = Required<keyof OptionsType>;
 export type OptionsType = {
+    gotify?: {
+        name: 'gotify';
+    } & BaseType;
     telegram?: {
         name: 'telegram';
     } & BaseType;
@@ -40,6 +43,12 @@ export type BaseType =
           chatid: string;
           withNoSound: boolean;
           parse_mode: string;
+      } & bBaseType)
+    | ({
+          name: 'gotify';
+          priority: number;
+          //title: string;
+          contentType: 'text/plain' | 'text/markdown';
       } & bBaseType)
     | ({
           name: 'pushover';
@@ -127,6 +136,7 @@ const email: ActionsUnionType[] = [...manual, 'new', 'all', 'removeAll', 'remove
 
 //const speak: ActionsUnionType[] = ['new', 'remove', 'removeAll'];
 export const serciceCapabilities: Record<Type, ConfigType> = {
+    gotify: { notifications: pushTitle },
     telegram: { notifications: push },
     email: { notifications: email },
     json: { notifications: json },
@@ -137,7 +147,17 @@ export const serciceCapabilities: Record<Type, ConfigType> = {
     sayit: { notifications: push },
 };
 
-export const Array: Type[] = ['telegram', 'pushover', 'whatsapp', 'json', 'history', 'email', 'alexa2', 'sayit'];
+export const Array: Type[] = [
+    'telegram',
+    'gotify',
+    'pushover',
+    'whatsapp',
+    'json',
+    'history',
+    'email',
+    'alexa2',
+    'sayit',
+];
 
 export type MessageType = {
     text: string;
@@ -158,6 +178,9 @@ export type pushover_options = {
 };
 export const notificationServiceDefaults: Record<NotificationType.Type, Partial<NotificationType.BaseType>> = {
     telegram: {
+        useadapter: true,
+    },
+    gotify: {
         useadapter: true,
     },
     pushover: {
