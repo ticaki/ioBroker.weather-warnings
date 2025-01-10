@@ -146,6 +146,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.7.1 (2025-01-10)
+* (CrEaK) Fixing send to chatId in telegram
+
 ### 0.7.0 (2025-01-03)
 * (ticaki) added gotify (notificationservice)
 

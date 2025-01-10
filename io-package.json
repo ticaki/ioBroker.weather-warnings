@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "news": {
+      "0.7.1": {
+        "en": "Fixing send to chatId in telegram",
+        "de": "Reparieren senden zu chat Id in Telegramm",
+        "ru": "Fixing send to Chat Ид в телеграмме",
+        "pt": "Corrigindo o envio para o chat Id em telegrama",
+        "nl": "Versturen naar chat repareren Id in telegram",
+        "fr": "Correction de l'envoi au chat Id en télégramme",
+        "it": "Risolvere inviare a chat Id in telegramma",
+        "es": "Corrección enviar a chat Id en telegrama",
+        "pl": "Ustawienie wysyłania na czat Id in telegram",
+        "uk": "Виправлення відправки в чат Id в телеграмі",
+        "zh-cn": "正在修复发送到聊天 在电报中"
+      },
       "0.7.0": {
         "en": "added gotify (notificationservice)",
         "de": "Gotify hinzugefügt",
@@ -80,19 +93,6 @@
         "pl": "w pełni (wyłącznie ZAMG): Jeżeli czas trwania wynosi 24h + / - 5 minut, a godzina rozpoczęcia jest między 0-3, dzień tygodnia od rozpoczęcia czasu w przeciwnym razie pusty.",
         "uk": "повне г, повне г,, показали, від, номер, XNUMX Якщо проміжок часу 24х +/- 5 хвилин, і час початку між 0-3, день тижня від часу запуску інакше порожній.",
         "zh-cn": "全天( 仅ZAMG) : 如果时间跨度为24h +/- 5分钟,且起始时间为0-3天,则从起始时间算起为空."
-      },
-      "0.6.5": {
-        "en": "Added: ZAMG full day token\nfixed: Send emails asynchron\nfixed: dont ignore uwz activate setting\nupdate dp-objects on every start.",
-        "de": "Hinzugefügt: ZAMG Token für ganzen Tag\nBehoben: E-Mails kommen ohne Inhalt\nBehoben: UWZ gobale Deaktivierung wurde ignoriert\nDatenpunkt-Objekte bei jedem Start aktualisieren.",
-        "ru": "Добавлено: ZAMG полный день токен\nфиксированный: Отправить электронные письма асинхрон\nфиксированный: не игнорируйте настройку активации uwz\nобновлять dp-объекты на каждом запуске.",
-        "pt": "Adicionado: ZAMG dia inteiro token\ncorrigido: Enviar e-mails asynchron\ncorrigido: não ignorar uwz ativar configuração\natualizar dp-objects em cada início.",
-        "nl": "Toegevoegd: ZAMG full day token\nvast: Stuur e-mails asynchron\nvaste: niet negeren uwz activeren instelling\ndp-objecten bijwerken bij elke start.",
-        "fr": "Ajouté : jeton ZAMG journée complète\ncorrigé: Envoyer des emails asynchrone\ncorrigé : ne pas ignorer le réglage d'activation d'uwz\nmettre à jour les objets dp sur chaque démarrage.",
-        "it": "Aggiunto: ZAMG pieno giorno token\nfisso: Invia email asincrono\nfisso: non ignorare uwz attivare l'impostazione\naggiornamento dp-oggetti su ogni inizio.",
-        "es": "Añadido: ZAMG token de día completo\nfijo: Enviar correos electrónicos asynchron\nfijo: no ignore uwz activa el ajuste\nactualizar los objetos dp en cada comienzo.",
-        "pl": "Dodano: żeton pełnodzienny ZAMG\nstałe: Wyślij e-maile asynchron\nstałe: nie ignoruj ustawienia aktywacji uwz\naktualizuje obiekty dp- na każdym starcie.",
-        "uk": "Доданий: ZAMG повний день токен\nфіксована: Надіслати листи asynchron\nвиправлено: не ігноруйте налаштування uwz\nоновлення dp-objects на кожному старті.",
-        "zh-cn": "添加: ZAMG 全天令牌\n固定: 发送电子邮件同步\n固定: 不要忽略 uwz 激活设置\n在每次启动时更新 dp 对象 ."
       }
     },
     "titleLang": {
