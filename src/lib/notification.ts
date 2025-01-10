@@ -425,7 +425,7 @@ export class NotificationClass extends library.BaseClass {
                                     for (const chatid of chatids) {
                                         this.adapter.sendTo(this.options.adapter, 'send', {
                                             ...opt,
-                                            chatid: chatid,
+                                            chatId: chatid,
                                         });
                                     }
                                 } else {
