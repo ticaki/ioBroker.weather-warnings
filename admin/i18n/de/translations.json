@@ -206,7 +206,7 @@
     "template.NewMessage": "Warnung: ${Warntypename} ab ${starttime}, Stufe: ${warnlevelcolorname}",
     "template.RemoveMessage": "Entwarnung: ${Warntypename}, Stufe: ${warnlevelcolorname}",
     "template.RemoveAllMessage": "Entwarnung!",
-    "template.NewJson": "{ \"action\\\": \"${status}\", \"start\": \"${starttime}\", \"ende“: \"${endtime}\", \"type\": \"${warntypename}\" \\}",
+    "template.NewJson": "{ \"action\": \"${status}\", \"start\": \"${starttime}\", \"ende“: \"${endtime}\", \"type\": \"${warntypename}\" \\}",
     "template.RemoveJson": "{ \"headline\": \"${Headline}\", \"status\": \"${status}\"\\}",
     "template.RemoveAllJson": "{ \"status\": \"Entwarnung!\"\\}",
     "template.NewMessageWithArray": "Luke, wir haben eine neue Warnung ${Warntypename} ab ${starttime} erhalten, sieht aus wie ein ${_CustomArray}",
