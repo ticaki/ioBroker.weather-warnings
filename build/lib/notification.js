@@ -620,12 +620,21 @@ class NotificationClass extends library.BaseClass {
           let providers = [];
           for (const msg of messages) {
             try {
-              const temp = this.adapter.config.json_parse ? JSON.parse(msg.text) : msg.text;
-              result.push({
-                startts: msg.startts,
-                message: temp,
-                provider: msg.provider
-              });
+              try {
+                const temp = this.adapter.config.json_parse ? JSON.parse(msg.text) : msg.text;
+                result.push({
+                  startts: msg.startts,
+                  message: temp,
+                  provider: msg.provider
+                });
+              } catch {
+                const temp = this.adapter.config.json_parse ? JSON.parse(msg.text.replace("\u201E", '"').replace("\u201C", '"')) : msg.text;
+                result.push({
+                  startts: msg.startts,
+                  message: temp,
+                  provider: msg.provider
+                });
+              }
               providers.push(msg.provider !== void 0 ? msg.provider.name : "");
             } catch {
               this.log.error(
@@ -670,19 +679,20 @@ class NotificationClass extends library.BaseClass {
               import_definition.genericStateObjects.activeWarningsJson
             );
           }
+          result = result.map((a) => a.message);
           result = result.filter((i, p) => {
-            if (i.message != "" && i.provider) {
-              if (result.findIndex((i2) => i2.message == i.message) == p) {
+            if (i != "") {
+              if (result.findIndex((i2) => i2 == i) == p) {
                 return true;
               }
             }
             return false;
-          });
+          }) || [];
           if (this.adapter.providerController) {
             const dp = `${this.adapter.providerController.name}.activeWarnings_json`;
             await this.adapter.library.writedp(
               dp,
-              JSON.stringify(result.map((a) => a.message)),
+              JSON.stringify(result),
               import_definition.genericStateObjects.activeWarningsJson
             );
           }

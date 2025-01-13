@@ -146,6 +146,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (ticaki) Replacing „ and “ in the json template before parsing with "
+
 ### 0.7.1 (2025-01-10)
 * (CrEaK) Fixing send to chatId in telegram
 

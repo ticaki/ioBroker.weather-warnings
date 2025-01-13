@@ -871,10 +871,10 @@ class ProviderController extends import_library.BaseClass {
           await noti.init();
         } else {
           this.log.error(
-            `Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`
+            `Configuration: ${options.name} is active, ${options.adapter === "none" ? `but no adapter selected!` : `but dont find ${options.adapter} adapter!`}`
           );
           throw new Error(
-            `Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`
+            `Configuration: ${options.name} is active, ${options.adapter === "none" ? `but no adapter selected` : `but dont find ${options.adapter} adapter!`}`
           );
         }
       }
@@ -973,45 +973,42 @@ class ProviderController extends import_library.BaseClass {
   }
   /**
    * Updates all providers in endless loop.
-   *
-   * @param that - The provider controller to use.
    */
-  async updateEndless(that) {
-    if (that.adapter.config.useTestCase) {
-      if (++that.testStatus > 3) {
-        that.testStatus = 1;
+  updateEndless = async () => {
+    if (this.adapter.config.useTestCase) {
+      if (++this.testStatus > 3) {
+        this.testStatus = 1;
       }
-      that.adapter.config.useTestWarnings = true;
-      that.refreshTime = 6e4;
+      this.adapter.config.useTestWarnings = true;
+      this.refreshTime = 6e4;
     }
-    that.connection = false;
-    if (that.refreshTimeRef) {
-      that.adapter.clearTimeout(that.refreshTimeRef);
+    this.connection = false;
+    if (this.refreshTimeRef) {
+      this.adapter.clearTimeout(this.refreshTimeRef);
     }
-    if (that.providers.length == 0) {
-      await that.setConnected(false);
+    if (this.providers.length == 0) {
+      await this.setConnected(false);
       return;
     }
-    updater(that).catch(() => {
-    });
-    async function updater(self, index = 0) {
-      const that2 = self;
-      if (that2.unload) {
+    const updater = async (index = 0) => {
+      if (this.unload) {
         return;
       }
-      if (index < that2.providers.length) {
-        if (that2.providers[index]) {
-          await that2.providers[index].updateData();
+      if (index < this.providers.length) {
+        if (this.providers[index]) {
+          await this.providers[index].updateData();
         }
         index++;
-        that2.refreshTimeRef = that2.adapter.setTimeout(updater, 250, that2, index);
+        this.refreshTimeRef = this.adapter.setTimeout(updater, 250, index);
       } else {
-        await that2.doEndOfUpdater();
-        that2.updateAlertEndless(that2, false);
-        that2.refreshTimeRef = that2.adapter.setTimeout(that2.updateEndless, that2.refreshTime || 6e5, that2);
+        await this.doEndOfUpdater();
+        await this.updateAlertEndless(false);
+        this.refreshTimeRef = this.adapter.setTimeout(this.updateEndless, this.refreshTime || 6e5);
       }
-    }
-  }
+    };
+    updater().catch(() => {
+    });
+  };
   /**
    * Periodically updates alerts in an endless loop.
    *
@@ -1020,23 +1017,21 @@ class ProviderController extends import_library.BaseClass {
    * by scheduling the next update 1.333 seconds after the last full minute.
    * If `endless` is true, it continues scheduling updates indefinitely.
    *
-   * @param self - The current context, expected to be an instance of `ProviderController`.
    * @param endless - A boolean indicating whether to continue updating alerts endlessly.
    *                  Defaults to true.
    * @returns A promise that resolves when the alert update is complete.
    */
-  async updateAlertEndless(self, endless = true) {
-    const that = self;
-    if (that.unload) {
+  updateAlertEndless = async (endless = true) => {
+    if (this.unload) {
       return;
     }
-    await that.setSpeakAllowed();
-    await that.checkAlerts();
+    await this.setSpeakAllowed();
+    await this.checkAlerts();
     const timeout = 61333 - Date.now() % 6e4;
     if (endless) {
-      that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+      this.alertTimeoutRef = this.adapter.setTimeout(this.updateAlertEndless, timeout);
     }
-  }
+  };
   /**
    * Updates the alerts for all providers.
    *
@@ -1100,6 +1095,7 @@ class ProviderController extends import_library.BaseClass {
     );
     this.providers.forEach((a) => a.clearMessages());
     this.providers.forEach((a) => a.finishTurn());
+    await this.library.garbageColleting(`${this.name}._activeWarnings_json`, (this.refreshTime || 6e5) / 2);
     this.log.debug(`We have ${this.activeMessages} active messages.`);
   }
   /**

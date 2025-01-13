@@ -1038,10 +1038,10 @@ export class ProviderController extends BaseClass {
                     await noti.init();
                 } else {
                     this.log.error(
-                        `Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`,
+                        `Configuration: ${options.name} is active, ${options.adapter === 'none' ? `but no adapter selected!` : `but dont find ${options.adapter} adapter!`}`,
                     );
                     throw new Error(
-                        `Configuration: ${options.name} is active, but dont find ${options.adapter} adapter!`,
+                        `Configuration: ${options.name} is active, ${options.adapter === 'none' ? `but no adapter selected` : `but dont find ${options.adapter} adapter!`}`,
                     );
                 }
             }
@@ -1148,44 +1148,42 @@ export class ProviderController extends BaseClass {
 
     /**
      * Updates all providers in endless loop.
-     *
-     * @param that - The provider controller to use.
      */
-    async updateEndless(that: ProviderController): Promise<void> {
-        if (that.adapter.config.useTestCase) {
-            if (++that.testStatus > 3) {
-                that.testStatus = 1;
+    updateEndless = async (): Promise<void> => {
+        if (this.adapter.config.useTestCase) {
+            if (++this.testStatus > 3) {
+                this.testStatus = 1;
             }
-            that.adapter.config.useTestWarnings = true;
-            that.refreshTime = 60000;
+            this.adapter.config.useTestWarnings = true;
+            this.refreshTime = 60000;
         }
-        that.connection = false;
-        if (that.refreshTimeRef) {
-            that.adapter.clearTimeout(that.refreshTimeRef);
+        this.connection = false;
+        if (this.refreshTimeRef) {
+            this.adapter.clearTimeout(this.refreshTimeRef);
         }
-        if (that.providers.length == 0) {
-            await that.setConnected(false);
+        if (this.providers.length == 0) {
+            await this.setConnected(false);
             return;
         }
-        updater(that).catch(() => {});
-        async function updater(self: any, index: number = 0): Promise<void> {
-            const that = self; //as ProviderController;
-            if (that.unload) {
+        const updater = async (index: number = 0): Promise<void> => {
+            if (this.unload) {
                 return;
             }
-            if (index < that.providers.length) {
-                if (that.providers[index]) {
-                    await that.providers[index].updateData();
+            if (index < this.providers.length) {
+                if (this.providers[index]) {
+                    //@ts-expect-error we dont call base class function
+                    await this.providers[index].updateData();
                 }
                 index++;
-                that.refreshTimeRef = that.adapter.setTimeout(updater, 250, that, index);
+                this.refreshTimeRef = this.adapter.setTimeout(updater, 250, index);
             } else {
-                await that.doEndOfUpdater();
-                that.updateAlertEndless(that, false);
-                that.refreshTimeRef = that.adapter.setTimeout(that.updateEndless, that.refreshTime || 600000, that);
+                await this.doEndOfUpdater();
+                await this.updateAlertEndless(false);
+                this.refreshTimeRef = this.adapter.setTimeout(this.updateEndless, this.refreshTime || 600000);
             }
-        }
-    }
+        };
+        updater().catch(() => {});
+    };
     /**
      * Periodically updates alerts in an endless loop.
      *
@@ -1194,24 +1192,22 @@ export class ProviderController extends BaseClass {
      * by scheduling the next update 1.333 seconds after the last full minute.
      * If `endless` is true, it continues scheduling updates indefinitely.
      *
-     * @param self - The current context, expected to be an instance of `ProviderController`.
      * @param endless - A boolean indicating whether to continue updating alerts endlessly.
      *                  Defaults to true.
      * @returns A promise that resolves when the alert update is complete.
      */
-    async updateAlertEndless(self: any, endless: boolean = true): Promise<void> {
-        const that = self as ProviderController;
-        if (that.unload) {
+    updateAlertEndless = async (endless: boolean = true): Promise<void> => {
+        if (this.unload) {
             return;
         }
-        await that.setSpeakAllowed();
-        await that.checkAlerts();
+        await this.setSpeakAllowed();
+        await this.checkAlerts();
         /** update every minute after 1.333 seconds. Avoid the full minute, full second and half second :) */
         const timeout = 61333 - (Date.now() % 60000);
         if (endless) {
-            that.alertTimeoutRef = that.adapter.setTimeout(that.updateAlertEndless, timeout, that);
+            this.alertTimeoutRef = this.adapter.setTimeout(this.updateAlertEndless, timeout);
         }
-    }
+    };
 
     /**
      * Updates the alerts for all providers.
@@ -1279,6 +1275,7 @@ export class ProviderController extends BaseClass {
         );
         this.providers.forEach(a => a.clearMessages());
         this.providers.forEach(a => a.finishTurn());
+        await this.library.garbageColleting(`${this.name}._activeWarnings_json`, (this.refreshTime || 600000) / 2);
         this.log.debug(`We have ${this.activeMessages} active messages.`);
     }
     /**

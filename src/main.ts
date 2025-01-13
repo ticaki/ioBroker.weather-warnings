@@ -578,8 +578,8 @@ class WeatherWarnings extends utils.Adapter {
 
                 await self.providerController.finishInit();
 
-                self.providerController.updateEndless(self.providerController).catch(() => {});
-                await self.providerController.updateAlertEndless(self.providerController);
+                self.providerController.updateEndless().catch(() => {});
+                await self.providerController.updateAlertEndless();
             },
             2000,
             this,

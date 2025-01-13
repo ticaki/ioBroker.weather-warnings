@@ -476,9 +476,9 @@ class WeatherWarnings extends utils.Adapter {
         await self.library.cleanUpTree(holdStates, null, 3);
         await self.library.cleanUpTree(holdStates2, reCheckStates, 5);
         await self.providerController.finishInit();
-        self.providerController.updateEndless(self.providerController).catch(() => {
+        self.providerController.updateEndless().catch(() => {
         });
-        await self.providerController.updateAlertEndless(self.providerController);
+        await self.providerController.updateAlertEndless();
       },
       2e3,
       this
