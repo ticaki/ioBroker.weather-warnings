@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "news": {
+      "0.7.2": {
+        "en": "Replacing „ and “ in the json template before parsing with \"\nFixing activeWarning_json (adapter.0.provider.activeWarning_json)",
+        "de": "Wiederholen „ und “ in der json Vorlage vor dem Parsing mit \"\nActiveWarning_json (adapter.0.provider.activeWarning_json)",
+        "ru": "Замена „ и “ в шаблоне json перед тем, как разделить с \"\nFixing activeWarning_json (adapter.0.provider.activeWarning_json)",
+        "pt": "Substituir „ e “ no modelo json antes de analisar com \"\nFixing activeWarning_json (adapter.0.provider.activeWarning_json)",
+        "nl": "Vervangen van het json-sjabloon door \"\nActiveWarning_json instellen (adapter.0.provider.activeWarning_json)",
+        "fr": "Remplacement „ et \" dans le modèle de json avant analyse avec \"\nCorrection activeAvertissement_json (adaptateur.0.provider.activeAvertissement_json)",
+        "it": "Sostituire \" e \" nel modello json prima di parsing con \"\nFissaggio attivoWarning_json (adapter.0.provider.activeWarning_json)",
+        "es": "Replacing ” y “en la plantilla json antes de analizar con \"\nFijación activaWarning_json (adapter.0.provider.activeWarning_json)",
+        "pl": "Zastąpienie \"i\" w szablonie jsona przed parsowaniem \"\nFixing activeWarning _ json (adapter.0.provider.activeWarning _ json)",
+        "uk": "Заміна \" і \" в шаблоні json перед оформленням\"\nВиправлення активнихWarning_json (adapter.0.provider.activeWarning_json)",
+        "zh-cn": "在json模板中替换“和”,然后解析“\n正在修复活动警告_json(适应器0. 提供者. activewarning_json)"
+      },
       "0.7.1": {
         "en": "Fixing send to chatId in telegram",
         "de": "Reparieren senden zu chat Id in Telegramm",
@@ -80,19 +93,6 @@
         "pl": "Zredukuj dane historii do 80 wpisów wokół 4000 linii, z powodu palantów w admin",
         "uk": "Зменшити дані історії до 80 записів навколо 4000 рядків, через jerks в адмін",
         "zh-cn": "将历史数据减少到大约4000行的80个条目,因为管理员里有混蛋"
-      },
-      "0.6.6": {
-        "en": "fullday(ZAMG only): If time span is 24h +/- 5 minutes and the start hour is between 0-3, day of the week from start time, otherwise blank.",
-        "de": "fullday (nur ZAMG): Wenn die Zeitspanne 24h +/- 5 Minuten beträgt und die Startstunde zwischen 0-3 liegt, Tag der Woche der Startzeit, ansonsten leer ist.",
-        "ru": "fullday (только ZAMG): Если продолжительность времени составляет 24 часа +/- 5 минут, а стартовый час - от 0 до 3, день недели от стартового времени в противном случае пуст.",
-        "pt": "dia inteiro (apenas ZAMG): Se o tempo for 24h +/- 5 minutos e a hora de início é entre 0-3, dia da semana do tempo de início de outra forma vazio.",
-        "nl": "uitsluitend fullday(ZAMG): Als de tijdspanne 24 uur +/- 5 minuten is en het startuur tussen 0-3, dag van de week vanaf de starttijd anders leeg is.",
-        "fr": "journée complète (ZAMG seulement): Si la durée est de 24h +/- 5 minutes et que l'heure de départ est comprise entre 0-3, jour de la semaine à partir de l'heure de départ autrement vide.",
-        "it": "fullday(ZAMG only): Se l'intervallo di tempo è 24h +/- 5 minuti e l'ora di inizio è tra 0-3, giorno della settimana dall'inizio altrimenti vuoto.",
-        "es": "fullday (ZAMG solamente): Si el intervalo de tiempo es de 24h +/- 5 minutos y la hora de inicio es de 0-3, día de la semana desde el tiempo de inicio vacío.",
-        "pl": "w pełni (wyłącznie ZAMG): Jeżeli czas trwania wynosi 24h + / - 5 minut, a godzina rozpoczęcia jest między 0-3, dzień tygodnia od rozpoczęcia czasu w przeciwnym razie pusty.",
-        "uk": "повне г, повне г,, показали, від, номер, XNUMX Якщо проміжок часу 24х +/- 5 хвилин, і час початку між 0-3, день тижня від часу запуску інакше порожній.",
-        "zh-cn": "全天( 仅ZAMG) : 如果时间跨度为24h +/- 5分钟,且起始时间为0-3天,则从起始时间算起为空."
       }
     },
     "titleLang": {
