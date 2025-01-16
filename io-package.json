@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.7.2",
+    "version": "0.7.3",
     "news": {
+      "0.7.3": {
+        "en": "fix typo",
+        "de": "typo reparieren",
+        "ru": "фиксация тиф",
+        "pt": "corrigir typo",
+        "nl": "fix typefout",
+        "fr": "correction du type",
+        "it": "correzione del tipo",
+        "es": "typo",
+        "pl": "fix typo",
+        "uk": "фіксувати типо",
+        "zh-cn": "修正类型"
+      },
       "0.7.2": {
         "en": "Replacing „ and “ in the json template before parsing with \"\nFixing activeWarning_json (adapter.0.provider.activeWarning_json)",
         "de": "Wiederholen „ und “ in der json Vorlage vor dem Parsing mit \"\nActiveWarning_json (adapter.0.provider.activeWarning_json)",
@@ -80,19 +93,6 @@
         "pl": "dodany brakujący tekst (ustawienia - alexa - soundtable)\nstałe wpisy początkowe / końcowe punktów danych. (ciąg znaków - > liczba)\naktualna zależność",
         "uk": "додано відсутній текст (налаштування - alexa - звуконепроникний)\nвиправлені оповіщення старту/закінчення даних. (string -> номер)\nзалежностей до дати",
         "zh-cn": "添加缺失文本( 设置 - alexa - 音标)\n固定的提醒开始/结束数据点。 (字符串 - > 数字)\n最新的依赖关系"
-      },
-      "0.6.7": {
-        "en": "Reduce history data to 80 entries around 4000 lines, because of jerks in the admin",
-        "de": "Reduzieren Sie die Geschichtsdaten auf 80 Einträge um 4000 Zeilen, wegen der Rucks im Admin",
-        "ru": "Уменьшить данные истории до 80 записей около 4000 строк, из-за рывков в администраторе",
-        "pt": "Reduza os dados do histórico para 80 entradas em torno de 4000 linhas, por causa de idiotas no administrador",
-        "nl": "Verminder de historische gegevens tot 80 ingangen rond 4000 regels, vanwege eikels in de admin",
-        "fr": "Réduire les données d'historique à 80 entrées autour de 4000 lignes, en raison de branles dans l'administration",
-        "it": "Ridurre i dati di storia a 80 voci intorno a 4000 linee, a causa di cretini nell'amministratore",
-        "es": "Reducir los datos de historia a 80 entradas alrededor de 4000 líneas, debido a idiotas en el administrador",
-        "pl": "Zredukuj dane historii do 80 wpisów wokół 4000 linii, z powodu palantów w admin",
-        "uk": "Зменшити дані історії до 80 записів навколо 4000 рядків, через jerks в адмін",
-        "zh-cn": "将历史数据减少到大约4000行的80个条目,因为管理员里有混蛋"
       }
     },
     "titleLang": {

@@ -146,7 +146,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.7.3 (2025-01-16)
 - (ticaki) fix typo
 
 ### 0.7.2 (2025-01-13)
