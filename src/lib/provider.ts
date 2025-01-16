@@ -450,6 +450,7 @@ export class BaseProvider extends BaseClass {
             this.messages.map(a => (a.formatedData ? a.formatedData.warntypegenericname : '')).join(', '),
             definitionen.genericStateObjects.summary.warntypes,
         );
+        await this.library.garbageColleting(`${this.name}.activeWarnings_json`, 15000);
     }
 }
 
@@ -1275,7 +1276,7 @@ export class ProviderController extends BaseClass {
         );
         this.providers.forEach(a => a.clearMessages());
         this.providers.forEach(a => a.finishTurn());
-        await this.library.garbageColleting(`${this.name}._activeWarnings_json`, (this.refreshTime || 600000) / 2);
+        await this.library.garbageColleting(`${this.name}.activeWarnings_json`, 15000);
         this.log.debug(`We have ${this.activeMessages} active messages.`);
     }
     /**

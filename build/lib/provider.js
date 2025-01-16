@@ -435,6 +435,7 @@ class BaseProvider extends import_library.BaseClass {
       this.messages.map((a) => a.formatedData ? a.formatedData.warntypegenericname : "").join(", "),
       definitionen.genericStateObjects.summary.warntypes
     );
+    await this.library.garbageColleting(`${this.name}.activeWarnings_json`, 15e3);
   }
 }
 class DWDProvider extends BaseProvider {
@@ -1095,7 +1096,7 @@ class ProviderController extends import_library.BaseClass {
     );
     this.providers.forEach((a) => a.clearMessages());
     this.providers.forEach((a) => a.finishTurn());
-    await this.library.garbageColleting(`${this.name}._activeWarnings_json`, (this.refreshTime || 6e5) / 2);
+    await this.library.garbageColleting(`${this.name}.activeWarnings_json`, 15e3);
     this.log.debug(`We have ${this.activeMessages} active messages.`);
   }
   /**
