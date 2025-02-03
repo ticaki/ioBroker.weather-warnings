@@ -449,7 +449,7 @@ class NotificationClass extends library.BaseClass {
               opt.phone = this.options.phonenumber;
             }
             try {
-              await this.adapter.sendToAsync(this.options.adapter, "send", opt, { timeout: 2e3 });
+              this.adapter.sendTo(this.options.adapter, "send", opt);
               this.log.debug(`Send the message: ${msg.text}`);
             } catch (error) {
               if (error.message == "Timeout exceeded") {
