@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.7.3",
+    "version": "0.7.4",
     "news": {
+      "0.7.4": {
+        "en": "change sendTo for whatsapp",
+        "de": "änderung senden Für whatsapp",
+        "ru": "пересылка Для whatsapp",
+        "pt": "enviar Para o whatsapp",
+        "nl": "wijzigen verzenden Aan voor whatsapp",
+        "fr": "changement d'envoi À pour Whatsapp",
+        "it": "cambio invio A per whatsapp",
+        "es": "cambio enviar Por lo que app",
+        "pl": "zmiana wysyłania To for whatsapp",
+        "uk": "змінити відправлення Для чого",
+        "zh-cn": "更改发送 为了什么"
+      },
       "0.7.3": {
         "en": "fix typo",
         "de": "typo reparieren",
@@ -80,19 +93,6 @@
         "pl": "stałe: filtr typu warntype\nstałe: jeżeli w powiadomieniach wyłącza się każdy dostawca z wyjątkiem zamga - żadna wiadomość nie została wysłana\nstałe: obniżanie zależności od zgodności z węzłem 18",
         "uk": "фіксований: фільтр попереджувача\nвиправлено: якщо кожен провайдер, крім зазимку, деактивований в повідомленнях - повідомлення не виходив\nфіксована: зниження залежності сумісності з вершиною 18 років",
         "zh-cn": "固定: 警告类型过滤器\n固定: 如果通知中除zamg以外的每个提供者都被关闭 - 没有消息退出\n固定: 与节点兼容的依赖性降级 第 18 条"
-      },
-      "0.6.9": {
-        "en": "added missing text (settings - alexa - soundtable)\nfixed: alerts start/end datapoints. (string -> number)\ndependencies up to date",
-        "de": "fehlender Text (einstellungen - alexa - soundtabelle)\behoben: alarme start-/end-datenpunkte. (string -> nummer)\nAbhängigkeiten aktualisiert",
-        "ru": "добавленный недостающий текст (постановления - alexa - звуковой)\nфиксированные оповещения запуска/конечных точек данных. (строка -> номер)\nдо настоящего времени",
-        "pt": "adicionado texto faltando (settings - alexa - soundtable)\nalertas fixos start/end datapoints. (string -> número)\ndependências até à data",
-        "nl": "ontbrekende tekst toevoegen (instellingen - alexa - soundtable)\nvaste alarmen begin-/eindgegevenspunten. (tekenreeks -> nummer)\nafhankelijkheden up to date",
-        "fr": "texte manquant ajouté (réglages - alexa - soundtable)\nalertes fixes start/end datapoints. (chiffre -> numéro)\ndépendances à jour",
-        "it": "aggiunto testo mancante (impostazioni - alexa - soundtable)\navvisi fissi start/end datapoints. (stringa - > numero)\ndipendenze fino ad oggi",
-        "es": "añadido texto desaparecido (ajustes - alexa - sonidotable)\nalertas fijas start/end datapoints. (estring - número de contacto)\ndependencias hasta la fecha",
-        "pl": "dodany brakujący tekst (ustawienia - alexa - soundtable)\nstałe wpisy początkowe / końcowe punktów danych. (ciąg znaków - > liczba)\naktualna zależność",
-        "uk": "додано відсутній текст (налаштування - alexa - звуконепроникний)\nвиправлені оповіщення старту/закінчення даних. (string -> номер)\nзалежностей до дати",
-        "zh-cn": "添加缺失文本( 设置 - alexa - 音标)\n固定的提醒开始/结束数据点。 (字符串 - > 数字)\n最新的依赖关系"
       }
     },
     "titleLang": {
