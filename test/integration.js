@@ -1,5 +1,6 @@
 const path=require("path");
 const { tests }=require("@iobroker/testing");
+const assert = require('assert');
 const wait=ms => new Promise(resolve => setTimeout(resolve,ms));
 // Run tests
 tests.integration(path.join(__dirname,".."),{
@@ -93,9 +94,16 @@ tests.integration(path.join(__dirname,".."),{
                 await harness.startAdapterAndWait();
                 await wait(30000);
                 harness.sendTo('weather-warnings.0','test-data','message',resp => {
-                    if (resp == 'ok') resolve(resp);
-                    else reject(resp);
-                    
+                    try {
+                        assert.strictEqual(resp, 'ok');
+                        resolve(resp);
+                    } catch (error) {
+                        if (error instanceof Error) {
+                            reject(new Error(`Test failed: ${error.message}`));
+                        } else {
+                            reject(new Error('Test failed with an unknown error'));
+                        }
+                    }
                 });
             })).timeout(2000000);
             it('Test: Adapter works more than 2 Minute!',() => new Promise(async (resolve, reject) => {
