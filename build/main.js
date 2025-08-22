@@ -591,6 +591,20 @@ class WeatherWarnings extends utils.Adapter {
             );
           }
           break;
+        /*case 'alexa_audio':
+            {
+                this.sendTo(
+                    obj.from,
+                    obj.command,
+                    {
+                        openUrl:
+                            'https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html',
+                        window: '_blank',
+                    },
+                    obj.callback,
+                );
+            }
+            break;*/
         case "alexa2_device_ids":
           {
             const data = [];
@@ -613,6 +627,7 @@ class WeatherWarnings extends utils.Adapter {
             this.sendTo(obj.from, obj.command, data, obj.callback);
           }
           break;
+        /** defaults for templates */
         case "addDefault":
         case "restoreDefault":
           {
@@ -771,6 +786,7 @@ class WeatherWarnings extends utils.Adapter {
           this.log.debug(`Retrieve test message!`);
           this.sendTo(obj.from, "test", "Test Message", obj.callback);
           break;
+        /**testing online */
         case "test-connection":
           if (obj.from !== "system.adapter.test.0") {
             this.sendTo(obj.from, obj.command, "Dont use this command!", obj.callback);
@@ -791,6 +807,7 @@ class WeatherWarnings extends utils.Adapter {
           });
           this.sendTo(obj.from, obj.command, connected ? "true" : "false", obj.callback);
           break;
+        /** testing with testdata and switch then to online */
         case "test-data":
           if (obj.from !== "system.adapter.test.0") {
             this.sendTo(obj.from, obj.command, "Dont use this command!", obj.callback);

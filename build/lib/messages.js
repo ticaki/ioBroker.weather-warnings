@@ -1068,6 +1068,7 @@ class MessagesClass extends library.BaseClass {
         }
         data = this.starttime;
       }
+      // eslint-disable-next-line
       case "dayoftheweek": {
         return new Date(data).toLocaleDateString(this.library.getLocalLanguage(), {
           weekday: "long"
