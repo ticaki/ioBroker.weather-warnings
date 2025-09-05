@@ -113,7 +113,7 @@ declare global {
             pushover_Priority: boolean;
             pushover_Device: string;
             pushover_Title: string;
-            
+
             gotify_DwdEnabled: boolean;
             gotify_UwzEnabled: boolean;
             gotify_ZamgEnabled: boolean;
@@ -124,7 +124,7 @@ declare global {
             gotify_MessageNew: string;
             gotify_MessageRemove: string;
             gotify_MessageAllRemove: string;
-            gotify_contentType: "text/plain" | "text/markdown" | undefined;
+            gotify_contentType: 'text/plain' | 'text/markdown' | undefined;
             gotify_Priority: string;
             gotify_Title: string;
 
