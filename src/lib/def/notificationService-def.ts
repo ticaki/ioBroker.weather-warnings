@@ -69,6 +69,7 @@ export type BaseType =
       } & bBaseType)
     | ({
           name: 'email';
+          recipients: string;
       } & bBaseType)
     | ({
           name: 'alexa2';

@@ -778,6 +778,12 @@ export class NotificationClass extends library.BaseClass {
                         opt.subject = messages[0].title;
                     }
                     opt.html = result.map(a => a.text).join(this.adapter.config.email_line_break);
+
+                    // Add recipients if configured
+                    if (this.options.recipients && this.options.recipients.length > 0) {
+                        opt.to = this.options.recipients;
+                    }
+
                     const templates = this.adapter.config.templateTable;
                     // das hier ist noch nicht gut, subject sollte vom Nutzer besser bestimmbar sein.
                     let token = 'message.status.new';

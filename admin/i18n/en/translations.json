@@ -166,6 +166,8 @@
     "history_panel": "History",
     "history_allinOne": "Each formatted data point is written to the history.",
     "email_line_break": "Line break at the end of each warning message.",
+    "email_Recipients": "Email recipients",
+    "email_Recipients_hint": "Email addresses separated by commas (e.g., user1@example.com, user2@example.com). If empty, uses adapter default recipients.",
     "email_panel": "e-Mail",
     "test_diver": "Testing",
     "customFormatedTokensJson.starttime": "Start time",
