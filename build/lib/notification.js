@@ -713,8 +713,8 @@ class NotificationClass extends library.BaseClass {
             opt.subject = messages[0].title;
           }
           opt.html = result.map((a) => a.text).join(this.adapter.config.email_line_break);
-          if (this.options.recipients && this.options.recipients.length > 0) {
-            opt.to = this.options.recipients;
+          if (this.options.recipients && this.options.recipients.trim().length > 0) {
+            opt.to = this.options.recipients.split(",").map((email) => email.trim()).filter((email) => email.length > 0);
           }
           const templates = this.adapter.config.templateTable;
           let token = "message.status.new";

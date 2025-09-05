@@ -780,8 +780,11 @@ export class NotificationClass extends library.BaseClass {
                     opt.html = result.map(a => a.text).join(this.adapter.config.email_line_break);
 
                     // Add recipients if configured
-                    if (this.options.recipients && this.options.recipients.length > 0) {
-                        opt.to = this.options.recipients;
+                    if (this.options.recipients && this.options.recipients.trim().length > 0) {
+                        opt.to = this.options.recipients
+                            .split(',')
+                            .map(email => email.trim())
+                            .filter(email => email.length > 0);
                     }
 
                     const templates = this.adapter.config.templateTable;
