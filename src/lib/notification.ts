@@ -784,7 +784,8 @@ export class NotificationClass extends library.BaseClass {
                         opt.to = this.options.recipients
                             .split(',')
                             .map(email => email.trim())
-                            .filter(email => email.length > 0);
+                            .filter(email => email.length > 0)
+                            .join(',');
                     }
 
                     const templates = this.adapter.config.templateTable;
