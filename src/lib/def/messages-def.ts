@@ -181,10 +181,10 @@ export const color = {
     },
     textdwd: {
         0: 'color.textGeneric.0',
-        1: 'color.textGeneric.1',
-        2: 'color.textGeneric.2',
-        3: 'color.textGeneric.3',
-        4: 'color.textGeneric.4',
+        1: 'color.textGeneric.2',
+        2: 'color.textGeneric.3',
+        3: 'color.textGeneric.4',
+        4: 'color.textGeneric.5',
         5: '',
     },
 };
