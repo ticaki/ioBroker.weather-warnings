@@ -50042,6 +50042,19 @@
                     "label": "email_line_break",
                     "newLine": false
                 },
+                "email_Recipients": {
+                    "type": "text",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "default": "",
+                    "disabled": "data.email_Adapter == 'none'",
+                    "label": "email_Recipients",
+                    "tooltip": "email_Recipients_hint",
+                    "newLine": true
+                },
                 "email_auto": {
                     "type": "staticText",
                     "xs": 12,

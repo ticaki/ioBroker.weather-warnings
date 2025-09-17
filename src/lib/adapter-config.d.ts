@@ -155,12 +155,16 @@ declare global {
             email_ZamgEnabled: boolean;
             email_TypeFilter: number[];
             email_LevelFilter: number;
+            email_ManualTypeFilter: number[];
+            email_ManualLevelFilter: number;
             email_Enabled: boolean;
             email_MessageNew: string;
             email_MessageRemove: string;
             email_Header: string;
             email_Footer: string;
             email_Title: string;
+            email_manualAll: string;
+            email_Recipients: string;
 
             alexa2_Adapter: string;
             alexa2_DwdEnabled: boolean;
