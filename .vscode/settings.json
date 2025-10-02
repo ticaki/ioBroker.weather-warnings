@@ -1,28 +1,42 @@
 {
-    "editor.formatOnSave": false,
-    "eslint.enable": true,
-    /*"[javascript]":{"editor.defaultFormatter": "esbenp.prettier-vscode",},
-	"[typescript]": {
-		"editor.codeActionsOnSave": {
-			"source.organizeImports": true
-		},
-		"editor.defaultFormatter": "vscode.typescript-language-features"
-	},*/
-    "json.schemas": [
-        {
-            "fileMatch": [
-                "io-package.json"
-            ],
-            "url": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/schemas/io-package.json"
-        },
-        {
-            "fileMatch": [
-                "admin/jsonConfig.json",
-                "admin/jsonCustom.json",
-                "admin/jsonTab.json"
-            ],
-            "url": "https://raw.githubusercontent.com/ioBroker/adapter-react-v5/main/schemas/jsonConfig.json"
-        }
-    ],
-    "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "eslint.enable": true,
+  "eslint.format.enable": true,
+
+  // Empfohlen: Flat Config nutzen, falls dein Projekt schon eslint.config.js hat
+  "eslint.useFlatConfig": true,
+  "eslint.useESLintClass": "always",
+
+  // WICHTIG: diese beiden dürfen NICHT in codeActionsOnSave stehen
+  "eslint.validate": ["javascript", "typescript", "typescriptreact", "vue", "json"],
+  "eslint.workingDirectories": [
+    { "mode": "auto" }
+  ],
+
+  "editor.formatOnSave": false,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  "json.schemas": [
+    {
+      "fileMatch": ["io-package.json"],
+      "url": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/schemas/io-package.json"
+    },
+    {
+      "fileMatch": [
+        "admin/jsonConfig.json",
+        "admin/jsonCustom.json",
+        "admin/jsonTab.json",
+        "admin/jsonConfig.json5",
+        "admin/jsonCustom.json5",
+        "admin/jsonTab.json5"
+      ],
+      "url": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/packages/jsonConfig/schemas/jsonConfig.json"
+    }
+  ],
+
+  "findUnusedExports.detectCircularImports": true
 }

@@ -2,7 +2,6 @@ import type WeatherWarnings from '../main';
 import { statesObjectsWarnings } from './def/definition';
 import * as MessageType from './def/messages-def';
 import type * as NotificationType from './def/notificationService-def';
-import type { messageFilterType } from './def/provider-def';
 import * as library from './library';
 import type * as Provider from './def/provider-def';
 import type { NotificationClass } from './notification';
@@ -831,10 +830,10 @@ export class MessagesClass extends library.BaseClass {
     /**
      * filters the message against a messageFilterType
      *
-     * @param filter messageFilterType
+     * @param filter Provider.messageFilterType
      * @returns true if the message is not filtered, false otherwise
      */
-    filter(filter: messageFilterType): boolean {
+    filter(filter: Provider.messageFilterType): boolean {
         if (filter.level && filter.level > this.level) {
             return false;
         }

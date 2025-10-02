@@ -823,7 +823,7 @@ class MessagesClass extends library.BaseClass {
   /**
    * filters the message against a messageFilterType
    *
-   * @param filter messageFilterType
+   * @param filter Provider.messageFilterType
    * @returns true if the message is not filtered, false otherwise
    */
   filter(filter) {
