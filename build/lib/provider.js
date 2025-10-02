@@ -38,7 +38,6 @@ __export(provider_exports, {
   ZAMGProvider: () => ZAMGProvider
 });
 module.exports = __toCommonJS(provider_exports);
-var import_axios = __toESM(require("axios"));
 var definitionen = __toESM(require("./def/definition"));
 var import_library = require("./library");
 var import_messages = require("./messages");
@@ -47,7 +46,6 @@ var import_test_warnings = require("./test-warnings");
 var NotificationType = __toESM(require("./def/notificationService-def"));
 var messagesDef = __toESM(require("./def/messages-def"));
 const DIV = "-";
-import_axios.default.defaults.timeout = 5e3;
 class BaseProvider extends import_library.BaseClass {
   service;
   url = "";
@@ -128,6 +126,38 @@ class BaseProvider extends import_library.BaseClass {
     await this.library.memberDeleteAsync(this.messages);
     this.messages = [];
     await this.setConnected(false);
+  }
+  /**
+   * Fetches data from a URL using native fetch with timeout support.
+   *
+   * @param url The URL to fetch from.
+   * @param init Optional fetch init options.
+   * @param timeout Timeout in milliseconds (default: 5000ms).
+   * @returns The response data as JSON.
+   * @throws Error if the request fails or times out.
+   */
+  async fetch(url, init, timeout = 5e3) {
+    var _a;
+    const controller = new AbortController();
+    const timeoutId = this.adapter.setTimeout(() => {
+      try {
+        controller.abort();
+      } catch {
+      }
+    }, timeout);
+    try {
+      const response = await fetch(url, {
+        ...init,
+        method: (_a = init == null ? void 0 : init.method) != null ? _a : "GET",
+        signal: controller.signal
+      });
+      if (response.status === 200) {
+        return await response.json();
+      }
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    } finally {
+      this.adapter.clearTimeout(timeoutId);
+    }
   }
   /**
    * Returns the provider service of the provider.
@@ -300,13 +330,12 @@ class BaseProvider extends import_library.BaseClass {
           (0, import_test_warnings.getTestData)(this.service, this.adapter)
         );
       }
-      const data = await import_axios.default.get(this.url);
+      const result = await this.fetch(this.url);
       if (this.unload) {
         return null;
       }
-      if (data.status == 200) {
+      if (result) {
         await this.setConnected(true);
-        const result = typeof data.data == "object" ? data.data : JSON.parse(data.data);
         await this.library.writedp(
           `${this.name}.warning.warning_json`,
           JSON.stringify(result),
@@ -333,15 +362,10 @@ class BaseProvider extends import_library.BaseClass {
         );
         return result;
       }
-      this.log.warn(`Warn(23) ${data.statusText}`);
     } catch (error) {
-      if (import_axios.default.isAxiosError(error)) {
-        this.log.warn(`Warn(21) axios error for ${this.getService()} url: ${this.url}`);
-      } else {
-        this.log.error(
-          `Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`
-        );
-      }
+      this.log.error(
+        `Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`
+      );
     }
     await this.setConnected(false);
     return null;
@@ -616,21 +640,35 @@ class UWZProvider extends BaseProvider {
    */
   static async getWarncell(warncellId, service, that) {
     try {
-      const result = await import_axios.default.get(
-        UWZProvider.getUrl(
-          definitionen.PROVIDER_OPTIONS.uwzService.warncellUrl,
-          [warncellId[0], warncellId[1]],
-          service
-        )
+      const url = UWZProvider.getUrl(
+        definitionen.PROVIDER_OPTIONS.uwzService.warncellUrl,
+        [warncellId[0], warncellId[1]],
+        service
       );
-      if (result) {
-        if (result.data && result.data[0]) {
-          return result.data[0].AREA_ID;
+      const controller = new AbortController();
+      const timeoutId = that.setTimeout(() => {
+        try {
+          controller.abort();
+        } catch {
         }
+      }, 5e3);
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          signal: controller.signal
+        });
+        if (response.status === 200) {
+          const result = await response.json();
+          if (result && result[0]) {
+            return result[0].AREA_ID;
+          }
+        }
+      } finally {
+        that.clearTimeout(timeoutId);
       }
       that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)}`);
     } catch (error) {
-      that.log.warn(`Dont get warncell. ${JSON.stringify(error.toJSON)}`);
+      that.log.warn(`Dont get warncell. ${(error == null ? void 0 : error.message) || error}`);
     }
     return "";
   }
