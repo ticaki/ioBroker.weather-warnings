@@ -363,9 +363,7 @@ class BaseProvider extends import_library.BaseClass {
         return result;
       }
     } catch (error) {
-      this.log.error(
-        `Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`
-      );
+      this.log.error(`Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`);
     }
     await this.setConnected(false);
     return null;
