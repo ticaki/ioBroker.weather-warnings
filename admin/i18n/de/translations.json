@@ -159,6 +159,8 @@
     "history_panel": "Verlauf",
     "history_allinOne": "Jeder formatierte Datenpunkt wird in den Verlauf geschrieben.",
     "email_line_break": "Zeilenumbruch am Ende jeder Warnmeldung.",
+    "email_Recipients": "E-Mail-Empfänger",
+    "email_Recipients_hint": "E-Mail-Adressen durch Kommas getrennt (z.B. user1@example.com, user2@example.com). Wenn leer, werden die Standard-Empfänger des Adapters verwendet.",
     "email_panel": "Email",
     "test_diver": "Testen",
     "dwdCityname": "Ortsname (benutzerdefiniert)",

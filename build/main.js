@@ -322,6 +322,7 @@ class WeatherWarnings extends utils.Adapter {
         if (self.config.email_Enabled && notificationServiceOpt.email != void 0) {
           notificationServiceOpt.email.actions.header = self.config.email_Header;
           notificationServiceOpt.email.actions.footer = self.config.email_Footer;
+          notificationServiceOpt.email.recipients = self.config.email_Recipients;
         }
         if (self.config.alexa2_Enabled && notificationServiceOpt.alexa2 != void 0) {
           notificationServiceOpt.alexa2.volumen = self.config.alexa2_volumen > 0 ? String(self.config.alexa2_volumen) : "";
