@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.8.0",
+    "version": "0.9.0",
     "news": {
+      "0.9.0": {
+        "en": "Data retrieval function changed from axios to fetch \nRetrieval timeout changed from 15 seconds to 5 minutes (DWD server needs a 'little' more time)",
+        "de": "Datenabruffunktion geändert von axios auf fetch\nDatenabruf Timeout von 15 Sekunden auf 5 Minuten geändert (DWD-Server braucht \"etwas\" mehr Zeit)",
+        "ru": "Функция поиска данных изменилась с axios на fetch\nТайм-аут для поиска изменился с 15 секунд до 5 минут (для сервера DWD требуется немного больше времени)",
+        "pt": "A função de recuperação de dados mudou de axios para obter\nTempo de recuperação alterado de 15 segundos para 5 minutos (o servidor DWD precisa de um 'pouco' mais tempo)",
+        "nl": "Data ophalen functie veranderd van axios naar ophalen\nRetrieval timeout gewijzigd van 15 seconden naar 5 minuten (DWD server heeft een 'klein' meer tijd nodig)",
+        "fr": "Fonction de récupération de données changé d'axios pour récupérer\nLe délai de récupération est passé de 15 secondes à 5 minutes (le serveur DWD a besoin d'un \"petit\" temps supplémentaire)",
+        "it": "Funzione di recupero dati cambiata da assios a fetch\nIl timeout di recupero è cambiato da 15 secondi a 5 minuti (il server DWD ha bisogno di un 'piccolo' più tempo)",
+        "es": "Función de recuperación de datos cambió de axios a embrague\nEl tiempo de recuperación cambió de 15 segundos a 5 minutos (el servidor DWD necesita más tiempo)",
+        "pl": "Funkcja pobierania danych zmieniona z axios na fetch\nCzas pobierania zmienił się z 15 sekund na 5 minut (serwer DWD potrzebuje więcej czasu)",
+        "uk": "Функція перерозподілу даних змінено з аксіосу до fetch\nВід 15 секунд до 5 хвилин (DWD сервер потребує більше часу)",
+        "zh-cn": "数据检索功能从轴移到获取\n检索时间从15秒改为5分钟( DWD 服务器需要“ 少一点” 的时间)"
+      },
       "0.8.0": {
         "en": "Add configurable email recipients with correct processing of comma-separated addresses\nUpdate dependencies",
         "de": "Konfigurierbare E-Mail-Empfänger mit korrekter Verarbeitung von kommagetrennten Adressen hinzugefügt\nAbhängigkeiten aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "dodano contributification (notification service)",
         "uk": "додано (notificationservice)",
         "zh-cn": "添加加码(通知服务)"
-      },
-      "0.6.11": {
-        "en": "eslint 8 -> 9",
-        "de": "eslint 8 -> 9",
-        "ru": "eslint 8 -> 9",
-        "pt": "eslint 8 -> 9",
-        "nl": "eslint 8 -> 9",
-        "fr": "échelle 8 -> 9",
-        "it": "eslint 8 -> 9",
-        "es": "eslint 8 ->  9",
-        "pl": "eslint 8 - > 9",
-        "uk": "eslint 8 -> 10 хв",
-        "zh-cn": "eslint 8 - > 第9条"
       }
     },
     "titleLang": {
