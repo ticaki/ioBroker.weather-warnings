@@ -1,6 +1,5 @@
 // Provider
 
-import axios from 'axios';
 import type WeatherWarnings from '../main';
 import * as definitionen from './def/definition';
 import type { Library } from './library';
@@ -13,7 +12,6 @@ import * as NotificationType from './def/notificationService-def';
 import * as messagesDef from './def/messages-def';
 export const DIV = '-';
 
-axios.defaults.timeout = 5000;
 type ProviderOptionsTypeInternal = {
     service: providerDef.providerServices;
     warncellId: string | [string, string];
@@ -310,50 +308,40 @@ export class BaseProvider extends BaseClass {
                     getTestData(this.service, this.adapter) as object,
                 ) as providerDef.DataImportType;
             }
-            const data = await axios.get(this.url);
+            const result = await this.adapter.fetch(this.url, undefined, 300_000);
+            if (!result) {
+                this.log.warn(`Warn(20) no data for ${this.getService()} from ${this.url}`);
+                return null;
+            }
             if (this.unload) {
                 return null;
             }
-            if (data.status == 200) {
-                await this.setConnected(true);
+            await this.setConnected(true);
 
-                const result = typeof data.data == 'object' ? data.data : JSON.parse(data.data);
-
-                await this.library.writedp(
-                    `${this.name}.warning.warning_json`,
-                    JSON.stringify(result),
-                    definitionen.genericStateObjects.warnings_json,
-                );
-                if (this.adapter.config.useJsonHistory) {
-                    const dp = `${this.name}.warning.jsonHistory`;
-                    const state = this.library.readdp(dp);
-                    let history: object[] = [];
-                    if (state && state.val && typeof state.val == 'string') {
-                        history = JSON.parse(state.val);
-                    }
-                    history.unshift(result);
-                    await this.library.writedp(
-                        dp,
-                        JSON.stringify(history),
-                        definitionen.genericStateObjects.jsonHistory,
-                    );
+            await this.library.writedp(
+                `${this.name}.warning.warning_json`,
+                JSON.stringify(result),
+                definitionen.genericStateObjects.warnings_json,
+            );
+            if (this.adapter.config.useJsonHistory) {
+                const dp = `${this.name}.warning.jsonHistory`;
+                const state = this.library.readdp(dp);
+                let history: object[] = [];
+                if (state && state.val && typeof state.val == 'string') {
+                    history = JSON.parse(state.val);
                 }
-                await this.library.writedp(
-                    `${this.name}.lastUpdate`,
-                    Date.now(),
-                    definitionen.genericStateObjects.lastUpdate,
-                );
-                return result;
+                history.unshift(result);
+                await this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
             }
-            this.log.warn(`Warn(23) ${data.statusText}`);
+            await this.library.writedp(
+                `${this.name}.lastUpdate`,
+                Date.now(),
+                definitionen.genericStateObjects.lastUpdate,
+            );
+            return result as any;
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                this.log.warn(`Warn(21) axios error for ${this.getService()} url: ${this.url}`);
-            } else {
-                this.log.error(
-                    `Error(22) no data for ${this.getService()} from ${this.url} with Error ${error as string}`,
-                );
-            }
+            this.log.warn(`Error(22) getting data from ${this.url}`);
+            this.adapter.handleFetchError(error);
         }
         await this.setConnected(false);
         return null;
@@ -396,11 +384,11 @@ export class BaseProvider extends BaseClass {
         }
         await this.library.garbageColleting(
             `${this.name}.formatedKeys`,
-            (this.providerController.refreshTime || 600000) / 2,
+            (this.providerController.refreshTime || 600_000) / 2,
         );
         await this.library.garbageColleting(
             `${this.name}.warning`,
-            (this.providerController.refreshTime || 600000) / 2,
+            (this.providerController.refreshTime || 600_000) / 2,
         );
     }
 
@@ -450,7 +438,7 @@ export class BaseProvider extends BaseClass {
             this.messages.map(a => (a.formatedData ? a.formatedData.warntypegenericname : '')).join(', '),
             definitionen.genericStateObjects.summary.warntypes,
         );
-        await this.library.garbageColleting(`${this.name}.activeWarnings_json`, 15000);
+        await this.library.garbageColleting(`${this.name}.activeWarnings_json`, 15_000);
     }
 }
 
@@ -499,7 +487,7 @@ export class DWDProvider extends BaseProvider {
             }
             if (
                 this.filter.hours > 0 &&
-                new Date(w.properties.ONSET).getTime() > Date.now() + this.filter.hours * 3600000
+                new Date(w.properties.ONSET).getTime() > Date.now() + this.filter.hours * 3_600_000
             ) {
                 continue;
             }
@@ -680,16 +668,16 @@ export class UWZProvider extends BaseProvider {
         that: WeatherWarnings,
     ): Promise<string> {
         try {
-            const result = await axios.get(
+            const result = (await that.fetch(
                 UWZProvider.getUrl(
                     definitionen.PROVIDER_OPTIONS.uwzService.warncellUrl,
                     [warncellId[0], warncellId[1]],
                     service,
                 ),
-            );
+            )) as any;
             if (result) {
-                if (result.data && result.data[0]) {
-                    return result.data[0].AREA_ID;
+                if (result && result[0]) {
+                    return result[0].AREA_ID;
                 }
             }
             that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)}`);
@@ -800,7 +788,7 @@ export class ProviderController extends BaseClass {
 
     connection = true;
     name = 'provider';
-    refreshTime: number = 300000;
+    refreshTime: number = 300_000;
     library: Library;
     pushOn = false;
     //globalSpeakSilentTime: ({ profil: string; day: number[]; start: number; end: number } | null)[] = [];
@@ -837,7 +825,7 @@ export class ProviderController extends BaseClass {
      */
     async init(): Promise<void> {
         this.pushOn = !this.adapter.config.notPushAtStart; // ups wrong variable name PushAtStart
-        this.refreshTime = this.adapter.config.refreshTime * 60000;
+        this.refreshTime = this.adapter.config.refreshTime * 60_000;
 
         const typeStates: string[] = [];
         for (const a in messagesDef.genericWarntyp) {
@@ -1156,7 +1144,7 @@ export class ProviderController extends BaseClass {
                 this.testStatus = 1;
             }
             this.adapter.config.useTestWarnings = true;
-            this.refreshTime = 60000;
+            this.refreshTime = 60_000;
         }
         this.connection = false;
         if (this.refreshTimeRef) {
@@ -1166,24 +1154,20 @@ export class ProviderController extends BaseClass {
             await this.setConnected(false);
             return;
         }
-        const updater = async (index: number = 0): Promise<void> => {
-            if (this.unload) {
-                return;
+        if (this.unload) {
+            return;
+        }
+        const tasks: Promise<void>[] = [];
+        for (let index = 0; index < this.providers.length; index++) {
+            if (this.providers[index]) {
+                //@ts-expect-error we dont call base class function
+                tasks.push(this.providers[index].updateData());
             }
-            if (index < this.providers.length) {
-                if (this.providers[index]) {
-                    //@ts-expect-error we dont call base class function
-                    await this.providers[index].updateData();
-                }
-                index++;
-                this.refreshTimeRef = this.adapter.setTimeout(updater, 250, index);
-            } else {
-                await this.doEndOfUpdater();
-                await this.updateAlertEndless(false);
-                this.refreshTimeRef = this.adapter.setTimeout(this.updateEndless, this.refreshTime || 600000);
-            }
-        };
-        updater().catch(() => {});
+        }
+        await Promise.all(tasks);
+        await this.doEndOfUpdater();
+        await this.updateAlertEndless(false);
+        this.refreshTimeRef = this.adapter.setTimeout(this.updateEndless, this.refreshTime || 600_000);
     };
     /**
      * Periodically updates alerts in an endless loop.
@@ -1204,7 +1188,7 @@ export class ProviderController extends BaseClass {
         await this.setSpeakAllowed();
         await this.checkAlerts();
         /** update every minute after 1.333 seconds. Avoid the full minute, full second and half second :) */
-        const timeout = 61333 - (Date.now() % 60000);
+        const timeout = 61_333 - (Date.now() % 60_000);
         if (endless) {
             this.alertTimeoutRef = this.adapter.setTimeout(this.updateAlertEndless, timeout);
         }
@@ -1276,7 +1260,7 @@ export class ProviderController extends BaseClass {
         );
         this.providers.forEach(a => a.clearMessages());
         this.providers.forEach(a => a.finishTurn());
-        await this.library.garbageColleting(`${this.name}.activeWarnings_json`, 15000);
+        await this.library.garbageColleting(`${this.name}.activeWarnings_json`, 15_000);
         this.log.debug(`We have ${this.activeMessages} active messages.`);
     }
     /**

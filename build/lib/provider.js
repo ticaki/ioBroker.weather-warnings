@@ -38,7 +38,6 @@ __export(provider_exports, {
   ZAMGProvider: () => ZAMGProvider
 });
 module.exports = __toCommonJS(provider_exports);
-var import_axios = __toESM(require("axios"));
 var definitionen = __toESM(require("./def/definition"));
 var import_library = require("./library");
 var import_messages = require("./messages");
@@ -47,7 +46,6 @@ var import_test_warnings = require("./test-warnings");
 var NotificationType = __toESM(require("./def/notificationService-def"));
 var messagesDef = __toESM(require("./def/messages-def"));
 const DIV = "-";
-import_axios.default.defaults.timeout = 5e3;
 class BaseProvider extends import_library.BaseClass {
   service;
   url = "";
@@ -300,48 +298,39 @@ class BaseProvider extends import_library.BaseClass {
           (0, import_test_warnings.getTestData)(this.service, this.adapter)
         );
       }
-      const data = await import_axios.default.get(this.url);
+      const result = await this.adapter.fetch(this.url, void 0, 3e5);
+      if (!result) {
+        this.log.warn(`Warn(20) no data for ${this.getService()} from ${this.url}`);
+        return null;
+      }
       if (this.unload) {
         return null;
       }
-      if (data.status == 200) {
-        await this.setConnected(true);
-        const result = typeof data.data == "object" ? data.data : JSON.parse(data.data);
-        await this.library.writedp(
-          `${this.name}.warning.warning_json`,
-          JSON.stringify(result),
-          definitionen.genericStateObjects.warnings_json
-        );
-        if (this.adapter.config.useJsonHistory) {
-          const dp = `${this.name}.warning.jsonHistory`;
-          const state = this.library.readdp(dp);
-          let history = [];
-          if (state && state.val && typeof state.val == "string") {
-            history = JSON.parse(state.val);
-          }
-          history.unshift(result);
-          await this.library.writedp(
-            dp,
-            JSON.stringify(history),
-            definitionen.genericStateObjects.jsonHistory
-          );
+      await this.setConnected(true);
+      await this.library.writedp(
+        `${this.name}.warning.warning_json`,
+        JSON.stringify(result),
+        definitionen.genericStateObjects.warnings_json
+      );
+      if (this.adapter.config.useJsonHistory) {
+        const dp = `${this.name}.warning.jsonHistory`;
+        const state = this.library.readdp(dp);
+        let history = [];
+        if (state && state.val && typeof state.val == "string") {
+          history = JSON.parse(state.val);
         }
-        await this.library.writedp(
-          `${this.name}.lastUpdate`,
-          Date.now(),
-          definitionen.genericStateObjects.lastUpdate
-        );
-        return result;
+        history.unshift(result);
+        await this.library.writedp(dp, JSON.stringify(history), definitionen.genericStateObjects.jsonHistory);
       }
-      this.log.warn(`Warn(23) ${data.statusText}`);
+      await this.library.writedp(
+        `${this.name}.lastUpdate`,
+        Date.now(),
+        definitionen.genericStateObjects.lastUpdate
+      );
+      return result;
     } catch (error) {
-      if (import_axios.default.isAxiosError(error)) {
-        this.log.warn(`Warn(21) axios error for ${this.getService()} url: ${this.url}`);
-      } else {
-        this.log.error(
-          `Error(22) no data for ${this.getService()} from ${this.url} with Error ${error}`
-        );
-      }
+      this.log.warn(`Error(22) getting data from ${this.url}`);
+      this.adapter.handleFetchError(error);
     }
     await this.setConnected(false);
     return null;
@@ -616,7 +605,7 @@ class UWZProvider extends BaseProvider {
    */
   static async getWarncell(warncellId, service, that) {
     try {
-      const result = await import_axios.default.get(
+      const result = await that.fetch(
         UWZProvider.getUrl(
           definitionen.PROVIDER_OPTIONS.uwzService.warncellUrl,
           [warncellId[0], warncellId[1]],
@@ -624,8 +613,8 @@ class UWZProvider extends BaseProvider {
         )
       );
       if (result) {
-        if (result.data && result.data[0]) {
-          return result.data[0].AREA_ID;
+        if (result && result[0]) {
+          return result[0].AREA_ID;
         }
       }
       that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)}`);
@@ -991,24 +980,19 @@ class ProviderController extends import_library.BaseClass {
       await this.setConnected(false);
       return;
     }
-    const updater = async (index = 0) => {
-      if (this.unload) {
-        return;
+    if (this.unload) {
+      return;
+    }
+    const tasks = [];
+    for (let index = 0; index < this.providers.length; index++) {
+      if (this.providers[index]) {
+        tasks.push(this.providers[index].updateData());
       }
-      if (index < this.providers.length) {
-        if (this.providers[index]) {
-          await this.providers[index].updateData();
-        }
-        index++;
-        this.refreshTimeRef = this.adapter.setTimeout(updater, 250, index);
-      } else {
-        await this.doEndOfUpdater();
-        await this.updateAlertEndless(false);
-        this.refreshTimeRef = this.adapter.setTimeout(this.updateEndless, this.refreshTime || 6e5);
-      }
-    };
-    updater().catch(() => {
-    });
+    }
+    await Promise.all(tasks);
+    await this.doEndOfUpdater();
+    await this.updateAlertEndless(false);
+    this.refreshTimeRef = this.adapter.setTimeout(this.updateEndless, this.refreshTime || 6e5);
   };
   /**
    * Periodically updates alerts in an endless loop.

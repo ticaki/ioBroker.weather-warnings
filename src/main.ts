@@ -23,6 +23,8 @@ class WeatherWarnings extends utils.Adapter {
     providerController: ProviderController | null = null;
     numOfRawWarnings: number = 5;
     adminTimeoutRef: any = null;
+    fetchs: Map<AbortController, ioBroker.Timeout | undefined> = new Map();
+
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
@@ -95,7 +97,7 @@ class WeatherWarnings extends utils.Adapter {
         }
 
         try {
-            //const states = await self.getStatesAsync('*');
+            //const states = await this.getStatesAsync('*');
             await this.library.init();
             this.providerController.setAllowedDirs(allowedDirsConfig);
             await this.library.initStates(await this.getStatesAsync('*'));
@@ -239,352 +241,339 @@ class WeatherWarnings extends utils.Adapter {
                 ? this.config.numOfRawWarnings
                 : 5;
 
-        this.startDelay = this.setTimeout(
-            async function (that: any) {
-                const self = that as WeatherWarnings;
-                if (!self) {
-                    return;
-                }
-                if (!self.providerController) {
-                    return;
-                }
-                if (self.providerController.unload) {
-                    return;
-                }
+        this.startDelay = this.setTimeout(async () => {
+            if (!this.providerController) {
+                return;
+            }
+            if (this.providerController.unload) {
+                return;
+            }
 
-                await self.providerController.init();
-                self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 60000} minutes`);
+            await this.providerController.init();
+            this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 60_000} minutes`);
 
-                const notificationServiceOpt: NotificationType.OptionsType = {};
-                for (const n of NotificationType.Array) {
-                    const notificationService = n;
-                    if (self.config[`${notificationService}_Enabled` as keyof ioBroker.AdapterConfig]) {
-                        const service: providerDef.providerServices[] = [];
-                        if (self.config[`${notificationService}_DwdEnabled` as keyof ioBroker.AdapterConfig]) {
-                            service.push('dwdService');
-                        }
-                        if (self.config[`${notificationService}_UwzEnabled` as keyof ioBroker.AdapterConfig]) {
-                            service.push('uwzService');
-                        }
-                        if (self.config[`${notificationService}_ZamgEnabled` as keyof ioBroker.AdapterConfig]) {
-                            service.push('zamgService');
-                        }
-                        const template: NotificationType.ActionsType = {
-                            new:
-                                self.config[`${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig] !==
-                                undefined
-                                    ? (self.config[
-                                          `${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig
-                                      ] as string)
-                                    : 'none',
-                            remove: self.config[
-                                `${notificationService}_MessageRemove` as keyof ioBroker.AdapterConfig
-                            ] as string,
-                            removeAll: self.config[
-                                `${notificationService}_MessageAllRemove` as keyof ioBroker.AdapterConfig
-                            ] as string,
-                            all:
-                                self.config[`${notificationService}_MessageAll` as keyof ioBroker.AdapterConfig] !==
-                                undefined
-                                    ? (self.config[
-                                          `${notificationService}_MessageAll` as keyof ioBroker.AdapterConfig
-                                      ] as string)
-                                    : self.config[
-                                            `${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig
-                                        ] !== undefined
-                                      ? (self.config[
-                                            `${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig
-                                        ] as string)
-                                      : 'none',
-                            manualAll:
-                                self.config[`${notificationService}_manualAll` as keyof ioBroker.AdapterConfig] !==
-                                undefined
-                                    ? (self.config[
-                                          `${notificationService}_manualAll` as keyof ioBroker.AdapterConfig
-                                      ] as string)
-                                    : 'none',
-                            removeManualAll:
-                                self.config[
-                                    `${notificationService}_removeManualAll` as keyof ioBroker.AdapterConfig
-                                ] !== undefined
-                                    ? (self.config[
-                                          `${notificationService}_removeManualAll` as keyof ioBroker.AdapterConfig
-                                      ] as string)
-                                    : 'none',
-                            title:
-                                self.config[`${notificationService}_Title` as keyof ioBroker.AdapterConfig] !==
-                                undefined
-                                    ? (self.config[
-                                          `${notificationService}_Title` as keyof ioBroker.AdapterConfig
-                                      ] as string)
-                                    : 'none',
-                        };
-                        for (const a in template) {
-                            const b = a as keyof NotificationType.ActionsType;
-                            if (template[b] == undefined) {
-                                continue;
-                            }
-                            template[b] = template[b] ? template[b] : 'none';
-                        }
-
-                        // @ts-expect-error keine ahnung :)
-                        notificationServiceOpt[notificationService] = {
-                            ...notificationServiceDefaults[notificationService],
-                            service: service,
-                            filter: {
-                                auto: {
-                                    level:
-                                        (self.config[
-                                            `${notificationService}_LevelFilter` as keyof ioBroker.AdapterConfig
-                                        ] as number) || -1,
-                                    type: (
-                                        (self.config[
-                                            `${notificationService}_TypeFilter` as keyof ioBroker.AdapterConfig
-                                        ] as string[]) || []
-                                    ).map(a => String(a)),
-                                },
-                                manual: {
-                                    level: (self.config[
-                                        `${notificationService}_ManualLevelFilter` as keyof ioBroker.AdapterConfig
-                                    ] as number)
-                                        ? (self.config[
-                                              `${notificationService}_ManualLevelFilter` as keyof ioBroker.AdapterConfig
-                                          ] as number)
-                                        : -1,
-                                    type: ((self.config[
-                                        `${notificationService}_ManualTypeFilter` as keyof ioBroker.AdapterConfig
-                                    ] as string[])
-                                        ? (self.config[
-                                              `${notificationService}_ManualTypeFilter` as keyof ioBroker.AdapterConfig
-                                          ] as string[])
-                                        : []
-                                    ).map(a => String(a)),
-                                },
-                            },
-                            adapter: self.config[
-                                `${notificationService}_Adapter` as keyof ioBroker.AdapterConfig
-                            ] as string,
-                            name: notificationService,
-                            actions: template,
-                            useadapter: true,
-                        };
-                        Object.assign(
-                            //@ts-expect-error verstehe ich nicht
-                            notificationServiceOpt[notificationService],
-                            notificationServiceDefaults[notificationService],
-                        );
+            const notificationServiceOpt: NotificationType.OptionsType = {};
+            for (const n of NotificationType.Array) {
+                const notificationService = n;
+                if (this.config[`${notificationService}_Enabled`]) {
+                    const service: providerDef.providerServices[] = [];
+                    if (this.config[`${notificationService}_DwdEnabled`]) {
+                        service.push('dwdService');
                     }
-                }
-                // hold this for some specialcases
-                if (self.config.telegram_Enabled && notificationServiceOpt.telegram != undefined) {
-                    notificationServiceOpt.telegram.withNoSound = self.config.telegram_withNoSound || false;
-                    notificationServiceOpt.telegram.userid = self.config.telegram_UserId || '';
-                    notificationServiceOpt.telegram.chatid = self.config.telegram_ChatID || '';
-                    notificationServiceOpt.telegram.parse_mode = self.config.telegram_parse_mode || 'none';
-                }
-                if (self.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != undefined) {
-                    if (self.config.whatsapp_Phonenumber) {
-                        notificationServiceOpt.whatsapp.phonenumber = self.config.whatsapp_Phonenumber;
+                    if (this.config[`${notificationService}_UwzEnabled`]) {
+                        service.push('uwzService');
                     }
-                }
-                if (self.config.pushover_Enabled && notificationServiceOpt.pushover != undefined) {
-                    notificationServiceOpt.pushover.sound = self.config.pushover_Sound || 'none';
-                    notificationServiceOpt.pushover.priority = self.config.pushover_Priority || false;
-                    notificationServiceOpt.pushover.device = self.config.pushover_Device || '';
-                }
-                if (self.config.gotify_Enabled && notificationServiceOpt.gotify != undefined) {
-                    notificationServiceOpt.gotify.priority =
-                        self.config.gotify_Priority !== undefined ? parseInt(self.config.gotify_Priority) : 0;
-                    notificationServiceOpt.gotify.contentType = self.config.gotify_contentType || 'text/plain';
-                }
-                if (self.config.json_Enabled && notificationServiceOpt.json != undefined) {
-                    // empty
-                }
-                if (self.config.history_Enabled && notificationServiceOpt.history != undefined) {
-                    // empty
-                }
-                if (self.config.email_Enabled && notificationServiceOpt.email != undefined) {
-                    notificationServiceOpt.email.actions.header = self.config.email_Header;
-                    notificationServiceOpt.email.actions.footer = self.config.email_Footer;
-                    notificationServiceOpt.email.recipients = self.config.email_Recipients;
-                }
-                if (self.config.alexa2_Enabled && notificationServiceOpt.alexa2 != undefined) {
-                    notificationServiceOpt.alexa2.volumen =
-                        self.config.alexa2_volumen > 0 ? String(self.config.alexa2_volumen) : '';
-                    notificationServiceOpt.alexa2.audio = self.config.alexa2_Audio || '';
-                    notificationServiceOpt.alexa2.sounds = self.config.alexa2_sounds || [];
-                    notificationServiceOpt.alexa2.sounds_enabled = self.config.alexa2_sounds_enabled || false;
-                    if (self.config.alexa2_device_ids.length == 0 || !self.config.alexa2_device_ids[0]) {
-                        self.log.error(`Missing devices for alexa - deactivated`);
-                        delete notificationServiceOpt.alexa2;
-                        self.config.alexa2_Enabled = false;
-                    } else if (self.config.alexa2_Adapter == 'none') {
-                        self.log.error(`Missing adapter for alexa - deactivated`);
-                        delete notificationServiceOpt.alexa2;
-                        self.config.alexa2_Enabled = false;
+                    if (this.config[`${notificationService}_ZamgEnabled`]) {
+                        service.push('zamgService');
                     }
-                }
-                if (self.config.sayit_Enabled && notificationServiceOpt.sayit != undefined) {
-                    notificationServiceOpt.sayit.volumen =
-                        self.config.sayit_volumen > 0 ? String(self.config.sayit_volumen) : '';
-                    if (
-                        self.config.sayit_Adapter_Array.length == 0 ||
-                        self.config.sayit_Adapter_Array[0].sayit_Adapter == 'none'
-                    ) {
-                        self.log.warn(`Missing adapter for sayit - deactivated`);
-                        delete notificationServiceOpt.sayit;
-                        self.config.sayit_Enabled = false;
-                    } else {
-                        notificationServiceOpt.sayit.adapters = self.config.sayit_Adapter_Array.map(
-                            a => a.sayit_Adapter,
-                        );
-                    }
-                }
-                try {
-                    await self.providerController.createNotificationService(notificationServiceOpt);
-                } catch {
-                    self.log.error('Execution interrupted - Please check your configuration. ---');
-                    return;
-                }
-                // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
-                for (const id of self.config.dwdwarncellTable) {
-                    if (self.config.dwdEnabled) {
-                        if (isNaN(id.dwdSelectId) || Number(id.dwdSelectId) < 10000) {
-                            self.log.warn(`DWD "${id.dwdSelectId}" warning cell is invalid.`);
+                    const template: NotificationType.ActionsType = {
+                        new:
+                            this.config[`${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig] !==
+                            undefined
+                                ? (this.config[
+                                      `${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig
+                                  ] as string)
+                                : 'none',
+                        remove: this.config[
+                            `${notificationService}_MessageRemove` as keyof ioBroker.AdapterConfig
+                        ] as string,
+                        removeAll: this.config[
+                            `${notificationService}_MessageAllRemove` as keyof ioBroker.AdapterConfig
+                        ] as string,
+                        all:
+                            this.config[`${notificationService}_MessageAll` as keyof ioBroker.AdapterConfig] !==
+                            undefined
+                                ? (this.config[
+                                      `${notificationService}_MessageAll` as keyof ioBroker.AdapterConfig
+                                  ] as string)
+                                : this.config[`${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig] !==
+                                    undefined
+                                  ? (this.config[
+                                        `${notificationService}_MessageNew` as keyof ioBroker.AdapterConfig
+                                    ] as string)
+                                  : 'none',
+                        manualAll:
+                            this.config[`${notificationService}_manualAll` as keyof ioBroker.AdapterConfig] !==
+                            undefined
+                                ? (this.config[
+                                      `${notificationService}_manualAll` as keyof ioBroker.AdapterConfig
+                                  ] as string)
+                                : 'none',
+                        removeManualAll:
+                            this.config[`${notificationService}_removeManualAll` as keyof ioBroker.AdapterConfig] !==
+                            undefined
+                                ? (this.config[
+                                      `${notificationService}_removeManualAll` as keyof ioBroker.AdapterConfig
+                                  ] as string)
+                                : 'none',
+                        title:
+                            this.config[`${notificationService}_Title` as keyof ioBroker.AdapterConfig] !== undefined
+                                ? (this.config[
+                                      `${notificationService}_Title` as keyof ioBroker.AdapterConfig
+                                  ] as string)
+                                : 'none',
+                    };
+                    for (const a in template) {
+                        const b = a as keyof NotificationType.ActionsType;
+                        if (template[b] == undefined) {
                             continue;
                         }
-                        const options: providerDef.messageFilterTypeWithFilter & {
-                            [key: string]: any;
-                        } = {
-                            filter: {
-                                type: self.config.dwdTypeFilter,
-                                level: self.config.dwdLevelFilter,
-                                hours: self.config.dwdHourFilter,
+                        template[b] = template[b] ? template[b] : 'none';
+                    }
+
+                    // @ts-expect-error keine ahnung :)
+                    notificationServiceOpt[notificationService] = {
+                        ...notificationServiceDefaults[notificationService],
+                        service: service,
+                        filter: {
+                            auto: {
+                                level:
+                                    (this.config[
+                                        `${notificationService}_LevelFilter` as keyof ioBroker.AdapterConfig
+                                    ] as number) || -1,
+                                type: (
+                                    (this.config[
+                                        `${notificationService}_TypeFilter` as keyof ioBroker.AdapterConfig
+                                    ] as string[]) || []
+                                ).map(a => String(a)),
                             },
-                        };
-                        self.log.info(`DWD ${id.dwdSelectId} activated. Retrieve data.`);
-                        self.providerController.createProviderIfNotExist({
+                            manual: {
+                                level: (this.config[
+                                    `${notificationService}_ManualLevelFilter` as keyof ioBroker.AdapterConfig
+                                ] as number)
+                                    ? (this.config[
+                                          `${notificationService}_ManualLevelFilter` as keyof ioBroker.AdapterConfig
+                                      ] as number)
+                                    : -1,
+                                type: ((this.config[
+                                    `${notificationService}_ManualTypeFilter` as keyof ioBroker.AdapterConfig
+                                ] as string[])
+                                    ? (this.config[
+                                          `${notificationService}_ManualTypeFilter` as keyof ioBroker.AdapterConfig
+                                      ] as string[])
+                                    : []
+                                ).map(a => String(a)),
+                            },
+                        },
+                        adapter: this.config[
+                            `${notificationService}_Adapter` as keyof ioBroker.AdapterConfig
+                        ] as string,
+                        name: notificationService,
+                        actions: template,
+                        useadapter: true,
+                    };
+                    Object.assign(
+                        //@ts-expect-error verstehe ich nicht
+                        notificationServiceOpt[notificationService],
+                        notificationServiceDefaults[notificationService],
+                    );
+                }
+            }
+            // hold this for some specialcases
+            if (this.config.telegram_Enabled && notificationServiceOpt.telegram != undefined) {
+                notificationServiceOpt.telegram.withNoSound = this.config.telegram_withNoSound || false;
+                notificationServiceOpt.telegram.userid = this.config.telegram_UserId || '';
+                notificationServiceOpt.telegram.chatid = this.config.telegram_ChatID || '';
+                notificationServiceOpt.telegram.parse_mode = this.config.telegram_parse_mode || 'none';
+            }
+            if (this.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != undefined) {
+                if (this.config.whatsapp_Phonenumber) {
+                    notificationServiceOpt.whatsapp.phonenumber = this.config.whatsapp_Phonenumber;
+                }
+            }
+            if (this.config.pushover_Enabled && notificationServiceOpt.pushover != undefined) {
+                notificationServiceOpt.pushover.sound = this.config.pushover_Sound || 'none';
+                notificationServiceOpt.pushover.priority = this.config.pushover_Priority || false;
+                notificationServiceOpt.pushover.device = this.config.pushover_Device || '';
+            }
+            if (this.config.gotify_Enabled && notificationServiceOpt.gotify != undefined) {
+                notificationServiceOpt.gotify.priority =
+                    this.config.gotify_Priority !== undefined ? parseInt(this.config.gotify_Priority) : 0;
+                notificationServiceOpt.gotify.contentType = this.config.gotify_contentType || 'text/plain';
+            }
+            if (this.config.json_Enabled && notificationServiceOpt.json != undefined) {
+                // empty
+            }
+            if (this.config.history_Enabled && notificationServiceOpt.history != undefined) {
+                // empty
+            }
+            if (this.config.email_Enabled && notificationServiceOpt.email != undefined) {
+                notificationServiceOpt.email.actions.header = this.config.email_Header;
+                notificationServiceOpt.email.actions.footer = this.config.email_Footer;
+                notificationServiceOpt.email.recipients = this.config.email_Recipients;
+            }
+            if (this.config.alexa2_Enabled && notificationServiceOpt.alexa2 != undefined) {
+                notificationServiceOpt.alexa2.volumen =
+                    this.config.alexa2_volumen > 0 ? String(this.config.alexa2_volumen) : '';
+                notificationServiceOpt.alexa2.audio = this.config.alexa2_Audio || '';
+                notificationServiceOpt.alexa2.sounds = this.config.alexa2_sounds || [];
+                notificationServiceOpt.alexa2.sounds_enabled = this.config.alexa2_sounds_enabled || false;
+                if (this.config.alexa2_device_ids.length == 0 || !this.config.alexa2_device_ids[0]) {
+                    this.log.error(`Missing devices for alexa - deactivated`);
+                    delete notificationServiceOpt.alexa2;
+                    this.config.alexa2_Enabled = false;
+                } else if (this.config.alexa2_Adapter == 'none') {
+                    this.log.error(`Missing adapter for alexa - deactivated`);
+                    delete notificationServiceOpt.alexa2;
+                    this.config.alexa2_Enabled = false;
+                }
+            }
+            if (this.config.sayit_Enabled && notificationServiceOpt.sayit != undefined) {
+                notificationServiceOpt.sayit.volumen =
+                    this.config.sayit_volumen > 0 ? String(this.config.sayit_volumen) : '';
+                if (
+                    this.config.sayit_Adapter_Array.length == 0 ||
+                    this.config.sayit_Adapter_Array[0].sayit_Adapter == 'none'
+                ) {
+                    this.log.warn(`Missing adapter for sayit - deactivated`);
+                    delete notificationServiceOpt.sayit;
+                    this.config.sayit_Enabled = false;
+                } else {
+                    notificationServiceOpt.sayit.adapters = this.config.sayit_Adapter_Array.map(a => a.sayit_Adapter);
+                }
+            }
+            try {
+                await this.providerController.createNotificationService(notificationServiceOpt);
+            } catch {
+                this.log.error('Execution interrupted - Please check your configuration. ---');
+                return;
+            }
+            // dwdSelectID gegen Abfrage prüfen und erst dann als valide erklären.
+            for (const id of this.config.dwdwarncellTable) {
+                if (this.config.dwdEnabled) {
+                    if (isNaN(id.dwdSelectId) || Number(id.dwdSelectId) < 10_000) {
+                        this.log.warn(`DWD "${id.dwdSelectId}" warning cell is invalid.`);
+                        continue;
+                    }
+                    const options: providerDef.messageFilterTypeWithFilter & {
+                        [key: string]: any;
+                    } = {
+                        filter: {
+                            type: this.config.dwdTypeFilter,
+                            level: this.config.dwdLevelFilter,
+                            hours: this.config.dwdHourFilter,
+                        },
+                    };
+                    this.log.info(`DWD ${id.dwdSelectId} activated. Retrieve data.`);
+                    this.providerController.createProviderIfNotExist({
+                        ...options,
+                        service: 'dwdService',
+                        customName: id.dwdCityname,
+                        warncellId: String(id.dwdSelectId),
+                        providerController: this.providerController,
+                        language: this.config.dwdLanguage,
+                    });
+                }
+            }
+
+            for (const id of this.config.zamgwarncellTable) {
+                if (this.config.zamgEnabled && id && typeof id.zamgSelectId == 'string' && id.zamgSelectId) {
+                    this.log.info('ZAMG activated. Retrieve data.');
+                    const options: providerDef.messageFilterTypeWithFilter & {
+                        [key: string]: any;
+                    } = {
+                        filter: {
+                            type: this.config.zamgTypeFilter,
+                            level: this.config.zamgLevelFilter,
+                            hours: this.config.zamgHourFilter,
+                        },
+                    };
+                    const zamgArr = id.zamgSelectId.split('/') as [string, string];
+                    if (zamgArr.length == 2) {
+                        this.providerController.createProviderIfNotExist({
                             ...options,
-                            service: 'dwdService',
-                            customName: id.dwdCityname,
-                            warncellId: String(id.dwdSelectId),
-                            providerController: self.providerController,
-                            language: self.config.dwdLanguage,
+                            service: 'zamgService',
+                            warncellId: zamgArr,
+                            language: this.config.zamgLanguage,
+                            providerController: this.providerController,
+                            customName: id.zamgCityname,
                         });
                     }
                 }
+            }
+            const tempTable: any = JSON.parse(JSON.stringify(this.config.uwzwarncellTable));
+            for (const id of this.config.uwzwarncellTable) {
+                if (this.config.uwzEnabled) {
+                    if (
+                        (id && typeof id.uwzSelectId == 'string' && id.uwzSelectId.split('/').length == 2) ||
+                        (id.realWarncell && typeof id.realWarncell === 'string')
+                    ) {
+                        if (!id.realWarncell) {
+                            const tempWarncell = await providerDef.UWZProvider.getWarncell(
+                                id.uwzSelectId.split('/') as [string, string],
+                                'uwzService',
+                                this,
+                            );
+                            if (this.providerController.unload) {
+                                return;
+                            }
 
-                for (const id of self.config.zamgwarncellTable) {
-                    if (self.config.zamgEnabled && id && typeof id.zamgSelectId == 'string' && id.zamgSelectId) {
-                        self.log.info('ZAMG activated. Retrieve data.');
-                        const options: providerDef.messageFilterTypeWithFilter & {
-                            [key: string]: any;
-                        } = {
+                            if (tempWarncell) {
+                                id.realWarncell = tempWarncell;
+                            }
+                        }
+                        const options: providerDef.messageFilterTypeWithFilter = {
                             filter: {
-                                type: self.config.zamgTypeFilter,
-                                level: self.config.zamgLevelFilter,
-                                hours: self.config.zamgHourFilter,
+                                type: this.config.uwzTypeFilter,
+                                level: this.config.uwzLevelFilter,
+                                hours: this.config.uwzHourFilter,
                             },
                         };
-                        const zamgArr = id.zamgSelectId.split('/') as [string, string];
-                        if (zamgArr.length == 2) {
-                            self.providerController.createProviderIfNotExist({
-                                ...options,
-                                service: 'zamgService',
-                                warncellId: zamgArr,
-                                language: self.config.zamgLanguage,
-                                providerController: self.providerController,
-                                customName: id.zamgCityname,
-                            });
+                        if (!id.realWarncell || typeof id.realWarncell !== 'string') {
+                            this.log.warn(`Dont find a UWZ warncell for ${id.uwzSelectId}!`);
+                            continue;
                         }
+                        this.log.info('UWZ activated. Retrieve data.');
+                        this.providerController.createProviderIfNotExist({
+                            ...options,
+                            service: 'uwzService',
+                            warncellId: id.realWarncell,
+                            providerController: this.providerController,
+                            language: this.config.uwzLanguage,
+                            customName: id.uwzCityname,
+                        });
+                    } else {
+                        this.log.warn(
+                            `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${id.realWarncell}`,
+                        );
                     }
                 }
-                const tempTable: any = JSON.parse(JSON.stringify(self.config.uwzwarncellTable));
-                for (const id of self.config.uwzwarncellTable) {
-                    if (self.config.uwzEnabled) {
-                        if (
-                            (id && typeof id.uwzSelectId == 'string' && id.uwzSelectId.split('/').length == 2) ||
-                            (id.realWarncell && typeof id.realWarncell === 'string')
-                        ) {
-                            if (!id.realWarncell) {
-                                const tempWarncell = await providerDef.UWZProvider.getWarncell(
-                                    id.uwzSelectId.split('/') as [string, string],
-                                    'uwzService',
-                                    self,
-                                );
-                                if (self.providerController.unload) {
-                                    return;
-                                }
+            }
+            if (JSON.stringify(tempTable) != JSON.stringify(this.config.uwzwarncellTable)) {
+                const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+                if (obj) {
+                    this.log.debug('change config uwzwarncellTable');
+                    obj.native.uwzwarncellTable = tempTable;
+                    await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
+                }
+            }
+            //clear tree
+            const holdStates = [];
+            const holdStates2 = [];
+            const reCheckStates = [];
+            for (const a of this.providerController.providers) {
+                holdStates.push(a.name);
+                reCheckStates.push(`${a.name}.formatedKeys`);
+                reCheckStates.push(`${a.name}..warning`);
+                for (let b = 0; b < this.config.numOfRawWarnings; b++) {
+                    holdStates2.push(`${a.name}.formatedKeys.${`00${b}`.slice(-2)}`);
+                    holdStates2.push(`${a.name}..warning.${`00${b}`.slice(-2)}`);
+                }
+            }
+            holdStates.push('commands.');
+            holdStates.push('alerts.');
+            holdStates.push('info.connection');
+            holdStates.push('provider.activeWarnings_json');
+            holdStates.push('provider.history');
+            holdStates.push('provider.activeWarnings');
+            await this.library.cleanUpTree(holdStates, null, 3);
+            await this.library.cleanUpTree(holdStates2, reCheckStates, 5);
 
-                                if (tempWarncell) {
-                                    id.realWarncell = tempWarncell;
-                                }
-                            }
-                            const options: providerDef.messageFilterTypeWithFilter = {
-                                filter: {
-                                    type: self.config.uwzTypeFilter,
-                                    level: self.config.uwzLevelFilter,
-                                    hours: self.config.uwzHourFilter,
-                                },
-                            };
-                            if (!id.realWarncell || typeof id.realWarncell !== 'string') {
-                                self.log.warn(`Dont find a UWZ warncell for ${id.uwzSelectId}!`);
-                                continue;
-                            }
-                            self.log.info('UWZ activated. Retrieve data.');
-                            self.providerController.createProviderIfNotExist({
-                                ...options,
-                                service: 'uwzService',
-                                warncellId: id.realWarncell,
-                                providerController: self.providerController,
-                                language: self.config.uwzLanguage,
-                                customName: id.uwzCityname,
-                            });
-                        } else {
-                            self.log.warn(
-                                `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${id.realWarncell}`,
-                            );
-                        }
-                    }
-                }
-                if (JSON.stringify(tempTable) != JSON.stringify(self.config.uwzwarncellTable)) {
-                    const obj = await self.getForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`);
-                    if (obj) {
-                        self.log.debug('change config uwzwarncellTable');
-                        obj.native.uwzwarncellTable = tempTable;
-                        await self.setForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`, obj);
-                    }
-                }
-                //clear tree
-                const holdStates = [];
-                const holdStates2 = [];
-                const reCheckStates = [];
-                for (const a of self.providerController.providers) {
-                    holdStates.push(a.name);
-                    reCheckStates.push(`${a.name}.formatedKeys`);
-                    reCheckStates.push(`${a.name}..warning`);
-                    for (let b = 0; b < self.config.numOfRawWarnings; b++) {
-                        holdStates2.push(`${a.name}.formatedKeys.${`00${b}`.slice(-2)}`);
-                        holdStates2.push(`${a.name}..warning.${`00${b}`.slice(-2)}`);
-                    }
-                }
-                holdStates.push('commands.');
-                holdStates.push('alerts.');
-                holdStates.push('info.connection');
-                holdStates.push('provider.activeWarnings_json');
-                holdStates.push('provider.history');
-                holdStates.push('provider.activeWarnings');
-                await self.library.cleanUpTree(holdStates, null, 3);
-                await self.library.cleanUpTree(holdStates2, reCheckStates, 5);
+            await this.providerController.finishInit();
 
-                await self.providerController.finishInit();
-
-                self.providerController.updateEndless().catch(() => {});
-                await self.providerController.updateAlertEndless();
-            },
-            2000,
-            this,
-        );
+            this.providerController.updateEndless().catch(() => {});
+            await this.providerController.updateAlertEndless();
+        }, 2000);
     }
 
     /**
@@ -601,6 +590,17 @@ class WeatherWarnings extends utils.Adapter {
             if (this.providerController) {
                 await this.providerController.delete();
             }
+            for (const [controller, timeoutId] of this.fetchs.entries()) {
+                try {
+                    if (timeoutId) {
+                        this.clearTimeout(timeoutId);
+                    }
+                    controller.abort();
+                } catch {
+                    // ignore errors during abort/clear
+                }
+            }
+            this.fetchs.clear();
             callback();
         } catch {
             callback();
@@ -985,6 +985,85 @@ class WeatherWarnings extends utils.Adapter {
                         }`,
                     );
             }
+        }
+    }
+
+    handleFetchError(error: any): void {
+        if (error.name !== 'AbortError') {
+            // Detailed error logging
+            const errorDetails: string[] = [];
+            if (error instanceof Error) {
+                let isHttpError = false;
+                errorDetails.push(`  Name: ${error.name}`);
+                if (
+                    error.cause &&
+                    typeof error.cause === 'object' &&
+                    'code' in error.cause &&
+                    typeof error.cause.code === 'string'
+                ) {
+                    isHttpError = true;
+                    errorDetails.push(`  code: ${error.cause.code}`);
+                }
+                errorDetails.push(`  Message: ${error.message}`);
+
+                // Nur Stack-Trace bei Code-Fehlern ausgeben, nicht bei HTTP-Fehlern
+                isHttpError =
+                    isHttpError || error.message.includes('HTTP') || (error as any).status || (error as any).url;
+                if (error.stack && !isHttpError) {
+                    errorDetails.push(`  Stack: ${error.stack}`);
+                }
+            } else if (typeof error === 'object' && error !== null) {
+                errorDetails.push(`  Type: ${error.constructor?.name || 'Object'}`);
+                if (error.status) {
+                    errorDetails.push(`  HTTP Status: ${error.status}`);
+                }
+                if (error.statusText) {
+                    errorDetails.push(`  Status Text: ${error.statusText}`);
+                }
+                if (error.code) {
+                    errorDetails.push(`  Error Code: ${error.code}`);
+                }
+                errorDetails.push(`  Full Error: ${JSON.stringify(error, null, 2)}`);
+            } else {
+                errorDetails.push(`  Raw Error: ${String(error)}`);
+            }
+
+            this.log.error(errorDetails.join('\n'));
+        }
+    }
+    async fetch(url: string, init?: RequestInit, timeout = 30_000): Promise<unknown> {
+        const controller = new AbortController();
+
+        // 30 seconds timeout
+        const timeoutId = this.setTimeout(() => {
+            // Abort and remove entry to avoid leak
+            try {
+                controller.abort();
+            } catch {
+                // ignore
+            }
+            this.fetchs.delete(controller);
+        }, timeout);
+
+        this.fetchs.set(controller, timeoutId);
+
+        try {
+            const response = await fetch(url, {
+                ...init,
+                method: init?.method ?? 'GET',
+                signal: controller.signal,
+            });
+            if (response.status === 200) {
+                return await response.json();
+            }
+            throw new Error({ status: response.status, statusText: response.statusText } as any);
+        } finally {
+            // always clear timeout and remove the controller
+            const id = this.fetchs.get(controller);
+            if (typeof id !== 'undefined') {
+                this.clearTimeout(id);
+            }
+            this.fetchs.delete(controller);
         }
     }
 }

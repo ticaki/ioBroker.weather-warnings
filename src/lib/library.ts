@@ -41,8 +41,6 @@ export class BaseClass {
         this.adapter = adapter;
         this.library = adapter.library;
     }
-    // hier lassen wir das async nicht das eine übergeordnete Version was mit await aufrufen will.
-    //eslint-disable-next-line
     async delete(): Promise<void> {
         this.unload = true;
     }

@@ -37,6 +37,7 @@ class WeatherWarnings extends utils.Adapter {
   providerController = null;
   numOfRawWarnings = 5;
   adminTimeoutRef = null;
+  fetchs = /* @__PURE__ */ new Map();
   constructor(options = {}) {
     super({
       ...options,
@@ -226,264 +227,254 @@ class WeatherWarnings extends utils.Adapter {
       }
     }
     this.config.numOfRawWarnings = typeof this.config.numOfRawWarnings == "number" && this.config.numOfRawWarnings > 0 ? this.config.numOfRawWarnings : 5;
-    this.startDelay = this.setTimeout(
-      async function(that) {
-        const self = that;
-        if (!self) {
-          return;
-        }
-        if (!self.providerController) {
-          return;
-        }
-        if (self.providerController.unload) {
-          return;
-        }
-        await self.providerController.init();
-        self.log.info(`Refresh Interval: ${self.providerController.refreshTime / 6e4} minutes`);
-        const notificationServiceOpt = {};
-        for (const n of NotificationType.Array) {
-          const notificationService = n;
-          if (self.config[`${notificationService}_Enabled`]) {
-            const service = [];
-            if (self.config[`${notificationService}_DwdEnabled`]) {
-              service.push("dwdService");
-            }
-            if (self.config[`${notificationService}_UwzEnabled`]) {
-              service.push("uwzService");
-            }
-            if (self.config[`${notificationService}_ZamgEnabled`]) {
-              service.push("zamgService");
-            }
-            const template = {
-              new: self.config[`${notificationService}_MessageNew`] !== void 0 ? self.config[`${notificationService}_MessageNew`] : "none",
-              remove: self.config[`${notificationService}_MessageRemove`],
-              removeAll: self.config[`${notificationService}_MessageAllRemove`],
-              all: self.config[`${notificationService}_MessageAll`] !== void 0 ? self.config[`${notificationService}_MessageAll`] : self.config[`${notificationService}_MessageNew`] !== void 0 ? self.config[`${notificationService}_MessageNew`] : "none",
-              manualAll: self.config[`${notificationService}_manualAll`] !== void 0 ? self.config[`${notificationService}_manualAll`] : "none",
-              removeManualAll: self.config[`${notificationService}_removeManualAll`] !== void 0 ? self.config[`${notificationService}_removeManualAll`] : "none",
-              title: self.config[`${notificationService}_Title`] !== void 0 ? self.config[`${notificationService}_Title`] : "none"
-            };
-            for (const a in template) {
-              const b = a;
-              if (template[b] == void 0) {
-                continue;
-              }
-              template[b] = template[b] ? template[b] : "none";
-            }
-            notificationServiceOpt[notificationService] = {
-              ...import_notificationService_def.notificationServiceDefaults[notificationService],
-              service,
-              filter: {
-                auto: {
-                  level: self.config[`${notificationService}_LevelFilter`] || -1,
-                  type: (self.config[`${notificationService}_TypeFilter`] || []).map((a) => String(a))
-                },
-                manual: {
-                  level: self.config[`${notificationService}_ManualLevelFilter`] ? self.config[`${notificationService}_ManualLevelFilter`] : -1,
-                  type: (self.config[`${notificationService}_ManualTypeFilter`] ? self.config[`${notificationService}_ManualTypeFilter`] : []).map((a) => String(a))
-                }
-              },
-              adapter: self.config[`${notificationService}_Adapter`],
-              name: notificationService,
-              actions: template,
-              useadapter: true
-            };
-            Object.assign(
-              //@ts-expect-error verstehe ich nicht
-              notificationServiceOpt[notificationService],
-              import_notificationService_def.notificationServiceDefaults[notificationService]
-            );
+    this.startDelay = this.setTimeout(async () => {
+      if (!this.providerController) {
+        return;
+      }
+      if (this.providerController.unload) {
+        return;
+      }
+      await this.providerController.init();
+      this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 6e4} minutes`);
+      const notificationServiceOpt = {};
+      for (const n of NotificationType.Array) {
+        const notificationService = n;
+        if (this.config[`${notificationService}_Enabled`]) {
+          const service = [];
+          if (this.config[`${notificationService}_DwdEnabled`]) {
+            service.push("dwdService");
           }
-        }
-        if (self.config.telegram_Enabled && notificationServiceOpt.telegram != void 0) {
-          notificationServiceOpt.telegram.withNoSound = self.config.telegram_withNoSound || false;
-          notificationServiceOpt.telegram.userid = self.config.telegram_UserId || "";
-          notificationServiceOpt.telegram.chatid = self.config.telegram_ChatID || "";
-          notificationServiceOpt.telegram.parse_mode = self.config.telegram_parse_mode || "none";
-        }
-        if (self.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != void 0) {
-          if (self.config.whatsapp_Phonenumber) {
-            notificationServiceOpt.whatsapp.phonenumber = self.config.whatsapp_Phonenumber;
+          if (this.config[`${notificationService}_UwzEnabled`]) {
+            service.push("uwzService");
           }
-        }
-        if (self.config.pushover_Enabled && notificationServiceOpt.pushover != void 0) {
-          notificationServiceOpt.pushover.sound = self.config.pushover_Sound || "none";
-          notificationServiceOpt.pushover.priority = self.config.pushover_Priority || false;
-          notificationServiceOpt.pushover.device = self.config.pushover_Device || "";
-        }
-        if (self.config.gotify_Enabled && notificationServiceOpt.gotify != void 0) {
-          notificationServiceOpt.gotify.priority = self.config.gotify_Priority !== void 0 ? parseInt(self.config.gotify_Priority) : 0;
-          notificationServiceOpt.gotify.contentType = self.config.gotify_contentType || "text/plain";
-        }
-        if (self.config.json_Enabled && notificationServiceOpt.json != void 0) {
-        }
-        if (self.config.history_Enabled && notificationServiceOpt.history != void 0) {
-        }
-        if (self.config.email_Enabled && notificationServiceOpt.email != void 0) {
-          notificationServiceOpt.email.actions.header = self.config.email_Header;
-          notificationServiceOpt.email.actions.footer = self.config.email_Footer;
-          notificationServiceOpt.email.recipients = self.config.email_Recipients;
-        }
-        if (self.config.alexa2_Enabled && notificationServiceOpt.alexa2 != void 0) {
-          notificationServiceOpt.alexa2.volumen = self.config.alexa2_volumen > 0 ? String(self.config.alexa2_volumen) : "";
-          notificationServiceOpt.alexa2.audio = self.config.alexa2_Audio || "";
-          notificationServiceOpt.alexa2.sounds = self.config.alexa2_sounds || [];
-          notificationServiceOpt.alexa2.sounds_enabled = self.config.alexa2_sounds_enabled || false;
-          if (self.config.alexa2_device_ids.length == 0 || !self.config.alexa2_device_ids[0]) {
-            self.log.error(`Missing devices for alexa - deactivated`);
-            delete notificationServiceOpt.alexa2;
-            self.config.alexa2_Enabled = false;
-          } else if (self.config.alexa2_Adapter == "none") {
-            self.log.error(`Missing adapter for alexa - deactivated`);
-            delete notificationServiceOpt.alexa2;
-            self.config.alexa2_Enabled = false;
+          if (this.config[`${notificationService}_ZamgEnabled`]) {
+            service.push("zamgService");
           }
-        }
-        if (self.config.sayit_Enabled && notificationServiceOpt.sayit != void 0) {
-          notificationServiceOpt.sayit.volumen = self.config.sayit_volumen > 0 ? String(self.config.sayit_volumen) : "";
-          if (self.config.sayit_Adapter_Array.length == 0 || self.config.sayit_Adapter_Array[0].sayit_Adapter == "none") {
-            self.log.warn(`Missing adapter for sayit - deactivated`);
-            delete notificationServiceOpt.sayit;
-            self.config.sayit_Enabled = false;
-          } else {
-            notificationServiceOpt.sayit.adapters = self.config.sayit_Adapter_Array.map(
-              (a) => a.sayit_Adapter
-            );
-          }
-        }
-        try {
-          await self.providerController.createNotificationService(notificationServiceOpt);
-        } catch {
-          self.log.error("Execution interrupted - Please check your configuration. ---");
-          return;
-        }
-        for (const id of self.config.dwdwarncellTable) {
-          if (self.config.dwdEnabled) {
-            if (isNaN(id.dwdSelectId) || Number(id.dwdSelectId) < 1e4) {
-              self.log.warn(`DWD "${id.dwdSelectId}" warning cell is invalid.`);
+          const template = {
+            new: this.config[`${notificationService}_MessageNew`] !== void 0 ? this.config[`${notificationService}_MessageNew`] : "none",
+            remove: this.config[`${notificationService}_MessageRemove`],
+            removeAll: this.config[`${notificationService}_MessageAllRemove`],
+            all: this.config[`${notificationService}_MessageAll`] !== void 0 ? this.config[`${notificationService}_MessageAll`] : this.config[`${notificationService}_MessageNew`] !== void 0 ? this.config[`${notificationService}_MessageNew`] : "none",
+            manualAll: this.config[`${notificationService}_manualAll`] !== void 0 ? this.config[`${notificationService}_manualAll`] : "none",
+            removeManualAll: this.config[`${notificationService}_removeManualAll`] !== void 0 ? this.config[`${notificationService}_removeManualAll`] : "none",
+            title: this.config[`${notificationService}_Title`] !== void 0 ? this.config[`${notificationService}_Title`] : "none"
+          };
+          for (const a in template) {
+            const b = a;
+            if (template[b] == void 0) {
               continue;
             }
-            const options = {
-              filter: {
-                type: self.config.dwdTypeFilter,
-                level: self.config.dwdLevelFilter,
-                hours: self.config.dwdHourFilter
+            template[b] = template[b] ? template[b] : "none";
+          }
+          notificationServiceOpt[notificationService] = {
+            ...import_notificationService_def.notificationServiceDefaults[notificationService],
+            service,
+            filter: {
+              auto: {
+                level: this.config[`${notificationService}_LevelFilter`] || -1,
+                type: (this.config[`${notificationService}_TypeFilter`] || []).map((a) => String(a))
+              },
+              manual: {
+                level: this.config[`${notificationService}_ManualLevelFilter`] ? this.config[`${notificationService}_ManualLevelFilter`] : -1,
+                type: (this.config[`${notificationService}_ManualTypeFilter`] ? this.config[`${notificationService}_ManualTypeFilter`] : []).map((a) => String(a))
               }
-            };
-            self.log.info(`DWD ${id.dwdSelectId} activated. Retrieve data.`);
-            self.providerController.createProviderIfNotExist({
+            },
+            adapter: this.config[`${notificationService}_Adapter`],
+            name: notificationService,
+            actions: template,
+            useadapter: true
+          };
+          Object.assign(
+            //@ts-expect-error verstehe ich nicht
+            notificationServiceOpt[notificationService],
+            import_notificationService_def.notificationServiceDefaults[notificationService]
+          );
+        }
+      }
+      if (this.config.telegram_Enabled && notificationServiceOpt.telegram != void 0) {
+        notificationServiceOpt.telegram.withNoSound = this.config.telegram_withNoSound || false;
+        notificationServiceOpt.telegram.userid = this.config.telegram_UserId || "";
+        notificationServiceOpt.telegram.chatid = this.config.telegram_ChatID || "";
+        notificationServiceOpt.telegram.parse_mode = this.config.telegram_parse_mode || "none";
+      }
+      if (this.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != void 0) {
+        if (this.config.whatsapp_Phonenumber) {
+          notificationServiceOpt.whatsapp.phonenumber = this.config.whatsapp_Phonenumber;
+        }
+      }
+      if (this.config.pushover_Enabled && notificationServiceOpt.pushover != void 0) {
+        notificationServiceOpt.pushover.sound = this.config.pushover_Sound || "none";
+        notificationServiceOpt.pushover.priority = this.config.pushover_Priority || false;
+        notificationServiceOpt.pushover.device = this.config.pushover_Device || "";
+      }
+      if (this.config.gotify_Enabled && notificationServiceOpt.gotify != void 0) {
+        notificationServiceOpt.gotify.priority = this.config.gotify_Priority !== void 0 ? parseInt(this.config.gotify_Priority) : 0;
+        notificationServiceOpt.gotify.contentType = this.config.gotify_contentType || "text/plain";
+      }
+      if (this.config.json_Enabled && notificationServiceOpt.json != void 0) {
+      }
+      if (this.config.history_Enabled && notificationServiceOpt.history != void 0) {
+      }
+      if (this.config.email_Enabled && notificationServiceOpt.email != void 0) {
+        notificationServiceOpt.email.actions.header = this.config.email_Header;
+        notificationServiceOpt.email.actions.footer = this.config.email_Footer;
+        notificationServiceOpt.email.recipients = this.config.email_Recipients;
+      }
+      if (this.config.alexa2_Enabled && notificationServiceOpt.alexa2 != void 0) {
+        notificationServiceOpt.alexa2.volumen = this.config.alexa2_volumen > 0 ? String(this.config.alexa2_volumen) : "";
+        notificationServiceOpt.alexa2.audio = this.config.alexa2_Audio || "";
+        notificationServiceOpt.alexa2.sounds = this.config.alexa2_sounds || [];
+        notificationServiceOpt.alexa2.sounds_enabled = this.config.alexa2_sounds_enabled || false;
+        if (this.config.alexa2_device_ids.length == 0 || !this.config.alexa2_device_ids[0]) {
+          this.log.error(`Missing devices for alexa - deactivated`);
+          delete notificationServiceOpt.alexa2;
+          this.config.alexa2_Enabled = false;
+        } else if (this.config.alexa2_Adapter == "none") {
+          this.log.error(`Missing adapter for alexa - deactivated`);
+          delete notificationServiceOpt.alexa2;
+          this.config.alexa2_Enabled = false;
+        }
+      }
+      if (this.config.sayit_Enabled && notificationServiceOpt.sayit != void 0) {
+        notificationServiceOpt.sayit.volumen = this.config.sayit_volumen > 0 ? String(this.config.sayit_volumen) : "";
+        if (this.config.sayit_Adapter_Array.length == 0 || this.config.sayit_Adapter_Array[0].sayit_Adapter == "none") {
+          this.log.warn(`Missing adapter for sayit - deactivated`);
+          delete notificationServiceOpt.sayit;
+          this.config.sayit_Enabled = false;
+        } else {
+          notificationServiceOpt.sayit.adapters = this.config.sayit_Adapter_Array.map((a) => a.sayit_Adapter);
+        }
+      }
+      try {
+        await this.providerController.createNotificationService(notificationServiceOpt);
+      } catch {
+        this.log.error("Execution interrupted - Please check your configuration. ---");
+        return;
+      }
+      for (const id of this.config.dwdwarncellTable) {
+        if (this.config.dwdEnabled) {
+          if (isNaN(id.dwdSelectId) || Number(id.dwdSelectId) < 1e4) {
+            this.log.warn(`DWD "${id.dwdSelectId}" warning cell is invalid.`);
+            continue;
+          }
+          const options = {
+            filter: {
+              type: this.config.dwdTypeFilter,
+              level: this.config.dwdLevelFilter,
+              hours: this.config.dwdHourFilter
+            }
+          };
+          this.log.info(`DWD ${id.dwdSelectId} activated. Retrieve data.`);
+          this.providerController.createProviderIfNotExist({
+            ...options,
+            service: "dwdService",
+            customName: id.dwdCityname,
+            warncellId: String(id.dwdSelectId),
+            providerController: this.providerController,
+            language: this.config.dwdLanguage
+          });
+        }
+      }
+      for (const id of this.config.zamgwarncellTable) {
+        if (this.config.zamgEnabled && id && typeof id.zamgSelectId == "string" && id.zamgSelectId) {
+          this.log.info("ZAMG activated. Retrieve data.");
+          const options = {
+            filter: {
+              type: this.config.zamgTypeFilter,
+              level: this.config.zamgLevelFilter,
+              hours: this.config.zamgHourFilter
+            }
+          };
+          const zamgArr = id.zamgSelectId.split("/");
+          if (zamgArr.length == 2) {
+            this.providerController.createProviderIfNotExist({
               ...options,
-              service: "dwdService",
-              customName: id.dwdCityname,
-              warncellId: String(id.dwdSelectId),
-              providerController: self.providerController,
-              language: self.config.dwdLanguage
+              service: "zamgService",
+              warncellId: zamgArr,
+              language: this.config.zamgLanguage,
+              providerController: this.providerController,
+              customName: id.zamgCityname
             });
           }
         }
-        for (const id of self.config.zamgwarncellTable) {
-          if (self.config.zamgEnabled && id && typeof id.zamgSelectId == "string" && id.zamgSelectId) {
-            self.log.info("ZAMG activated. Retrieve data.");
+      }
+      const tempTable = JSON.parse(JSON.stringify(this.config.uwzwarncellTable));
+      for (const id of this.config.uwzwarncellTable) {
+        if (this.config.uwzEnabled) {
+          if (id && typeof id.uwzSelectId == "string" && id.uwzSelectId.split("/").length == 2 || id.realWarncell && typeof id.realWarncell === "string") {
+            if (!id.realWarncell) {
+              const tempWarncell = await providerDef.UWZProvider.getWarncell(
+                id.uwzSelectId.split("/"),
+                "uwzService",
+                this
+              );
+              if (this.providerController.unload) {
+                return;
+              }
+              if (tempWarncell) {
+                id.realWarncell = tempWarncell;
+              }
+            }
             const options = {
               filter: {
-                type: self.config.zamgTypeFilter,
-                level: self.config.zamgLevelFilter,
-                hours: self.config.zamgHourFilter
+                type: this.config.uwzTypeFilter,
+                level: this.config.uwzLevelFilter,
+                hours: this.config.uwzHourFilter
               }
             };
-            const zamgArr = id.zamgSelectId.split("/");
-            if (zamgArr.length == 2) {
-              self.providerController.createProviderIfNotExist({
-                ...options,
-                service: "zamgService",
-                warncellId: zamgArr,
-                language: self.config.zamgLanguage,
-                providerController: self.providerController,
-                customName: id.zamgCityname
-              });
+            if (!id.realWarncell || typeof id.realWarncell !== "string") {
+              this.log.warn(`Dont find a UWZ warncell for ${id.uwzSelectId}!`);
+              continue;
             }
+            this.log.info("UWZ activated. Retrieve data.");
+            this.providerController.createProviderIfNotExist({
+              ...options,
+              service: "uwzService",
+              warncellId: id.realWarncell,
+              providerController: this.providerController,
+              language: this.config.uwzLanguage,
+              customName: id.uwzCityname
+            });
+          } else {
+            this.log.warn(
+              `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${id.realWarncell}`
+            );
           }
         }
-        const tempTable = JSON.parse(JSON.stringify(self.config.uwzwarncellTable));
-        for (const id of self.config.uwzwarncellTable) {
-          if (self.config.uwzEnabled) {
-            if (id && typeof id.uwzSelectId == "string" && id.uwzSelectId.split("/").length == 2 || id.realWarncell && typeof id.realWarncell === "string") {
-              if (!id.realWarncell) {
-                const tempWarncell = await providerDef.UWZProvider.getWarncell(
-                  id.uwzSelectId.split("/"),
-                  "uwzService",
-                  self
-                );
-                if (self.providerController.unload) {
-                  return;
-                }
-                if (tempWarncell) {
-                  id.realWarncell = tempWarncell;
-                }
-              }
-              const options = {
-                filter: {
-                  type: self.config.uwzTypeFilter,
-                  level: self.config.uwzLevelFilter,
-                  hours: self.config.uwzHourFilter
-                }
-              };
-              if (!id.realWarncell || typeof id.realWarncell !== "string") {
-                self.log.warn(`Dont find a UWZ warncell for ${id.uwzSelectId}!`);
-                continue;
-              }
-              self.log.info("UWZ activated. Retrieve data.");
-              self.providerController.createProviderIfNotExist({
-                ...options,
-                service: "uwzService",
-                warncellId: id.realWarncell,
-                providerController: self.providerController,
-                language: self.config.uwzLanguage,
-                customName: id.uwzCityname
-              });
-            } else {
-              self.log.warn(
-                `Something is wrong with uwz coordinates: ${id.uwzSelectId} or warncell: ${id.realWarncell}`
-              );
-            }
-          }
+      }
+      if (JSON.stringify(tempTable) != JSON.stringify(this.config.uwzwarncellTable)) {
+        const obj2 = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+        if (obj2) {
+          this.log.debug("change config uwzwarncellTable");
+          obj2.native.uwzwarncellTable = tempTable;
+          await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj2);
         }
-        if (JSON.stringify(tempTable) != JSON.stringify(self.config.uwzwarncellTable)) {
-          const obj2 = await self.getForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`);
-          if (obj2) {
-            self.log.debug("change config uwzwarncellTable");
-            obj2.native.uwzwarncellTable = tempTable;
-            await self.setForeignObjectAsync(`system.adapter.${self.name}.${self.instance}`, obj2);
-          }
+      }
+      const holdStates = [];
+      const holdStates2 = [];
+      const reCheckStates = [];
+      for (const a of this.providerController.providers) {
+        holdStates.push(a.name);
+        reCheckStates.push(`${a.name}.formatedKeys`);
+        reCheckStates.push(`${a.name}..warning`);
+        for (let b = 0; b < this.config.numOfRawWarnings; b++) {
+          holdStates2.push(`${a.name}.formatedKeys.${`00${b}`.slice(-2)}`);
+          holdStates2.push(`${a.name}..warning.${`00${b}`.slice(-2)}`);
         }
-        const holdStates = [];
-        const holdStates2 = [];
-        const reCheckStates = [];
-        for (const a of self.providerController.providers) {
-          holdStates.push(a.name);
-          reCheckStates.push(`${a.name}.formatedKeys`);
-          reCheckStates.push(`${a.name}..warning`);
-          for (let b = 0; b < self.config.numOfRawWarnings; b++) {
-            holdStates2.push(`${a.name}.formatedKeys.${`00${b}`.slice(-2)}`);
-            holdStates2.push(`${a.name}..warning.${`00${b}`.slice(-2)}`);
-          }
-        }
-        holdStates.push("commands.");
-        holdStates.push("alerts.");
-        holdStates.push("info.connection");
-        holdStates.push("provider.activeWarnings_json");
-        holdStates.push("provider.history");
-        holdStates.push("provider.activeWarnings");
-        await self.library.cleanUpTree(holdStates, null, 3);
-        await self.library.cleanUpTree(holdStates2, reCheckStates, 5);
-        await self.providerController.finishInit();
-        self.providerController.updateEndless().catch(() => {
-        });
-        await self.providerController.updateAlertEndless();
-      },
-      2e3,
-      this
-    );
+      }
+      holdStates.push("commands.");
+      holdStates.push("alerts.");
+      holdStates.push("info.connection");
+      holdStates.push("provider.activeWarnings_json");
+      holdStates.push("provider.history");
+      holdStates.push("provider.activeWarnings");
+      await this.library.cleanUpTree(holdStates, null, 3);
+      await this.library.cleanUpTree(holdStates2, reCheckStates, 5);
+      await this.providerController.finishInit();
+      this.providerController.updateEndless().catch(() => {
+      });
+      await this.providerController.updateAlertEndless();
+    }, 2e3);
   }
   /**
    * Is called when the adapter is unloaded.
@@ -499,6 +490,16 @@ class WeatherWarnings extends utils.Adapter {
       if (this.providerController) {
         await this.providerController.delete();
       }
+      for (const [controller, timeoutId] of this.fetchs.entries()) {
+        try {
+          if (timeoutId) {
+            this.clearTimeout(timeoutId);
+          }
+          controller.abort();
+        } catch {
+        }
+      }
+      this.fetchs.clear();
       callback();
     } catch {
       callback();
@@ -846,6 +847,69 @@ class WeatherWarnings extends utils.Adapter {
             `Retrieve unknown command ${obj.command} messsage: ${JSON.stringify(obj.message)} from ${obj.from}`
           );
       }
+    }
+  }
+  handleFetchError(error) {
+    var _a;
+    if (error.name !== "AbortError") {
+      const errorDetails = [];
+      if (error instanceof Error) {
+        let isHttpError = false;
+        errorDetails.push(`  Name: ${error.name}`);
+        if (error.cause && typeof error.cause === "object" && "code" in error.cause && typeof error.cause.code === "string") {
+          isHttpError = true;
+          errorDetails.push(`  code: ${error.cause.code}`);
+        }
+        errorDetails.push(`  Message: ${error.message}`);
+        isHttpError = isHttpError || error.message.includes("HTTP") || error.status || error.url;
+        if (error.stack && !isHttpError) {
+          errorDetails.push(`  Stack: ${error.stack}`);
+        }
+      } else if (typeof error === "object" && error !== null) {
+        errorDetails.push(`  Type: ${((_a = error.constructor) == null ? void 0 : _a.name) || "Object"}`);
+        if (error.status) {
+          errorDetails.push(`  HTTP Status: ${error.status}`);
+        }
+        if (error.statusText) {
+          errorDetails.push(`  Status Text: ${error.statusText}`);
+        }
+        if (error.code) {
+          errorDetails.push(`  Error Code: ${error.code}`);
+        }
+        errorDetails.push(`  Full Error: ${JSON.stringify(error, null, 2)}`);
+      } else {
+        errorDetails.push(`  Raw Error: ${String(error)}`);
+      }
+      this.log.error(errorDetails.join("\n"));
+    }
+  }
+  async fetch(url, init, timeout = 3e4) {
+    var _a;
+    const controller = new AbortController();
+    const timeoutId = this.setTimeout(() => {
+      try {
+        controller.abort();
+      } catch {
+      }
+      this.fetchs.delete(controller);
+    }, timeout);
+    this.fetchs.set(controller, timeoutId);
+    try {
+      const response = await fetch(url, {
+        ...init,
+        method: (_a = init == null ? void 0 : init.method) != null ? _a : "GET",
+        signal: controller.signal
+      });
+      if (response.status === 200) {
+        return await response.json();
+      }
+      throw new Error({ status: response.status, statusText: response.statusText });
+    } finally {
+      const id = this.fetchs.get(controller);
+      if (typeof id !== "undefined") {
+        this.clearTimeout(id);
+      }
+      this.fetchs.delete(controller);
     }
   }
 }
