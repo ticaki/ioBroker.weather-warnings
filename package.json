@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.3.2",
-    "axios": "^1.12.2",
     "jsonata": "^2.1.0"
   },
   "devDependencies": {
