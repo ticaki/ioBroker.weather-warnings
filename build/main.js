@@ -855,7 +855,9 @@ class WeatherWarnings extends utils.Adapter {
       const errorDetails = [];
       if (error instanceof Error) {
         let isHttpError = false;
-        errorDetails.push(`  Name: ${error.name}`);
+        if (error.name !== "TypeError") {
+          errorDetails.push(`  Name: ${error.name}`);
+        }
         if (error.cause && typeof error.cause === "object" && "code" in error.cause && typeof error.cause.code === "string") {
           isHttpError = true;
           errorDetails.push(`  code: ${error.cause.code}`);
@@ -880,7 +882,7 @@ class WeatherWarnings extends utils.Adapter {
       } else {
         errorDetails.push(`  Raw Error: ${String(error)}`);
       }
-      this.log.error(errorDetails.join("\n"));
+      this.log.warn(errorDetails.join("\n"));
     }
   }
   async fetch(url, init, timeout = 3e4) {

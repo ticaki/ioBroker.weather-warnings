@@ -340,7 +340,6 @@ export class BaseProvider extends BaseClass {
             );
             return result as any;
         } catch (error) {
-            this.log.warn(`Error(22) getting data from ${this.url}`);
             this.adapter.handleFetchError(error);
         }
         await this.setConnected(false);
@@ -682,7 +681,7 @@ export class UWZProvider extends BaseProvider {
             }
             that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)}`);
         } catch (error: any) {
-            that.log.warn(`Dont get warncell. ${JSON.stringify(error.toJSON)}`);
+            that.handleFetchError(error);
         }
         return '';
     }

@@ -994,7 +994,9 @@ class WeatherWarnings extends utils.Adapter {
             const errorDetails: string[] = [];
             if (error instanceof Error) {
                 let isHttpError = false;
-                errorDetails.push(`  Name: ${error.name}`);
+                if (error.name !== 'TypeError') {
+                    errorDetails.push(`  Name: ${error.name}`);
+                }
                 if (
                     error.cause &&
                     typeof error.cause === 'object' &&
@@ -1028,7 +1030,7 @@ class WeatherWarnings extends utils.Adapter {
                 errorDetails.push(`  Raw Error: ${String(error)}`);
             }
 
-            this.log.error(errorDetails.join('\n'));
+            this.log.warn(errorDetails.join('\n'));
         }
     }
     async fetch(url: string, init?: RequestInit, timeout = 30_000): Promise<unknown> {

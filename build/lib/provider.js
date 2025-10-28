@@ -329,7 +329,6 @@ class BaseProvider extends import_library.BaseClass {
       );
       return result;
     } catch (error) {
-      this.log.warn(`Error(22) getting data from ${this.url}`);
       this.adapter.handleFetchError(error);
     }
     await this.setConnected(false);
@@ -619,7 +618,7 @@ class UWZProvider extends BaseProvider {
       }
       that.log.error(`No valid warncell found for ${JSON.stringify(warncellId)}`);
     } catch (error) {
-      that.log.warn(`Dont get warncell. ${JSON.stringify(error.toJSON)}`);
+      that.handleFetchError(error);
     }
     return "";
   }
