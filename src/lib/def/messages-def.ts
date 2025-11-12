@@ -3,91 +3,90 @@ import type { customChannelType } from './definition';
 import type { providerServices } from './provider-def';
 
 export type customFormatedTokens = {
-    // eslint-disable-next-line
     starttime: string; // Start Uhrzeit HH:MM
-    // eslint-disable-next-line
+
     startdate: string; // Start Datum DD.MM
-    // eslint-disable-next-line
+
     startday: string;
-    // eslint-disable-next-line
+
     startmonth: string;
-    // eslint-disable-next-line
+
     startdaytime: string;
-    // eslint-disable-next-line
+
     startadverb: string;
-    // eslint-disable-next-line
+
     endtime: string; // Endzeitpunkt
-    // eslint-disable-next-line
+
     enddate: string; // Enddatum
-    // eslint-disable-next-line
+
     endday: string;
-    // eslint-disable-next-line
+
     endmonth: string;
-    // eslint-disable-next-line
+
     enddaytime: string;
-    // eslint-disable-next-line
+
     startdayofweek: string; // Start Tag der Woche
-    // eslint-disable-next-line
+
     enddayofweek: string; // End Tag der Woche
-    // eslint-disable-next-line
+
     startdayofweekshort: string; // Start Tag der Woche (kurz)
-    // eslint-disable-next-line
+
     enddayofweekshort: string; // End Tag der Woche (kurz)
-    // eslint-disable-next-line
+
     headline: string; // Schlagzeile
-    // eslint-disable-next-line
+
     description: string; // Beschreibung
-    // eslint-disable-next-line
+
     impact: string; // nur Zamg Auswirkungen
-    // eslint-disable-next-line
+
     ceiling: string; // max höhe
-    // eslint-disable-next-line
+
     altitude: string; // min höhe
-    // eslint-disable-next-line
+
     warnlevelname: string; // Textbezeichnung des Levels
-    // eslint-disable-next-line
+
     warnlevelnumber: string; // Levelhöhe
-    // eslint-disable-next-line
+
     warnlevelcolorname: string; // Farbbezeichnung des Levels
-    // eslint-disable-next-line
+
     warnlevelcolorhex: string; // RGB im Hexformat
-    // eslint-disable-next-line
+
     warntypename: string; // gelieferter Warntype
-    // eslint-disable-next-line
+
     warntypegenericname: string; // vereinheitlichter Warntyp
-    // eslint-disable-next-line
+
     warntypegeneric: string;
-    // eslint-disable-next-line
+
     location: string; // gelieferte Location (meinst Unsinn)
-    // eslint-disable-next-line
+
     instruction: string; // Anweisungen
-    // eslint-disable-next-line
+
     provider: string;
-    // eslint-disable-next-line
+
     locationcustom: string;
-    // eslint-disable-next-line
+
     countdown: string;
-    // eslint-disable-next-line
+
     cdminute: string;
-    // eslint-disable-next-line
+
     cdhour: string;
-    // eslint-disable-next-line
+
     cdfuture: string;
-    // eslint-disable-next-line
+
     status: string;
-    // eslint-disable-next-line
+
     starttimems: number;
-    // eslint-disable-next-line
+
     endtimems: number;
-    // eslint-disable-next-line
+
     iconurl: string;
-    // eslint-disable-next-line
+
     warningcount: string;
-    // eslint-disable-next-line
+
     htmlicon: string;
-    // eslint-disable-next-line
+
     weatheremoji: string;
-    // eslint-disable-next-line
+
     zamgdayPeriod: string;
 };
 

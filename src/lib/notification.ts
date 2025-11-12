@@ -549,16 +549,25 @@ export class NotificationClass extends library.BaseClass {
                         if (Array.isArray(msg)) {
                             return false;
                         }
+                        if (msg.action === 'removeAll' || msg.action === 'removeManualAll') {
+                            this.adapter.sendTo(this.options.adapter, 'setPopupNotification', {
+                                id: `${this.adapter.namespace}.`,
+                                priority: -100,
+                            });
+                            await this.adapter.delay(50);
+                        }
+                        const id = `${this.adapter.namespace}.${msg.text}`;
                         const opt: {
+                            id: string;
                             text: string;
                             priority?: number;
-                            title?: string;
-                        } = { text: msg.text };
+                            headline?: string;
+                        } = { id, text: msg.text, headline: 'Weatherwarning' };
                         if (this.options.priority) {
                             opt.priority = this.options.priority;
                         }
                         if (this.options.actions.title && msg.title) {
-                            opt.title = msg.title;
+                            opt.headline = msg.title;
                         }
                         try {
                             this.adapter.sendTo(this.options.adapter, 'setPopupNotification', opt);
