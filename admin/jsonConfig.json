@@ -127,6 +127,16 @@
                     "label": "gotify_Enabled",
                     "newLine": false
                 },
+                "nspanel_Enabled": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 3,
+                    "label": "nspanel_Enabled",
+                    "newLine": false
+                },
                 "icon_color": {
                     "type": "select",
                     "disabled": "data.icons_prefix != ''",
