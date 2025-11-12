@@ -49019,6 +49019,317 @@
                 }
             }
         },
+        "_nspanel": {
+            "type": "panel",
+            "label": "nspanel",
+            "hidden": "!data.nspanel_Enabled",
+            "items": {
+                "nspanel_Adapter": {
+                    "type": "selectSendTo",
+                    "command": "notificationService",
+                    "jsonData": "{ \"service\": \"nspanel-lovelace-ui\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "SelectNotificationService",
+                    "newLine": true
+                },
+                "nspanel_DwdEnabled": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 3,
+                    "hidden": "!data.dwdEnabled",
+                    "default": "none",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "label": "dwdEnabled",
+                    "newLine": true
+                },
+                "nspanel_UwzEnabled": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 3,
+                    "hidden": "!data.uwzEnabled",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "label": "uwzEnabled",
+                    "newLine": true
+                },
+                "nspanel_ZamgEnabled": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 3,
+                    "hidden": "!data.zamgEnabled",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "label": "zamgEnabled",
+                    "newLine": true
+                },
+                "nspanel_Title": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "manual": false,
+                    "multiple": false,
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "MessageTitle",
+                    "newLine": true
+                },
+                "nspanel_auto": {
+                    "type": "staticText",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "text": "header_auto",
+                    "newLine": true
+                },
+                "nspanel_manual": {
+                    "type": "staticText",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "text": "header_manual",
+                    "newLine": false
+                },
+                "nspanel_TypeFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
+                    "newLine": true
+                },
+                "nspanel_ManualTypeFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "ManualTypeFilter",
+                    "tooltip": "TypeFilter",
+                    "newLine": false
+                },
+                "nspanel_LevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "LevelFilter",
+                    "newLine": true
+                },
+                "nspanel_ManualLevelFilter": {
+                    "type": "selectSendTo",
+                    "command": "filterLevel",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "manual": false,
+                    "multiple": false,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "ManualLevelFilter",
+                    "newLine": false
+                },
+                "nspanel_MessageNew": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "validator": "return (data.nspanel_MessageNew == 'none' || data.templateTable.findIndex(a => a.templateKey == data.nspanel_MessageNew) != -1)",
+                    "manual": false,
+                    "multiple": false,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "MessageNew",
+                    "newLine": true
+                },
+                "nspanel_manualAll": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "validator": "return (data.nspanel_manualAll == 'none' || data.templateTable.findIndex(a => a.templateKey == data.nspanel_manualAll) != -1)",
+                    "manual": false,
+                    "multiple": false,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "manualAll",
+                    "newLine": false
+                },
+                "nspanel_MessageRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"nspanel\"}",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "validator": "return (data.nspanel_MessageRemove == 'none' || data.templateTable.findIndex(a => a.templateKey == data.nspanel_MessageRemove) != -1)",
+                    "manual": false,
+                    "multiple": false,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "MessageRemove",
+                    "newLine": true
+                },
+                "nspanel_MessageAllRemove": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"nspanel\"}",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "validator": "return (data.nspanel_MessageAllRemove == 'none' || data.templateTable.findIndex(a => a.templateKey == data.nspanel_MessageAllRemove) != -1)",
+                    "manual": false,
+                    "multiple": false,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "MessageAllRemove",
+                    "newLine": true
+                },
+                "nspanel_removeManualAll": {
+                    "type": "selectSendTo",
+                    "command": "Messages",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "validator": "return (data.nspanel_removeManualAll == 'none' || data.templateTable.findIndex(a => a.templateKey == data.nspanel_removeManualAll) != -1)",
+                    "manual": false,
+                    "multiple": false,
+                    "default": "RemoveAllMessage",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 5,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "removeManualAll",
+                    "newLine": false
+                },
+                "nspanel_extras": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "notification_extras",
+                    "size": 3
+                },
+                "nspanel_Priority": {
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "1",
+                            "value": "1"
+                        },
+                        {
+                            "label": "2",
+                            "value": "2"
+                        },
+                        {
+                            "label": "3",
+                            "value": "3"
+                        },
+                        {
+                            "label": "4",
+                            "value": "4"
+                        },
+                        {
+                            "label": "5",
+                            "value": "5"
+                        },
+                        {
+                            "label": "6",
+                            "value": "6"
+                        },
+                        {
+                            "label": "7",
+                            "value": "7"
+                        },
+                        {
+                            "label": "8",
+                            "value": "8"
+                        },
+                        {
+                            "label": "40",
+                            "value": "40"
+                        },
+                        {
+                            "label": "50",
+                            "value": "50"
+                        }
+
+                    ],
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 3,
+                    "default": "0",
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "label": "nspanel_Priority",
+                    "newLine": false
+                },
+                "restoreDefault": {
+                    "type": "sendTo",
+                    "command": "restoreDefault",
+                    "jsonData": "{ \"service\": \"nspanel\" }",
+                    "newLine": true,
+                    "label": "restoreDefaultService",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 3,
+                    "hidden": "true",
+                    "useNative": true
+                }
+            }
+        },
         "_alexa2": {
             "type": "panel",
             "label": "alexa2",

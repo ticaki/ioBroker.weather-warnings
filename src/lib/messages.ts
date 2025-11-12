@@ -857,7 +857,7 @@ export class MessagesClass extends library.BaseClass {
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex(a => a.templateKey == templateKey);
 
-        if (this.cache.ts < Date.now() - 60000) {
+        if (this.cache.ts < Date.now() - 60_000) {
             await this.updateFormated();
         }
         if (this.cache.messages[templateKey] !== undefined) {
@@ -1128,7 +1128,7 @@ export class MessagesClass extends library.BaseClass {
         switch (cmd) {
             case 'fullday': {
                 const diff = new Date(this.starttime).getTime() - new Date(this.endtime).getTime();
-                if (diff > 86700000 || diff < 86100000 || !(new Date(this.starttime).getHours() <= 3)) {
+                if (diff > 86_700_000 || diff < 86_100_000 || !(new Date(this.starttime).getHours() <= 3)) {
                     return '';
                 }
                 data = this.starttime;
@@ -1211,7 +1211,7 @@ export class MessagesClass extends library.BaseClass {
             }
             case 'adverb': {
                 const day = new Date(new Date(Date.now()).setHours(0, 0, 0, 0)).getTime(); //86400000;
-                let rest = (new Date(data).getTime() - day) / 86400000;
+                let rest = (new Date(data).getTime() - day) / 86_400_000;
                 rest = Math.floor(rest);
                 for (const a in MessageType.temporalAdverbs) {
                     const o = MessageType.temporalAdverbs[a as keyof typeof MessageType.temporalAdverbs];

@@ -249,6 +249,7 @@ class NotificationClass extends library.BaseClass {
     switch (this.options.name) {
       case "telegram":
       case "gotify":
+      case "nspanel":
       case "pushover":
       case "whatsapp":
       case "json":
@@ -291,6 +292,7 @@ class NotificationClass extends library.BaseClass {
       switch (this.options.name) {
         case "telegram":
         case "gotify":
+        case "nspanel":
         case "pushover":
         case "whatsapp":
         case "json":
@@ -478,6 +480,34 @@ class NotificationClass extends library.BaseClass {
             }
             try {
               this.adapter.sendTo(this.options.adapter, "send", opt);
+              this.log.debug(`Send the message: ${msg.text}`);
+            } catch (error) {
+              if (error.message == "Timeout exceeded") {
+                this.log.warn(
+                  `Error sending a notification: ${this.options.adapter} does not react in the given time.`
+                );
+              } else {
+                throw error;
+              }
+            }
+          }
+        }
+        break;
+      case "nspanel":
+        {
+          for (const msg of messages) {
+            if (Array.isArray(msg)) {
+              return false;
+            }
+            const opt = { text: msg.text };
+            if (this.options.priority) {
+              opt.priority = this.options.priority;
+            }
+            if (this.options.actions.title && msg.title) {
+              opt.title = msg.title;
+            }
+            try {
+              this.adapter.sendTo(this.options.adapter, "setPopupNotification", opt);
               this.log.debug(`Send the message: ${msg.text}`);
             } catch (error) {
               if (error.message == "Timeout exceeded") {

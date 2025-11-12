@@ -311,6 +311,10 @@ class WeatherWarnings extends utils.Adapter {
         notificationServiceOpt.gotify.priority = this.config.gotify_Priority !== void 0 ? parseInt(this.config.gotify_Priority) : 0;
         notificationServiceOpt.gotify.contentType = this.config.gotify_contentType || "text/plain";
       }
+      if (this.config.nspanel_Enabled && notificationServiceOpt.nspanel != void 0) {
+        notificationServiceOpt.nspanel.priority = this.config.nspanel_Priority !== void 0 ? parseInt(this.config.nspanel_Priority) : 50;
+        notificationServiceOpt.nspanel.headline = this.config.nspanel_Title || "";
+      }
       if (this.config.json_Enabled && notificationServiceOpt.json != void 0) {
       }
       if (this.config.history_Enabled && notificationServiceOpt.history != void 0) {

@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/require-jsdoc */
 import * as messagesDef from './messages-def';
 import type * as notificationServiceDef from './notificationService-def';
 import type * as providerDef from './provider-def';
@@ -2167,6 +2166,18 @@ export const statesObjectsWarnings: statesObjectsWarningsType = {
                     type: 'state',
                     common: {
                         name: 'Gotify',
+                        type: 'boolean',
+                        role: 'button',
+                        read: false,
+                        write: true,
+                    },
+                    native: {},
+                },
+                nspanel: {
+                    _id: '',
+                    type: 'state',
+                    common: {
+                        name: 'NSPanel-Lovelace-ui',
                         type: 'boolean',
                         role: 'button',
                         read: false,
