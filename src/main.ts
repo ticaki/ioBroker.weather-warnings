@@ -327,15 +327,8 @@ class WeatherWarnings extends utils.Adapter {
                         service: service,
                         filter: {
                             auto: {
-                                level:
-                                    (this.config[
-                                        `${notificationService}_LevelFilter` as keyof ioBroker.AdapterConfig
-                                    ] as number) || -1,
-                                type: (
-                                    (this.config[
-                                        `${notificationService}_TypeFilter` as keyof ioBroker.AdapterConfig
-                                    ] as string[]) || []
-                                ).map(a => String(a)),
+                                level: this.config[`${notificationService}_LevelFilter`] || -1,
+                                type: (this.config[`${notificationService}_TypeFilter`] || []).map(a => String(a)),
                             },
                             manual: {
                                 level: (this.config[

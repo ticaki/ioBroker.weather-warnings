@@ -1,7 +1,6 @@
 import type * as Provider from '../provider';
 export * from '../provider';
 
-/* eslint-disable jsdoc/require-jsdoc */
 /**Available provider identifier strings */
 export type providerServices = 'dwdService' | 'zamgService' | 'ninaService' | 'uwzService' | 'metroService';
 
