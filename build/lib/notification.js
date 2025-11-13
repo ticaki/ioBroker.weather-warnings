@@ -534,7 +534,7 @@ class NotificationClass extends library.BaseClass {
                 const key = msg.formatedData.warntypegeneric;
                 if (import_messages_def.genericWarntyp[key] && import_messages_def.genericWarntyp[key].mdi) {
                   opt.icon = import_messages_def.genericWarntyp[key].mdi;
-                  opt.colorIcon = opt.colorHeadline;
+                  opt.iconColor = opt.colorHeadline;
                 }
               }
             }

@@ -578,7 +578,7 @@ export class NotificationClass extends library.BaseClass {
                             colorHeadline?: { r: number; g: number; b: number } | string;
                             buttonRight?: string;
                             icon?: string;
-                            colorIcon?: { r: number; g: number; b: number } | string;
+                            iconColor?: { r: number; g: number; b: number } | string;
                             type?: 'information' | 'acknowledge';
                         } = { id, text: msg.text, headline: 'Weatherwarning', buttonRight: 'Ok' };
                         opt.type =
@@ -599,7 +599,7 @@ export class NotificationClass extends library.BaseClass {
                                 const key = msg.formatedData.warntypegeneric as keyof typeof genericWarntyp;
                                 if (genericWarntyp[key] && genericWarntyp[key].mdi) {
                                     opt.icon = genericWarntyp[key].mdi;
-                                    opt.colorIcon = opt.colorHeadline;
+                                    opt.iconColor = opt.colorHeadline;
                                 }
                             }
                         }
