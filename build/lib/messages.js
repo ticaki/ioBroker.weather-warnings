@@ -31,6 +31,7 @@ __export(messages_exports, {
   MessagesClass: () => MessagesClass
 });
 module.exports = __toCommonJS(messages_exports);
+var import_uuid = require("uuid");
 var import_definition = require("./def/definition");
 var MessageType = __toESM(require("./def/messages-def"));
 var library = __toESM(require("./library"));
@@ -50,6 +51,7 @@ class MessagesClass extends library.BaseClass {
   notDeleted = true;
   templates;
   messages = [];
+  uniqueId = "";
   starttime = 1;
   endtime = 1;
   ceiling = 0;
@@ -661,6 +663,7 @@ class MessagesClass extends library.BaseClass {
    */
   constructor(adapter, name, provider, data, pcontroller, providerParent = null) {
     super(adapter, name);
+    this.uniqueId = (0, import_uuid.v4)();
     if (!data && provider) {
       throw new Error(`${this.log.getName()} data is null`);
     }
@@ -859,10 +862,10 @@ class MessagesClass extends library.BaseClass {
       if (tempid == -1) {
         this.log.error(`${pushService.name}`, `No template for key: ${templateKey}!`);
       } else {
-        this.cache.messages[templates[tempid].templateKey] = this.returnMessage(msg, this.starttime, templateKey);
+        this.cache.messages[templates[tempid].templateKey] = this.returnMessage(this.uniqueId, msg, this.starttime, templateKey);
       }
     }
-    return this.returnMessage(msg, this.starttime, templateKey);
+    return this.returnMessage(this.uniqueId, msg, this.starttime, templateKey);
   }
   getTemplates(tempid) {
     let msg = "";
@@ -981,8 +984,13 @@ class MessagesClass extends library.BaseClass {
     }
     return msg;
   }
-  returnMessage = (msg, time, template) => {
-    return { startts: time, text: msg.replace(/\\+}/g, "}").replace(/\\+n/g, "\n"), template };
+  returnMessage = (uniqueId, msg, time, template) => {
+    return {
+      uniqueId,
+      startts: time,
+      text: msg.replace(/\\+}/g, "}").replace(/\\+n/g, "\n"),
+      template
+    };
   };
   /**
    * Update the formated Data.

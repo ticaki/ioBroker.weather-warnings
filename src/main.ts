@@ -386,8 +386,10 @@ class WeatherWarnings extends utils.Adapter {
             }
             if (this.config.nspanel_Enabled && notificationServiceOpt.nspanel != undefined) {
                 notificationServiceOpt.nspanel.priority =
-                    this.config.nspanel_Priority !== undefined ? parseInt(this.config.nspanel_Priority) : 50;
-                notificationServiceOpt.nspanel.headline = this.config.nspanel_Title || '';
+                    this.config.nspanel_Priority !== undefined && this.config.nspanel_Priority > 0
+                        ? Math.ceil(this.config.nspanel_Priority)
+                        : 50;
+                notificationServiceOpt.nspanel.alwaysOn = this.config.nspanel_alwaysOn ?? true;
             }
             if (this.config.json_Enabled && notificationServiceOpt.json != undefined) {
                 // empty

@@ -49,7 +49,7 @@ export type BaseType =
     | ({
           name: 'nspanel';
           priority: number;
-          headline: string;
+          alwaysOn: boolean;
       } & bBaseType)
     | ({
           name: 'gotify';
@@ -170,6 +170,7 @@ export const Array: Type[] = [
 ];
 
 export type MessageType = {
+    uniqueId: string;
     text: string;
     startts: number;
     template: string;

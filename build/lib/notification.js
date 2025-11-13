@@ -219,6 +219,7 @@ class NotificationClass extends library.BaseClass {
           );
           const msg = [
             {
+              uniqueId: result2.uniqueId,
               text: result2.text,
               // templates[tempid].template.replaceAll('\\}', '}'),
               startts: result2.startts,
@@ -504,10 +505,17 @@ class NotificationClass extends library.BaseClass {
                 id: `${this.adapter.namespace}.`,
                 priority: -100
               });
-              await this.adapter.delay(50);
+              await this.adapter.delay(20);
+            } else if (msg.action === "remove") {
+              this.adapter.sendTo(this.options.adapter, "setPopupNotification", {
+                id: `${this.adapter.namespace}.${msg.uniqueId}`,
+                priority: -1
+              });
+              await this.adapter.delay(20);
             }
-            const id = `${this.adapter.namespace}.${msg.text}`;
-            const opt = { id, text: msg.text, headline: "Weatherwarning" };
+            const id = `${this.adapter.namespace}.${msg.uniqueId}`;
+            const opt = { id, text: msg.text, headline: "Weatherwarning", buttonRight: "OK" };
+            opt.type = msg.action === "removeAll" || msg.action === "removeManualAll" || msg.action === "remove" ? "information" : "acknowledge";
             if (this.options.priority) {
               opt.priority = this.options.priority;
             }

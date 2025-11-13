@@ -246,6 +246,7 @@ export class NotificationClass extends library.BaseClass {
                     );
                     const msg: NotificationType.MessageType[] = [
                         {
+                            uniqueId: result.uniqueId,
                             text: result.text, // templates[tempid].template.replaceAll('\\}', '}'),
                             startts: result.startts,
                             template: result.template,
@@ -554,15 +555,27 @@ export class NotificationClass extends library.BaseClass {
                                 id: `${this.adapter.namespace}.`,
                                 priority: -100,
                             });
-                            await this.adapter.delay(50);
+                            await this.adapter.delay(20);
+                        } else if (msg.action === 'remove') {
+                            this.adapter.sendTo(this.options.adapter, 'setPopupNotification', {
+                                id: `${this.adapter.namespace}.${msg.uniqueId}`,
+                                priority: -1,
+                            });
+                            await this.adapter.delay(20);
                         }
-                        const id = `${this.adapter.namespace}.${msg.text}`;
+                        const id = `${this.adapter.namespace}.${msg.uniqueId}`;
                         const opt: {
                             id: string;
                             text: string;
                             priority?: number;
                             headline?: string;
-                        } = { id, text: msg.text, headline: 'Weatherwarning' };
+                            buttonRight?: string;
+                            type?: 'information' | 'acknowledge';
+                        } = { id, text: msg.text, headline: 'Weatherwarning', buttonRight: 'OK' };
+                        opt.type =
+                            msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove'
+                                ? 'information'
+                                : 'acknowledge';
                         if (this.options.priority) {
                             opt.priority = this.options.priority;
                         }

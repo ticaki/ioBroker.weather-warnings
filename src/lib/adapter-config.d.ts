@@ -139,7 +139,8 @@ declare global {
             nspanel_MessageRemove: string;
             nspanel_MessageAllRemove: string;
             nspanel_contentType: "text/plain" | "text/markdown" | undefined;
-            nspanel_Priority: string;
+            nspanel_Priority: number;
+            nspanel_alwaysOn: boolean;
             nspanel_Title: string;
 
             json_DwdEnabled: boolean;

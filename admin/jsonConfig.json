@@ -135,7 +135,7 @@
                     "lg": 3,
                     "xl": 3,
                     "label": "nspanel_Enabled",
-                    "newLine": false
+                    "newLine": true
                 },
                 "icon_color": {
                     "type": "select",
@@ -49270,58 +49270,30 @@
                     "size": 3
                 },
                 "nspanel_Priority": {
-                    "type": "select",
-                    "options": [
-                        {
-                            "label": "1",
-                            "value": "1"
-                        },
-                        {
-                            "label": "2",
-                            "value": "2"
-                        },
-                        {
-                            "label": "3",
-                            "value": "3"
-                        },
-                        {
-                            "label": "4",
-                            "value": "4"
-                        },
-                        {
-                            "label": "5",
-                            "value": "5"
-                        },
-                        {
-                            "label": "6",
-                            "value": "6"
-                        },
-                        {
-                            "label": "7",
-                            "value": "7"
-                        },
-                        {
-                            "label": "8",
-                            "value": "8"
-                        },
-                        {
-                            "label": "40",
-                            "value": "40"
-                        },
-                        {
-                            "label": "50",
-                            "value": "50"
-                        }
-
-                    ],
+                    "type": "number",
+                    "step": 1,
+                    "min": 1,
+                    "max": 100,
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
-                    "lg": 3,
-                    "xl": 3,
-                    "default": "0",
+                    "lg": 4,
+                    "xl": 4,
+                    "default": 50,
                     "disabled": "data.nspanel_Adapter == 'none'",
                     "label": "nspanel_Priority",
+                    "newLine": false
+                },
+                "nspanel_alwaysOn": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 4,
+                    "xl": 4,
+                    "default": true,
+                    "disabled": "data.nspanel_Adapter == 'none'",
+                    "label": "nspanel_alwaysOn",
                     "newLine": false
                 },
                 "restoreDefault": {
