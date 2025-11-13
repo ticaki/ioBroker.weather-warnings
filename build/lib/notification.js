@@ -500,7 +500,6 @@ class NotificationClass extends library.BaseClass {
             if (Array.isArray(msg)) {
               return false;
             }
-            this.log.info(`nspanel action: ${msg.action}`);
             if (msg.action === "removeAll" || msg.action === "removeManualAll") {
               this.adapter.sendTo(this.options.adapter, "setPopupNotification", {
                 id: `${this.adapter.namespace}.`,
