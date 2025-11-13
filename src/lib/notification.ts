@@ -597,8 +597,8 @@ export class NotificationClass extends library.BaseClass {
                         ) {
                             if (msg.formatedData && 'genericWarntyp' in msg.formatedData) {
                                 const key = msg.formatedData.genericWarntyp as keyof typeof genericWarntyp;
-                                if (key in genericWarntyp && genericWarntyp[key].mdi) {
-                                    opt.icon = `mdi:${genericWarntyp[key].mdi}`;
+                                if (genericWarntyp[key] && genericWarntyp[key].mdi) {
+                                    opt.icon = genericWarntyp[key].mdi;
                                     opt.colorIcon = opt.colorHeadline;
                                 }
                             }
