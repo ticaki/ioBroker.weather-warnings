@@ -320,7 +320,6 @@ class WeatherWarnings extends utils.Adapter {
                         }
                         template[b] = template[b] ? template[b] : 'none';
                     }
-                    this.log.info(`template for ${notificationService}: ${JSON.stringify(template)}`);
 
                     // @ts-expect-error keine ahnung :)
                     notificationServiceOpt[notificationService] = {

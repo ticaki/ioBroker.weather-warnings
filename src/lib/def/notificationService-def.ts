@@ -145,7 +145,7 @@ const email: ActionsUnionType[] = [...manual, 'new', 'all', 'removeAll', 'remove
 //const speak: ActionsUnionType[] = ['new', 'remove', 'removeAll'];
 export const serciceCapabilities: Record<Type, ConfigType> = {
     gotify: { notifications: pushTitle },
-    nspanel: { notifications: push },
+    nspanel: { notifications: pushTitle },
     telegram: { notifications: push },
     email: { notifications: email },
     json: { notifications: json },

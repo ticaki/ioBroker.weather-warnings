@@ -267,7 +267,6 @@ class WeatherWarnings extends utils.Adapter {
             }
             template[b] = template[b] ? template[b] : "none";
           }
-          this.log.info(`template for ${notificationService}: ${JSON.stringify(template)}`);
           notificationServiceOpt[notificationService] = {
             ...import_notificationService_def.notificationServiceDefaults[notificationService],
             service,

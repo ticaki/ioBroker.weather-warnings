@@ -32,7 +32,7 @@ const json = ["all", "removeAll"];
 const email = [...manual, "new", "all", "removeAll", "remove", "title"];
 const serciceCapabilities = {
   gotify: { notifications: pushTitle },
-  nspanel: { notifications: push },
+  nspanel: { notifications: pushTitle },
   telegram: { notifications: push },
   email: { notifications: email },
   json: { notifications: json },
