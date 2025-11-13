@@ -218,6 +218,7 @@
     "norwegian": "挪威",
     "notPushAtStart": "适配器启动后收到的警告被视为已知。",
     "notification_extras": "附加设置（可选）",
+    "nspanel_Enabled": "激活 NSPanel",
     "nspanel_Priority": "通知优先级。",
     "nspanel_alwaysOn": "始终显示",
     "numOfRawWarnings": "每个提供商处理的警告的最大数量。",

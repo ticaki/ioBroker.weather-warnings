@@ -218,6 +218,7 @@
     "norwegian": "Noors",
     "notPushAtStart": "Binnenkomende waarschuwingen na het starten van de adapter worden als bekend beschouwd.",
     "notification_extras": "Aanvullende instellingen (optioneel)",
+    "nspanel_Enabled": "Activeer NSPanel",
     "nspanel_Priority": "Prioriteit van meldingen.",
     "nspanel_alwaysOn": "Altijd te zien",
     "numOfRawWarnings": "Maximaal aantal verwerkte waarschuwingen per provider.",

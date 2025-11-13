@@ -218,6 +218,7 @@
     "norwegian": "Norwegisch",
     "notPushAtStart": "Eingehende Warnungen nach dem Adapterstart gelten als bekannt.",
     "notification_extras": "Zusätzliche Einstellungen (optional)",
+    "nspanel_Enabled": "Aktiviere NSPanel Lovelace UI",
     "nspanel_Priority": "Benachrichtigungspriorität",
     "nspanel_alwaysOn": "Immer sichtbar",
     "numOfRawWarnings": "Maximale Anzahl verarbeiteter Warnungen pro Anbieter.",

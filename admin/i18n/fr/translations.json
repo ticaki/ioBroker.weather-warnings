@@ -218,6 +218,7 @@
     "norwegian": "norvégien",
     "notPushAtStart": "Les avertissements entrants après le démarrage de l'adaptateur sont considérés comme connus.",
     "notification_extras": "Paramètres supplémentaires (facultatif)",
+    "nspanel_Enabled": "Activer NSPanel",
     "nspanel_Priority": "Priorité des notifications.",
     "nspanel_alwaysOn": "Toujours visible",
     "numOfRawWarnings": "Nombre maximum d'avertissements traités par fournisseur.",
