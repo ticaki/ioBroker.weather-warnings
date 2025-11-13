@@ -434,6 +434,8 @@
     "template.emailMessage": "<tr><td style=\"填充：5px 0 5px 0;\" bgcolor=\"${warnlevelcolorhex}\"><b><font color=#000000>${headline}</font></b></td></tr><tr><td style=\"padding: 5px 0 20px 0;\">${描述}</td></tr>",
     "template.emailRemoveMessage": "<tr><td style=\"填充：5px 0 5px 0;\" bgcolor=\"#606060\"><b><font color=#000000>${状态}：${headline}</font></b></td></tr><tr><td style=\"填充：5px 0 20px 0;\">${iconbase64}${描述}</td></tr>",
     "template.emailTitle": "来自 ${locationcustom} 的 ${Status}",
+    "template.nspanelNew": "来自 ${starttime} 的 ${Warntypename} 警告\n级别：${warnlevelcolorname}",
+    "template.nspanelRemoveAll": "-1",
     "templateKey": "唯一标识符",
     "templateTitle": "模板文本",
     "templateTitleTip": "在此输入您的模板文本。",

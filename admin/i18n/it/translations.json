@@ -434,6 +434,8 @@
     "template.emailMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"${warnlevelcolorhex}\"><b><font color=#000000>${headline}</font></b></td></tr><tr><td style=\"padding: 5px 0 20px 0;\">${descrizione}</td></tr>",
     "template.emailRemoveMessage": "<tr><td style=\"padding: 5px 0 5px 0;\" bgcolor=\"#606060\"><b><font color=#000000>${Stato}: ${headline}</font></b></td></tr><tr><td style=\" riempimento: 5px 0 20px 0;\">${iconbase64}${description}</td></tr>",
     "template.emailTitle": "${Status} da ${locationcustom}",
+    "template.nspanelNew": "Avviso ${Warntypename} da ${starttime}\nlivello: ${warnlevelcolorname}",
+    "template.nspanelRemoveAll": "-1",
     "templateKey": "Identificativo unico",
     "templateTitle": "Testo del modello",
     "templateTitleTip": "Inserisci qui il testo del tuo modello.",

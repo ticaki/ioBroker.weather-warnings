@@ -547,5 +547,7 @@
     "wrongTemplateKey": "The template key does not exist. Select a valid template!",
     "zamgdayPeriod": "Warning duration from midnight to midnight",
     "nspanel_alwaysOn": "Always on display",
-    "nspanel_Priority": "Notification priority."
+    "nspanel_Priority": "Notification priority.",
+    "template.nspanelNew": "${Warntypename} warning from ${starttime}\nlevel: ${warnlevelcolorname}",
+    "template.nspanelRemoveAll": "-1"
 }

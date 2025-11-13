@@ -557,12 +557,18 @@ export class NotificationClass extends library.BaseClass {
                                 priority: -100,
                             });
                             await this.adapter.delay(20);
+                            if (msg.text === '-1') {
+                                continue;
+                            }
                         } else if (msg.action === 'remove') {
                             this.adapter.sendTo(this.options.adapter, 'setPopupNotification', {
                                 id: `${this.adapter.namespace}.${msg.uniqueId}`,
                                 priority: -1,
                             });
                             await this.adapter.delay(20);
+                            if (msg.text === '-1') {
+                                continue;
+                            }
                         }
                         const id = `${this.adapter.namespace}.${msg.uniqueId}`;
                         const opt: {
@@ -570,13 +576,18 @@ export class NotificationClass extends library.BaseClass {
                             text: string;
                             priority?: number;
                             headline?: string;
+                            colorHeadline?: { r: number; g: number; b: number };
                             buttonRight?: string;
                             type?: 'information' | 'acknowledge';
-                        } = { id, text: msg.text, headline: 'Weatherwarning', buttonRight: 'OK' };
+                        } = { id, text: msg.text, headline: 'Weatherwarning', buttonRight: 'Ok' };
                         opt.type =
                             msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove'
                                 ? 'information'
                                 : 'acknowledge';
+                        opt.colorHeadline =
+                            msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove'
+                                ? { r: 0, g: 255, b: 0 }
+                                : { r: 255, g: 0, b: 0 };
                         if (this.options.priority) {
                             opt.priority = this.options.priority;
                         }
