@@ -500,18 +500,19 @@ class NotificationClass extends library.BaseClass {
             if (Array.isArray(msg)) {
               return false;
             }
+            this.log.info(`nspanel action: ${msg.action}`);
             if (msg.action === "removeAll" || msg.action === "removeManualAll") {
               this.adapter.sendTo(this.options.adapter, "setPopupNotification", {
                 id: `${this.adapter.namespace}.`,
                 priority: -100
               });
-              await this.adapter.delay(20);
+              await this.adapter.delay(50);
             } else if (msg.action === "remove") {
               this.adapter.sendTo(this.options.adapter, "setPopupNotification", {
                 id: `${this.adapter.namespace}.${msg.uniqueId}`,
                 priority: -1
               });
-              await this.adapter.delay(20);
+              await this.adapter.delay(50);
             }
             const id = `${this.adapter.namespace}.${msg.uniqueId}`;
             const opt = { id, text: msg.text, headline: "Weatherwarning", buttonRight: "OK" };
