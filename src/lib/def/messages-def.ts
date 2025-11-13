@@ -318,6 +318,7 @@ type genericWarntypeTypeSub = {
     zamgService: number[];
     metroService?: number[];
     ninaService?: number[];
+    mdi: string;
 };
 
 type genericWarnTypNameJsonType = {
@@ -364,6 +365,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [0],
         zamgService: [0],
         emoji: '✨',
+        mdi: 'set-none',
     },
     1: {
         name: 'genericWarntyp.1.name',
@@ -372,6 +374,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [1],
         zamgService: [8],
         emoji: '❔',
+        mdi: 'help-circle-outline',
     },
     2: {
         name: 'genericWarntyp.2.name',
@@ -380,6 +383,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [2],
         zamgService: [1],
         emoji: '🌬️',
+        mdi: 'weather-windy',
     },
     3: {
         name: 'genericWarntyp.3.name',
@@ -388,6 +392,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [3],
         zamgService: [3],
         emoji: '🌨️',
+        mdi: 'weather-snowy',
     },
     4: {
         name: 'genericWarntyp.4.name',
@@ -396,6 +401,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [4],
         zamgService: [2],
         emoji: '☔',
+        mdi: 'weather-pouring',
     },
     5: {
         name: 'genericWarntyp.5.name',
@@ -404,6 +410,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [10, 11, 5],
         zamgService: [7],
         emoji: '❄️',
+        mdi: 'snowflake-thermometer',
     },
     6: {
         name: 'genericWarntyp.6.name',
@@ -412,6 +419,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [6],
         zamgService: [],
         emoji: '🔥',
+        mdi: 'fire-alert',
     },
     7: {
         name: 'genericWarntyp.7.name',
@@ -420,6 +428,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [7],
         zamgService: [5],
         emoji: '⚡',
+        mdi: 'weather-lightning',
     },
     8: {
         name: 'genericWarntyp.8.name',
@@ -428,6 +437,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [8],
         zamgService: [4],
         emoji: '⛸️',
+        mdi: 'snowshoeing',
     },
     9: {
         name: 'genericWarntyp.9.name',
@@ -436,6 +446,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [9],
         zamgService: [6],
         emoji: '🥵',
+        mdi: 'thermometer-high',
     },
     10: {
         name: 'genericWarntyp.10.name',
@@ -444,8 +455,17 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [],
         zamgService: [],
         emoji: '🧊',
+        mdi: 'weather-hail',
     },
-    11: { name: 'genericWarntyp.11.name', id: 'fog', dwdService: [59], uwzService: [], zamgService: [], emoji: '🧊' },
+    11: {
+        name: 'genericWarntyp.11.name',
+        id: 'fog',
+        dwdService: [59],
+        uwzService: [],
+        zamgService: [],
+        emoji: '🧊',
+        mdi: 'weather-fog',
+    },
     12: {
         name: 'genericWarntyp.12.name',
         id: 'thaw',
@@ -453,6 +473,7 @@ export const genericWarntyp: genericWarntypeType = {
         uwzService: [],
         zamgService: [],
         emoji: '💦',
+        mdi: 'snowflake-melt',
     },
 };
 

@@ -245,7 +245,8 @@ const genericWarntyp = {
     dwdService: [0],
     uwzService: [0],
     zamgService: [0],
-    emoji: "\u2728"
+    emoji: "\u2728",
+    mdi: "set-none"
   },
   1: {
     name: "genericWarntyp.1.name",
@@ -253,7 +254,8 @@ const genericWarntyp = {
     dwdService: [],
     uwzService: [1],
     zamgService: [8],
-    emoji: "\u2754"
+    emoji: "\u2754",
+    mdi: "help-circle-outline"
   },
   2: {
     name: "genericWarntyp.2.name",
@@ -261,7 +263,8 @@ const genericWarntyp = {
     dwdService: [40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 96, 79],
     uwzService: [2],
     zamgService: [1],
-    emoji: "\u{1F32C}\uFE0F"
+    emoji: "\u{1F32C}\uFE0F",
+    mdi: "weather-windy"
   },
   3: {
     name: "genericWarntyp.3.name",
@@ -269,7 +272,8 @@ const genericWarntyp = {
     dwdService: [70, 71, 72, 73, 74, 75, 76],
     uwzService: [3],
     zamgService: [3],
-    emoji: "\u{1F328}\uFE0F"
+    emoji: "\u{1F328}\uFE0F",
+    mdi: "weather-snowy"
   },
   4: {
     name: "genericWarntyp.4.name",
@@ -277,7 +281,8 @@ const genericWarntyp = {
     dwdService: [96, 95, 66, 65, 64, 63, 62, 61, 49, 48, 46, 45, 44, 42],
     uwzService: [4],
     zamgService: [2],
-    emoji: "\u2614"
+    emoji: "\u2614",
+    mdi: "weather-pouring"
   },
   5: {
     name: "genericWarntyp.5.name",
@@ -285,7 +290,8 @@ const genericWarntyp = {
     dwdService: [82, 22],
     uwzService: [10, 11, 5],
     zamgService: [7],
-    emoji: "\u2744\uFE0F"
+    emoji: "\u2744\uFE0F",
+    mdi: "snowflake-thermometer"
   },
   6: {
     name: "genericWarntyp.6.name",
@@ -293,7 +299,8 @@ const genericWarntyp = {
     dwdService: [],
     uwzService: [6],
     zamgService: [],
-    emoji: "\u{1F525}"
+    emoji: "\u{1F525}",
+    mdi: "fire-alert"
   },
   7: {
     name: "genericWarntyp.7.name",
@@ -301,7 +308,8 @@ const genericWarntyp = {
     dwdService: [90, 91, 92, 93, 95, 96, 31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49],
     uwzService: [7],
     zamgService: [5],
-    emoji: "\u26A1"
+    emoji: "\u26A1",
+    mdi: "weather-lightning"
   },
   8: {
     name: "genericWarntyp.8.name",
@@ -309,7 +317,8 @@ const genericWarntyp = {
     dwdService: [87, 85, 84, 24],
     uwzService: [8],
     zamgService: [4],
-    emoji: "\u26F8\uFE0F"
+    emoji: "\u26F8\uFE0F",
+    mdi: "snowshoeing"
   },
   9: {
     name: "genericWarntyp.9.name",
@@ -317,7 +326,8 @@ const genericWarntyp = {
     dwdService: [247, 248],
     uwzService: [9],
     zamgService: [6],
-    emoji: "\u{1F975}"
+    emoji: "\u{1F975}",
+    mdi: "thermometer-high"
   },
   10: {
     name: "genericWarntyp.10.name",
@@ -325,16 +335,26 @@ const genericWarntyp = {
     dwdService: [95, 96, 46, 48, 49],
     uwzService: [],
     zamgService: [],
-    emoji: "\u{1F9CA}"
+    emoji: "\u{1F9CA}",
+    mdi: "weather-hail"
   },
-  11: { name: "genericWarntyp.11.name", id: "fog", dwdService: [59], uwzService: [], zamgService: [], emoji: "\u{1F9CA}" },
+  11: {
+    name: "genericWarntyp.11.name",
+    id: "fog",
+    dwdService: [59],
+    uwzService: [],
+    zamgService: [],
+    emoji: "\u{1F9CA}",
+    mdi: "weather-fog"
+  },
   12: {
     name: "genericWarntyp.12.name",
     id: "thaw",
     dwdService: [88, 89],
     uwzService: [],
     zamgService: [],
-    emoji: "\u{1F4A6}"
+    emoji: "\u{1F4A6}",
+    mdi: "snowflake-melt"
   }
 };
 const warnTypeIconsBase64 = {

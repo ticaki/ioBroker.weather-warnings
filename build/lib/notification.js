@@ -529,6 +529,15 @@ class NotificationClass extends library.BaseClass {
             } else {
               opt.colorHeadline = { r: 255, g: 0, b: 0 };
             }
+            if (msg.action === "removeAll" || msg.action === "removeManualAll" || msg.action === "remove") {
+              if (msg.formatedData && "genericWarntyp" in msg.formatedData) {
+                const key = msg.formatedData.genericWarntyp;
+                if (key in import_messages_def.genericWarntyp && import_messages_def.genericWarntyp[key].mdi) {
+                  opt.icon = `mdi:${import_messages_def.genericWarntyp[key].mdi}`;
+                  opt.colorIcon = opt.colorHeadline;
+                }
+              }
+            }
             if (this.options.priority) {
               opt.priority = this.options.priority;
             }

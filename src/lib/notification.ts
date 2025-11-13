@@ -3,7 +3,7 @@ import { genericStateObjects } from './def/definition';
 import * as NotificationType from './def/notificationService-def';
 import * as library from './library';
 import type * as Provider from './def/provider-def';
-import { filterWarntype } from './def/messages-def';
+import { filterWarntype, genericWarntyp } from './def/messages-def';
 
 /**
  * Represents a notification class.
@@ -577,6 +577,8 @@ export class NotificationClass extends library.BaseClass {
                             headline?: string;
                             colorHeadline?: { r: number; g: number; b: number } | string;
                             buttonRight?: string;
+                            icon?: string;
+                            colorIcon?: { r: number; g: number; b: number } | string;
                             type?: 'information' | 'acknowledge';
                         } = { id, text: msg.text, headline: 'Weatherwarning', buttonRight: 'Ok' };
                         opt.type =
@@ -590,7 +592,15 @@ export class NotificationClass extends library.BaseClass {
                         } else {
                             opt.colorHeadline = { r: 255, g: 0, b: 0 };
                         }
-
+                        if (msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove') {
+                            if (msg.formatedData && 'genericWarntyp' in msg.formatedData) {
+                                const key = msg.formatedData.genericWarntyp as keyof typeof genericWarntyp;
+                                if (key in genericWarntyp && genericWarntyp[key].mdi) {
+                                    opt.icon = `mdi:${genericWarntyp[key].mdi}`;
+                                    opt.colorIcon = opt.colorHeadline;
+                                }
+                            }
+                        }
                         if (this.options.priority) {
                             opt.priority = this.options.priority;
                         }
