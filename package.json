@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.3.2",
-    "jsonata": "^2.1.0"
+    "jsonata": "^2.1.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^5.0.0",

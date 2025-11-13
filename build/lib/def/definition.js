@@ -2120,6 +2120,18 @@ const statesObjectsWarnings = {
           },
           native: {}
         },
+        nspanel: {
+          _id: "",
+          type: "state",
+          common: {
+            name: "NSPanel-Lovelace-ui",
+            type: "boolean",
+            role: "button",
+            read: false,
+            write: true
+          },
+          native: {}
+        },
         pushover: {
           _id: "",
           type: "state",

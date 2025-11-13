@@ -228,6 +228,7 @@ class WeatherWarnings extends utils.Adapter {
     }
     this.config.numOfRawWarnings = typeof this.config.numOfRawWarnings == "number" && this.config.numOfRawWarnings > 0 ? this.config.numOfRawWarnings : 5;
     this.startDelay = this.setTimeout(async () => {
+      var _a;
       if (!this.providerController) {
         return;
       }
@@ -310,6 +311,10 @@ class WeatherWarnings extends utils.Adapter {
       if (this.config.gotify_Enabled && notificationServiceOpt.gotify != void 0) {
         notificationServiceOpt.gotify.priority = this.config.gotify_Priority !== void 0 ? parseInt(this.config.gotify_Priority) : 0;
         notificationServiceOpt.gotify.contentType = this.config.gotify_contentType || "text/plain";
+      }
+      if (this.config.nspanel_Enabled && notificationServiceOpt.nspanel != void 0) {
+        notificationServiceOpt.nspanel.priority = this.config.nspanel_Priority !== void 0 && this.config.nspanel_Priority > 0 ? Math.ceil(this.config.nspanel_Priority) : 50;
+        notificationServiceOpt.nspanel.alwaysOn = (_a = this.config.nspanel_alwaysOn) != null ? _a : true;
       }
       if (this.config.json_Enabled && notificationServiceOpt.json != void 0) {
       }

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import type WeatherWarnings from '../main';
 import { statesObjectsWarnings } from './def/definition';
 import * as MessageType from './def/messages-def';
@@ -52,6 +53,7 @@ export class MessagesClass extends library.BaseClass {
     notDeleted: boolean = true;
     templates: ioBroker.AdapterConfig['templateTable'];
     messages: { message: string; key: string }[] = [];
+    uniqueId: string = '';
     starttime = 1;
     endtime = 1;
     ceiling = 0;
@@ -673,7 +675,7 @@ export class MessagesClass extends library.BaseClass {
         providerParent: Provider.ProviderClassType | null = null,
     ) {
         super(adapter, name);
-
+        this.uniqueId = uuidv4();
         if (!data && provider) {
             throw new Error(`${this.log.getName()} data is null`);
         }
@@ -857,7 +859,7 @@ export class MessagesClass extends library.BaseClass {
         const templates = this.adapter.config.templateTable;
         const tempid = templates.findIndex(a => a.templateKey == templateKey);
 
-        if (this.cache.ts < Date.now() - 60000) {
+        if (this.cache.ts < Date.now() - 60_000) {
             await this.updateFormated();
         }
         if (this.cache.messages[templateKey] !== undefined) {
@@ -870,10 +872,10 @@ export class MessagesClass extends library.BaseClass {
                 this.log.error(`${pushService.name}`, `No template for key: ${templateKey}!`);
             } else {
                 this.cache.messages[templates[tempid].templateKey as keyof typeof this.cache.messages] =
-                    this.returnMessage(msg, this.starttime, templateKey);
+                    this.returnMessage(this.uniqueId, msg, this.starttime, templateKey);
             }
         }
-        return this.returnMessage(msg, this.starttime, templateKey);
+        return this.returnMessage(this.uniqueId, msg, this.starttime, templateKey);
     }
 
     private getTemplates(tempid: number): string {
@@ -1014,8 +1016,19 @@ export class MessagesClass extends library.BaseClass {
         }
         return msg;
     }
-    private returnMessage = (msg: string, time: number, template: string): NotificationType.MessageType => {
-        return { startts: time, text: msg.replace(/\\+}/g, '}').replace(/\\+n/g, '\n'), template: template };
+    private returnMessage = (
+        uniqueId: string,
+        msg: string,
+        time: number,
+        template: string,
+    ): NotificationType.MessageType => {
+        return {
+            uniqueId: uniqueId,
+            startts: time,
+            text: msg.replace(/\\+}/g, '}').replace(/\\+n/g, '\n'),
+            template: template,
+            formatedData: this.formatedData,
+        };
     };
 
     /**
@@ -1128,7 +1141,7 @@ export class MessagesClass extends library.BaseClass {
         switch (cmd) {
             case 'fullday': {
                 const diff = new Date(this.starttime).getTime() - new Date(this.endtime).getTime();
-                if (diff > 86700000 || diff < 86100000 || !(new Date(this.starttime).getHours() <= 3)) {
+                if (diff > 86_700_000 || diff < 86_100_000 || !(new Date(this.starttime).getHours() <= 3)) {
                     return '';
                 }
                 data = this.starttime;
@@ -1211,7 +1224,7 @@ export class MessagesClass extends library.BaseClass {
             }
             case 'adverb': {
                 const day = new Date(new Date(Date.now()).setHours(0, 0, 0, 0)).getTime(); //86400000;
-                let rest = (new Date(data).getTime() - day) / 86400000;
+                let rest = (new Date(data).getTime() - day) / 86_400_000;
                 rest = Math.floor(rest);
                 for (const a in MessageType.temporalAdverbs) {
                     const o = MessageType.temporalAdverbs[a as keyof typeof MessageType.temporalAdverbs];

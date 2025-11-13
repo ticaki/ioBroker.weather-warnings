@@ -32,6 +32,7 @@ const json = ["all", "removeAll"];
 const email = [...manual, "new", "all", "removeAll", "remove", "title"];
 const serciceCapabilities = {
   gotify: { notifications: pushTitle },
+  nspanel: { notifications: pushTitle },
   telegram: { notifications: push },
   email: { notifications: email },
   json: { notifications: json },
@@ -44,6 +45,7 @@ const serciceCapabilities = {
 const Array = [
   "telegram",
   "gotify",
+  "nspanel",
   "pushover",
   "whatsapp",
   "json",
@@ -57,6 +59,9 @@ const notificationServiceDefaults = {
     useadapter: true
   },
   gotify: {
+    useadapter: true
+  },
+  nspanel: {
     useadapter: true
   },
   pushover: {

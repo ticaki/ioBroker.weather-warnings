@@ -108,15 +108,15 @@ const testData = {
             {
                 center: 'UWZ',
                 areaID: 'UWZDE49809',
-                dtgEnd: 1695337200,
+                dtgEnd: 1_695_337_200,
                 areaType: 'UWZCODE',
-                dtgStart: 1695301200,
+                dtgStart: 1_695_301_200,
                 payload: {
                     translationsLongText: {
                         DE: 'Ab Donnerstagnachmittag sind mit der Ankunft einer kräftigen Kaltfront von EX-Hurrikan-LEE Gewitter möglich. Dabei besteht die Gefahr von Starkregen mit Mengen zwischen 10 und 15 l/m^2 und Sturmböen um 75 km/h, lokal auch etwas mehr. Donnerstagnacht lässt die Schauer- und Gewitterneigung wieder nach.',
                     },
                     id: '16952761158501.6',
-                    creation: 1695276614000,
+                    creation: 1_695_276_614_000,
                     uwzLevel: 7,
                     translationsShortText: {
                         DE: 'Gewitter aus SW mit Starkregen und Sturmböen.',
@@ -135,15 +135,15 @@ const testData = {
             {
                 center: 'UWZ',
                 areaID: 'UWZDE55422',
-                dtgEnd: 1695317400,
+                dtgEnd: 1_695_317_400,
                 areaType: 'UWZCODE',
-                dtgStart: 1695313800,
+                dtgStart: 1_695_313_800,
                 payload: {
                     translationsLongText: {
                         DE: 'Am 21.09.2023 um 18:30 Uhr wurde ein Gewitter der Stufe Orange registriert, dessen Schwerpunkt sich im Bereich Veitsrodt befindet. Es kommt aus Südwest und bewegt sich mit einer Geschwindigkeit von 79 km/h in nordöstliche Richtung. Es sind lokal Starkregen und einzelne Sturmböen möglich. Punktuell ist auch kleinkörniger Hagel nicht auszuschließen. Die Blitzaktivität ist hoch. Folgende Orte befinden sich auf der weiteren Zugbahn des Gewitters: Rhaunen (18:30), Kirchberg (Hunsrück) (18:35), Simmern/ Hunsrück (18:41), Rheinböllen (18:51), Oberwesel (18:55), Bornich (19:03), Miehlen (19:07). Angegeben ist die Ankunftszeit des Gewitters in dem Ort.',
                     },
                     id: '16953140380002',
-                    creation: 1695313800000,
+                    creation: 1_695_313_800_000,
                     uwzLevel: 10,
                     translationsShortText: {
                         DE: 'Gewitter mit Starkregen, (kleiner Hagel und Sturmböen sind möglich)',
@@ -190,7 +190,7 @@ const testData = {
                 properties: {
                     AREADESC: 'Oberhausen/Kirn',
                     NAME: 'Gemeinde Oberhausen bei Kirn',
-                    WARNCELLID: 807133073,
+                    WARNCELLID: 807_133_073,
                     IDENTIFIER: '2.49.0.0.276.0.DWD.PVW.1695315000000.a9404042-2094-45eb-96f0-7d87558b0d14.DEU',
                     SENDER: 'opendata@dwd.de',
                     SENT: '2023-09-21T16:50:00Z',
@@ -254,7 +254,7 @@ const testData = {
                 properties: {
                     AREADESC: 'Oberhausen/Kirn',
                     NAME: 'Gemeinde Oberhausen bei Kirn',
-                    WARNCELLID: 807133073,
+                    WARNCELLID: 807_133_073,
                     IDENTIFIER: '2.49.0.0.276.0.DWD.PVW.1695300180000.d7e89266-cce4-4d25-be40-cc7ea987b822.DEU',
                     SENDER: 'opendata@dwd.de',
                     SENT: '2023-09-21T12:43:00Z',
@@ -310,43 +310,43 @@ const testData = {
             coordinates: [
                 [
                     [
-                        [384585, 433660],
-                        [383852, 433151],
-                        [383353, 431290],
-                        [381870, 431179],
-                        [381618, 430396],
-                        [380698, 430219],
-                        [381000, 428437],
-                        [380389, 428026],
-                        [379528, 429216],
-                        [378733, 428975],
-                        [377449, 428213],
-                        [376839, 428521],
-                        [376244, 428028],
-                        [375204, 429168],
-                        [375478, 430774],
-                        [374918, 431904],
-                        [374015, 432973],
-                        [375562, 435648],
-                        [374291, 437012],
-                        [375356, 438182],
-                        [375224, 439501],
-                        [376004, 438505],
-                        [376315, 438780],
-                        [376638, 438525],
-                        [376791, 437628],
-                        [377754, 436732],
-                        [379339, 437129],
-                        [379600, 438185],
-                        [380049, 437462],
-                        [381161, 437414],
-                        [381213, 436754],
-                        [381715, 436476],
-                        [381139, 435747],
-                        [381743, 434517],
-                        [382731, 434774],
-                        [383318, 433882],
-                        [384585, 433660],
+                        [384_585, 433_660],
+                        [383_852, 433_151],
+                        [383_353, 431_290],
+                        [381_870, 431_179],
+                        [381_618, 430_396],
+                        [380_698, 430_219],
+                        [381_000, 428_437],
+                        [380_389, 428_026],
+                        [379_528, 429_216],
+                        [378_733, 428_975],
+                        [377_449, 428_213],
+                        [376_839, 428_521],
+                        [376_244, 428_028],
+                        [375_204, 429_168],
+                        [375_478, 430_774],
+                        [374_918, 431_904],
+                        [374_015, 432_973],
+                        [375_562, 435_648],
+                        [374_291, 437_012],
+                        [375_356, 438_182],
+                        [375_224, 439_501],
+                        [376_004, 438_505],
+                        [376_315, 438_780],
+                        [376_638, 438_525],
+                        [376_791, 437_628],
+                        [377_754, 436_732],
+                        [379_339, 437_129],
+                        [379_600, 438_185],
+                        [380_049, 437_462],
+                        [381_161, 437_414],
+                        [381_213, 436_754],
+                        [381_715, 436_476],
+                        [381_139, 435_747],
+                        [381_743, 434_517],
+                        [382_731, 434_774],
+                        [383_318, 433_882],
+                        [384_585, 433_660],
                     ],
                 ],
             ],
@@ -355,7 +355,7 @@ const testData = {
         properties: {
             location: {
                 properties: {
-                    gemeindenr: 50101,
+                    gemeindenr: 50_101,
                     name: 'Salzburg',
                     urlname: 'salzburg',
                 },
@@ -366,7 +366,7 @@ const testData = {
                     type: 'Warning',
                     properties: {
                         warnid: 10,
-                        chgid: 202406270,
+                        chgid: 202_406_270,
                         verlaufid: 31,
                         warntypid: 6,
                         begin: '29.06.2024 00:00',
@@ -474,10 +474,10 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
                 continue;
             }
             const f = testData.dwdService.features[i];
-            const start = Date.now() + Math.random() * 12000000 + 60000;
-            if (new Date(f.properties.EXPIRES).getTime() + 14000000 < start) {
+            const start = Date.now() + Math.random() * 12_000_000 + 60_000;
+            if (new Date(f.properties.EXPIRES).getTime() + 14_000_000 < start) {
                 f.properties.ONSET = new Date(start).toJSON();
-                f.properties.EXPIRES = new Date(start + Math.random() * 2400000 + 300000).toJSON();
+                f.properties.EXPIRES = new Date(start + Math.random() * 2_400_000 + 300_000).toJSON();
             }
             if (new Date(f.properties.EXPIRES).getTime() < Date.now()) {
                 result.dwdService.features[i] = null;
@@ -503,10 +503,10 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
                 continue;
             }
             const f = testData.uwzService.results[i];
-            const start = Date.now() + Math.random() * 1200000 + 300000;
-            if (f.dtgEnd * 1000 + 3600000 < start) {
+            const start = Date.now() + Math.random() * 1_200_000 + 300_000;
+            if (f.dtgEnd * 1000 + 3_600_000 < start) {
                 f.dtgStart = new Date(start).getTime() / 1000;
-                f.dtgEnd = new Date(start + Math.random() * 1200000 + 300000).getTime() / 1000;
+                f.dtgEnd = new Date(start + Math.random() * 1_200_000 + 300_000).getTime() / 1000;
             }
             if (f.dtgEnd < Date.now() / 1000) {
                 result.uwzService.results[i] = null;
@@ -532,11 +532,11 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
                 continue;
             }
             const f = testData.zamgService.properties.warnings[i];
-            const start = Date.now() + Math.random() * 1200000 + 300000;
-            if (Number(f.properties.rawinfo.end) * 1000 + 3600000 < start) {
+            const start = Date.now() + Math.random() * 1_200_000 + 300_000;
+            if (Number(f.properties.rawinfo.end) * 1000 + 3_600_000 < start) {
                 f.properties.rawinfo.start = (new Date(start).getTime() / 1000).toString();
                 f.properties.rawinfo.end = (
-                    new Date(start + Math.random() * 2400000 + 300000).getTime() / 1000
+                    new Date(start + Math.random() * 2_400_000 + 300_000).getTime() / 1000
                 ).toString();
             }
             if (Number(f.properties.rawinfo.end) * 1000 < Date.now()) {

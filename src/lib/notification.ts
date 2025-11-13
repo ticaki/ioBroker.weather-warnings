@@ -246,10 +246,11 @@ export class NotificationClass extends library.BaseClass {
                     );
                     const msg: NotificationType.MessageType[] = [
                         {
+                            uniqueId: result.uniqueId,
                             text: result.text, // templates[tempid].template.replaceAll('\\}', '}'),
                             startts: result.startts,
                             template: result.template,
-                            action: result.action,
+                            action: manual ? 'removeManualAll' : 'removeAll',
                         },
                     ];
                     const res: NotificationType.MessageType | null =
@@ -281,6 +282,7 @@ export class NotificationClass extends library.BaseClass {
         switch (this.options.name) {
             case 'telegram':
             case 'gotify':
+            case 'nspanel':
             case 'pushover':
             case 'whatsapp':
             case 'json':
@@ -325,6 +327,7 @@ export class NotificationClass extends library.BaseClass {
             switch (this.options.name) {
                 case 'telegram':
                 case 'gotify':
+                case 'nspanel':
                 case 'pushover':
                 case 'whatsapp':
                 case 'json':
@@ -528,6 +531,74 @@ export class NotificationClass extends library.BaseClass {
                         }
                         try {
                             this.adapter.sendTo(this.options.adapter, 'send', opt);
+                            this.log.debug(`Send the message: ${msg.text}`);
+                        } catch (error: any) {
+                            if (error.message == 'Timeout exceeded') {
+                                this.log.warn(
+                                    `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
+                                );
+                            } else {
+                                throw error;
+                            }
+                        }
+                    }
+                }
+                break;
+            case 'nspanel':
+                {
+                    for (const msg of messages) {
+                        if (Array.isArray(msg)) {
+                            return false;
+                        }
+                        if (msg.action === 'removeAll' || msg.action === 'removeManualAll') {
+                            this.adapter.sendTo(this.options.adapter, 'setPopupNotification', {
+                                id: `${this.adapter.namespace}.`,
+                                priority: -100,
+                            });
+                            await this.adapter.delay(20);
+                            if (msg.text === '-1') {
+                                continue;
+                            }
+                        } else if (msg.action === 'remove') {
+                            this.adapter.sendTo(this.options.adapter, 'setPopupNotification', {
+                                id: `${this.adapter.namespace}.${msg.uniqueId}`,
+                                priority: -1,
+                            });
+                            await this.adapter.delay(20);
+                            if (msg.text === '-1') {
+                                continue;
+                            }
+                        }
+                        const id = `${this.adapter.namespace}.${msg.uniqueId}`;
+                        const opt: {
+                            id: string;
+                            text: string;
+                            priority?: number;
+                            headline?: string;
+                            colorHeadline?: { r: number; g: number; b: number } | string;
+                            buttonRight?: string;
+                            type?: 'information' | 'acknowledge';
+                        } = { id, text: msg.text, headline: 'Weatherwarning', buttonRight: 'Ok' };
+                        opt.type =
+                            msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove'
+                                ? 'information'
+                                : 'acknowledge';
+                        if (msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove') {
+                            opt.colorHeadline = { r: 0, g: 255, b: 0 };
+                        } else if (msg.formatedData && msg.formatedData.warnlevelcolorhex) {
+                            opt.colorHeadline = msg.formatedData.warnlevelcolorhex as string;
+                        } else {
+                            opt.colorHeadline = { r: 255, g: 0, b: 0 };
+                        }
+
+                        if (this.options.priority) {
+                            opt.priority = this.options.priority;
+                        }
+                        if (this.options.actions.title && msg.title) {
+                            opt.headline = msg.title;
+                        }
+                        try {
+                            this.adapter.sendTo(this.options.adapter, 'setPopupNotification', opt);
                             this.log.debug(`Send the message: ${msg.text}`);
                         } catch (error: any) {
                             if (error.message == 'Timeout exceeded') {

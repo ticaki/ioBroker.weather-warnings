@@ -1,5 +1,4 @@
-/* eslint-disable jsdoc/require-jsdoc */
-import type { MessagesClass } from '../messages';
+import type { customFormatedKInit, MessagesClass } from '../messages';
 import type * as NotificationType from './notificationService-def';
 import type { ProviderClassType, messageFilterType, providerServices } from './provider-def';
 
@@ -9,6 +8,9 @@ export type Type = Required<keyof OptionsType>;
 export type OptionsType = {
     gotify?: {
         name: 'gotify';
+    } & BaseType;
+    nspanel?: {
+        name: 'nspanel';
     } & BaseType;
     telegram?: {
         name: 'telegram';
@@ -43,6 +45,11 @@ export type BaseType =
           chatid: string;
           withNoSound: boolean;
           parse_mode: string;
+      } & bBaseType)
+    | ({
+          name: 'nspanel';
+          priority: number;
+          alwaysOn: boolean;
       } & bBaseType)
     | ({
           name: 'gotify';
@@ -138,6 +145,7 @@ const email: ActionsUnionType[] = [...manual, 'new', 'all', 'removeAll', 'remove
 //const speak: ActionsUnionType[] = ['new', 'remove', 'removeAll'];
 export const serciceCapabilities: Record<Type, ConfigType> = {
     gotify: { notifications: pushTitle },
+    nspanel: { notifications: pushTitle },
     telegram: { notifications: push },
     email: { notifications: email },
     json: { notifications: json },
@@ -151,6 +159,7 @@ export const serciceCapabilities: Record<Type, ConfigType> = {
 export const Array: Type[] = [
     'telegram',
     'gotify',
+    'nspanel',
     'pushover',
     'whatsapp',
     'json',
@@ -161,6 +170,7 @@ export const Array: Type[] = [
 ];
 
 export type MessageType = {
+    uniqueId: string;
     text: string;
     startts: number;
     template: string;
@@ -168,6 +178,7 @@ export type MessageType = {
     provider?: ProviderClassType;
     message?: MessagesClass;
     title?: string;
+    formatedData?: customFormatedKInit;
 };
 
 export type pushover_options = {
@@ -182,6 +193,9 @@ export const notificationServiceDefaults: Record<NotificationType.Type, Partial<
         useadapter: true,
     },
     gotify: {
+        useadapter: true,
+    },
+    nspanel: {
         useadapter: true,
     },
     pushover: {

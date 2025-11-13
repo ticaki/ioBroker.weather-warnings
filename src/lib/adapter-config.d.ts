@@ -128,6 +128,21 @@ declare global {
             gotify_Priority: string;
             gotify_Title: string;
 
+            nspanel_DwdEnabled: boolean;
+            nspanel_UwzEnabled: boolean;
+            nspanel_ZamgEnabled: boolean;
+            nspanel_TypeFilter: number[];
+            nspanel_LevelFilter: number;
+            nspanel_Enabled: boolean;
+            nspanel_Adapter: string;
+            nspanel_MessageNew: string;
+            nspanel_MessageRemove: string;
+            nspanel_MessageAllRemove: string;
+            nspanel_contentType: "text/plain" | "text/markdown" | undefined;
+            nspanel_Priority: number;
+            nspanel_alwaysOn: boolean;
+            nspanel_Title: string;
+
             json_DwdEnabled: boolean;
             json_UwzEnabled: boolean;
             json_ZamgEnabled: boolean;

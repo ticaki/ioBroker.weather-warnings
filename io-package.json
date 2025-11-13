@@ -232,8 +232,12 @@
         "template": "template.emailRemoveMessage"
       },
       {
-        "templateKey": "EmailFooter",
-        "template": "template.emailFooter"
+        "templateKey": "NSPanelNew",
+        "template": "template.nspanelNew"
+      },
+      {
+        "templateKey": "NSPanelRemoveAllSilent",
+        "template": "template.nspanelRemoveAll"
       },
       {
         "templateKey": "NewMessageWithArray",
