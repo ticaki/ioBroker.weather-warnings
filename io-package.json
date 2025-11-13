@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.9.0",
+    "version": "0.10.0",
     "news": {
+      "0.10.0": {
+        "en": "update deps\nfix a problem with \"remove\" key\nsupport added for nspanel-lovelace-ui (>= v0.8.0)",
+        "de": "update deps\nproblem mit \"remove\" Key behoben\nUnterstützung für nspanel-lovelace-ui (>= v0.8.0) hinzugefügt",
+        "ru": "обновление deps\nустранение проблемы с «удалением» ключа\nподдержка, добавленная для nspanel-lovelace-ui (>= v0.8.0)",
+        "pt": "atualizar deps\ncorrigir um problema com a chave \"remover\"\nsuporte adicionado para nspanel-lovelace-ui (>= v08.0)",
+        "nl": "update deps\neen probleem oplossen met \"verwijderen\" sleutel\nondersteuning toegevoegd voor nspanel-lovelace-ui (>= v0.8.0)",
+        "fr": "mettre à jour les deps\nrésoudre un problème avec la clé \"supprimer\"\nsupport ajouté pour nspanel-lovelace-ui (>= v0,8.0)",
+        "it": "aggiornamento dep\nrisolvere un problema con la chiave \"remove\"\nsupporto aggiunto per nspanel-lovelace-ui (>= v0.8.0)",
+        "es": "actualización de los deps\nsolucionar un problema con la tecla \"remove\"\nsoporte añadido para nspanel-lovelace-ui ( confianza= v0.8.0)",
+        "pl": "aktualizacje deps\nnaprawić problem z \"usuń\" klucz\nsupport added for nspanel- lovelace- ui (> = v0.8.0)",
+        "uk": "оновлення deps\nвиправити проблему з ключем \"попередня\"\nпідтримка додано для nspanel-lovelace-ui (>= v0.8.0)",
+        "zh-cn": "更新代码\n解决“ 移动” 密钥的问题\n为 nspanel-lovelace-ui 添加了支持(%% v0.8.0)"
+      },
       "0.9.0": {
         "en": "Data retrieval function changed from axios to fetch \nRetrieval timeout changed from 15 seconds to 5 minutes (DWD server needs a 'little' more time)",
         "de": "Datenabruffunktion geändert von axios auf fetch\nDatenabruf Timeout von 15 Sekunden auf 5 Minuten geändert (DWD-Server braucht \"etwas\" mehr Zeit)",
@@ -80,19 +93,6 @@
         "pl": "Ustawienie wysyłania na czat Id in telegram",
         "uk": "Виправлення відправки в чат Id в телеграмі",
         "zh-cn": "正在修复发送到聊天 在电报中"
-      },
-      "0.7.0": {
-        "en": "added gotify (notificationservice)",
-        "de": "Gotify hinzugefügt",
-        "ru": "добавочная (уведомление услуги)",
-        "pt": "adicionado gotify (serviço de notificação)",
-        "nl": "toegevoegd gotify (kennisgevingsdienst)",
-        "fr": "(service de notification)",
-        "it": "aggiunto ottenuto (servizio di notifica)",
-        "es": "(notificación)",
-        "pl": "dodano contributification (notification service)",
-        "uk": "додано (notificationservice)",
-        "zh-cn": "添加加码(通知服务)"
       }
     },
     "titleLang": {

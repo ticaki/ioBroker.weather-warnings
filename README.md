@@ -146,8 +146,9 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
-- (ticaki) fix a problem with remove
+### 0.10.0 (2025-11-13)
+- (ticaki) update deps
+- (ticaki) fix a problem with "remove" key
 - (ticaki) support added for nspanel-lovelace-ui (>= v0.8.0)
 
 ### 0.9.0 (2025-10-28)
