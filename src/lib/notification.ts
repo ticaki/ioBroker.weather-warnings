@@ -250,7 +250,7 @@ export class NotificationClass extends library.BaseClass {
                             text: result.text, // templates[tempid].template.replaceAll('\\}', '}'),
                             startts: result.startts,
                             template: result.template,
-                            action: result.action,
+                            action: manual ? 'removeManualAll' : 'removeAll',
                         },
                     ];
                     const res: NotificationType.MessageType | null =
@@ -556,13 +556,13 @@ export class NotificationClass extends library.BaseClass {
                                 id: `${this.adapter.namespace}.`,
                                 priority: -100,
                             });
-                            await this.adapter.delay(50);
+                            await this.adapter.delay(20);
                         } else if (msg.action === 'remove') {
                             this.adapter.sendTo(this.options.adapter, 'setPopupNotification', {
                                 id: `${this.adapter.namespace}.${msg.uniqueId}`,
                                 priority: -1,
                             });
-                            await this.adapter.delay(50);
+                            await this.adapter.delay(20);
                         }
                         const id = `${this.adapter.namespace}.${msg.uniqueId}`;
                         const opt: {

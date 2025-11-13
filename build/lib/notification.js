@@ -224,7 +224,7 @@ class NotificationClass extends library.BaseClass {
               // templates[tempid].template.replaceAll('\\}', '}'),
               startts: result2.startts,
               template: result2.template,
-              action: result2.action
+              action: manual ? "removeManualAll" : "removeAll"
             }
           ];
           const res = this.options.actions.title && this.options.actions.title != "none" && templates.findIndex((a) => a.templateKey == this.options.actions.title) != -1 ? await this.adapter.providerController.noWarning.getMessage(
@@ -506,13 +506,13 @@ class NotificationClass extends library.BaseClass {
                 id: `${this.adapter.namespace}.`,
                 priority: -100
               });
-              await this.adapter.delay(50);
+              await this.adapter.delay(20);
             } else if (msg.action === "remove") {
               this.adapter.sendTo(this.options.adapter, "setPopupNotification", {
                 id: `${this.adapter.namespace}.${msg.uniqueId}`,
                 priority: -1
               });
-              await this.adapter.delay(50);
+              await this.adapter.delay(20);
             }
             const id = `${this.adapter.namespace}.${msg.uniqueId}`;
             const opt = { id, text: msg.text, headline: "Weatherwarning", buttonRight: "OK" };
