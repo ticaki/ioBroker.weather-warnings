@@ -522,7 +522,13 @@ class NotificationClass extends library.BaseClass {
             const id = `${this.adapter.namespace}.${msg.uniqueId}`;
             const opt = { id, text: msg.text, headline: "Weatherwarning", buttonRight: "Ok" };
             opt.type = msg.action === "removeAll" || msg.action === "removeManualAll" || msg.action === "remove" ? "information" : "acknowledge";
-            opt.colorHeadline = msg.action === "removeAll" || msg.action === "removeManualAll" || msg.action === "remove" ? { r: 0, g: 255, b: 0 } : { r: 255, g: 0, b: 0 };
+            if (msg.action === "removeAll" || msg.action === "removeManualAll" || msg.action === "remove") {
+              opt.colorHeadline = { r: 0, g: 255, b: 0 };
+            } else if (msg.formatedData && msg.formatedData.warnlevelcolorhex) {
+              opt.colorHeadline = msg.formatedData.warnlevelcolorhex;
+            } else {
+              opt.colorHeadline = { r: 255, g: 0, b: 0 };
+            }
             if (this.options.priority) {
               opt.priority = this.options.priority;
             }

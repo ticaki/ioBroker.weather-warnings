@@ -575,7 +575,7 @@ export class NotificationClass extends library.BaseClass {
                             text: string;
                             priority?: number;
                             headline?: string;
-                            colorHeadline?: { r: number; g: number; b: number };
+                            colorHeadline?: { r: number; g: number; b: number } | string;
                             buttonRight?: string;
                             type?: 'information' | 'acknowledge';
                         } = { id, text: msg.text, headline: 'Weatherwarning', buttonRight: 'Ok' };
@@ -583,10 +583,14 @@ export class NotificationClass extends library.BaseClass {
                             msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove'
                                 ? 'information'
                                 : 'acknowledge';
-                        opt.colorHeadline =
-                            msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove'
-                                ? { r: 0, g: 255, b: 0 }
-                                : { r: 255, g: 0, b: 0 };
+                        if (msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove') {
+                            opt.colorHeadline = { r: 0, g: 255, b: 0 };
+                        } else if (msg.formatedData && msg.formatedData.warnlevelcolorhex) {
+                            opt.colorHeadline = msg.formatedData.warnlevelcolorhex as string;
+                        } else {
+                            opt.colorHeadline = { r: 255, g: 0, b: 0 };
+                        }
+
                         if (this.options.priority) {
                             opt.priority = this.options.priority;
                         }

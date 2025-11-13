@@ -1,4 +1,4 @@
-import type { MessagesClass } from '../messages';
+import type { customFormatedKInit, MessagesClass } from '../messages';
 import type * as NotificationType from './notificationService-def';
 import type { ProviderClassType, messageFilterType, providerServices } from './provider-def';
 
@@ -178,6 +178,7 @@ export type MessageType = {
     provider?: ProviderClassType;
     message?: MessagesClass;
     title?: string;
+    formatedData?: customFormatedKInit;
 };
 
 export type pushover_options = {

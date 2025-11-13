@@ -1027,6 +1027,7 @@ export class MessagesClass extends library.BaseClass {
             startts: time,
             text: msg.replace(/\\+}/g, '}').replace(/\\+n/g, '\n'),
             template: template,
+            formatedData: this.formatedData,
         };
     };
 
