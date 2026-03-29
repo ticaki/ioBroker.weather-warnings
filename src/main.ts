@@ -15,7 +15,7 @@ import * as NotificationType from './lib/def/notificationService-def';
 import { notificationServiceDefaults } from './lib/def/notificationService-def';
 import { statesObjectsWarnings } from './lib/def/definition.js';
 // Load your modules here, e.g.:
-// import * as fs from "fs";
+// import * as fs from "node:fs";
 
 class WeatherWarnings extends utils.Adapter {
     startDelay: ioBroker.Timeout | undefined = undefined;

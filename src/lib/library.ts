@@ -1,5 +1,5 @@
 import jsonata from 'jsonata';
-import _fs from 'fs';
+import _fs from 'node:fs';
 import type { statesObjectsWarningsType } from './def/definition';
 import { genericStateObjects } from './def/definition';
 import type WeatherWarnings from '../main';
