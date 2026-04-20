@@ -34,7 +34,7 @@ __export(library_exports, {
 });
 module.exports = __toCommonJS(library_exports);
 var import_jsonata = __toESM(require("jsonata"));
-var import_fs = __toESM(require("fs"));
+var import_node_fs = __toESM(require("node:fs"));
 var import_definition = require("./def/definition");
 class BaseClass {
   unload = false;
@@ -531,7 +531,7 @@ class Library extends BaseClass {
    * @returns True if the file exists, otherwise false.
    */
   fileExistAsync(file) {
-    if (import_fs.default.existsSync(`./admin/${file}`)) {
+    if (import_node_fs.default.existsSync(`./admin/${file}`)) {
       return true;
     }
     return false;

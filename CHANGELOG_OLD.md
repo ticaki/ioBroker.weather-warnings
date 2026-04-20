@@ -116,3 +116,65 @@
 
 ### 0.2.1-alpha.0 (2023-09-25)
 * (ticaki) initial release
+## 0.7.3 (2025-01-16)
+- (ticaki) fix typo
+
+## 0.7.2 (2025-01-13)
+* (ticaki) Replacing „ and “ in the json template before parsing with "
+* (ticaki) Fixing activeWarning_json (adapter.0.provider.activeWarning_json)
+
+## 0.7.1 (2025-01-10)
+* (CrEaK) Fixing send to chatId in telegram
+
+## 0.7.0 (2025-01-03)
+* (ticaki) added gotify (notificationservice)
+
+## 0.6.11 (2024-11-29)
+* (ticaki) eslint 8 -> 9
+
+## 0.6.10 (2024-11-11)
+* (ticaki) fixed: warntype filter 
+* (ticaki) fixed: if every provider except zamg is deactivated in the notifications - no message went out
+* (ticaki) fixed: downgrade a dependency for compatibility with node 18
+
+## 0.6.9 (2024-11-10)
+* (ticaki) added missing text (settings - alexa - soundtable)
+* (ticaki) fixed alerts start/end datapoints. (string -> number)
+* (ticaki) dependencies up to date
+
+## 0.6.7 (2024-02-19)
+* (ticaki) Reduce history data to 80 entries around 4000 lines, because of jerks in the admin
+
+## 0.6.6 (2024-01-14)
+* (ticaki) fullday(ZAMG only): If time span is 24h +/- 5 minutes and the start hour is between 0-3, day of the week from start time, otherwise blank.
+
+## 0.6.5 (2024-01-06)
+* (ticaki) Added: ZAMG full day token
+* (ticaki) fixed: Send emails asynchron
+* (ticaki) fixed: dont ignore uwz activate setting
+* (ticaki) update dp-objects on every start.
+
+## 0.6.4 (2023-12-03)
+* (ticaki) Optimise DWD warning cell selection. Place names are being given more and more details to make them unique.
+
+## 0.6.3 (2023-11-30)
+* (ticaki) add cleartimeout, add axios timeout
+
+## 0.6.2 (2023-11-20)
+* (ticaki) Reduce zamg spam
+
+## 0.6.1 (2023-11-19)
+* (ticaki) Optimise: DWD City names, adminconfiguration, translations
+
+## 0.6.0 (2023-11-16)
+* (ticaki) Added: global alerts.
+* (ticaki) Changed: Token ...adverb - if no adverb, then day of the week.
+
+## 0.5.6 (2023-11-15)
+* (ticaki) Added: Select template for manual notification without warnings.
+* (ticaki) Added: Configuration dialogue marks invalid template keys for most notification services.
+
+## 0.5.5 (2023-11-14)
+* (ticaki) Added: Missing space in emailMessage template.
+* (ticaki) Fixed: wrong status for all removed.
+* (ticaki) Admin: moving test options to tab general.

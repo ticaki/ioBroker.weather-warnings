@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.10.0",
+    "version": "0.10.1",
     "news": {
+      "0.10.1": {
+        "en": "**FIXED**: Network errors (e.g. internet down, DNS failure, HTTP errors) now show a clear, readable message instead of `[object Object]` or a useless stack trace",
+        "de": "**FIXED**: Netzwerkfehler (z.B. Internet-Down, DNS-Fehler, HTTP-Fehler) zeigen nun eine klare, lesbare Nachricht anstelle von `[Objekt]` oder einen nutzlosen Stack-Track",
+        "ru": "** FIXED**: сетевые ошибки (например, выход в Интернет, отказ DNS, ошибки HTTP) теперь показывают четкое, читаемое сообщение вместо «[объектный объект]» или бесполезный след стека",
+        "pt": "**FIXED**: Erros de rede (por exemplo, internet para baixo, falha no DNS, erros HTTP) agora mostram uma mensagem clara e legível em vez de `[object Object]` ou um rasto inútil de pilha",
+        "nl": "**FIXED**: Netwerkfouten (bv. internet down, DNS-fout, HTTP-fouten) tonen nu een duidelijk, leesbaar bericht in plaats van een [object object object] of een nutteloze stack trace",
+        "fr": "**FIXED**: Les erreurs de réseau (par exemple Internet vers le bas, panne DNS, erreurs HTTP) affichent désormais un message clair et lisible au lieu de `[objet]` ou une trace inutile de pile",
+        "it": "**FIXED**: Gli errori di rete (ad esempio internet down, errori DNS, errori HTTP) ora mostrano un messaggio chiaro e leggibile invece di `[object Object]` o una traccia di stack inutile",
+        "es": "**FIXED**: Errores de red (por ejemplo, Internet abajo, fallo DNS, errores HTTP) ahora muestran un mensaje claro y legible en lugar de `[objeto objeto]` o un rastro inútil de pila",
+        "pl": "* *FIXED* *: Błędy sieciowe (np. w dół internetu, awaria DNS, błędy HTTP) pokazują teraz jasną, czytelną wiadomość zamiast '[obiekt Object]' lub bezużyteczny ślad stosu ",
+        "uk": "**FIXED***: мережеві помилки (наприклад, інтернет вниз, DNS помилки, помилки HTTP) тепер показують чітке, прочитане повідомлення замість `[об'єкт об'єкта]` або без використання слід",
+        "zh-cn": "** FIXED**:网络错误(例如互联网下行、DNS故障、HTTP错误)现在显示一个清晰、可读的信息,而不是`[对象对象]'或一个无用的堆栈跟踪"
+      },
       "0.10.0": {
         "en": "update deps\nfix a problem with \"remove\" key\nsupport added for nspanel-lovelace-ui (>= v0.8.0)",
         "de": "update deps\nproblem mit \"remove\" Key behoben\nUnterstützung für nspanel-lovelace-ui (>= v0.8.0) hinzugefügt",
@@ -80,19 +93,6 @@
         "pl": "Zastąpienie \"i\" w szablonie jsona przed parsowaniem \"\nFixing activeWarning _ json (adapter.0.provider.activeWarning _ json)",
         "uk": "Заміна \" і \" в шаблоні json перед оформленням\"\nВиправлення активнихWarning_json (adapter.0.provider.activeWarning_json)",
         "zh-cn": "在json模板中替换“和”,然后解析“\n正在修复活动警告_json(适应器0. 提供者. activewarning_json)"
-      },
-      "0.7.1": {
-        "en": "Fixing send to chatId in telegram",
-        "de": "Reparieren senden zu chat Id in Telegramm",
-        "ru": "Fixing send to Chat Ид в телеграмме",
-        "pt": "Corrigindo o envio para o chat Id em telegrama",
-        "nl": "Versturen naar chat repareren Id in telegram",
-        "fr": "Correction de l'envoi au chat Id en télégramme",
-        "it": "Risolvere inviare a chat Id in telegramma",
-        "es": "Corrección enviar a chat Id en telegrama",
-        "pl": "Ustawienie wysyłania na czat Id in telegram",
-        "uk": "Виправлення відправки в чат Id в телеграмі",
-        "zh-cn": "正在修复发送到聊天 在电报中"
       }
     },
     "titleLang": {
