@@ -989,48 +989,63 @@ class WeatherWarnings extends utils.Adapter {
     }
 
     handleFetchError(error: any): void {
-        if (error.name !== 'AbortError') {
-            // Detailed error logging
-            const errorDetails: string[] = [];
-            if (error instanceof Error) {
-                let isHttpError = false;
-                if (error.name !== 'TypeError') {
-                    errorDetails.push(`  Name: ${error.name}`);
-                }
-                if (
-                    error.cause &&
-                    typeof error.cause === 'object' &&
-                    'code' in error.cause &&
-                    typeof error.cause.code === 'string'
-                ) {
-                    isHttpError = true;
-                    errorDetails.push(`  code: ${error.cause.code}`);
-                }
-                errorDetails.push(`  Message: ${error.message}`);
+        if (error.name === 'AbortError') {
+            return;
+        }
 
-                // Nur Stack-Trace bei Code-Fehlern ausgeben, nicht bei HTTP-Fehlern
-                isHttpError =
-                    isHttpError || error.message.includes('HTTP') || (error as any).status || (error as any).url;
-                if (error.stack && !isHttpError) {
-                    errorDetails.push(`  Stack: ${error.stack}`);
-                }
-            } else if (typeof error === 'object' && error !== null) {
-                errorDetails.push(`  Type: ${error.constructor?.name || 'Object'}`);
-                if (error.status) {
-                    errorDetails.push(`  HTTP Status: ${error.status}`);
-                }
-                if (error.statusText) {
-                    errorDetails.push(`  Status Text: ${error.statusText}`);
-                }
-                if (error.code) {
-                    errorDetails.push(`  Error Code: ${error.code}`);
-                }
-                errorDetails.push(`  Full Error: ${JSON.stringify(error, null, 2)}`);
-            } else {
-                errorDetails.push(`  Raw Error: ${String(error)}`);
+        if (error instanceof Error) {
+            const causeCode: string | undefined =
+                error.cause &&
+                typeof error.cause === 'object' &&
+                'code' in error.cause &&
+                typeof (error.cause as any).code === 'string'
+                    ? (error.cause as any).code
+                    : undefined;
+
+            // Readable messages for common network errors
+            const networkMessages: Record<string, string> = {
+                ENOTFOUND: 'Host not found (DNS lookup failed)',
+                ECONNREFUSED: 'Connection refused',
+                ECONNRESET: 'Connection reset by remote host',
+                ETIMEDOUT: 'Connection timed out',
+                ENETUNREACH: 'Network unreachable',
+                ENOTCONN: 'Not connected to network',
+            };
+
+            if (causeCode && networkMessages[causeCode]) {
+                this.log.warn(`Network error: ${networkMessages[causeCode]} (${causeCode})`);
+                return;
             }
 
-            this.log.warn(errorDetails.join('\n'));
+            // HTTP errors (e.g. "HTTP 503: Service Unavailable")
+            if (error.message.startsWith('HTTP ')) {
+                this.log.warn(`Server returned ${error.message}`);
+                return;
+            }
+
+            // Other errors
+            const parts = [`Error: ${error.message}`];
+            if (error.name && error.name !== 'Error' && error.name !== 'TypeError') {
+                parts.unshift(`Error Name: ${error.name}`);
+            }
+            this.log.warn(parts.join(' | '));
+        } else if (typeof error === 'object' && error !== null) {
+            const parts: string[] = [];
+            if (error.status) {
+                parts.push(`HTTP Status: ${error.status}`);
+            }
+            if (error.statusText) {
+                parts.push(`Status Text: ${error.statusText}`);
+            }
+            if (error.code) {
+                parts.push(`Error Code: ${error.code}`);
+            }
+            if (!parts.length) {
+                parts.push(`Error: ${JSON.stringify(error)}`);
+            }
+            this.log.warn(parts.join(', '));
+        } else {
+            this.log.warn(`Error: ${String(error)}`);
         }
     }
     async fetch(url: string, init?: RequestInit, timeout = 30_000): Promise<unknown> {
@@ -1058,7 +1073,7 @@ class WeatherWarnings extends utils.Adapter {
             if (response.status === 200) {
                 return await response.json();
             }
-            throw new Error({ status: response.status, statusText: response.statusText } as any);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         } finally {
             // always clear timeout and remove the controller
             const id = this.fetchs.get(controller);

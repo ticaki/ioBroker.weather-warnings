@@ -855,39 +855,49 @@ class WeatherWarnings extends utils.Adapter {
     }
   }
   handleFetchError(error) {
-    var _a;
-    if (error.name !== "AbortError") {
-      const errorDetails = [];
-      if (error instanceof Error) {
-        let isHttpError = false;
-        if (error.name !== "TypeError") {
-          errorDetails.push(`  Name: ${error.name}`);
-        }
-        if (error.cause && typeof error.cause === "object" && "code" in error.cause && typeof error.cause.code === "string") {
-          isHttpError = true;
-          errorDetails.push(`  code: ${error.cause.code}`);
-        }
-        errorDetails.push(`  Message: ${error.message}`);
-        isHttpError = isHttpError || error.message.includes("HTTP") || error.status || error.url;
-        if (error.stack && !isHttpError) {
-          errorDetails.push(`  Stack: ${error.stack}`);
-        }
-      } else if (typeof error === "object" && error !== null) {
-        errorDetails.push(`  Type: ${((_a = error.constructor) == null ? void 0 : _a.name) || "Object"}`);
-        if (error.status) {
-          errorDetails.push(`  HTTP Status: ${error.status}`);
-        }
-        if (error.statusText) {
-          errorDetails.push(`  Status Text: ${error.statusText}`);
-        }
-        if (error.code) {
-          errorDetails.push(`  Error Code: ${error.code}`);
-        }
-        errorDetails.push(`  Full Error: ${JSON.stringify(error, null, 2)}`);
-      } else {
-        errorDetails.push(`  Raw Error: ${String(error)}`);
+    if (error.name === "AbortError") {
+      return;
+    }
+    if (error instanceof Error) {
+      const causeCode = error.cause && typeof error.cause === "object" && "code" in error.cause && typeof error.cause.code === "string" ? error.cause.code : void 0;
+      const networkMessages = {
+        ENOTFOUND: "Host not found (DNS lookup failed)",
+        ECONNREFUSED: "Connection refused",
+        ECONNRESET: "Connection reset by remote host",
+        ETIMEDOUT: "Connection timed out",
+        ENETUNREACH: "Network unreachable",
+        ENOTCONN: "Not connected to network"
+      };
+      if (causeCode && networkMessages[causeCode]) {
+        this.log.warn(`Network error: ${networkMessages[causeCode]} (${causeCode})`);
+        return;
       }
-      this.log.warn(errorDetails.join("\n"));
+      if (error.message.startsWith("HTTP ")) {
+        this.log.warn(`Server returned ${error.message}`);
+        return;
+      }
+      const parts = [`Error: ${error.message}`];
+      if (error.name && error.name !== "Error" && error.name !== "TypeError") {
+        parts.unshift(`Error Name: ${error.name}`);
+      }
+      this.log.warn(parts.join(" | "));
+    } else if (typeof error === "object" && error !== null) {
+      const parts = [];
+      if (error.status) {
+        parts.push(`HTTP Status: ${error.status}`);
+      }
+      if (error.statusText) {
+        parts.push(`Status Text: ${error.statusText}`);
+      }
+      if (error.code) {
+        parts.push(`Error Code: ${error.code}`);
+      }
+      if (!parts.length) {
+        parts.push(`Error: ${JSON.stringify(error)}`);
+      }
+      this.log.warn(parts.join(", "));
+    } else {
+      this.log.warn(`Error: ${String(error)}`);
     }
   }
   async fetch(url, init, timeout = 3e4) {
@@ -910,7 +920,7 @@ class WeatherWarnings extends utils.Adapter {
       if (response.status === 200) {
         return await response.json();
       }
-      throw new Error({ status: response.status, statusText: response.statusText });
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     } finally {
       const id = this.fetchs.get(controller);
       if (typeof id !== "undefined") {

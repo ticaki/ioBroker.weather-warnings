@@ -47533,6 +47533,7 @@
                     "items": [
                         {
                             "attr": "uwzSelectId",
+                            "autoInit": true,
                             "title": "uwzSelectId",
                             "width": "40% ",
                             "filter": false,
@@ -47666,6 +47667,7 @@
                     "items": [
                         {
                             "attr": "zamgSelectId",
+                            "autoInit": true,
                             "type": "coordinates",
                             "divider": "/",
                             "useSystemName": false,
