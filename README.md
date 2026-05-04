@@ -228,7 +228,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 * (ticaki) Fixed: wrong status for all removed.
 * (ticaki) Admin: moving test options to tab general.
 
-
+[Older changelogs can be found there](CHANGELOG_OLD.md)
 
 ## License
 MIT License
