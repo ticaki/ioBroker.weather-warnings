@@ -60,9 +60,9 @@ class WeatherWarnings extends utils.Adapter {
 
             for (const a of providerDef.providerServicesArray) {
                 let hit = -1;
-                for (const b of allowedDirs) {
-                    if (b.providerService == a.replace('Service', '').toUpperCase()) {
-                        hit = Number(b);
+                for (let b = 0; b < allowedDirs.length; b++) {
+                    if (allowedDirs[b].providerService == a.replace('Service', '').toUpperCase()) {
+                        hit = b;
                         break;
                     }
                 }

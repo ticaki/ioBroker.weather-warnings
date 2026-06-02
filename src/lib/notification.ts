@@ -648,7 +648,7 @@ export class NotificationClass extends library.BaseClass {
                                 } else {
                                     index = this.options.sounds.findIndex(a => a.warntypenumber == 0);
                                 }
-                                const sound = this.options.sounds[index].sound;
+                                const sound = index !== -1 ? this.options.sounds[index].sound : '';
                                 if (sound) {
                                     opt += `;${sound};${msg.text}`;
                                 } else {
