@@ -91,6 +91,9 @@ export const genericStateObjects: {
     };
     activeWarnings: ioBroker.StateObject;
     activeWarningsJson: ioBroker.StateObject;
+    hasActiveWarning: ioBroker.StateObject;
+    maxLevel: ioBroker.StateObject;
+    maxLevelText: ioBroker.StateObject;
     history: ioBroker.StateObject;
     warnings_json: ioBroker.StateObject;
     lastUpdate: ioBroker.StateObject;
@@ -228,6 +231,45 @@ export const genericStateObjects: {
             role: 'json',
             read: true,
             write: false,
+        },
+        native: {},
+    },
+    hasActiveWarning: {
+        _id: 'hasActiveWarning',
+        type: 'state',
+        common: {
+            name: 'genericStateObjects.hasActiveWarning',
+            type: 'boolean',
+            role: 'indicator.warning',
+            read: true,
+            write: false,
+            def: false,
+        },
+        native: {},
+    },
+    maxLevel: {
+        _id: 'maxLevel',
+        type: 'state',
+        common: {
+            name: 'genericStateObjects.maxLevel',
+            type: 'number',
+            role: 'value',
+            read: true,
+            write: false,
+            def: -1,
+        },
+        native: {},
+    },
+    maxLevelText: {
+        _id: 'maxLevelText',
+        type: 'state',
+        common: {
+            name: 'genericStateObjects.maxLevelText',
+            type: 'string',
+            role: 'text',
+            read: true,
+            write: false,
+            def: '',
         },
         native: {},
     },

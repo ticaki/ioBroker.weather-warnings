@@ -149,6 +149,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 ### 0.11.0 (2026-06-02)
 - (copilot) **BREAKING**: Adapter requires node.js >= 22 now
 - (ticaki) **NEW**: added DWD warning type 86 "extreme black ice" (extremes Glatteis)
+- (ticaki) **NEW**: added global aggregate states `provider.hasActiveWarning` (boolean), `provider.maxLevel` (number) and `provider.maxLevelText` (text)
 - (ticaki) **FIXED**: alexa2 notification no longer crashes when a warning type has no assigned sound
 - (ticaki) **FIXED**: per-provider deactivation of datapoint categories (warning/alerts/formatedKeys) is applied again on restart
 

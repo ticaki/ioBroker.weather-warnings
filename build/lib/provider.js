@@ -1037,6 +1037,25 @@ class ProviderController extends import_library.BaseClass {
         reply,
         false
       );
+      let maxLevel = -1;
+      for (const key in reply) {
+        const entry = reply[key];
+        if (entry && typeof entry === "object" && typeof entry.level === "number") {
+          const level = entry.level;
+          if (level > maxLevel) {
+            maxLevel = level;
+          }
+        }
+      }
+      await this.library.writedp(`${this.name}.maxLevel`, maxLevel, definitionen.genericStateObjects.maxLevel);
+      const maxLevelText = maxLevel >= 0 ? this.library.getTranslation(
+        messagesDef.textLevels.textGeneric[maxLevel]
+      ) : "";
+      await this.library.writedp(
+        `${this.name}.maxLevelText`,
+        maxLevelText,
+        definitionen.genericStateObjects.maxLevelText
+      );
     }
   }
   /**
@@ -1076,6 +1095,11 @@ class ProviderController extends import_library.BaseClass {
       `${this.name}.activeWarnings`,
       this.activeMessages,
       definitionen.genericStateObjects.activeWarnings
+    );
+    await this.adapter.library.writedp(
+      `${this.name}.hasActiveWarning`,
+      this.activeMessages > 0,
+      definitionen.genericStateObjects.hasActiveWarning
     );
     this.providers.forEach((a) => a.clearMessages());
     this.providers.forEach((a) => a.finishTurn());

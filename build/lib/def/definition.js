@@ -178,6 +178,45 @@ const genericStateObjects = {
     },
     native: {}
   },
+  hasActiveWarning: {
+    _id: "hasActiveWarning",
+    type: "state",
+    common: {
+      name: "genericStateObjects.hasActiveWarning",
+      type: "boolean",
+      role: "indicator.warning",
+      read: true,
+      write: false,
+      def: false
+    },
+    native: {}
+  },
+  maxLevel: {
+    _id: "maxLevel",
+    type: "state",
+    common: {
+      name: "genericStateObjects.maxLevel",
+      type: "number",
+      role: "value",
+      read: true,
+      write: false,
+      def: -1
+    },
+    native: {}
+  },
+  maxLevelText: {
+    _id: "maxLevelText",
+    type: "state",
+    common: {
+      name: "genericStateObjects.maxLevelText",
+      type: "string",
+      role: "text",
+      read: true,
+      write: false,
+      def: ""
+    },
+    native: {}
+  },
   history: {
     _id: "activeWarningsJson",
     type: "state",

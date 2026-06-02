@@ -1214,6 +1214,32 @@ export class ProviderController extends BaseClass {
                 reply,
                 false,
             );
+            // Aggregate the highest level over all warn types (mirrors alerts.<type>.level).
+            // Inactive types stay at -1, so maxLevel is -1 when no warning is present.
+            let maxLevel = -1;
+            for (const key in reply) {
+                const entry = (reply as Record<string, unknown>)[key];
+                if (entry && typeof entry === 'object' && typeof (entry as { level?: unknown }).level === 'number') {
+                    const level = (entry as { level: number }).level;
+                    if (level > maxLevel) {
+                        maxLevel = level;
+                    }
+                }
+            }
+            await this.library.writedp(`${this.name}.maxLevel`, maxLevel, definitionen.genericStateObjects.maxLevel);
+            const maxLevelText =
+                maxLevel >= 0
+                    ? this.library.getTranslation(
+                          messagesDef.textLevels.textGeneric[
+                              maxLevel as keyof typeof messagesDef.textLevels.textGeneric
+                          ],
+                      )
+                    : '';
+            await this.library.writedp(
+                `${this.name}.maxLevelText`,
+                maxLevelText,
+                definitionen.genericStateObjects.maxLevelText,
+            );
         }
     }
 
@@ -1256,6 +1282,11 @@ export class ProviderController extends BaseClass {
             `${this.name}.activeWarnings`,
             this.activeMessages,
             definitionen.genericStateObjects.activeWarnings,
+        );
+        await this.adapter.library.writedp(
+            `${this.name}.hasActiveWarning`,
+            this.activeMessages > 0,
+            definitionen.genericStateObjects.hasActiveWarning,
         );
         this.providers.forEach(a => a.clearMessages());
         this.providers.forEach(a => a.finishTurn());
