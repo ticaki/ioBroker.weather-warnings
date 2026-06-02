@@ -147,6 +147,15 @@ const color = {
     3: "color.textGeneric.4",
     4: "color.textGeneric.5",
     5: ""
+  },
+  // color name i18n keys by color bucket (0 grün, 1 dunkelgrün, 2 gelb, 3 orange, 4 rot, 5 violett)
+  textGeneric: {
+    0: "color.textGeneric.0",
+    1: "color.textGeneric.1",
+    2: "color.textGeneric.2",
+    3: "color.textGeneric.3",
+    4: "color.textGeneric.4",
+    5: "color.textGeneric.5"
   }
 };
 const genericWarntypState = {

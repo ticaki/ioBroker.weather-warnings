@@ -31,6 +31,7 @@ type messageCmdType =
     | 'daytime'
     | 'adverb'
     | 'dwdcolor'
+    | 'dwdcolorname'
     | 'warningcount'
     | 'iconbase64'
     | 'getEmoji'
@@ -97,11 +98,12 @@ export class MessagesClass extends library.BaseClass {
                 node: `EC_AREA_COLOR`,
                 cmd: `dwdcolor`,
             },
+            // Derive the spoken/written color name from the real DWD area color (EC_AREA_COLOR),
+            // the same source the hex color (and thus email/vis) uses. Deriving it from SEVERITY
+            // instead caused a mismatch for some warnings (e.g. temperature), see issue #220.
             warnlevelcolorname: {
-                node: `($temp := $lookup(${JSON.stringify(
-                    MessageType.dwdLevel,
-                )},$lowercase(SEVERITY));$lookup(${JSON.stringify(MessageType.color.textdwd)},$string($temp)))`,
-                cmd: 'translate',
+                node: `EC_AREA_COLOR`,
+                cmd: 'dwdcolorname',
             },
             warnlevelname: {
                 node: `($temp := $lookup(${JSON.stringify(
@@ -1251,6 +1253,37 @@ export class MessagesClass extends library.BaseClass {
                     }
                 }
                 break;
+            case 'dwdcolorname': {
+                // Map the real DWD area color ("R G B") to a color name (color.textGeneric.*)
+                // via hue classification, so it stays consistent with the hex color even if
+                // DWD uses slightly different shades. See issue #220.
+                if (!data) {
+                    return '';
+                }
+                const parts = String(data).split(' ');
+                if (parts.length !== 3) {
+                    return '';
+                }
+                const r = Number(parts[0]);
+                const g = Number(parts[1]);
+                const b = Number(parts[2]);
+                if ([r, g, b].some(v => !Number.isFinite(v))) {
+                    return '';
+                }
+                let bucket: keyof typeof MessageType.color.textGeneric;
+                if (b >= 100 && r >= 100 && g < 120) {
+                    bucket = 5; // violett
+                } else if (r >= 150 && g < 110 && b < 110) {
+                    bucket = 4; // rot
+                } else if (r >= 180 && g >= 90 && g < 200 && b < 120) {
+                    bucket = 3; // orange
+                } else if (r >= 180 && g >= 180 && b < 160) {
+                    bucket = 2; // gelb
+                } else {
+                    bucket = 0; // grün (none / no warning)
+                }
+                return this.library.getTranslation(MessageType.color.textGeneric[bucket]);
+            }
             case 'warningcount':
                 {
                     return this.adapter.providerController!.activeMessages;
