@@ -1,4 +1,11 @@
 {
+    "DWD": "DWD",
+    "UWZ": "UWZ",
+    "ZAMG": "ZAMG",
+    ".warning": "warning",
+    ".formatedKeys": "formatedKeys",
+    ".alerts": "alerts",
+    "templateKeyTip": "Unieke sjabloon-identificatie, gebruikt door de pushdiensten om dit sjabloon te selecteren.",
     "1.": "Eerst",
     "10.": "tiende",
     "11.": "elfde",

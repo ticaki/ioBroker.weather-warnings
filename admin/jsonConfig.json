@@ -47539,10 +47539,8 @@
                             "filter": false,
                             "type": "coordinates",
                             "divider": "/",
-                            "useSystemName": false,
                             "newLine": true,
-                            "label": "COORDINATES",
-                            "default": ""
+                            "label": "COORDINATES"
                         },
                         {
                             "type": "text",
@@ -47670,10 +47668,8 @@
                             "autoInit": true,
                             "type": "coordinates",
                             "divider": "/",
-                            "useSystemName": false,
                             "newLine": true,
                             "label": "COORDINATES",
-                            "default": "",
                             "width": "50% ",
                             "title": "zamgSelectId"
                         },
@@ -47778,7 +47774,6 @@
                     "lg": 3,
                     "xl": 3,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "disabled": "data.telegram_Adapter == 'none'",
                     "label": "dwdEnabled",
                     "newLine": true
@@ -48083,7 +48078,6 @@
                     "lg": 3,
                     "xl": 3,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "disabled": "data.whatsapp_Adapter == 'none'",
                     "label": "dwdEnabled",
                     "newLine": true
@@ -48335,7 +48329,6 @@
                     "lg": 3,
                     "xl": 3,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "disabled": "data.pushover_Adapter == 'none'",
                     "label": "dwdEnabled",
                     "newLine": true
@@ -48721,7 +48714,6 @@
                     "lg": 3,
                     "xl": 3,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "disabled": "data.gotify_Adapter == 'none'",
                     "label": "dwdEnabled",
                     "newLine": true
@@ -49058,7 +49050,6 @@
                     "lg": 3,
                     "xl": 3,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "disabled": "data.nspanel_Adapter == 'none'",
                     "label": "dwdEnabled",
                     "newLine": true
@@ -49622,8 +49613,7 @@
                         {
                             "attr": "warntypenumber",
                             "type": "number",
-                            "readOnly": true,
-                            "hidden": true,
+                            "hidden": "true",
                             "xs": 12,
                             "sm": 1,
                             "md": 1,
@@ -49721,7 +49711,7 @@
                     "min": 0,
                     "max": 100,
                     "step": 1,
-                    "default": "20",
+                    "default": 20,
                     "disabled": "!data.sayit_Adapter_Array[0] || data.sayit_Adapter_Array[0].sayit_Adapter == 'none'",
                     "xs": 12,
                     "sm": 8,
@@ -49993,7 +49983,6 @@
                     "lg": 3,
                     "xl": 3,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "label": "dwdEnabled",
                     "newLine": true
                 },
@@ -50004,7 +49993,6 @@
                     "md": 6,
                     "lg": 4,
                     "xl": 4,
-                    "default": "none",
                     "label": "json_parse",
                     "newLine": false
                 },
@@ -50116,7 +50104,6 @@
                     "lg": 3,
                     "xl": 3,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "label": "dwdEnabled",
                     "newLine": true
                 },
@@ -50254,7 +50241,6 @@
                     "lg": 3,
                     "xl": 3,
                     "hidden": "!data.dwdEnabled",
-                    "default": "none",
                     "label": "dwdEnabled",
                     "newLine": true
                 },

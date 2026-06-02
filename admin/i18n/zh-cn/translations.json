@@ -1,4 +1,11 @@
 {
+    "DWD": "DWD",
+    "UWZ": "UWZ",
+    "ZAMG": "ZAMG",
+    ".warning": "warning",
+    ".formatedKeys": "formatedKeys",
+    ".alerts": "alerts",
+    "templateKeyTip": "模板的唯一标识符，推送服务用它来选择此模板。",
     "1.": "第一的",
     "10.": "第十",
     "11.": "第十一",

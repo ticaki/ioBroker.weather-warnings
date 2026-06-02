@@ -1,4 +1,11 @@
 {
+    "DWD": "DWD",
+    "UWZ": "UWZ",
+    "ZAMG": "ZAMG",
+    ".warning": "warning",
+    ".formatedKeys": "formatedKeys",
+    ".alerts": "alerts",
+    "templateKeyTip": "Unique template identifier, used by the push services to select this template.",
     "LevelFilter": "Warnings with lower levels are filtered out of the notifications.",
     "MessageAllRemove": "Select the template to use with no warnings.",
     "MessageNew": "Select the template to use with new warnings.",

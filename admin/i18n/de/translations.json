@@ -1,4 +1,11 @@
 {
+    "DWD": "DWD",
+    "UWZ": "UWZ",
+    "ZAMG": "ZAMG",
+    ".warning": "warning",
+    ".formatedKeys": "formatedKeys",
+    ".alerts": "alerts",
+    "templateKeyTip": "Eindeutiger Vorlagenbezeichner, wird in den Pushdiensten zur Auswahl dieser Vorlage verwendet.",
     "1.": "erster",
     "10.": "zehnter",
     "11.": "elfter",

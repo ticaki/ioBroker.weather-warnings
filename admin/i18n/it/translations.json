@@ -1,4 +1,11 @@
 {
+    "DWD": "DWD",
+    "UWZ": "UWZ",
+    "ZAMG": "ZAMG",
+    ".warning": "warning",
+    ".formatedKeys": "formatedKeys",
+    ".alerts": "alerts",
+    "templateKeyTip": "Identificatore univoco del modello, usato dai servizi di notifica per selezionare questo modello.",
     "1.": "Primo",
     "10.": "decimo",
     "11.": "undicesimo",

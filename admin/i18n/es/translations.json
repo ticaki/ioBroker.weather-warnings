@@ -1,4 +1,11 @@
 {
+    "DWD": "DWD",
+    "UWZ": "UWZ",
+    "ZAMG": "ZAMG",
+    ".warning": "warning",
+    ".formatedKeys": "formatedKeys",
+    ".alerts": "alerts",
+    "templateKeyTip": "Identificador único de la plantilla, usado por los servicios de notificación para seleccionar esta plantilla.",
     "1.": "primero",
     "10.": "décimo",
     "11.": "undécimo",

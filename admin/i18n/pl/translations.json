@@ -1,4 +1,11 @@
 {
+    "DWD": "DWD",
+    "UWZ": "UWZ",
+    "ZAMG": "ZAMG",
+    ".warning": "warning",
+    ".formatedKeys": "formatedKeys",
+    ".alerts": "alerts",
+    "templateKeyTip": "Unikalny identyfikator szablonu, używany przez usługi powiadomień do wyboru tego szablonu.",
     "1.": "Pierwszy",
     "10.": "dziesiąty",
     "11.": "jedenasty",
