@@ -124,7 +124,7 @@ export class BaseProvider extends BaseClass {
     /**
      * Returns the provider service of the provider.
      *
-     * @throws if service is invalid
+     * @throws {Error} if service is invalid
      * @returns the provider service
      */
     getService(): providerDef.providerServices {
@@ -140,7 +140,7 @@ export class BaseProvider extends BaseClass {
     /**
      * @param service providerDef.providerServices to set
      * @returns true on success
-     * @throws if service is invalid
+     * @throws {Error} if service is invalid
      * @description Sets the provider service. Checks if service is valid.
      */
     setService(service: providerDef.providerServices): boolean {
@@ -200,7 +200,7 @@ export class BaseProvider extends BaseClass {
      *
      * @param allReplys - the alerts to write, if not given, a new one is created
      * @returns the alerts as a genericWarntypeAlertJsonType
-     * @throws if error occurs
+     * @throws {Error} if error occurs
      */
     async getAlertsAndWrite(
         allReplys: messagesDef.genericWarntypeAlertJsonType | undefined = undefined,
@@ -1047,7 +1047,7 @@ export class ProviderController extends BaseClass {
      *
      * @param options - The options used to configure the provider, including `warncellId` and `service`.
      * @returns The newly created provider instance or the existing provider if it already exists.
-     * @throws An error if the service type is not defined or if the `warncellId` type is incorrect.
+     * @throws {Error} if the service type is not defined or if the `warncellId` type is incorrect.
      */
     createProviderIfNotExist(options: ProviderOptionsType): providerDef.ProviderClassType {
         const index = this.providers.findIndex(

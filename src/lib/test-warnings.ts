@@ -490,7 +490,7 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
                 result.dwdService.features.splice(i, 1);
             }
         }
-        return result.dwdService as unknown as DataImportType;
+        return result.dwdService;
     } else if (service == 'uwzService') {
         for (let i = 0; i < testData.uwzService.results.length; i++) {
             if (_that.providerController!.testStatus == 2) {
@@ -519,7 +519,7 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
                 result.uwzService.results.splice(i, 1);
             }
         }
-        return result.uwzService as unknown as DataImportType;
+        return result.uwzService;
     } else if (service == 'zamgService') {
         for (let i = 0; i < testData.zamgService.properties.warnings.length; i++) {
             if (_that.providerController!.testStatus == 2) {
@@ -550,7 +550,7 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
                 result.zamgService.properties.warnings.splice(i, 1);
             }
         }
-        return result.zamgService as unknown as DataImportType;
+        return result.zamgService;
     }
     return null;
 }

@@ -57,7 +57,7 @@ export class NotificationClass extends library.BaseClass {
                     if (this.adapter.providerController) {
                         const targets = [...providers, this.adapter.providerController];
                         for (const a of targets) {
-                            switch (this.options.name as NotificationType.Type) {
+                            switch (this.options.name) {
                                 case 'history':
                                     {
                                         dp = `${a.name}.history`;
@@ -408,7 +408,7 @@ export class NotificationClass extends library.BaseClass {
             return false;
         }
         // own function
-        messages = this.cleanupMessage(Object.assign([], messages) as NotificationType.MessageType[]);
+        messages = this.cleanupMessage(Object.assign([], messages));
 
         switch (this.options.name) {
             case 'telegram':
