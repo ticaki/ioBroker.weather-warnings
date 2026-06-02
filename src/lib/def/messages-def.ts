@@ -433,7 +433,7 @@ export const genericWarntyp: genericWarntypeType = {
     8: {
         name: 'genericWarntyp.8.name',
         id: 'black_ice_slippery',
-        dwdService: [87, 85, 84, 24],
+        dwdService: [87, 86, 85, 84, 24],
         uwzService: [8],
         zamgService: [4],
         emoji: '⛸️',
@@ -582,6 +582,7 @@ export const warnTypeName: warnTypeNameType = {
         82: 'warnTypeName.dwdService.82',
         84: 'warnTypeName.dwdService.84',
         85: 'warnTypeName.dwdService.85',
+        86: 'warnTypeName.dwdService.86',
         87: 'warnTypeName.dwdService.87',
         88: 'warnTypeName.dwdService.88',
         89: 'warnTypeName.dwdService.89',
@@ -674,6 +675,7 @@ interface DwdService {
     '82': string;
     '84': string;
     '85': string;
+    '86': string;
     '87': string;
     '88': string;
     '89': string;

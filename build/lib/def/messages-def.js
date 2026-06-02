@@ -314,7 +314,7 @@ const genericWarntyp = {
   8: {
     name: "genericWarntyp.8.name",
     id: "black_ice_slippery",
-    dwdService: [87, 85, 84, 24],
+    dwdService: [87, 86, 85, 84, 24],
     uwzService: [8],
     zamgService: [4],
     emoji: "\u26F8\uFE0F",
@@ -452,6 +452,7 @@ const warnTypeName = {
     82: "warnTypeName.dwdService.82",
     84: "warnTypeName.dwdService.84",
     85: "warnTypeName.dwdService.85",
+    86: "warnTypeName.dwdService.86",
     87: "warnTypeName.dwdService.87",
     88: "warnTypeName.dwdService.88",
     89: "warnTypeName.dwdService.89",
