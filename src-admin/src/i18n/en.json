@@ -1,0 +1,4 @@
+{
+    "notificationServices": "Notification services",
+    "noNotificationServiceEnabled": "No notification service is activated yet. Enable a service in the basic settings first, then configure it here."
+}

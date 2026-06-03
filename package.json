@@ -70,6 +70,11 @@
     "check": "tsc --noEmit",
     "coverage": "nyc npm run test:ts",
     "lint": "eslint -c eslint.config.mjs .",
+    "lint:admin": "cd src-admin && npm run lint",
+    "build:admin": "cd src-admin && npm run build",
+    "build:all": "npm run build && npm run build:admin",
+    "install:admin": "cd src-admin && npm install",
+    "dev:admin": "npm run build:admin && dev-server upload && dev-server watch",
     "translate": "translate-adapter",
     "release": "release-script"
   },
