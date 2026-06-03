@@ -29,8 +29,9 @@ var import_library = require("./lib/library.js");
 var messagesDef = __toESM(require("./lib/def/messages-def"));
 var providerDef = __toESM(require("./lib/def/provider-def"));
 var NotificationType = __toESM(require("./lib/def/notificationService-def"));
-var import_notificationService_def = require("./lib/def/notificationService-def");
 var import_definition = require("./lib/def/definition.js");
+var import_notificationServiceConfig = require("./lib/notificationServiceConfig.js");
+var import_notificationServicesModel = require("./lib/notificationServicesModel.js");
 class WeatherWarnings extends utils.Adapter {
   startDelay = void 0;
   library;
@@ -237,118 +238,32 @@ class WeatherWarnings extends utils.Adapter {
       }
       await this.providerController.init();
       this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 6e4} minutes`);
-      const notificationServiceOpt = {};
-      for (const n of NotificationType.Array) {
-        const notificationService = n;
-        if (this.config[`${notificationService}_Enabled`]) {
-          const service = [];
-          if (this.config[`${notificationService}_DwdEnabled`]) {
-            service.push("dwdService");
+      {
+        const existing = (_a = this.config.notificationServices) != null ? _a : {};
+        const merged = { ...existing };
+        let migrated = false;
+        for (const service of import_notificationServicesModel.SERVICE_TYPES) {
+          if (!merged[service]) {
+            merged[service] = (0, import_notificationServicesModel.flatEntryToModel)(service, this.config);
+            migrated = true;
           }
-          if (this.config[`${notificationService}_UwzEnabled`]) {
-            service.push("uwzService");
+        }
+        if (migrated) {
+          const obj2 = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
+          if (obj2) {
+            this.log.info("Migrating notification service configuration to the new structured format.");
+            obj2.native.notificationServices = merged;
+            await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj2);
+            return;
           }
-          if (this.config[`${notificationService}_ZamgEnabled`]) {
-            service.push("zamgService");
-          }
-          const template = {
-            new: this.config[`${notificationService}_MessageNew`] !== void 0 ? this.config[`${notificationService}_MessageNew`] : "none",
-            remove: this.config[`${notificationService}_MessageRemove`],
-            removeAll: this.config[`${notificationService}_MessageAllRemove`],
-            all: this.config[`${notificationService}_MessageAll`] !== void 0 ? this.config[`${notificationService}_MessageAll`] : this.config[`${notificationService}_MessageNew`] !== void 0 ? this.config[`${notificationService}_MessageNew`] : "none",
-            manualAll: this.config[`${notificationService}_manualAll`] !== void 0 ? this.config[`${notificationService}_manualAll`] : "none",
-            removeManualAll: this.config[`${notificationService}_removeManualAll`] !== void 0 ? this.config[`${notificationService}_removeManualAll`] : "none",
-            title: this.config[`${notificationService}_Title`] !== void 0 ? this.config[`${notificationService}_Title`] : "none"
-          };
-          for (const a in template) {
-            const b = a;
-            if (template[b] == void 0) {
-              continue;
-            }
-            template[b] = template[b] ? template[b] : "none";
-          }
-          notificationServiceOpt[notificationService] = {
-            ...import_notificationService_def.notificationServiceDefaults[notificationService],
-            service,
-            filter: {
-              auto: {
-                level: this.config[`${notificationService}_LevelFilter`] || -1,
-                type: (this.config[`${notificationService}_TypeFilter`] || []).map((a) => String(a))
-              },
-              manual: {
-                level: this.config[`${notificationService}_ManualLevelFilter`] ? this.config[`${notificationService}_ManualLevelFilter`] : -1,
-                type: (this.config[`${notificationService}_ManualTypeFilter`] ? this.config[`${notificationService}_ManualTypeFilter`] : []).map((a) => String(a))
-              }
-            },
-            adapter: this.config[`${notificationService}_Adapter`],
-            name: notificationService,
-            actions: template,
-            useadapter: true
-          };
-          Object.assign(
-            //@ts-expect-error verstehe ich nicht
-            notificationServiceOpt[notificationService],
-            import_notificationService_def.notificationServiceDefaults[notificationService]
-          );
         }
       }
-      if (this.config.telegram_Enabled && notificationServiceOpt.telegram != void 0) {
-        notificationServiceOpt.telegram.withNoSound = this.config.telegram_withNoSound || false;
-        notificationServiceOpt.telegram.userid = this.config.telegram_UserId || "";
-        notificationServiceOpt.telegram.chatid = this.config.telegram_ChatID || "";
-        notificationServiceOpt.telegram.parse_mode = this.config.telegram_parse_mode || "none";
-      }
-      if (this.config.whatsapp_Enabled && notificationServiceOpt.whatsapp != void 0) {
-        if (this.config.whatsapp_Phonenumber) {
-          notificationServiceOpt.whatsapp.phonenumber = this.config.whatsapp_Phonenumber;
-        }
-      }
-      if (this.config.pushover_Enabled && notificationServiceOpt.pushover != void 0) {
-        notificationServiceOpt.pushover.sound = this.config.pushover_Sound || "none";
-        notificationServiceOpt.pushover.priority = this.config.pushover_Priority || false;
-        notificationServiceOpt.pushover.device = this.config.pushover_Device || "";
-      }
-      if (this.config.gotify_Enabled && notificationServiceOpt.gotify != void 0) {
-        notificationServiceOpt.gotify.priority = this.config.gotify_Priority !== void 0 ? parseInt(this.config.gotify_Priority) : 0;
-        notificationServiceOpt.gotify.contentType = this.config.gotify_contentType || "text/plain";
-      }
-      if (this.config.nspanel_Enabled && notificationServiceOpt.nspanel != void 0) {
-        notificationServiceOpt.nspanel.priority = this.config.nspanel_Priority !== void 0 && this.config.nspanel_Priority > 0 ? Math.ceil(this.config.nspanel_Priority) : 50;
-        notificationServiceOpt.nspanel.alwaysOn = (_a = this.config.nspanel_alwaysOn) != null ? _a : true;
-      }
-      if (this.config.json_Enabled && notificationServiceOpt.json != void 0) {
-      }
-      if (this.config.history_Enabled && notificationServiceOpt.history != void 0) {
-      }
-      if (this.config.email_Enabled && notificationServiceOpt.email != void 0) {
-        notificationServiceOpt.email.actions.header = this.config.email_Header;
-        notificationServiceOpt.email.actions.footer = this.config.email_Footer;
-        notificationServiceOpt.email.recipients = this.config.email_Recipients;
-      }
-      if (this.config.alexa2_Enabled && notificationServiceOpt.alexa2 != void 0) {
-        notificationServiceOpt.alexa2.volumen = this.config.alexa2_volumen > 0 ? String(this.config.alexa2_volumen) : "";
-        notificationServiceOpt.alexa2.audio = this.config.alexa2_Audio || "";
-        notificationServiceOpt.alexa2.sounds = this.config.alexa2_sounds || [];
-        notificationServiceOpt.alexa2.sounds_enabled = this.config.alexa2_sounds_enabled || false;
-        if (this.config.alexa2_device_ids.length == 0 || !this.config.alexa2_device_ids[0]) {
-          this.log.error(`Missing devices for alexa - deactivated`);
-          delete notificationServiceOpt.alexa2;
-          this.config.alexa2_Enabled = false;
-        } else if (this.config.alexa2_Adapter == "none") {
-          this.log.error(`Missing adapter for alexa - deactivated`);
-          delete notificationServiceOpt.alexa2;
-          this.config.alexa2_Enabled = false;
-        }
-      }
-      if (this.config.sayit_Enabled && notificationServiceOpt.sayit != void 0) {
-        notificationServiceOpt.sayit.volumen = this.config.sayit_volumen > 0 ? String(this.config.sayit_volumen) : "";
-        if (this.config.sayit_Adapter_Array.length == 0 || this.config.sayit_Adapter_Array[0].sayit_Adapter == "none") {
-          this.log.warn(`Missing adapter for sayit - deactivated`);
-          delete notificationServiceOpt.sayit;
-          this.config.sayit_Enabled = false;
-        } else {
-          notificationServiceOpt.sayit.adapters = this.config.sayit_Adapter_Array.map((a) => a.sayit_Adapter);
-        }
+      const { options: notificationServiceOpt, disabledServices } = (0, import_notificationServiceConfig.resolveNotificationServices)(
+        this.config,
+        this.log
+      );
+      for (const service of disabledServices) {
+        this.config[`${service}_Enabled`] = false;
       }
       try {
         await this.providerController.createNotificationService(notificationServiceOpt);
