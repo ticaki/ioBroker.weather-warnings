@@ -1,0 +1,4 @@
+{
+    "notificationServices": "Benachrichtigungsdienste",
+    "noNotificationServiceEnabled": "Es ist noch kein Benachrichtigungsdienst aktiviert. Aktiviere zuerst einen Dienst in den Grundeinstellungen und konfiguriere ihn anschließend hier."
+}
