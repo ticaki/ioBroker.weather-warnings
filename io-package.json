@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.11.0",
+    "version": "0.11.1",
     "news": {
       "0.11.1": {
         "en": "**FIXED**: spoken/written color name for DWD heat warnings (warnlevelcolorname) is now correct: the light violet DWD heat color was misclassified as \"green\" and is now named \"violet\", matching email/vis (#220)",
@@ -93,19 +93,6 @@
         "pl": "zmiana wysyłania To for whatsapp",
         "uk": "змінити відправлення Для чого",
         "zh-cn": "更改发送 为了什么"
-      },
-      "0.7.3": {
-        "en": "fix typo",
-        "de": "typo reparieren",
-        "ru": "фиксация тиф",
-        "pt": "corrigir typo",
-        "nl": "fix typefout",
-        "fr": "correction du type",
-        "it": "correzione del tipo",
-        "es": "typo",
-        "pl": "fix typo",
-        "uk": "фіксувати типо",
-        "zh-cn": "修正类型"
       }
     },
     "titleLang": {
