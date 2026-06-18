@@ -1192,7 +1192,7 @@ class MessagesClass extends library.BaseClass {
           return "";
         }
         let bucket;
-        if (b >= 100 && r >= 100 && g < 120) {
+        if (b >= 130 && r >= 100 && b >= g) {
           bucket = 5;
         } else if (r >= 150 && g < 110 && b < 110) {
           bucket = 4;

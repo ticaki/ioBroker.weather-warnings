@@ -1271,7 +1271,10 @@ export class MessagesClass extends library.BaseClass {
                     return '';
                 }
                 let bucket: keyof typeof MessageType.color.textGeneric;
-                if (b >= 100 && r >= 100 && g < 120) {
+                // violett — high blue with red present (blue >= green). Catches both the dark
+                // DWD storm violet (153 0 153) and the light DWD heat violet (#cc99ff = 204 153 255),
+                // which the old `g < 120` rule misclassified as green (see issue #220, heat warnings).
+                if (b >= 130 && r >= 100 && b >= g) {
                     bucket = 5; // violett
                 } else if (r >= 150 && g < 110 && b < 110) {
                     bucket = 4; // rot
