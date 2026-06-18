@@ -1181,27 +1181,11 @@ class MessagesClass extends library.BaseClass {
         if (!data) {
           return "";
         }
-        const parts = String(data).split(" ");
-        if (parts.length !== 3) {
+        const rgb = String(data).trim().replace(/\s+/g, " ");
+        const bucket = MessageType.dwdAreaColorName[rgb];
+        if (bucket === void 0) {
+          this.log.warn(`Unknown DWD EC_AREA_COLOR "${rgb}" - no color name mapped (issue #220)`);
           return "";
-        }
-        const r = Number(parts[0]);
-        const g = Number(parts[1]);
-        const b = Number(parts[2]);
-        if ([r, g, b].some((v) => !Number.isFinite(v))) {
-          return "";
-        }
-        let bucket;
-        if (b >= 130 && r >= 100 && b >= g) {
-          bucket = 5;
-        } else if (r >= 150 && g < 110 && b < 110) {
-          bucket = 4;
-        } else if (r >= 180 && g >= 90 && g < 200 && b < 120) {
-          bucket = 3;
-        } else if (r >= 180 && g >= 180 && b < 160) {
-          bucket = 2;
-        } else {
-          bucket = 0;
         }
         return this.library.getTranslation(MessageType.color.textGeneric[bucket]);
       }

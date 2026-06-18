@@ -146,6 +146,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (ticaki) **FIXED**: DWD spoken/written color names (`warnlevelcolorname`) now come from an exact lookup of the official DWD CAP color palette instead of a hue heuristic; light and dark heat violet are now distinguished and the extreme-storm, UV and preliminary-information colors are named correctly (follow-up to #220)
+- (ticaki) **NEW**: added color names for light violet, dark red, magenta and pink to cover the full DWD warning palette
+
 ### 0.11.1 (2026-06-18)
 - (ticaki) **FIXED**: spoken/written color name for DWD heat warnings (`warnlevelcolorname`) is now correct: the light violet DWD heat color (`#cc99ff`) was misclassified as "green" and is now named "violet", matching email/vis (#220)
 
