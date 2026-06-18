@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.11.1",
+    "version": "0.11.2",
     "news": {
       "0.11.2": {
         "en": "**FIXED**: DWD spoken/written color names (warnlevelcolorname) now come from an exact lookup of the official DWD CAP color palette instead of a hue heuristic; light heat violet is now distinguished from dark heat violet, and the extreme-storm, UV and preliminary-information colors are named correctly (adds the color names light violet, dark red, magenta and pink) (#220)",
@@ -93,19 +93,6 @@
         "pl": "Dodaj konfigurowalnych odbiorców poczty elektronicznej z poprawnym przetwarzaniem adresów oddzielonych comma-\nAktualizuj zależności",
         "uk": "Додавання конфігураційних одержувачів електронної пошти з правильною обробкою адрес електронної пошти\nОновлення залежності",
         "zh-cn": "添加可配置的电子邮件收件人, 并正确处理逗号分隔地址\n更新依赖关系"
-      },
-      "0.7.4": {
-        "en": "change sendTo for whatsapp",
-        "de": "änderung senden Für whatsapp",
-        "ru": "пересылка Для whatsapp",
-        "pt": "enviar Para o whatsapp",
-        "nl": "wijzigen verzenden Aan voor whatsapp",
-        "fr": "changement d'envoi À pour Whatsapp",
-        "it": "cambio invio A per whatsapp",
-        "es": "cambio enviar Por lo que app",
-        "pl": "zmiana wysyłania To for whatsapp",
-        "uk": "змінити відправлення Для чого",
-        "zh-cn": "更改发送 为了什么"
       }
     },
     "titleLang": {
