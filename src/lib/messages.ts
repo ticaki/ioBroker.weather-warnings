@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import type WeatherWarnings from '../main';
+import type { WeatherWarnings } from './WeatherWarnings';
 import { statesObjectsWarnings } from './def/definition';
 import * as MessageType from './def/messages-def';
 import type * as NotificationType from './def/notificationService-def';

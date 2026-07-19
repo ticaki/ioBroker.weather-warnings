@@ -1,4 +1,4 @@
-import type WeatherWarnings from '../main';
+import type { WeatherWarnings } from './WeatherWarnings';
 import { genericStateObjects } from './def/definition';
 import * as NotificationType from './def/notificationService-def';
 import * as library from './library';

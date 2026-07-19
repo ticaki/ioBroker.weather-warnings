@@ -451,7 +451,7 @@ class WeatherWarnings extends utils.Adapter {
         const obj2 = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
         if (obj2) {
           this.log.debug("change config uwzwarncellTable");
-          obj2.native.uwzwarncellTable = tempTable;
+          obj2.native.uwzwarncellTable = this.config.uwzwarncellTable;
           await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj2);
         }
       }
@@ -938,5 +938,4 @@ if (require.main !== module) {
 } else {
   (() => new WeatherWarnings())();
 }
-module.exports = WeatherWarnings;
 //# sourceMappingURL=main.js.map
