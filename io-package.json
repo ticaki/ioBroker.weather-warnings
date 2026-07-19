@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.11.2",
+    "version": "0.11.3",
     "news": {
       "0.11.3": {
         "en": "**FIXED**: adapter no longer crashes in a restart loop in compact mode; the trailing export = WeatherWarnings overwrote the compact-mode factory export, so js-controller called the class without new (#317)\n**FIXED**: resolved UWZ warncell IDs are now persisted correctly instead of writing back the old copy, which previously caused a config write and adapter restart on every start (#317)",
@@ -93,19 +93,6 @@
         "pl": "Funkcja pobierania danych zmieniona z axios na fetch\nCzas pobierania zmienił się z 15 sekund na 5 minut (serwer DWD potrzebuje więcej czasu)",
         "uk": "Функція перерозподілу даних змінено з аксіосу до fetch\nВід 15 секунд до 5 хвилин (DWD сервер потребує більше часу)",
         "zh-cn": "数据检索功能从轴移到获取\n检索时间从15秒改为5分钟( DWD 服务器需要“ 少一点” 的时间)"
-      },
-      "0.8.0": {
-        "en": "Add configurable email recipients with correct processing of comma-separated addresses\nUpdate dependencies",
-        "de": "Konfigurierbare E-Mail-Empfänger mit korrekter Verarbeitung von kommagetrennten Adressen hinzugefügt\nAbhängigkeiten aktualisiert",
-        "ru": "Добавьте настраиваемых получателей электронной почты с правильной обработкой адресов, разделенных запятыми\nОбновление зависимостей",
-        "pt": "Adicionar destinatários de email configuráveis com processamento correto de endereços separados por vírgulas\nAtualizar dependências",
-        "nl": "Voeg configureerbare e-mailontvangers toe met de juiste verwerking van komma-gescheiden adressen\nAfhankelijkheden bijwerken",
-        "fr": "Ajouter des destinataires de courriel configurables avec traitement correct des adresses séparées par des virgules\nMise à jour des dépendances",
-        "it": "Aggiungi destinatari e-mail configurabili con la corretta elaborazione degli indirizzi separati da virgole\nDipendenze di aggiornamento",
-        "es": "Añadir destinatarios de correo electrónico configurables con el procesamiento correcto de direcciones separadas por coma\nActualizar las dependencias",
-        "pl": "Dodaj konfigurowalnych odbiorców poczty elektronicznej z poprawnym przetwarzaniem adresów oddzielonych comma-\nAktualizuj zależności",
-        "uk": "Додавання конфігураційних одержувачів електронної пошти з правильною обробкою адрес електронної пошти\nОновлення залежності",
-        "zh-cn": "添加可配置的电子邮件收件人, 并正确处理逗号分隔地址\n更新依赖关系"
       }
     },
     "titleLang": {
