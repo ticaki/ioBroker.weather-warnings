@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.4.3",
-    "jsonata": "^2.1.0",
+    "jsonata": "^2.2.2",
     "source-map-support": "^0.5.21",
     "uuid": "^14.0.1"
   },
