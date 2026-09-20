@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.11.3",
+    "version": "0.12.0",
     "news": {
+      "0.12.0": {
+        "en": "**NEW**: telegram, whatsapp, pushover, gotify and email can now target multiple adapter instances at once; all selected instances share the same settings (#319)",
+        "de": "**NEW**: telegram, whatsapp, pushover, gotify und email können jetzt mehrere Adapter-Instanzen gleichzeitig ansteuern; alle ausgewählten Instanzen verwenden dieselben Einstellungen (#319)",
+        "ru": "**NEW**: telegram, whatsapp, pushover, gotify и email теперь могут отправлять сразу в несколько экземпляров адаптера; все выбранные экземпляры используют одни и те же настройки (#319)",
+        "pt": "**NEW**: telegram, whatsapp, pushover, gotify e email podem agora enviar para várias instâncias do adaptador ao mesmo tempo; todas as instâncias selecionadas partilham as mesmas definições (#319)",
+        "nl": "**NEW**: telegram, whatsapp, pushover, gotify en email kunnen nu meerdere adapterinstanties tegelijk aansturen; alle geselecteerde instanties delen dezelfde instellingen (#319)",
+        "fr": "**NEW**: telegram, whatsapp, pushover, gotify et email peuvent désormais cibler plusieurs instances d'adaptateur à la fois ; toutes les instances sélectionnées partagent les mêmes paramètres (#319)",
+        "it": "**NEW**: telegram, whatsapp, pushover, gotify ed email possono ora inviare a più istanze dell'adattatore contemporaneamente; tutte le istanze selezionate condividono le stesse impostazioni (#319)",
+        "es": "**NEW**: telegram, whatsapp, pushover, gotify y email ahora pueden enviar a varias instancias del adaptador a la vez; todas las instancias seleccionadas comparten la misma configuración (#319)",
+        "pl": "**NEW**: telegram, whatsapp, pushover, gotify i email mogą teraz wysyłać do wielu instancji adaptera jednocześnie; wszystkie wybrane instancje używają tych samych ustawień (#319)",
+        "uk": "**NEW**: telegram, whatsapp, pushover, gotify та email тепер можуть надсилати одразу в кілька екземплярів адаптера; усі вибрані екземпляри використовують однакові налаштування (#319)",
+        "zh-cn": "**NEW**: telegram、whatsapp、pushover、gotify 和 email 现在可以同时发送到多个适配器实例；所有选中的实例共享相同的设置 (#319)"
+      },
       "0.11.3": {
         "en": "**FIXED**: adapter no longer crashes in a restart loop in compact mode; the trailing export = WeatherWarnings overwrote the compact-mode factory export, so js-controller called the class without new (#317)\n**FIXED**: resolved UWZ warncell IDs are now persisted correctly instead of writing back the old copy, which previously caused a config write and adapter restart on every start (#317)",
         "de": "**FIXED**: Der Adapter stürzt im Compact-Mode nicht mehr in einer Neustartschleife ab; das abschließende export = WeatherWarnings überschrieb den Factory-Export für den Compact-Mode, sodass der js-controller die Klasse ohne new aufrief (#317)\n**FIXED**: Aufgelöste UWZ-Warncell-IDs werden jetzt korrekt gespeichert, statt die alte Kopie zurückzuschreiben, was zuvor bei jedem Start einen Config-Schreibvorgang und Adapter-Neustart auslöste (#317)",
@@ -80,19 +93,6 @@
         "pl": "aktualizacje deps\nnaprawić problem z \"usuń\" klucz\nsupport added for nspanel- lovelace- ui (> = v0.8.0)",
         "uk": "оновлення deps\nвиправити проблему з ключем \"попередня\"\nпідтримка додано для nspanel-lovelace-ui (>= v0.8.0)",
         "zh-cn": "更新代码\n解决“ 移动” 密钥的问题\n为 nspanel-lovelace-ui 添加了支持(%% v0.8.0)"
-      },
-      "0.9.0": {
-        "en": "Data retrieval function changed from axios to fetch \nRetrieval timeout changed from 15 seconds to 5 minutes (DWD server needs a 'little' more time)",
-        "de": "Datenabruffunktion geändert von axios auf fetch\nDatenabruf Timeout von 15 Sekunden auf 5 Minuten geändert (DWD-Server braucht \"etwas\" mehr Zeit)",
-        "ru": "Функция поиска данных изменилась с axios на fetch\nТайм-аут для поиска изменился с 15 секунд до 5 минут (для сервера DWD требуется немного больше времени)",
-        "pt": "A função de recuperação de dados mudou de axios para obter\nTempo de recuperação alterado de 15 segundos para 5 minutos (o servidor DWD precisa de um 'pouco' mais tempo)",
-        "nl": "Data ophalen functie veranderd van axios naar ophalen\nRetrieval timeout gewijzigd van 15 seconden naar 5 minuten (DWD server heeft een 'klein' meer tijd nodig)",
-        "fr": "Fonction de récupération de données changé d'axios pour récupérer\nLe délai de récupération est passé de 15 secondes à 5 minutes (le serveur DWD a besoin d'un \"petit\" temps supplémentaire)",
-        "it": "Funzione di recupero dati cambiata da assios a fetch\nIl timeout di recupero è cambiato da 15 secondi a 5 minuti (il server DWD ha bisogno di un 'piccolo' più tempo)",
-        "es": "Función de recuperación de datos cambió de axios a embrague\nEl tiempo de recuperación cambió de 15 segundos a 5 minutos (el servidor DWD necesita más tiempo)",
-        "pl": "Funkcja pobierania danych zmieniona z axios na fetch\nCzas pobierania zmienił się z 15 sekund na 5 minut (serwer DWD potrzebuje więcej czasu)",
-        "uk": "Функція перерозподілу даних змінено з аксіосу до fetch\nВід 15 секунд до 5 хвилин (DWD сервер потребує більше часу)",
-        "zh-cn": "数据检索功能从轴移到获取\n检索时间从15秒改为5分钟( DWD 服务器需要“ 少一点” 的时间)"
       }
     },
     "titleLang": {

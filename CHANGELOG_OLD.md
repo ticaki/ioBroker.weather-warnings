@@ -116,6 +116,9 @@
 
 ### 0.2.1-alpha.0 (2023-09-25)
 * (ticaki) initial release
+## 0.10.1 (2026-04-20)
+- (ticaki) **FIXED**: Network errors (e.g. internet down, DNS failure, HTTP errors) now show a clear, readable message instead of `[object Object]` or a useless stack trace
+
 ## 0.10.0 (2025-11-13)
 - (ticaki) update deps
 - (ticaki) fix a problem with "remove" key
