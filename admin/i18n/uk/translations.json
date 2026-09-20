@@ -55,6 +55,7 @@
     "NoWarning": "Без попередження",
     "Saturday": "Субота",
     "SelectNotificationService": "Виберіть екземпляр адаптера.",
+    "SelectNotificationServiceMultiple": "Можна вибрати кілька екземплярів – усі використовують однакові налаштування.",
     "Speak_settings": "Озвучити налаштування",
     "Sunday": "неділя",
     "Thursday": "четвер",

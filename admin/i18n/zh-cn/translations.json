@@ -55,6 +55,7 @@
     "NoWarning": "无警告",
     "Saturday": "周六",
     "SelectNotificationService": "选择适配器实例。",
+    "SelectNotificationServiceMultiple": "可以选择多个实例——所有实例共享相同的设置。",
     "Speak_settings": "朗读设置",
     "Sunday": "星期日",
     "Thursday": "周四",

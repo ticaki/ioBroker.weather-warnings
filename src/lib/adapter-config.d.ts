@@ -78,7 +78,7 @@ declare global {
             telegram_TypeFilter: number[];
             telegram_LevelFilter: number;
             telegram_Enabled: boolean;
-            telegram_Adapter: string;
+            telegram_Adapter: string | string[];
             telegram_MessageNew: string;
             telegram_MessageRemove: string;
             telegram_MessageAllRemove: string;
@@ -93,7 +93,7 @@ declare global {
             whatsapp_TypeFilter: number[];
             whatsapp_LevelFilter: number;
             whatsapp_Enabled: boolean;
-            whatsapp_Adapter: string;
+            whatsapp_Adapter: string | string[];
             whatsapp_MessageNew: string;
             whatsapp_MessageRemove: string;
             whatsapp_MessageAllRemove: string;
@@ -105,7 +105,7 @@ declare global {
             pushover_TypeFilter: number[];
             pushover_LevelFilter: number;
             pushover_Enabled: boolean;
-            pushover_Adapter: string;
+            pushover_Adapter: string | string[];
             pushover_MessageNew: string;
             pushover_MessageRemove: string;
             pushover_MessageAllRemove: string;
@@ -120,7 +120,7 @@ declare global {
             gotify_TypeFilter: number[];
             gotify_LevelFilter: number;
             gotify_Enabled: boolean;
-            gotify_Adapter: string;
+            gotify_Adapter: string | string[];
             gotify_MessageNew: string;
             gotify_MessageRemove: string;
             gotify_MessageAllRemove: string;
@@ -163,7 +163,7 @@ declare global {
             history_MessageRemove: string;
             history_allinOne: boolean;
 
-            email_Adapter: string;
+            email_Adapter: string | string[];
             email_line_break: string;
             email_DwdEnabled: boolean;
             email_UwzEnabled: boolean;

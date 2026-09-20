@@ -360,6 +360,20 @@ class WeatherWarnings extends utils.Adapter {
                         notificationServiceOpt[notificationService],
                         notificationServiceDefaults[notificationService],
                     );
+                    // multiple adapter instances (admin multi select) - a plain string is the legacy single instance
+                    const rawAdapter = this.config[`${notificationService}_Adapter` as keyof ioBroker.AdapterConfig];
+                    if (Array.isArray(rawAdapter)) {
+                        const adapters = rawAdapter.filter(
+                            (a): a is string => typeof a === 'string' && a !== '' && a !== 'none',
+                        );
+                        const opt = notificationServiceOpt[notificationService]!;
+                        // empty selection -> 'none' -> createNotificationService() reports the missing adapter
+                        opt.adapter = adapters[0] ?? 'none';
+                        if (adapters.length > 0) {
+                            opt.useadapterarray = true;
+                            opt.adapters = adapters;
+                        }
+                    }
                 }
             }
             // hold this for some specialcases
@@ -837,7 +851,8 @@ class WeatherWarnings extends utils.Adapter {
                                 this.log.error(`error(44): ${error as string}`);
                             }
 
-                            const reply = [{ label: 'none', value: 'none' }];
+                            // 'none' makes no sense in a multi select
+                            const reply = obj.message.multiple ? [] : [{ label: 'none', value: 'none' }];
 
                             for (const t in temp) {
                                 reply.push({

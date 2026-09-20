@@ -228,7 +228,7 @@ class WeatherWarnings extends utils.Adapter {
     }
     this.config.numOfRawWarnings = typeof this.config.numOfRawWarnings == "number" && this.config.numOfRawWarnings > 0 ? this.config.numOfRawWarnings : 5;
     this.startDelay = this.setTimeout(async () => {
-      var _a;
+      var _a, _b;
       if (!this.providerController) {
         return;
       }
@@ -290,6 +290,18 @@ class WeatherWarnings extends utils.Adapter {
             notificationServiceOpt[notificationService],
             import_notificationService_def.notificationServiceDefaults[notificationService]
           );
+          const rawAdapter = this.config[`${notificationService}_Adapter`];
+          if (Array.isArray(rawAdapter)) {
+            const adapters = rawAdapter.filter(
+              (a) => typeof a === "string" && a !== "" && a !== "none"
+            );
+            const opt = notificationServiceOpt[notificationService];
+            opt.adapter = (_a = adapters[0]) != null ? _a : "none";
+            if (adapters.length > 0) {
+              opt.useadapterarray = true;
+              opt.adapters = adapters;
+            }
+          }
         }
       }
       if (this.config.telegram_Enabled && notificationServiceOpt.telegram != void 0) {
@@ -314,7 +326,7 @@ class WeatherWarnings extends utils.Adapter {
       }
       if (this.config.nspanel_Enabled && notificationServiceOpt.nspanel != void 0) {
         notificationServiceOpt.nspanel.priority = this.config.nspanel_Priority !== void 0 && this.config.nspanel_Priority > 0 ? Math.ceil(this.config.nspanel_Priority) : 50;
-        notificationServiceOpt.nspanel.alwaysOn = (_a = this.config.nspanel_alwaysOn) != null ? _a : true;
+        notificationServiceOpt.nspanel.alwaysOn = (_b = this.config.nspanel_alwaysOn) != null ? _b : true;
       }
       if (this.config.json_Enabled && notificationServiceOpt.json != void 0) {
       }
@@ -725,7 +737,7 @@ class WeatherWarnings extends utils.Adapter {
               } catch (error) {
                 this.log.error(`error(44): ${error}`);
               }
-              const reply = [{ label: "none", value: "none" }];
+              const reply = obj.message.multiple ? [] : [{ label: "none", value: "none" }];
               for (const t in temp) {
                 reply.push({
                   label: `${obj.message.service}.${t}`,

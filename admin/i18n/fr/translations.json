@@ -55,6 +55,7 @@
     "NoWarning": "Pas d'avertissement",
     "Saturday": "Samedi",
     "SelectNotificationService": "Sélectionnez l'instance d'adaptateur.",
+    "SelectNotificationServiceMultiple": "Plusieurs instances peuvent être sélectionnées – toutes partagent les mêmes paramètres.",
     "Speak_settings": "Parler des paramètres",
     "Sunday": "Dimanche",
     "Thursday": "Jeudi",

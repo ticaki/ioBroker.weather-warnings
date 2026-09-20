@@ -55,6 +55,7 @@
     "NoWarning": "Sin advertencia",
     "Saturday": "Sábado",
     "SelectNotificationService": "Seleccione la instancia del adaptador.",
+    "SelectNotificationServiceMultiple": "Se pueden seleccionar varias instancias; todas comparten la misma configuración.",
     "Speak_settings": "Configuración de voz",
     "Sunday": "Domingo",
     "Thursday": "jueves",
