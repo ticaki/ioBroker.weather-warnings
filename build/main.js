@@ -250,11 +250,14 @@ class WeatherWarnings extends utils.Adapter {
           }
         }
         if (migrated) {
+          this.config.notificationServices = merged;
           const obj2 = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
           if (obj2) {
             this.log.info("Migrating notification service configuration to the new structured format.");
             obj2.native.notificationServices = merged;
             await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj2);
+          }
+          if (this.providerController.unload) {
             return;
           }
         }

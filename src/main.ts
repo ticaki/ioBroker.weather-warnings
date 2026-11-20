@@ -269,12 +269,18 @@ class WeatherWarnings extends utils.Adapter {
                     }
                 }
                 if (migrated) {
+                    // continue with the migrated configuration right away: js-controller
+                    // usually restarts the instance after the object change, but that is
+                    // not guaranteed (e.g. the integration test harness runs without it)
+                    this.config.notificationServices = merged;
                     const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
                     if (obj) {
                         this.log.info('Migrating notification service configuration to the new structured format.');
                         obj.native.notificationServices = merged;
                         await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
-                        return; // adapter restarts with the migrated configuration
+                    }
+                    if (this.providerController.unload) {
+                        return;
                     }
                 }
             }
