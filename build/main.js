@@ -32,6 +32,7 @@ var NotificationType = __toESM(require("./lib/def/notificationService-def"));
 var import_definition = require("./lib/def/definition.js");
 var import_notificationServiceConfig = require("./lib/notificationServiceConfig.js");
 var import_notificationServicesModel = require("./lib/notificationServicesModel.js");
+var import_templatePreview = require("./lib/templatePreview");
 class WeatherWarnings extends utils.Adapter {
   startDelay = void 0;
   library;
@@ -547,6 +548,20 @@ class WeatherWarnings extends utils.Adapter {
               }
             }
             this.sendTo(obj.from, obj.command, data, obj.callback);
+          }
+          break;
+        /** admin template editor: render a (possibly unsaved) template */
+        case "templatePreview":
+          {
+            let reply;
+            try {
+              reply = await (0, import_templatePreview.buildTemplatePreview)(this, obj.message);
+            } catch (error) {
+              reply = { results: [], errors: [String(error)] };
+            }
+            if (obj.callback) {
+              this.sendTo(obj.from, obj.command, reply, obj.callback);
+            }
           }
           break;
         /** defaults for templates */

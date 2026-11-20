@@ -14,6 +14,7 @@ import {
     type NotificationServicesConfig,
 } from '../../src/lib/notificationServicesModel';
 import { buildServiceSchema } from './serviceSchema';
+import { SERVICE_NAMES } from './serviceNames';
 
 interface NotificationServicesState extends ConfigGenericState {
     activeService: ServiceType | null;
@@ -131,7 +132,7 @@ class NotificationServicesTab extends ConfigGeneric<ConfigGenericProps, Notifica
                         <Tab
                             key={service}
                             value={service}
-                            label={this.getText(service)}
+                            label={SERVICE_NAMES[service] ?? service}
                         />
                     ))}
                 </Tabs>

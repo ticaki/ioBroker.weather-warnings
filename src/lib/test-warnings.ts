@@ -554,3 +554,47 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
     }
     return null;
 }
+
+/**
+ * Returns one raw sample warning of the given provider, shifted to start in
+ * two hours. Used by the admin template preview when no real warning is active.
+ *
+ * @param service the provider service
+ * @returns the raw warning in the format the provider passes to MessagesClass, or undefined
+ */
+export function getPreviewSample(service: string): any {
+    const data = JSON.parse(JSON.stringify(testData));
+    const start = Math.floor((Date.now() + 2 * 3_600_000) / 60_000) * 60_000;
+    const end = start + 6 * 3_600_000;
+    switch (service) {
+        case 'dwdService': {
+            const p = data.dwdService.features[0]?.properties;
+            if (p) {
+                p.ONSET = new Date(start).toJSON();
+                p.EXPIRES = new Date(end).toJSON();
+            }
+            return p;
+        }
+        case 'uwzService': {
+            const r = data.uwzService.results[0];
+            if (r) {
+                r.dtgStart = start / 1000;
+                r.dtgEnd = end / 1000;
+            }
+            return r;
+        }
+        case 'zamgService': {
+            const w = data.zamgService.properties.warnings[0];
+            if (!w) {
+                return undefined;
+            }
+            // same special case as the zamg provider
+            w.properties.location = data.zamgService.properties.location.properties.name;
+            w.properties.nachrichtentyp = w.type;
+            w.properties.rawinfo.start = String(start / 1000);
+            w.properties.rawinfo.end = String(end / 1000);
+            return w.properties;
+        }
+    }
+    return undefined;
+}

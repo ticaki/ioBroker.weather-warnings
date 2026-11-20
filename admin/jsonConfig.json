@@ -453,41 +453,19 @@
             "type": "panel",
             "label": "templates",
             "items": {
-                "templateTable": {
-                    "type": "table",
+                "templateEditor": {
+                    "type": "custom",
+                    "i18n": true,
+                    "url": "custom/customComponents.js",
+                    "name": "AdminComponentWeatherWarningsSet/Components/TemplateEditor",
+                    "bundlerType": "module",
+                    "hidden": "data.templateTable[0].template == 'template.NewMessage'",
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
-                    "xl": 12,
-                    "hidden": "data.templateTable[0].template == 'template.NewMessage'",
-                    "label": "",
-                    "showSecondAddAt": 5,
-                    "items": [
-                        {
-                            "type": "text",
-                            "attr": "templateKey",
-                            "width": "15% ",
-                            "title": "templateKey",
-                            "tooltip": "templateKeyTip",
-                            "filter": false,
-                            "sort": false,
-                            "default": "",
-                            "validator": "const x={};for (const c of globalData.templateTable) {if (x[c.templateKey]==='x') return false; x[c.templateKey]='x';}; return true;",
-                            "validatorNoSaveOnError": true
-                        },
-                        {
-                            "type": "text",
-                            "attr": "template",
-                            "width": "85% ",
-                            "title": "templateTitle",
-                            "tooltip": "templateTitleTip",
-                            "filter": false,
-                            "sort": false,
-                            "default": ""
-                        }
-                    ]
+                    "xl": 12
                 },
                 "requestReload": {
                     "type": "staticText",
@@ -500,23 +478,10 @@
                     "label": "requestReload",
                     "newLine": true
                 },
-                "templateHelp": {
-                    "type": "text",
-                    "hidden": "data.templateTable[0].template == 'template.NewMessage'",
-                    "minRows": 2,
-                    "maxRows": 50,
-                    "text": "",
-                    "readOnly": true,
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 12,
-                    "lg": 12,
-                    "xl": 12,
-                    "newLine": true
-                },
                 "restoreDefault": {
                     "type": "sendTo",
                     "command": "restoreDefault",
+                    "variant": "outlined",
                     "jsonData": "{ \"service\": \"template\"}",
                     "newLine": true,
                     "label": "restoreDefault",
@@ -531,6 +496,7 @@
                 "addDefault": {
                     "type": "sendTo",
                     "command": "addDefault",
+                    "variant": "outlined",
                     "jsonData": "{ \"service\": \"template\"}",
                     "newLine": false,
                     "label": "addDefault",

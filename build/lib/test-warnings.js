@@ -19,6 +19,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var test_warnings_exports = {};
 __export(test_warnings_exports, {
   defaultData: () => defaultData,
+  getPreviewSample: () => getPreviewSample,
   getTestData: () => getTestData,
   useTestData: () => useTestData
 });
@@ -540,9 +541,46 @@ function getTestData(service, _that) {
   }
   return null;
 }
+function getPreviewSample(service) {
+  var _a;
+  const data = JSON.parse(JSON.stringify(testData));
+  const start = Math.floor((Date.now() + 2 * 36e5) / 6e4) * 6e4;
+  const end = start + 6 * 36e5;
+  switch (service) {
+    case "dwdService": {
+      const p = (_a = data.dwdService.features[0]) == null ? void 0 : _a.properties;
+      if (p) {
+        p.ONSET = new Date(start).toJSON();
+        p.EXPIRES = new Date(end).toJSON();
+      }
+      return p;
+    }
+    case "uwzService": {
+      const r = data.uwzService.results[0];
+      if (r) {
+        r.dtgStart = start / 1e3;
+        r.dtgEnd = end / 1e3;
+      }
+      return r;
+    }
+    case "zamgService": {
+      const w = data.zamgService.properties.warnings[0];
+      if (!w) {
+        return void 0;
+      }
+      w.properties.location = data.zamgService.properties.location.properties.name;
+      w.properties.nachrichtentyp = w.type;
+      w.properties.rawinfo.start = String(start / 1e3);
+      w.properties.rawinfo.end = String(end / 1e3);
+      return w.properties;
+    }
+  }
+  return void 0;
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   defaultData,
+  getPreviewSample,
   getTestData,
   useTestData
 });

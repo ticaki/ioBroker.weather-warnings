@@ -15,6 +15,7 @@ import * as NotificationType from './lib/def/notificationService-def';
 import { statesObjectsWarnings } from './lib/def/definition.js';
 import { resolveNotificationServices } from './lib/notificationServiceConfig.js';
 import { SERVICE_TYPES, flatEntryToModel, type NotificationServicesConfig } from './lib/notificationServicesModel.js';
+import { buildTemplatePreview, type TemplatePreviewRequest } from './lib/templatePreview';
 // Load your modules here, e.g.:
 // import * as fs from "node:fs";
 
@@ -595,6 +596,20 @@ class WeatherWarnings extends utils.Adapter {
                     }
                     break;
 
+                /** admin template editor: render a (possibly unsaved) template */
+                case 'templatePreview':
+                    {
+                        let reply: Awaited<ReturnType<typeof buildTemplatePreview>>;
+                        try {
+                            reply = await buildTemplatePreview(this, obj.message as TemplatePreviewRequest);
+                        } catch (error) {
+                            reply = { results: [], errors: [String(error)] };
+                        }
+                        if (obj.callback) {
+                            this.sendTo(obj.from, obj.command, reply, obj.callback);
+                        }
+                    }
+                    break;
                 /** defaults for templates */
                 case 'addDefault':
                 case 'restoreDefault':

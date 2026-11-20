@@ -150,8 +150,10 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 - (ticaki) **NEW**: the nine duplicated notification-service tabs (telegram, whatsapp, pushover, gotify, nspanel, alexa2, sayit, json, history, email) were replaced by a single admin custom component. The shared option set is now generated once instead of being copy/pasted per service, which removes ~2700 lines from `admin/jsonConfig.json`.
 - (ticaki) **BREAKING**: the admin custom component now uses React 19 / MUI 9 / `@iobroker/gui-components` and requires admin 8.1.0 or newer (needed by json-config 10)
 - (ticaki) **NEW**: notification-service settings are stored in the structured `notificationServices` config object. Existing installations are migrated automatically on first start (one restart).
+- (ticaki) **NEW**: new template editor in the admin: searchable template list, placeholder palette (click to insert), shows which services use a template, renaming updates all references, and a live preview rendered by the adapter with the current warnings (or sample data if there are none)
 - (ticaki) **NEW**: nspanel: choose whether warnings are shown as popup, as headline in the screensaver or both; priority (default 50) applies to both
 - (ticaki) **FIXED**: nspanel: the "always on" option is now actually sent with the popup
+- (ticaki) **FIXED**: restored the `## License` section and the link to the older changelogs in the README; both were cut off by the 0.11.1 release (repochecker E6004)
 - (ticaki) **FIXED**: the telegram Chat-ID typed in the admin is now actually used (the field wrote `telegram_ChatId` while the runtime read `telegram_ChatID`).
 
 ### 0.12.0 (2026-09-20)
@@ -175,3 +177,29 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 - (ticaki) **FIXED**: per-provider deactivation of datapoint categories (warning/alerts/formatedKeys) is applied again on restart
 - (ticaki) **FIXED**: addressed ioBroker repository checker findings (node >= 22, `source-map-support` moved to runtime dependencies, admin jsonConfig schema issues, missing translations) (#300, #112)
 - (ticaki) **FIXED**: DWD color name (`warnlevelcolorname`, e.g. spoken by Alexa) now matches the actual DWD warning color shown in email/vis instead of being derived from severity (#220)
+
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
+## License
+
+MIT License
+
+Copyright (c) 2024-2026 ticaki <github@renopoint.de>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
