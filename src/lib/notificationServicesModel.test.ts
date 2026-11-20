@@ -115,4 +115,38 @@ describe('resolveNotificationServices', () => {
         expect(options.alexa2).to.equal(undefined);
         expect(disabledServices).to.include('alexa2');
     });
+
+    it('resolves the nspanel display target and priority', () => {
+        const base: any = { nspanel_Enabled: true, nspanel_Adapter: 'nspanel-lovelace-ui.0' };
+        const def = resolveNotificationServices(base, noopLog).options.nspanel as any;
+        expect(def.target).to.equal('popup');
+        expect(def.priority).to.equal(50);
+
+        const structured: any = {
+            ...base,
+            notificationServices: {
+                nspanel: {
+                    adapter: 'nspanel-lovelace-ui.0',
+                    providers: { dwd: true, uwz: false, zamg: false },
+                    filter: { auto: { type: [], level: 0 } },
+                    messages: {},
+                    extras: { Target: 'headline', Priority: 20 },
+                },
+            },
+        };
+        const opt = resolveNotificationServices(structured, noopLog).options.nspanel as any;
+        expect(opt.target).to.equal('headline');
+        expect(opt.priority).to.equal(20);
+
+        const invalid = resolveNotificationServices({ ...base, nspanel_Target: 'foo' }, noopLog).options.nspanel as any;
+        expect(invalid.target).to.equal('popup');
+    });
+
+    it('resolves multiple telegram instances (#319)', () => {
+        const config: any = { telegram_Enabled: true, telegram_Adapter: ['telegram.0', 'none', 'telegram.1'] };
+        const opt = resolveNotificationServices(config, noopLog).options.telegram as any;
+        expect(opt.adapter).to.equal('telegram.0');
+        expect(opt.useadapterarray).to.equal(true);
+        expect(opt.adapters).to.deep.equal(['telegram.0', 'telegram.1']);
+    });
 });

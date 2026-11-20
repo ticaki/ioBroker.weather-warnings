@@ -25,6 +25,12 @@ const PARSE_MODE_OPTIONS = [
     { label: 'Markdown V2', value: 'MarkdownV2 ' },
 ];
 
+const NSPANEL_TARGET_OPTIONS = [
+    { label: 'nspanel_Target_popup', value: 'popup' },
+    { label: 'nspanel_Target_headline', value: 'headline' },
+    { label: 'nspanel_Target_both', value: 'both' },
+];
+
 const CONTENT_TYPE_OPTIONS = [
     { label: 'Text', value: 'text/plain' },
     { label: 'Markdown', value: 'text/markdown' },
@@ -265,16 +271,35 @@ function extraFields(service: ServiceType, dis: string | undefined): { primary: 
             };
             break;
         case 'nspanel':
-            extras[`${service}_Priority`] = {
+            primary[`${service}_Target`] = {
+                type: 'select',
+                options: NSPANEL_TARGET_OPTIONS,
+                default: 'popup',
+                ...W,
+                label: 'nspanel_Target',
+                help: 'nspanel_Target_help',
+                newLine: true,
+                ...d,
+            };
+            primary[`${service}_Priority`] = {
                 type: 'number',
                 min: 1,
                 max: 100,
                 default: 50,
                 ...W,
                 label: 'nspanel_Priority',
+                help: 'nspanel_Priority_help',
                 ...d,
             };
-            extras[`${service}_alwaysOn`] = { type: 'checkbox', default: true, ...W, label: 'nspanel_alwaysOn', ...d };
+            // alwaysOn is a popup-only option of nspanel-lovelace-ui
+            extras[`${service}_alwaysOn`] = {
+                type: 'checkbox',
+                default: true,
+                ...W,
+                label: 'nspanel_alwaysOn',
+                hidden: `data.${service}_Target == 'headline'`,
+                ...d,
+            };
             break;
         case 'alexa2':
             primary[`${service}_device_ids`] = {

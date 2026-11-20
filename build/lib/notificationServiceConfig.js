@@ -131,6 +131,7 @@ function resolveNotificationServices(config, log) {
   if (cfg.nspanel_Enabled && notificationServiceOpt.nspanel != void 0) {
     notificationServiceOpt.nspanel.priority = cfg.nspanel_Priority !== void 0 && cfg.nspanel_Priority > 0 ? Math.ceil(cfg.nspanel_Priority) : 50;
     notificationServiceOpt.nspanel.alwaysOn = (_b = cfg.nspanel_alwaysOn) != null ? _b : true;
+    notificationServiceOpt.nspanel.target = ["popup", "headline", "both"].includes(cfg.nspanel_Target) ? cfg.nspanel_Target : "popup";
   }
   if (cfg.email_Enabled && notificationServiceOpt.email != void 0) {
     notificationServiceOpt.email.actions.header = cfg.email_Header;

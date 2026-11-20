@@ -153,6 +153,9 @@ export function resolveNotificationServices(
         notificationServiceOpt.nspanel.priority =
             cfg.nspanel_Priority !== undefined && cfg.nspanel_Priority > 0 ? Math.ceil(cfg.nspanel_Priority) : 50;
         notificationServiceOpt.nspanel.alwaysOn = cfg.nspanel_alwaysOn ?? true;
+        notificationServiceOpt.nspanel.target = ['popup', 'headline', 'both'].includes(cfg.nspanel_Target)
+            ? cfg.nspanel_Target
+            : 'popup';
     }
     if (cfg.email_Enabled && notificationServiceOpt.email != undefined) {
         notificationServiceOpt.email.actions.header = cfg.email_Header;

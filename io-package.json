@@ -303,6 +303,7 @@
     "pushover_MessageAllRemove": "RemoveAllMessage",
     "pushover_manualAll": "NewMessage",
     "pushover_Title": "none",
+    "nspanel_Target": "popup",
     "gotify_Enabled": false,
     "gotify_Adapter": [],
     "json_DwdEnabled": true,

@@ -100,7 +100,7 @@ export const SERVICE_CAPS: Record<ServiceType, ServiceCaps> = {
         adapter: 'single',
         manualFilter: true,
         messages: [...BASE_MESSAGES, 'title', ...MANUAL_MESSAGES],
-        extras: ['Priority', 'alwaysOn'],
+        extras: ['Priority', 'alwaysOn', 'Target'],
     },
     alexa2: {
         adapter: 'single',

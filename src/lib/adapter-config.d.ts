@@ -148,6 +148,7 @@ declare global {
             nspanel_contentType: "text/plain" | "text/markdown" | undefined;
             nspanel_Priority: number;
             nspanel_alwaysOn: boolean;
+            nspanel_Target: 'popup' | 'headline' | 'both';
             nspanel_Title: string;
 
             json_DwdEnabled: boolean;
