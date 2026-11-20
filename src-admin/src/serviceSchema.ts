@@ -17,7 +17,29 @@ import { SERVICE_CAPS, type ServiceType, type MessageKey } from '../../src/lib/n
 type Item = Record<string, any>;
 type Items = Record<string, Item>;
 
-const W = { xs: 12, sm: 12, md: 6, lg: 4, xl: 4 } as const;
+/** standard field width: three fields per row on desktop */
+const W = { xs: 12, sm: 6, md: 4, lg: 4, xl: 4 } as const;
+
+/**
+ * Section header of a service panel.
+ *
+ * @param text i18n key of the header
+ * @param hidden optional hidden expression
+ */
+function section(text: string, hidden?: string): Item {
+    return {
+        type: 'header',
+        text,
+        size: 4,
+        newLine: true,
+        xs: 12,
+        sm: 12,
+        md: 12,
+        lg: 12,
+        xl: 12,
+        ...(hidden ? { hidden } : {}),
+    };
+}
 
 const PARSE_MODE_OPTIONS = [
     { label: 'none', value: 'none' },
@@ -77,7 +99,21 @@ const PUSHOVER_SOUND_OPTIONS = [
 ];
 
 /** The label shown for each message-template selector. */
+/** short field labels */
 const MESSAGE_LABEL: Record<MessageKey, string> = {
+    new: 'svc_msg_new',
+    remove: 'svc_msg_remove',
+    removeAll: 'svc_msg_removeAll',
+    all: 'svc_msg_all',
+    manualAll: 'svc_msg_manualAll',
+    removeManualAll: 'svc_msg_removeManualAll',
+    title: 'svc_msg_title',
+    header: 'svc_msg_header',
+    footer: 'svc_msg_footer',
+};
+
+/** the former (long) labels, now shown as tooltip */
+const MESSAGE_TOOLTIP: Record<MessageKey, string> = {
     new: 'MessageNew',
     remove: 'MessageRemove',
     removeAll: 'MessageAllRemove',
@@ -140,6 +176,7 @@ function messageField(service: ServiceType, key: MessageKey, dis: string | undef
         multiple: false,
         ...W,
         label: MESSAGE_LABEL[key],
+        tooltip: MESSAGE_TOOLTIP[key],
         newLine,
     };
     if (key === 'removeManualAll') {
@@ -171,7 +208,8 @@ function filterField(
     newLine: boolean,
 ): Item {
     const multiple = command === 'filterType';
-    const label = `${manual ? 'Manual' : ''}${command === 'filterType' ? 'TypeFilter' : 'LevelFilter'}`;
+    const tooltip = `${manual ? 'Manual' : ''}${command === 'filterType' ? 'TypeFilter' : 'LevelFilter'}`;
+    const label = command === 'filterType' ? 'svc_typefilter' : 'svc_levelfilter';
     const item: Item = {
         type: 'selectSendTo',
         command,
@@ -180,11 +218,9 @@ function filterField(
         multiple,
         ...W,
         label,
+        tooltip,
         newLine,
     };
-    if (command === 'filterType') {
-        item.tooltip = 'TypeFilter';
-    }
     if (dis) {
         item.disabled = dis;
     }
@@ -240,14 +276,16 @@ function extraFields(service: ServiceType, dis: string | undefined): { primary: 
                 options: PUSHOVER_SOUND_OPTIONS,
                 default: 'none',
                 ...W,
-                label: 'pushover_Sound',
+                label: 'svc_sound',
+                tooltip: 'pushover_Sound',
                 ...d,
             };
             extras[`${service}_Priority`] = {
                 type: 'checkbox',
                 default: false,
                 ...W,
-                label: 'pushover_Priority',
+                label: 'svc_pushover_priority',
+                tooltip: 'pushover_Priority',
                 ...d,
             };
             extras[`${service}_Device`] = { type: 'text', default: '', ...W, label: 'pushover_Device', ...d };
@@ -258,7 +296,8 @@ function extraFields(service: ServiceType, dis: string | undefined): { primary: 
                 options: GOTIFY_PRIORITY_OPTIONS,
                 default: '0',
                 ...W,
-                label: 'gotify_Priority',
+                label: 'svc_priority',
+                tooltip: 'gotify_Priority',
                 ...d,
             };
             extras[`${service}_contentType`] = {
@@ -266,7 +305,8 @@ function extraFields(service: ServiceType, dis: string | undefined): { primary: 
                 options: CONTENT_TYPE_OPTIONS,
                 default: 'text/plain',
                 ...W,
-                label: 'gotify_contentType',
+                label: 'svc_contenttype',
+                tooltip: 'gotify_contentType',
                 ...d,
             };
             break;
@@ -318,14 +358,15 @@ function extraFields(service: ServiceType, dis: string | undefined): { primary: 
                 min: 0,
                 max: 100,
                 ...W,
-                label: 'speak_volumen',
+                label: 'svc_volume',
                 ...d,
             };
             extras[`${service}_Audio`] = {
                 type: 'text',
                 default: '',
                 ...W,
-                label: 'alexa2_Audio',
+                label: 'svc_audio',
+                tooltip: 'alexa2_Audio',
                 hidden: 'data.imExpert != true',
             };
             extras[`${service}_Audio_url`] = {
@@ -370,12 +411,17 @@ function extraFields(service: ServiceType, dis: string | undefined): { primary: 
                 max: 100,
                 default: 20,
                 ...W,
-                label: 'speak_volumen',
+                label: 'svc_volume',
                 ...d,
             };
             break;
         case 'email':
-            extras[`${service}_line_break`] = { type: 'text', ...W, label: 'email_line_break' };
+            extras[`${service}_line_break`] = {
+                type: 'text',
+                ...W,
+                label: 'svc_linebreak',
+                tooltip: 'email_line_break',
+            };
             extras[`${service}_Recipients`] = {
                 type: 'text',
                 default: '',
@@ -386,10 +432,22 @@ function extraFields(service: ServiceType, dis: string | undefined): { primary: 
             };
             break;
         case 'json':
-            primary[`${service}_parse`] = { type: 'checkbox', ...W, label: 'json_parse' };
+            primary[`${service}_parse`] = {
+                type: 'checkbox',
+                ...W,
+                label: 'svc_json_parse',
+                tooltip: 'json_parse',
+                newLine: true,
+            };
             break;
         case 'history':
-            primary[`${service}_allinOne`] = { type: 'checkbox', ...W, label: 'history_allinOne' };
+            primary[`${service}_allinOne`] = {
+                type: 'checkbox',
+                ...W,
+                label: 'svc_history_allinone',
+                tooltip: 'history_allinOne',
+                newLine: true,
+            };
             break;
     }
     return { primary, extras };
@@ -405,7 +463,12 @@ export function buildServiceSchema(service: ServiceType): Record<string, any> {
     const dis = disabledExpr(service);
     const items: Items = {};
 
-    // 1. target adapter
+    const { primary, extras } = extraFields(service, dis);
+
+    // 1. target (adapter instance + primary extras) - "general" for services without adapter
+    if (caps.adapter !== 'none' || Object.keys(primary).length) {
+        items[`${service}_secTarget`] = section(caps.adapter === 'none' ? 'svc_section_general' : 'svc_section_target');
+    }
     if (caps.adapter === 'single') {
         items[`${service}_Adapter`] = {
             type: 'selectSendTo',
@@ -416,7 +479,8 @@ export function buildServiceSchema(service: ServiceType): Record<string, any> {
             manual: false,
             multiple: !!caps.multiInstance,
             ...W,
-            label: 'SelectNotificationService',
+            label: 'svc_adapter',
+            tooltip: 'SelectNotificationService',
             newLine: true,
             ...(caps.multiInstance ? { help: 'SelectNotificationServiceMultiple' } : {}),
         };
@@ -430,7 +494,7 @@ export function buildServiceSchema(service: ServiceType): Record<string, any> {
             lg: 12,
             xl: 12,
             default: [],
-            label: 'SelectNotificationService',
+            label: 'svc_adapter',
             items: [
                 {
                     attr: 'sayit_Adapter',
@@ -448,54 +512,60 @@ export function buildServiceSchema(service: ServiceType): Record<string, any> {
         };
     }
 
-    // 2. provider activation
-    for (const [prov, flag] of [
-        ['dwd', 'dwdEnabled'],
-        ['uwz', 'uwzEnabled'],
-        ['zamg', 'zamgEnabled'],
-    ] as const) {
-        const provCap = prov.charAt(0).toUpperCase() + prov.slice(1);
-        items[`${service}_${provCap}Enabled`] = {
-            type: 'checkbox',
-            xs: 12,
-            sm: 6,
-            md: 4,
-            lg: 3,
-            xl: 3,
-            hidden: `!data.${flag}`,
-            ...(dis ? { disabled: dis } : {}),
-            label: `${prov}Enabled`,
-            newLine: true,
-        };
-    }
-
-    // 3. primary, always-visible extras (e.g. alexa2 device list)
-    const { primary, extras } = extraFields(service, dis);
     Object.assign(items, primary);
 
-    // 4. filter section
-    if (caps.manualFilter) {
-        items[`${service}_autoHeader`] = { type: 'staticText', ...W, text: 'header_auto', newLine: true };
-        items[`${service}_manualHeader`] = { type: 'staticText', ...W, text: 'header_manual', newLine: false };
-        items[`${service}_TypeFilter`] = filterField(service, 'filterType', false, dis, true);
-        items[`${service}_ManualTypeFilter`] = filterField(service, 'filterType', true, dis, false);
-        items[`${service}_LevelFilter`] = filterField(service, 'filterLevel', false, dis, true);
-        items[`${service}_ManualLevelFilter`] = filterField(service, 'filterLevel', true, dis, false);
-    } else {
-        items[`${service}_TypeFilter`] = filterField(service, 'filterType', false, dis, true);
-        items[`${service}_LevelFilter`] = filterField(service, 'filterLevel', false, dis, true);
+    // 2. weather services (only the globally enabled ones are shown)
+    items[`${service}_secProviders`] = section(
+        'svc_section_providers',
+        '!data.dwdEnabled && !data.uwzEnabled && !data.zamgEnabled',
+    );
+    let firstProvider = true;
+    for (const [prov, flag, label] of [
+        ['Dwd', 'dwdEnabled', 'DWD'],
+        ['Uwz', 'uwzEnabled', 'UWZ'],
+        ['Zamg', 'zamgEnabled', 'ZAMG'],
+    ] as const) {
+        items[`${service}_${prov}Enabled`] = {
+            type: 'checkbox',
+            xs: 4,
+            sm: 3,
+            md: 2,
+            lg: 2,
+            xl: 2,
+            hidden: `!data.${flag}`,
+            ...(dis ? { disabled: dis } : {}),
+            label,
+            newLine: firstProvider,
+        };
+        firstProvider = false;
     }
 
-    // 5. message templates
+    // 3. automatic notifications: templates + filter
+    const manualKeys: MessageKey[] = ['manualAll', 'removeManualAll'];
+    items[`${service}_secAuto`] = section(caps.manualFilter ? 'svc_section_auto' : 'svc_section_messages');
     let first = true;
-    for (const key of caps.messages) {
+    for (const key of caps.messages.filter(k => !manualKeys.includes(k))) {
         items[`${service}_${MESSAGE_FLAT_SUFFIX[key]}`] = messageField(service, key, dis, first);
         first = false;
     }
+    items[`${service}_TypeFilter`] = filterField(service, 'filterType', false, dis, true);
+    items[`${service}_LevelFilter`] = filterField(service, 'filterLevel', false, dis, false);
 
-    // 6. service specific extras
+    // 4. manually triggered notifications
+    if (caps.manualFilter) {
+        items[`${service}_secManual`] = section('svc_section_manual');
+        first = true;
+        for (const key of caps.messages.filter(k => manualKeys.includes(k))) {
+            items[`${service}_${MESSAGE_FLAT_SUFFIX[key]}`] = messageField(service, key, dis, first);
+            first = false;
+        }
+        items[`${service}_ManualTypeFilter`] = filterField(service, 'filterType', true, dis, true);
+        items[`${service}_ManualLevelFilter`] = filterField(service, 'filterLevel', true, dis, false);
+    }
+
+    // 5. service specific extras
     if (Object.keys(extras).length) {
-        items[`${service}_extras`] = { type: 'header', text: 'notification_extras', newLine: true };
+        items[`${service}_secExtras`] = section('svc_section_extras');
         Object.assign(items, extras);
     }
 

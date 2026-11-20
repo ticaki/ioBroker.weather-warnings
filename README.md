@@ -150,6 +150,7 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 - (ticaki) **NEW**: the nine duplicated notification-service tabs (telegram, whatsapp, pushover, gotify, nspanel, alexa2, sayit, json, history, email) were replaced by a single admin custom component. The shared option set is now generated once instead of being copy/pasted per service, which removes ~2700 lines from `admin/jsonConfig.json`.
 - (ticaki) **BREAKING**: the admin custom component now uses React 19 / MUI 9 / `@iobroker/gui-components` and requires admin 8.1.0 or newer (needed by json-config 10)
 - (ticaki) **NEW**: notification-service settings are stored in the structured `notificationServices` config object. Existing installations are migrated automatically on first start (one restart).
+- (ticaki) **NEW**: notification service pages reorganised into sections (target, weather services, automatic / manual notifications, further settings) with short field labels; the former long descriptions are shown as tooltips
 - (ticaki) **NEW**: new template editor in the admin: searchable template list, placeholder palette (click to insert), shows which services use a template, renaming updates all references, and a live preview rendered by the adapter with the current warnings (or sample data if there are none)
 - (ticaki) **NEW**: nspanel: choose whether warnings are shown as popup, as headline in the screensaver or both; priority (default 50) applies to both
 - (ticaki) **FIXED**: nspanel: the "always on" option is now actually sent with the popup
