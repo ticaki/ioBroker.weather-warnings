@@ -114,6 +114,18 @@ export function resolveNotificationServices(
             (notificationServiceOpt as Record<string, any>)[notificationService],
             notificationServiceDefaults[notificationService],
         );
+        // multiple adapter instances (admin multi select, #319) - a plain string is the legacy single instance
+        const rawAdapter = cfg[`${notificationService}_Adapter`];
+        if (Array.isArray(rawAdapter)) {
+            const adapters = rawAdapter.filter((a): a is string => typeof a === 'string' && a !== '' && a !== 'none');
+            const opt = (notificationServiceOpt as Record<string, any>)[notificationService];
+            // empty selection -> 'none' -> createNotificationService() reports the missing adapter
+            opt.adapter = adapters[0] ?? 'none';
+            if (adapters.length > 0) {
+                opt.useadapterarray = true;
+                opt.adapters = adapters;
+            }
+        }
     }
 
     // hold this for some special cases

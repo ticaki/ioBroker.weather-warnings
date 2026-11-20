@@ -366,7 +366,7 @@ class WeatherWarnings extends utils.Adapter {
         const obj2 = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
         if (obj2) {
           this.log.debug("change config uwzwarncellTable");
-          obj2.native.uwzwarncellTable = tempTable;
+          obj2.native.uwzwarncellTable = this.config.uwzwarncellTable;
           await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj2);
         }
       }
@@ -640,7 +640,7 @@ class WeatherWarnings extends utils.Adapter {
               } catch (error) {
                 this.log.error(`error(44): ${error}`);
               }
-              const reply = [{ label: "none", value: "none" }];
+              const reply = obj.message.multiple ? [] : [{ label: "none", value: "none" }];
               for (const t in temp) {
                 reply.push({
                   label: `${obj.message.service}.${t}`,
@@ -853,5 +853,4 @@ if (require.main !== module) {
 } else {
   (() => new WeatherWarnings())();
 }
-module.exports = WeatherWarnings;
 //# sourceMappingURL=main.js.map

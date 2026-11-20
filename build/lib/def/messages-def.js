@@ -21,6 +21,7 @@ __export(messages_def_exports, {
   color: () => color,
   customFormatedTokensJson: () => customFormatedTokensJson,
   daytimes: () => daytimes,
+  dwdAreaColorName: () => dwdAreaColorName,
   dwdLevel: () => dwdLevel,
   filterWarntype: () => filterWarntype,
   genericWarntyp: () => genericWarntyp,
@@ -148,15 +149,42 @@ const color = {
     4: "color.textGeneric.5",
     5: ""
   },
-  // color name i18n keys by color bucket (0 grün, 1 dunkelgrün, 2 gelb, 3 orange, 4 rot, 5 violett)
+  // color name i18n keys by color bucket
+  // (0 grün, 1 dunkelgrün, 2 gelb, 3 orange, 4 rot, 5 violett, 6 hellviolett, 7 dunkelrot, 8 magenta, 9 rosa)
   textGeneric: {
     0: "color.textGeneric.0",
     1: "color.textGeneric.1",
     2: "color.textGeneric.2",
     3: "color.textGeneric.3",
     4: "color.textGeneric.4",
-    5: "color.textGeneric.5"
+    5: "color.textGeneric.5",
+    6: "color.textGeneric.6",
+    7: "color.textGeneric.7",
+    8: "color.textGeneric.8",
+    9: "color.textGeneric.9"
   }
+};
+const dwdAreaColorName = {
+  "255 235 59": 2,
+  // gelb — Wetterwarnung (minor weather warning)
+  "251 140 0": 3,
+  // orange — Markantes Wetter (moderate weather warning)
+  "229 57 53": 4,
+  // rot — Unwetterwarnung (severe weather warning)
+  "136 14 79": 7,
+  // dunkelrot — Extreme Wetterwarnung (extreme weather warning)
+  "204 153 255": 6,
+  // hellviolett — Starke Hitze (strong heat)
+  "158 70 248": 5,
+  // violett — Extreme Hitze (extreme heat)
+  "254 104 254": 8,
+  // magenta — Hoher UV-Index (high UV index)
+  "255 128 128": 9,
+  // rosa — Vorabinformation (preliminary information)
+  "197 229 102": 0,
+  // grün — keine Warnung (DWD-internal "none")
+  "32 255 26": 0
+  // grün — "none" test fixture (test-warnings.ts)
 };
 const genericWarntypState = {
   level: {
@@ -505,6 +533,7 @@ const temporalAdverbs = {
   color,
   customFormatedTokensJson,
   daytimes,
+  dwdAreaColorName,
   dwdLevel,
   filterWarntype,
   genericWarntyp,

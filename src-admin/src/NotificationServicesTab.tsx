@@ -94,7 +94,10 @@ class NotificationServicesTab extends ConfigGeneric<ConfigGenericProps, Notifica
         return model;
     }
 
-    private onServiceDataChange = (newData: Record<string, any>): void => {
+    private onServiceDataChange = (newData: Record<string, any> | null): void => {
+        if (!newData) {
+            return;
+        }
         this.workingData = newData;
         void this.onChange('notificationServices', this.buildModel(newData));
     };

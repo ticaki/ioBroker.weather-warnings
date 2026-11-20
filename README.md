@@ -148,8 +148,22 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 -->
 ### **WORK IN PROGRESS**
 - (ticaki) **NEW**: the nine duplicated notification-service tabs (telegram, whatsapp, pushover, gotify, nspanel, alexa2, sayit, json, history, email) were replaced by a single admin custom component. The shared option set is now generated once instead of being copy/pasted per service, which removes ~2700 lines from `admin/jsonConfig.json`.
+- (ticaki) **BREAKING**: the admin custom component now uses React 19 / MUI 9 / `@iobroker/gui-components` and requires admin 8.0.0 or newer
 - (ticaki) **NEW**: notification-service settings are stored in the structured `notificationServices` config object. Existing installations are migrated automatically on first start (one restart).
 - (ticaki) **FIXED**: the telegram Chat-ID typed in the admin is now actually used (the field wrote `telegram_ChatId` while the runtime read `telegram_ChatID`).
+
+### 0.12.0 (2026-09-20)
+- (ticaki) **NEW**: telegram, whatsapp, pushover, gotify and email can now target multiple adapter instances at once; all selected instances share the same settings (#319)
+
+### 0.11.3 (2026-07-19)
+- (ticaki) **FIXED**: adapter no longer crashes in a restart loop in compact mode; the trailing `export = WeatherWarnings` overwrote the compact-mode factory export, so js-controller tried to call the class without `new` ("Class constructor WeatherWarnings cannot be invoked without 'new'") (#317)
+- (ticaki) **FIXED**: resolved UWZ warncell IDs are now persisted correctly; the wrong (unmodified) copy was written back to `uwzwarncellTable`, so every start re-ran the same lookup and config write, which in turn triggered another restart (#317)
+
+### 0.11.2 (2026-06-18)
+- (ticaki) **FIXED**: DWD spoken/written color names (`warnlevelcolorname`) now come from an exact lookup of the official DWD CAP color palette instead of a hue heuristic; light heat violet is now distinguished from dark heat violet, and the extreme-storm, UV and preliminary-information colors are named correctly (adds the color names light violet, dark red, magenta and pink) (#220)
+
+### 0.11.1 (2026-06-18)
+- (ticaki) **FIXED**: spoken/written color name for DWD heat warnings (`warnlevelcolorname`) is now correct: the light violet DWD heat color (`#cc99ff`) was misclassified as "green" and is now named "violet", matching email/vis (#220)
 
 ### 0.11.0 (2026-06-02)
 - (copilot) **BREAKING**: Adapter requires node.js >= 22 now
@@ -159,42 +173,3 @@ Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
 - (ticaki) **FIXED**: per-provider deactivation of datapoint categories (warning/alerts/formatedKeys) is applied again on restart
 - (ticaki) **FIXED**: addressed ioBroker repository checker findings (node >= 22, `source-map-support` moved to runtime dependencies, admin jsonConfig schema issues, missing translations) (#300, #112)
 - (ticaki) **FIXED**: DWD color name (`warnlevelcolorname`, e.g. spoken by Alexa) now matches the actual DWD warning color shown in email/vis instead of being derived from severity (#220)
-
-### 0.10.1 (2026-04-20)
-- (ticaki) **FIXED**: Network errors (e.g. internet down, DNS failure, HTTP errors) now show a clear, readable message instead of `[object Object]` or a useless stack trace
-
-### 0.10.0 (2025-11-13)
-- (ticaki) update deps
-- (ticaki) fix a problem with "remove" key
-- (ticaki) support added for nspanel-lovelace-ui (>= v0.8.0)
-
-### 0.9.0 (2025-10-28)
-- (ticaki) Data retrieval function changed from axios to fetch 
-- (ticaki) Retrieval timeout changed from 15 seconds to 5 minutes (DWD server needs a 'little' more time)
-
-### 0.8.0 (2025-10-02)
-- (ticaki) Add configurable email recipients with correct processing of comma-separated addresses
-- (ticaki) Update dependencies
-
-[Older changelogs can be found there](CHANGELOG_OLD.md)## License
-MIT License
-
-Copyright (c) 2024-2026 ticaki <github@renopoint.de>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.

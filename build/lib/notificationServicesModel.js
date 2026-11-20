@@ -55,24 +55,28 @@ const MANUAL_MESSAGES = ["manualAll", "removeManualAll"];
 const SERVICE_CAPS = {
   telegram: {
     adapter: "single",
+    multiInstance: true,
     manualFilter: true,
     messages: [...BASE_MESSAGES, ...MANUAL_MESSAGES],
     extras: ["UserId", "withNoSound", "parse_mode", "ChatID"]
   },
   whatsapp: {
     adapter: "single",
+    multiInstance: true,
     manualFilter: true,
     messages: [...BASE_MESSAGES, ...MANUAL_MESSAGES],
     extras: ["Phonenumber"]
   },
   pushover: {
     adapter: "single",
+    multiInstance: true,
     manualFilter: true,
     messages: [...BASE_MESSAGES, "title", ...MANUAL_MESSAGES],
     extras: ["Sound", "Priority", "Device"]
   },
   gotify: {
     adapter: "single",
+    multiInstance: true,
     manualFilter: true,
     messages: [...BASE_MESSAGES, "title", ...MANUAL_MESSAGES],
     extras: ["Priority", "contentType"]
@@ -97,6 +101,7 @@ const SERVICE_CAPS = {
   },
   email: {
     adapter: "single",
+    multiInstance: true,
     manualFilter: true,
     messages: [...BASE_MESSAGES, "title", "header", "footer", ...MANUAL_MESSAGES],
     extras: ["line_break", "Recipients"]

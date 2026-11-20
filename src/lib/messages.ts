@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import type WeatherWarnings from '../main';
+import type { WeatherWarnings } from './WeatherWarnings';
 import { statesObjectsWarnings } from './def/definition';
 import * as MessageType from './def/messages-def';
 import type * as NotificationType from './def/notificationService-def';
@@ -14,8 +14,7 @@ type ChangeTypeOfKeys<Obj, newKey> = Obj extends object
 
 export type customformatedKJDef = ChangeTypeOfKeys<MessageType.customFormatedKeysDef, customFormatedKDefSub>;
 export type customFormatedKInit =
-    | ChangeTypeOfKeys<MessageType.customFormatedKeysDef, string | number | undefined>
-    | undefined;
+    ChangeTypeOfKeys<MessageType.customFormatedKeysDef, string | number | undefined> | undefined;
 export type customFormatedKR = ChangeTypeOfKeys<MessageType.customFormatedKeysDef, string | number | undefined>;
 
 type customFormatedKDefSub = { cmd?: messageCmdType; node: string };
@@ -1254,33 +1253,17 @@ export class MessagesClass extends library.BaseClass {
                 }
                 break;
             case 'dwdcolorname': {
-                // Map the real DWD area color ("R G B") to a color name (color.textGeneric.*)
-                // via hue classification, so it stays consistent with the hex color even if
-                // DWD uses slightly different shades. See issue #220.
+                // Map the exact DWD area color (EC_AREA_COLOR "R G B") to a color name via the
+                // authoritative, closed CAP-profile palette (MessageType.dwdAreaColorName). DWD only
+                // emits a fixed set of colors, so this is an exact lookup, not a hue guess (issue #220).
                 if (!data) {
                     return '';
                 }
-                const parts = String(data).split(' ');
-                if (parts.length !== 3) {
+                const rgb = String(data).trim().replace(/\s+/g, ' ');
+                const bucket = MessageType.dwdAreaColorName[rgb];
+                if (bucket === undefined) {
+                    this.log.warn(`Unknown DWD EC_AREA_COLOR "${rgb}" - no color name mapped (issue #220)`);
                     return '';
-                }
-                const r = Number(parts[0]);
-                const g = Number(parts[1]);
-                const b = Number(parts[2]);
-                if ([r, g, b].some(v => !Number.isFinite(v))) {
-                    return '';
-                }
-                let bucket: keyof typeof MessageType.color.textGeneric;
-                if (b >= 100 && r >= 100 && g < 120) {
-                    bucket = 5; // violett
-                } else if (r >= 150 && g < 110 && b < 110) {
-                    bucket = 4; // rot
-                } else if (r >= 180 && g >= 90 && g < 200 && b < 120) {
-                    bucket = 3; // orange
-                } else if (r >= 180 && g >= 180 && b < 160) {
-                    bucket = 2; // gelb
-                } else {
-                    bucket = 0; // grün (none / no warning)
                 }
                 return this.library.getTranslation(MessageType.color.textGeneric[bucket]);
             }

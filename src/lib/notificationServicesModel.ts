@@ -32,15 +32,7 @@ export type ServiceType = (typeof SERVICE_TYPES)[number];
 
 /** Canonical keys of the message-template selectors. */
 export type MessageKey =
-    | 'new'
-    | 'remove'
-    | 'removeAll'
-    | 'all'
-    | 'manualAll'
-    | 'removeManualAll'
-    | 'title'
-    | 'header'
-    | 'footer';
+    'new' | 'remove' | 'removeAll' | 'all' | 'manualAll' | 'removeManualAll' | 'title' | 'header' | 'footer';
 
 /** Maps a canonical message key to its legacy flat-key suffix. */
 export const MESSAGE_SUFFIX: Record<MessageKey, string> = {
@@ -62,6 +54,8 @@ export type AdapterKind = 'single' | 'array' | 'none';
 export interface ServiceCaps {
     /** How the target adapter is configured. */
     adapter: AdapterKind;
+    /** `adapter: 'single'` only: several instances can be selected at once (#319). */
+    multiInstance?: boolean;
     /** Whether the service has a separate manual filter (+ manualAll/removeManualAll). */
     manualFilter: boolean;
     /** Which message-template selectors the service offers. */
@@ -76,24 +70,28 @@ const MANUAL_MESSAGES: MessageKey[] = ['manualAll', 'removeManualAll'];
 export const SERVICE_CAPS: Record<ServiceType, ServiceCaps> = {
     telegram: {
         adapter: 'single',
+        multiInstance: true,
         manualFilter: true,
         messages: [...BASE_MESSAGES, ...MANUAL_MESSAGES],
         extras: ['UserId', 'withNoSound', 'parse_mode', 'ChatID'],
     },
     whatsapp: {
         adapter: 'single',
+        multiInstance: true,
         manualFilter: true,
         messages: [...BASE_MESSAGES, ...MANUAL_MESSAGES],
         extras: ['Phonenumber'],
     },
     pushover: {
         adapter: 'single',
+        multiInstance: true,
         manualFilter: true,
         messages: [...BASE_MESSAGES, 'title', ...MANUAL_MESSAGES],
         extras: ['Sound', 'Priority', 'Device'],
     },
     gotify: {
         adapter: 'single',
+        multiInstance: true,
         manualFilter: true,
         messages: [...BASE_MESSAGES, 'title', ...MANUAL_MESSAGES],
         extras: ['Priority', 'contentType'],
@@ -118,6 +116,7 @@ export const SERVICE_CAPS: Record<ServiceType, ServiceCaps> = {
     },
     email: {
         adapter: 'single',
+        multiInstance: true,
         manualFilter: true,
         messages: [...BASE_MESSAGES, 'title', 'header', 'footer', ...MANUAL_MESSAGES],
         extras: ['line_break', 'Recipients'],
@@ -144,8 +143,8 @@ export interface ServiceFilter {
 
 /** Structured configuration of a single output service. */
 export interface ServiceConfigEntry {
-    /** Target adapter instance (services with `adapter: 'single'`). */
-    adapter?: string;
+    /** Target adapter instance(s) (services with `adapter: 'single'`); an array for `multiInstance` services. */
+    adapter?: string | string[];
     /** Target adapter instances (services with `adapter: 'array'`, e.g. sayit). */
     adapters?: Array<{ sayit_Adapter: string }>;
     /** Per provider activation. */
@@ -189,7 +188,7 @@ export function flatEntryToModel(service: ServiceType, flat: FlatConfig): Servic
     };
 
     if (caps.adapter === 'single') {
-        entry.adapter = (flat[`${service}_Adapter`] as string) ?? 'none';
+        entry.adapter = (flat[`${service}_Adapter`] as string | string[]) ?? 'none';
     } else if (caps.adapter === 'array') {
         entry.adapters = (flat[`${service}_Adapter_Array`] as Array<{ sayit_Adapter: string }>) || [];
     }

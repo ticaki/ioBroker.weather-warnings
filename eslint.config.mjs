@@ -28,7 +28,8 @@ export default [
             'script/**/*.ts',
             'testumgebung/**/*.ts',
             'doc',
-            'src-admin',
+            'admin/custom/',
+            'src-admin/',
             'tasks.ts'
         ]
     },

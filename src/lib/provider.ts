@@ -1,6 +1,6 @@
 // Provider
 
-import type WeatherWarnings from '../main';
+import type { WeatherWarnings } from './WeatherWarnings';
 import * as definitionen from './def/definition';
 import type { Library } from './library';
 import { BaseClass } from './library';

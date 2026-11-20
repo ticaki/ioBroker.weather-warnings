@@ -1,4 +1,4 @@
-import type WeatherWarnings from '../main';
+import type { WeatherWarnings } from './WeatherWarnings';
 import type { DataImportType } from './def/provider-def';
 
 /**

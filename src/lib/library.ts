@@ -2,7 +2,7 @@ import jsonata from 'jsonata';
 import _fs from 'node:fs';
 import type { statesObjectsWarningsType } from './def/definition';
 import { genericStateObjects } from './def/definition';
-import type WeatherWarnings from '../main';
+import type { WeatherWarnings } from './WeatherWarnings';
 
 // only change this for other adapters
 type AdapterClassDefinition = WeatherWarnings;

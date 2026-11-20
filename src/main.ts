@@ -396,7 +396,7 @@ class WeatherWarnings extends utils.Adapter {
                 const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
                 if (obj) {
                     this.log.debug('change config uwzwarncellTable');
-                    obj.native.uwzwarncellTable = tempTable;
+                    obj.native.uwzwarncellTable = this.config.uwzwarncellTable;
                     await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
                 }
             }
@@ -690,7 +690,8 @@ class WeatherWarnings extends utils.Adapter {
                                 this.log.error(`error(44): ${error as string}`);
                             }
 
-                            const reply = [{ label: 'none', value: 'none' }];
+                            // 'none' makes no sense in a multi select
+                            const reply = obj.message.multiple ? [] : [{ label: 'none', value: 'none' }];
 
                             for (const t in temp) {
                                 reply.push({
@@ -947,4 +948,3 @@ if (require.main !== module) {
     // otherwise start the instance directly
     (() => new WeatherWarnings())();
 }
-export = WeatherWarnings;

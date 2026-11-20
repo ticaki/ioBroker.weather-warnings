@@ -103,6 +103,10 @@ const MESSAGE_FLAT_SUFFIX: Record<MessageKey, string> = {
 function disabledExpr(service: ServiceType): string | undefined {
     const caps = SERVICE_CAPS[service];
     if (caps.adapter === 'single') {
+        if (caps.multiInstance) {
+            // multi select (#319): legacy string 'none' or an empty array both mean "nothing selected"
+            return `!data.${service}_Adapter || data.${service}_Adapter == 'none' || data.${service}_Adapter.length == 0`;
+        }
         return `data.${service}_Adapter == 'none'`;
     }
     if (caps.adapter === 'array') {
@@ -381,12 +385,15 @@ export function buildServiceSchema(service: ServiceType): Record<string, any> {
         items[`${service}_Adapter`] = {
             type: 'selectSendTo',
             command: 'notificationService',
-            jsonData: `{ "service": "${service}" }`,
+            jsonData: caps.multiInstance
+                ? `{ "service": "${service}", "multiple": true }`
+                : `{ "service": "${service}" }`,
             manual: false,
-            multiple: false,
+            multiple: !!caps.multiInstance,
             ...W,
             label: 'SelectNotificationService',
             newLine: true,
+            ...(caps.multiInstance ? { help: 'SelectNotificationServiceMultiple' } : {}),
         };
     } else if (caps.adapter === 'array') {
         items.sayit_Adapter_Array = {

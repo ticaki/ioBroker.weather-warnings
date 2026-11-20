@@ -35,7 +35,7 @@ var NotificationType = __toESM(require("./def/notificationService-def"));
 var import_notificationService_def = require("./def/notificationService-def");
 var import_notificationServicesModel = require("./notificationServicesModel");
 function resolveNotificationServices(config, log) {
-  var _a;
+  var _a, _b;
   const cfg = {
     ...config,
     ...(0, import_notificationServicesModel.modelToFlatConfig)(
@@ -97,6 +97,16 @@ function resolveNotificationServices(config, log) {
       notificationServiceOpt[notificationService],
       import_notificationService_def.notificationServiceDefaults[notificationService]
     );
+    const rawAdapter = cfg[`${notificationService}_Adapter`];
+    if (Array.isArray(rawAdapter)) {
+      const adapters = rawAdapter.filter((a) => typeof a === "string" && a !== "" && a !== "none");
+      const opt = notificationServiceOpt[notificationService];
+      opt.adapter = (_a = adapters[0]) != null ? _a : "none";
+      if (adapters.length > 0) {
+        opt.useadapterarray = true;
+        opt.adapters = adapters;
+      }
+    }
   }
   if (cfg.telegram_Enabled && notificationServiceOpt.telegram != void 0) {
     notificationServiceOpt.telegram.withNoSound = cfg.telegram_withNoSound || false;
@@ -120,7 +130,7 @@ function resolveNotificationServices(config, log) {
   }
   if (cfg.nspanel_Enabled && notificationServiceOpt.nspanel != void 0) {
     notificationServiceOpt.nspanel.priority = cfg.nspanel_Priority !== void 0 && cfg.nspanel_Priority > 0 ? Math.ceil(cfg.nspanel_Priority) : 50;
-    notificationServiceOpt.nspanel.alwaysOn = (_a = cfg.nspanel_alwaysOn) != null ? _a : true;
+    notificationServiceOpt.nspanel.alwaysOn = (_b = cfg.nspanel_alwaysOn) != null ? _b : true;
   }
   if (cfg.email_Enabled && notificationServiceOpt.email != void 0) {
     notificationServiceOpt.email.actions.header = cfg.email_Header;

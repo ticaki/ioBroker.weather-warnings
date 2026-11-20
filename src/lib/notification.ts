@@ -1,4 +1,4 @@
-import type WeatherWarnings from '../main';
+import type { WeatherWarnings } from './WeatherWarnings';
 import { genericStateObjects } from './def/definition';
 import * as NotificationType from './def/notificationService-def';
 import * as library from './library';
@@ -592,9 +592,11 @@ export class NotificationClass extends library.BaseClass {
                         } else {
                             opt.colorHeadline = { r: 255, g: 0, b: 0 };
                         }
-                        if (
-                            !(msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove')
-                        ) {
+                        if (!(
+                            msg.action === 'removeAll' ||
+                            msg.action === 'removeManualAll' ||
+                            msg.action === 'remove'
+                        )) {
                             if (msg.formatedData && 'warntypegeneric' in msg.formatedData) {
                                 const key = msg.formatedData.warntypegeneric as keyof typeof genericWarntyp;
                                 if (genericWarntyp[key] && genericWarntyp[key].mdi) {
