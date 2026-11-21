@@ -21,3 +21,8 @@ admin/i18n/*/flat.txt
 
 # Release script files
 .commitinfo
+
+# admin custom component (src-admin) intermediate build output
+# the final bundle is copied to admin/custom and committed
+src-admin/build/
+.__mf__temp/

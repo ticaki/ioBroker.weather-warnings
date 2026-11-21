@@ -546,30 +546,49 @@ export class NotificationClass extends library.BaseClass {
                 break;
             case 'nspanel':
                 {
+                    // popup (setPopupNotification) and/or headline (screensaverNotify) - both take the same message
+                    const target = this.options.target ?? 'popup';
+                    const commands: string[] = [];
+                    if (target === 'popup' || target === 'both') {
+                        commands.push('setPopupNotification');
+                    }
+                    if (target === 'headline' || target === 'both') {
+                        commands.push('screensaverNotify');
+                    }
+                    const send = (opt: Record<string, unknown>): void => {
+                        for (const command of commands) {
+                            try {
+                                this.adapter.sendTo(this.options.adapter, command, opt);
+                            } catch (error: any) {
+                                if (error.message == 'Timeout exceeded') {
+                                    this.log.warn(
+                                        `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
+                                    );
+                                } else {
+                                    throw error;
+                                }
+                            }
+                        }
+                    };
                     for (const msg of messages) {
                         if (Array.isArray(msg)) {
                             return false;
                         }
+                        const isRemove =
+                            msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove';
                         if (msg.action === 'removeAll' || msg.action === 'removeManualAll') {
-                            this.adapter.sendTo(this.options.adapter, 'setPopupNotification', {
-                                id: `${this.adapter.namespace}.`,
-                                priority: -100,
-                            });
+                            send({ id: `${this.adapter.namespace}.`, priority: -100 });
                             await this.adapter.delay(20);
                             if (msg.text === '-1') {
                                 continue;
                             }
                         } else if (msg.action === 'remove') {
-                            this.adapter.sendTo(this.options.adapter, 'setPopupNotification', {
-                                id: `${this.adapter.namespace}.${msg.uniqueId}`,
-                                priority: -1,
-                            });
+                            send({ id: `${this.adapter.namespace}.${msg.uniqueId}`, priority: -1 });
                             await this.adapter.delay(20);
                             if (msg.text === '-1') {
                                 continue;
                             }
                         }
-                        const id = `${this.adapter.namespace}.${msg.uniqueId}`;
                         const opt: {
                             id: string;
                             text: string;
@@ -580,47 +599,36 @@ export class NotificationClass extends library.BaseClass {
                             icon?: string;
                             iconColor?: { r: number; g: number; b: number } | string;
                             type?: 'information' | 'acknowledge';
-                        } = { id, text: msg.text, headline: 'Weatherwarning', buttonRight: 'Ok' };
-                        opt.type =
-                            msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove'
-                                ? 'information'
-                                : 'acknowledge';
-                        if (msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove') {
+                            alwaysOn?: boolean;
+                        } = {
+                            id: `${this.adapter.namespace}.${msg.uniqueId}`,
+                            text: msg.text,
+                            headline: 'Weatherwarning',
+                            buttonRight: 'Ok',
+                            type: isRemove ? 'information' : 'acknowledge',
+                            // popup only, ignored by the headline
+                            alwaysOn: this.options.alwaysOn ?? true,
+                        };
+                        if (isRemove) {
                             opt.colorHeadline = { r: 0, g: 255, b: 0 };
                         } else if (msg.formatedData && msg.formatedData.warnlevelcolorhex) {
                             opt.colorHeadline = msg.formatedData.warnlevelcolorhex as string;
                         } else {
                             opt.colorHeadline = { r: 255, g: 0, b: 0 };
                         }
-                        if (
-                            !(msg.action === 'removeAll' || msg.action === 'removeManualAll' || msg.action === 'remove')
-                        ) {
-                            if (msg.formatedData && 'warntypegeneric' in msg.formatedData) {
-                                const key = msg.formatedData.warntypegeneric as keyof typeof genericWarntyp;
-                                if (genericWarntyp[key] && genericWarntyp[key].mdi) {
-                                    opt.icon = genericWarntyp[key].mdi;
-                                    opt.iconColor = opt.colorHeadline;
-                                }
+                        if (!isRemove && msg.formatedData && 'warntypegeneric' in msg.formatedData) {
+                            const key = msg.formatedData.warntypegeneric as keyof typeof genericWarntyp;
+                            if (genericWarntyp[key] && genericWarntyp[key].mdi) {
+                                opt.icon = genericWarntyp[key].mdi;
+                                opt.iconColor = opt.colorHeadline;
                             }
                         }
-                        if (this.options.priority) {
-                            opt.priority = this.options.priority;
-                        }
+                        opt.priority = this.options.priority || 50;
                         if (this.options.actions.title && msg.title) {
                             opt.headline = msg.title;
                         }
-                        try {
-                            this.adapter.sendTo(this.options.adapter, 'setPopupNotification', opt);
-                            this.log.debug(`Send the message: ${msg.text}`);
-                        } catch (error: any) {
-                            if (error.message == 'Timeout exceeded') {
-                                this.log.warn(
-                                    `Error sending a notification: ${this.options.adapter} does not react in the given time.`,
-                                );
-                            } else {
-                                throw error;
-                            }
-                        }
+                        send(opt);
+                        this.log.debug(`Send the message: ${msg.text}`);
                     }
                 }
                 break;

@@ -5,6 +5,10 @@ import type { ProviderClassType, messageFilterType, providerServices } from './p
 //export type Type = Required<keyof OptionsType>;
 
 export type Type = Required<keyof OptionsType>;
+
+/** Display target of the nspanel-lovelace-ui service. */
+export type NspanelTarget = 'popup' | 'headline' | 'both';
+
 export type OptionsType = {
     gotify?: {
         name: 'gotify';
@@ -50,6 +54,8 @@ export type BaseType =
           name: 'nspanel';
           priority: number;
           alwaysOn: boolean;
+          /** where the message is shown: popup (setPopupNotification), headline (screensaverNotify) or both */
+          target: NspanelTarget;
       } & bBaseType)
     | ({
           name: 'gotify';

@@ -161,7 +161,7 @@
     ],
     "globalDependencies": [
       {
-        "admin": ">=7.6.20"
+        "admin": ">=8.1.0"
       }
     ]
   },
@@ -303,6 +303,7 @@
     "pushover_MessageAllRemove": "RemoveAllMessage",
     "pushover_manualAll": "NewMessage",
     "pushover_Title": "none",
+    "nspanel_Target": "popup",
     "gotify_Enabled": false,
     "gotify_Adapter": [],
     "json_DwdEnabled": true,

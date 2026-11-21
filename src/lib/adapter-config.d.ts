@@ -44,6 +44,13 @@ declare global {
             uwzwarncellTable: { uwzSelectId: string; uwzCityname: string; realWarncell: string }[];
             zamgwarncellTable: { zamgSelectId: string; zamgCityname: string }[];
 
+            /**
+             * Structured configuration of all output/notification services.
+             * Replaces the per-service flat keys (telegram_*, whatsapp_*, …).
+             * The flat keys are kept for backwards-compatible migration.
+             */
+            notificationServices?: import('./notificationServicesModel').NotificationServicesConfig;
+
             dwdEnabled: boolean;
             zamgEnabled: boolean;
             uwzEnabled: boolean;
@@ -141,6 +148,7 @@ declare global {
             nspanel_contentType: "text/plain" | "text/markdown" | undefined;
             nspanel_Priority: number;
             nspanel_alwaysOn: boolean;
+            nspanel_Target: 'popup' | 'headline' | 'both';
             nspanel_Title: string;
 
             json_DwdEnabled: boolean;
