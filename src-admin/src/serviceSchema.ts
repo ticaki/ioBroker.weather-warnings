@@ -192,7 +192,33 @@ function messageField(service: ServiceType, key: MessageKey, dis: string | undef
 }
 
 /**
- * Builds a `selectSendTo` warning filter field.
+ * Generic warn level colours (0 = none … 4 = extreme), as used for the
+ * notification services that receive warnings of every provider.
+ */
+const LEVEL_COLORS = ['#00ff00', '#fffc04', '#ffb400', '#ff0000', '#ff00ff'] as const;
+
+/**
+ * Inline SVG data URI of a coloured square, used as select option icon.
+ *
+ * @param color hex colour of the square
+ */
+function colorSquare(color: string): string {
+    return `data:image/svg+xml,${encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="2" y="2" width="16" height="16" rx="2" fill="${color}" stroke="#808080" stroke-width="1"/></svg>`,
+    )}`;
+}
+
+/** Select options of the level filter: label + colour square per level. */
+function levelOptions(): Item[] {
+    return LEVEL_COLORS.map((color, level) => ({
+        label: `textLevels.textGeneric.${level}`,
+        value: level,
+        icon: colorSquare(color),
+    }));
+}
+
+/**
+ * Builds a `selectSendTo` warning filter field (the level filter is a static `select`).
  *
  * @param service the service type
  * @param command `filterType` or `filterLevel`
@@ -210,6 +236,14 @@ function filterField(
     const multiple = command === 'filterType';
     const tooltip = `${manual ? 'Manual' : ''}${command === 'filterType' ? 'TypeFilter' : 'LevelFilter'}`;
     const label = command === 'filterType' ? 'svc_typefilter' : 'svc_levelfilter';
+    if (command === 'filterLevel') {
+        // static select instead of selectSendTo: only `select` can show the level colour square
+        const levelItem: Item = { type: 'select', options: levelOptions(), ...W, label, tooltip, newLine };
+        if (dis) {
+            levelItem.disabled = dis;
+        }
+        return levelItem;
+    }
     const item: Item = {
         type: 'selectSendTo',
         command,
