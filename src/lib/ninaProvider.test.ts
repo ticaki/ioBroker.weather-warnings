@@ -19,6 +19,28 @@ describe('NINA provider helpers', () => {
         expect(NINAProvider.cleanText(undefined)).to.equal('');
     });
 
+    it('keeps comparisons, strips comments and decodes named entities', () => {
+        expect(NINAProvider.cleanText('Wert < 5 und > 3')).to.equal('Wert < 5 und > 3');
+        expect(NINAProvider.cleanText('<!-- a > b -->Text')).to.equal('Text');
+        expect(NINAProvider.cleanText('&auml;&ouml;&uuml;&szlig; &euro; &unknown;')).to.equal('äöüß € &unknown;');
+        expect(NINAProvider.cleanText('x &#99999999; y')).to.equal('x &#99999999; y');
+        expect(NINAProvider.cleanText(42)).to.equal('42');
+        expect(NINAProvider.cleanText({ a: 1 })).to.equal('');
+    });
+
+    it('builds a short, unique area text', () => {
+        expect(NINAProvider.areaText(['A', 'B', 'A', ' ', 'B'])).to.equal('A, B');
+        const long = NINAProvider.areaText(Array.from({ length: 200 }, (_v, i) => `Gemeinde ${i}`));
+        expect(long.length).to.be.at.most(302);
+        expect(long.endsWith(' …')).to.equal(true);
+    });
+
+    it('compares ids without the source prefix', () => {
+        expect(NINAProvider.bareId('dwd.2.49.0.0.276.0.DWD.PVW.1')).to.equal('2.49.0.0.276.0.DWD.PVW.1');
+        expect(NINAProvider.bareId('dwdmap.2.49.0.0.276.0.DWD.PVW.1')).to.equal('2.49.0.0.276.0.DWD.PVW.1');
+        expect(NINAProvider.bareId('mow.DE-SL-1')).to.equal('DE-SL-1');
+    });
+
     it('maps CAP severity to the generic level', () => {
         expect(NINAProvider.severityToLevel('Minor')).to.equal(1);
         expect(NINAProvider.severityToLevel('Moderate')).to.equal(2);
