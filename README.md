@@ -215,21 +215,17 @@ Hazard icon (`civil_protection.png`): "Danger Triangle icon by Paweł Gleń, Cre
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-- (ticaki) **NEW**: NINA (warning app of the German Federal Office of Civil Protection) as fourth provider: MoWaS, KATWARN, BIWAPP, police, optional DWD and floods; location by coordinates
-- (ticaki) **NEW**: warning types `flood` and `civil_protection` with icons
-- (ticaki) **NEW**: the level filters show the colour of each level
-- (ticaki) **FIXED**: an error of one provider no longer stops the polling of all providers
-- (ticaki) **FIXED**: template editor: long preview titles no longer push the editor out of the window
-- (ticaki) **NEW**: README rewritten with current screenshots
-- (ticaki) **NEW**: the nine duplicated notification-service tabs (telegram, whatsapp, pushover, gotify, nspanel, alexa2, sayit, json, history, email) were replaced by a single admin custom component. The shared option set is now generated once instead of being copy/pasted per service, which removes ~2700 lines from `admin/jsonConfig.json`.
-- (ticaki) **BREAKING**: the admin custom component now uses React 19 / MUI 9 / `@iobroker/gui-components` and requires admin 8.1.0 or newer (needed by json-config 10)
-- (ticaki) **NEW**: notification-service settings are stored in the structured `notificationServices` config object. Existing installations are migrated automatically on first start (one restart).
-- (ticaki) **NEW**: notification service pages reorganised into sections (target, weather services, automatic / manual notifications, further settings) with short field labels; the former long descriptions are shown as tooltips
-- (ticaki) **NEW**: new template editor in the admin: searchable template list, placeholder palette (click to insert), shows which services use a template, renaming updates all references, and a live preview rendered by the adapter with the current warnings (or sample data if there are none)
-- (ticaki) **NEW**: nspanel: choose whether warnings are shown as popup, as headline in the screensaver or both; priority (default 50) applies to both
-- (ticaki) **FIXED**: nspanel: the "always on" option is now actually sent with the popup
-- (ticaki) **FIXED**: restored the `## License` section and the link to the older changelogs in the README; both were cut off by the 0.11.1 release (repochecker E6004)
-- (ticaki) **FIXED**: the telegram Chat-ID typed in the admin is now actually used (the field wrote `telegram_ChatId` while the runtime read `telegram_ChatID`).
+- (ticaki) **BREAKING**: requires admin 8.1.0 or newer
+- (ticaki) **NEW**: NINA, the official German warning app (BBK), is available as a new provider: civil protection warnings (MoWaS), KATWARN, BIWAPP and police, optionally DWD and flood warnings. The location is taken from coordinates, prefilled from the system settings
+- (ticaki) **NEW**: new warning types "flood" and "hazard" (civil protection) with icons and alert states
+- (ticaki) **NEW**: all notification services are configured on one tab "Notification services" with clearly arranged sections. Existing settings are taken over automatically; the adapter restarts once after the update
+- (ticaki) **NEW**: new template editor: search, insert placeholders with a click, see which services use a template, rename it safely and check the result in a live preview with the current warnings
+- (ticaki) **NEW**: the level filters show the colour of each warning level
+- (ticaki) **NEW**: NSPanel: warnings can be shown as popup, as headline in the screensaver or both
+- (ticaki) **FIXED**: NSPanel: the option "always on" is now applied to the popup
+- (ticaki) **FIXED**: Telegram: the chat ID entered in the settings is now used
+- (ticaki) **FIXED**: an error in one provider no longer stops the updates of all providers
+- (ticaki) **NEW**: documentation rewritten with current screenshots (English and German)
 
 ### 0.12.0 (2026-09-20)
 - (ticaki) **NEW**: telegram, whatsapp, pushover, gotify and email can now target multiple adapter instances at once; all selected instances share the same settings (#319)
