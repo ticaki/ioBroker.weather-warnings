@@ -966,6 +966,22 @@ class MessagesClass extends library.BaseClass {
       formatedData: this.formatedData
     };
   };
+  /** jsonata expressions that format the end of a warning */
+  static END_TIME_FIELDS = /EXPIRES|dtgEnd|rawinfo\.end/;
+  /**
+   * Offset of the host time zone at the given moment as `+HHMM` / `-HHMM` (jsonata $fromMillis).
+   *
+   * @param ms the moment in ms; invalid values use the current moment
+   * @returns the offset string, e.g. `+0100` in winter and `+0200` in summer for Europe/Berlin
+   */
+  static timeOffsetAt(ms) {
+    let minutes = -new Date(ms).getTimezoneOffset();
+    if (!Number.isFinite(minutes)) {
+      minutes = -(/* @__PURE__ */ new Date()).getTimezoneOffset();
+    }
+    const abs = Math.abs(minutes);
+    return `${minutes < 0 ? "-" : "+"}${`00${Math.floor(abs / 60)}`.slice(-2)}${`00${abs % 60}`.slice(-2)}`;
+  }
   /**
    * Update the formated Data.
    *
@@ -976,13 +992,17 @@ class MessagesClass extends library.BaseClass {
       throw new Error(`${this.log.getName()} error(165) rawWarning null or undefined!`);
     }
     {
-      const timeOffset = (Math.floor((/* @__PURE__ */ new Date()).getTimezoneOffset() / 60) < 0 || (/* @__PURE__ */ new Date()).getTimezoneOffset() % 60 < 0 ? "+" : "-") + `00${Math.abs(Math.floor((/* @__PURE__ */ new Date()).getTimezoneOffset() / 60))}`.slice(-2) + `00${Math.abs((/* @__PURE__ */ new Date()).getTimezoneOffset() % 60)}`.slice(-2);
+      const offsetStart = MessagesClass.timeOffsetAt(this.starttime);
+      const offsetEnd = MessagesClass.timeOffsetAt(this.endtime === NINA_NO_END ? Date.now() : this.endtime);
       const status = this.newMessage ? MessageType.status.new : this.notDeleted && this.name != "noMessage" ? MessageType.status.hold : MessageType.status.clear;
       const temp = {};
       for (const key in this.formatedKeysJsonataDefinition) {
         const obj = this.formatedKeysJsonataDefinition[key];
         if (obj !== void 0) {
-          const cmd = obj.node !== void 0 && obj.node != "" ? obj.node.replace(`\${this.timeOffset}`, timeOffset) : "";
+          const cmd = obj.node !== void 0 && obj.node != "" ? obj.node.replace(
+            `\${this.timeOffset}`,
+            MessagesClass.END_TIME_FIELDS.test(obj.node) ? offsetEnd : offsetStart
+          ) : "";
           let result = cmd != "" ? await this.library.readWithJsonata(
             this.rawWarning,
             cmd
@@ -1213,7 +1233,7 @@ class MessagesClass extends library.BaseClass {
   getCountdown(time, typ) {
     const diff = time - Date.now();
     const remain = new Date(Math.abs(diff));
-    const d = remain.getUTCDate() - 1;
+    const d = Math.floor(Math.abs(diff) / 864e5);
     switch (typ) {
       case "future":
         return diff < 0 ? "-1" : "1";
@@ -1222,7 +1242,7 @@ class MessagesClass extends library.BaseClass {
       case "hours":
         return String(d * 24 + remain.getUTCHours());
       case "full": {
-        const h = d > 0 ? `00${String(remain.getUTCHours())}`.slice(2) : String(remain.getUTCHours());
+        const h = d > 0 ? `00${String(remain.getUTCHours())}`.slice(-2) : String(remain.getUTCHours());
         return `${diff < 0 ? "-" : ""}${d > 0 ? `${String(d)}:` : ""}${h}:${`00${String(remain.getUTCMinutes())}`.slice(
           -2
         )}`;

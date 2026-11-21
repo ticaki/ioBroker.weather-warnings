@@ -984,6 +984,24 @@ export class MessagesClass extends library.BaseClass {
         };
     };
 
+    /** jsonata expressions that format the end of a warning */
+    static END_TIME_FIELDS = /EXPIRES|dtgEnd|rawinfo\.end/;
+
+    /**
+     * Offset of the host time zone at the given moment as `+HHMM` / `-HHMM` (jsonata $fromMillis).
+     *
+     * @param ms the moment in ms; invalid values use the current moment
+     * @returns the offset string, e.g. `+0100` in winter and `+0200` in summer for Europe/Berlin
+     */
+    static timeOffsetAt(ms: number): string {
+        let minutes = -new Date(ms).getTimezoneOffset();
+        if (!Number.isFinite(minutes)) {
+            minutes = -new Date().getTimezoneOffset();
+        }
+        const abs = Math.abs(minutes);
+        return `${minutes < 0 ? '-' : '+'}${`00${Math.floor(abs / 60)}`.slice(-2)}${`00${abs % 60}`.slice(-2)}`;
+    }
+
     /**
      * Update the formated Data.
      *
@@ -995,12 +1013,10 @@ export class MessagesClass extends library.BaseClass {
         }
 
         {
-            const timeOffset =
-                (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0
-                    ? '+'
-                    : '-') +
-                `00${Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))}`.slice(-2) +
-                `00${Math.abs(new Date().getTimezoneOffset() % 60)}`.slice(-2);
+            // offset of the host time zone at the warning's own start/end - not "now": a warning that
+            // starts or ends on the other side of a daylight saving change would be shown 1 h off
+            const offsetStart = MessagesClass.timeOffsetAt(this.starttime);
+            const offsetEnd = MessagesClass.timeOffsetAt(this.endtime === NINA_NO_END ? Date.now() : this.endtime);
             const status = this.newMessage
                 ? MessageType.status.new
                 : this.notDeleted && this.name != 'noMessage'
@@ -1010,10 +1026,13 @@ export class MessagesClass extends library.BaseClass {
             for (const key in this.formatedKeysJsonataDefinition) {
                 const obj = this.formatedKeysJsonataDefinition[key as keyof MessageType.customFormatedKeysDef];
                 if (obj !== undefined) {
-                    // reset the offset because of daylight saving time
+                    // expressions on the end time get the offset at the end, all others the one at the start
                     const cmd =
                         obj.node !== undefined && obj.node != ''
-                            ? obj.node.replace(`\${this.timeOffset}`, timeOffset)
+                            ? obj.node.replace(
+                                  `\${this.timeOffset}`,
+                                  MessagesClass.END_TIME_FIELDS.test(obj.node) ? offsetEnd : offsetStart,
+                              )
                             : '';
 
                     let result =
@@ -1275,7 +1294,8 @@ export class MessagesClass extends library.BaseClass {
     getCountdown(time: number, typ: 'minutes' | 'hours' | 'full' | 'future'): string {
         const diff = time - Date.now();
         const remain = new Date(Math.abs(diff));
-        const d = remain.getUTCDate() - 1;
+        // whole days of the difference - getUTCDate() would start again at 1 after a month
+        const d = Math.floor(Math.abs(diff) / 86_400_000);
 
         switch (typ) {
             case 'future':
@@ -1285,7 +1305,7 @@ export class MessagesClass extends library.BaseClass {
             case 'hours':
                 return String(d * 24 + remain.getUTCHours());
             case 'full': {
-                const h = d > 0 ? `00${String(remain.getUTCHours())}`.slice(2) : String(remain.getUTCHours());
+                const h = d > 0 ? `00${String(remain.getUTCHours())}`.slice(-2) : String(remain.getUTCHours());
                 return `${diff < 0 ? '-' : ''}${d > 0 ? `${String(d)}:` : ''}${h}:${`00${String(remain.getUTCMinutes())}`.slice(
                     -2,
                 )}`;

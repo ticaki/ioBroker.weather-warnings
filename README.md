@@ -225,6 +225,8 @@ Hazard icon (`civil_protection.png`): "Danger Triangle icon by Paweł Gleń, Cre
 - (ticaki) **FIXED**: NSPanel: the option "always on" is now applied to the popup
 - (ticaki) **FIXED**: Telegram: the chat ID entered in the settings is now used
 - (ticaki) **FIXED**: an error in one provider no longer stops the updates of all providers
+- (ticaki) **FIXED**: times of warnings that start or end on the other side of a daylight saving change are no longer shown one hour off
+- (ticaki) **FIXED**: the countdown of warnings that are active for more than a month shows the correct number of days
 - (ticaki) **NEW**: documentation rewritten with current screenshots (English and German)
 
 ### 0.12.0 (2026-09-20)
