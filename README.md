@@ -16,130 +16,194 @@
 
 ## weather-warnings adapter for ioBroker
 
-[Deutsche Readme (meist aktueller)](https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README_DE.md)
+[Deutsche Readme](https://github.com/ticaki/ioBroker.weather-warnings/blob/main/README_DE.md)
 
-This adapter accesses weather warnings of different weather services and outputs them as text or voice messages. Additionally it creates States grouped by type, which can be used to react to current warnings.
+This adapter collects official weather and civil protection warnings for your locations and
+- sends them as text or voice messages (Telegram, WhatsApp, Pushover, Gotify, email, NSPanel, Alexa, SayIt),
+- writes them into states (raw data, formatted values, warnings grouped by type) for VIS and scripts.
 
-Provider:
-- DWD 
-- ZAMG (Austria)
-- UWZ
+All texts are built from templates that you can edit in the admin with a live preview.
 
-Push service
-- Telegram
-- Whatsapp
-- Pushover
-- Email
-- Alexa
-- Sayit
+### Providers
+
+| Provider | Area | Location | Notes |
+|---|---|---|---|
+| **DWD** (Deutscher Wetterdienst) | Germany | municipality or district from a list | official weather warnings |
+| **UWZ** (Unwetterzentrale) | Europe | coordinates | weather warnings |
+| **ZAMG / GeoSphere** | Austria | coordinates | weather warnings |
+| **NINA** (BBK warning app) | Germany | coordinates → district | civil protection: MoWaS, KATWARN, BIWAPP, police; optional DWD and floods (LHP) |
+
+Several locations per provider are possible. Each location is a separate device below `provider.<provider>.<location>`.
+
+### Notification services
+
+Telegram, WhatsApp, Pushover, Gotify, Email, NSPanel (nspanel-lovelace-ui), Alexa (alexa2), SayIt, plus two adapter-internal outputs:
+- **History**: a list of the last warnings in a state
+- **JSON array**: the current warnings as JSON for scripts
+
+Telegram, WhatsApp, Pushover, Gotify and Email can send to several adapter instances at once.
+
+## Requirements
+
+- Node.js 22 or newer
+- js-controller 6.0.11 or newer
+- Admin 8.1.0 or newer
 
 ## Installation
-Min. Nodejs: v22
-After installation the configuration site will automatically open and will be needed to be **reloaded**. This will show the templates in the language that was set.
+
+Install the adapter from the ioBroker admin. After the first start the instance writes the message templates in the system language. If the configuration page was already open, **reload it** to see them.
 
 ## Configuration
-![Basicconfiguration](img/basic.png)
 
-- **Activate DWD/UWZ/ZAMG:** activate the data retrieval of these service providers.
-- **Activate telegram/pushover,...:** activate the output of messages to these installed adapters. 
-- **Activate email:** Writes all current warnings in an E-Mail.
-- **Activate history:** writes the history, which can hold up to 500 entries, into the State: .history. All data or selected data.
-- **Activate json-array:** very special, puts the current warnings into an Array or - after activation - a user-specifc Json into an Array, which can be used by scripts.
+### General
 
-- **Update interval:** the interval of data retrieval in minutes (minimum: 5)
+![General](img/config-general.png)
 
-- **Incoming warnings...:** After starting the adapter the warnings of the first data retrieval will be treated as known and will not trigger a notification.
+- **Activate DWD / UWZ / ZAMG / NINA**: enables the data retrieval of this provider. Each provider gets its own tab.
+- **Activate Telegram / Pushover / …**: enables a notification service. Its settings are on the tab *Notification services*.
+- **Color of icons**: colour set used for `${iconurl}`.
+- **Update interval**: in minutes, for all providers (minimum 5).
+- **Maximum number of processed warnings per provider**: number of state slots `00`, `01`, … per location.
+- **Incoming warnings after adapter start are considered known**: warnings that already exist when the adapter starts do not trigger a notification.
+- **Expert**: shows additional settings (quiet times for voice output, alternative icon URLs, which state folders are written, test options).
+- **Activate test warnings**: uses built-in test data instead of the real providers.
 
-- **Expert**: Activates additional optional settings 
+### Templates
 
-- **Testing- Activate...:** Use testdata. Adapter is offline.
+![Templates](img/config-templates.png)
 
-- **Testing- Raw data history:** For Debugging, only on request.
+The messages are built from templates. The editor shows
+- the list of templates (searchable) with the number of places that use each one,
+- where a template is used (**Used by**), renaming a template updates all these places,
+- a palette of all placeholders – click to insert,
+- a **live preview** rendered by the adapter with the current warnings (or sample data if there are none).
 
+Template syntax:
+- `${token}` is replaced by a value of the warning, e.g. `${headline}`, `${starttime}`. A capital first letter (`${Warntypename}`) capitalises the value.
+- `${_myTemplate}` inserts another template. Templates whose key starts with `_` are not offered to the services.
+- `${[a,b,c,d,e]warnlevelnumber}` picks an entry by a numeric token, e.g. `${[0,🟢,🟡,🟠,🔴]warnlevelnumber}`.
+- `${(value=token)then#else}` or `${(value=token)then}` – comparisons `=`, `!=`, `<`, `>`.
+- `\n` is a line break; in JSON templates a closing brace must be written as `\}`.
 
+**Restore templates** resets all templates to the default ones in the current system language (your templates are lost). **Add default templates** only adds missing ones.
 
-![Template](img/template.png)
+<details>
+<summary>All placeholders</summary>
 
-Here you can create own messages or edit existing ones. All available „Tokens“ and their meanings are displayed below the table. The Unique identifier is used by push notification services in order to determine which template to use for which type of notification.
+| Placeholder | Meaning |
+|---|---|
+| `headline`, `description`, `instruction`, `impact` | texts of the warning (`impact` ZAMG only) |
+| `warnlevelname`, `warnlevelnumber` | level as text / number 0–4 |
+| `warnlevelcolorname`, `warnlevelcolorhex` | colour of the level as text / hex |
+| `warntypename` | warning type as delivered by the provider |
+| `warntypegenericname`, `warntypegeneric` | unified warning type (see below) as text / number |
+| `weatheremoji`, `iconurl`, `htmlicon` | emoji, URL of the icon, icon as base64 `<img>` |
+| `location`, `locationcustom`, `provider` | area from the provider, your place name, provider |
+| `starttime`, `startdate`, `startday`, `startmonth`, `startdayofweek`, `startdayofweekshort` | start |
+| `endtime`, `enddate`, `endday`, `endmonth`, `enddayofweek`, `enddayofweekshort` | end |
+| `startdaytime`, `enddaytime`, `startadverb` | time of day, "today/tomorrow/…" |
+| `countdown`, `cdhour`, `cdminute`, `cdfuture` | time until the start |
+| `starttimems`, `endtimems` | timestamps in ms (`endtimems` is 0 if the warning has no end) |
+| `ceiling`, `altitude` | height range (DWD, UWZ) |
+| `status`, `warningcount` | new / hold / all clear, number of warnings |
+| `zamgdayPeriod` | ZAMG: whole-day warning |
 
-Save and close after adding or deleting templates.
+</details>
 
-Signs with special meaning:
-- `${}` contains tokens that are substituted by generated information. The template identifier is usable here as well.
-- Template identifier that start with `_` are not offered by services.
-- `${[0,1,2,3,4]token}` A string with values, token has to be a number token. The index is the same as shown in the example. 0 is the first value in the list.
-- `${(value=token)result1#result2}` or `${(value=token)result1}` is the same as a javascript command: `if (value == token) result1 else result2` possible comparisons: `= < > != `
-- for a Jsons template the closing bracket `}` has to be written in this way `\}`
-- see examples in the adapter
-- alternatively also possible: `${[0,🟢,🟡,🟠,🔴]warnlevelnumber}`
+### Providers
 
-**Restore Templates:** Resets the templates back to the current system language. Existing templates will be **lost**. Afterwards save & close. Should be used after changing system language.
+![DWD](img/config-dwd.png)
 
-![DWD](img/DWD.png)
+- **DWD**: choose the municipality or district from the list (about 10 000 entries). After entering a place, switch to another tab and back – the list is too big to refresh immediately.
+- **UWZ**: coordinates `latitude/longitude`. The adapter looks up the UWZ area once and stores it.
+- **ZAMG**: coordinates within Austria.
+- **Place name**: your own name for the location, available as `${locationcustom}`.
+- **Filter raw data: start time**: ignores warnings that start more than X hours in the future (0 = off).
+- **Warning types**: the selected types are discarded.
+- **Level**: warnings below this level are discarded. The coloured square shows the colour of the level.
 
-**DWD:** Selection from a list of 10000 places, after entry click on another tab and then return, list is too big and has to be updated.
+#### NINA
 
-**UWZ:** Entry using the country identifier DE AT (others possible, has to be tested) and the postal code, for example DE12345
+![NINA](img/config-nina.png)
 
-**ZAMG:** Only for Austria. Entry of coordinates within Austria.
+NINA is the official warning app of the Federal Office of Civil Protection (BBK). It contains warnings that weather services do not have: hazardous substances, drinking water, unexploded bombs, power failures, police operations, floods, …
 
-**Place name:** user-specific place name, can be used in warnings (useful with multiple warning cells)
+- **Coordinates**: prefilled from the ioBroker system settings. At start the adapter determines the district (Landkreis) from the coordinates and shows its key (ARS) in the table. NINA warns per district, so two places in the same district are only queried once.
+- **Sources**: which NINA sources are used. Default: MoWaS (civil protection), KATWARN, BIWAPP and police. **DWD** is available as its own provider and **floods (LHP)** are very local, so both are off by default.
+- Warnings without an end (common for MoWaS) are shown as "until further notice" in `${endtime}`; they end when NINA removes them.
+- All clear messages end the referenced warning; updates of a warning replace it without a new notification (unless the level rises).
+- The texts are taken in the system language if NINA provides it (otherwise English or German, flood warnings are German only).
 
-**Filter:** 
-- Filter Raw data: Filters out everything within X hours into the future before every following handling.
-- Type: discards everything with this type.
-- Level: everything lower than this level will be discarded. 
+### Notification services
 
-![telegram](img/telegram.png)
-**Adapter:** If this option was activated and there is an adapter field, a valid option has to be chosen. An error message in the log indicates missing settings. 
+![Notification services](img/config-services.png)
 
-**Activate ...:** Send warnings by this provider with this service.
+Every activated service has its own page with the same sections:
+- **Target**: the adapter instance(s) to send to. Without a valid target the service is not started (see log).
+- **Weather services**: which providers are sent with this service.
+- **Automatic notifications**: templates for *new warning*, *warning lifted* (other warnings still active) and *no more warnings*, plus a type filter and a minimum level. Choosing `none` as template sends nothing for this case.
+- **Manually triggered notifications**: templates used when you write to `commands.send_message.<service>` – one for "there are warnings", one for "no warnings".
+- **Further settings**: service specific options, e.g.
+  - Telegram: user names, chat ID, silent message, parse mode
+  - Pushover / Gotify: priority, sound, device, content type
+  - NSPanel: popup, screensaver headline or both, priority, always on
+  - Alexa: devices, volume, audio file before the message, sound per warning type (expert)
+  - SayIt: instances and volume
+  - Email: recipients, title, header and footer templates, line break
+  - History: write every formatted value into the history
 
-**Filter:** 
-1) Ignore warnings with this Type
-2) Ignore warnings with equal or lower level 
+Voice output (Alexa, SayIt) can be muted by **quiet time profiles** (expert, tab *Additional settings*), switchable with `commands.silentTime.*`.
 
+## Warning levels and types
 
-**Messages:** use the following templates for:
-Column 1:
-1) New warnings or existing warnings
-2) A warning was removed and there are **other** active warnings.
-3) Warnings were removed and there are **no other** active warnings.
+| Level | Meaning | Colour |
+|---|---|---|
+| 0 | none | green |
+| 1 | minor | yellow |
+| 2 | moderate | orange |
+| 3 | severe | red |
+| 4 | extreme | violet (DWD: dark red) |
 
-Column 2:
-1) Manually triggered notifications
-2) Use for no warning 1.3
+Each provider uses its own warning types. The adapter maps them to unified types, which are used for filters, icons and the `alerts` states:
 
-Templates for 3) cannot contain `${}` Tokens.
+`storm`, `snowfall`, `rain`, `cold`, `forest_fire`, `thunderstorm`, `black_ice_slippery`, `heat`, `hail`, `fog`, `thaw`, `flood`, `civil_protection`, `unknown`
 
-**Special features**
+`flood` and `civil_protection` (all non-weather events of NINA) come from NINA.
 
-**email:** Header is put before the Mail, followed by 1,2 or 3 + line break and then Footer. The email is sent in html format, so you can add any htmp tag you like. (additional features are being worked on, not ready yet)
+## States
 
-**alexa:** Additionally one or multiple devices has/have to be selected. The volume only changes for voice messages and should afterwards be reset to default. Message size per warning is limited to 250 characters. Sounds are possible, activate Expert to display the options.
+| State | Content |
+|---|---|
+| `provider.<provider>.<location>.warning.NN` | raw data of the warning as delivered by the provider (NINA: already cleaned up) |
+| `provider.<provider>.<location>.formatedKeys.NN` | all placeholders with their current value, plus your templates starting with `_` |
+| `provider.<provider>.<location>.alerts.<type>` | per warning type: `level`, `start`, `end`, `headline`, `active`, `type` – the highest active warning of this type |
+| `provider.<provider>.<location>.history`, `.activeWarnings`, `.lastUpdate` | per location |
+| `alerts.<type>` | like above, across all providers and locations |
+| `provider.activeWarnings`, `provider.hasActiveWarning`, `provider.maxLevel`, `provider.maxLevelText` | summary of all warnings |
+| `provider.history` | history (service *History*) |
+| `commands.send_message.<service>` | send the current warnings with this service (manual templates) |
+| `commands.silentTime.*` | quiet time profile and automatic mode |
+| `commands.clearHistory` | clears the history |
 
-**title, header, footer** only ${status} works here. Other tokens contain random values or no value.
+The number of slots `NN` is fixed (setting *Maximum number of processed warnings*). Empty slots are cleared, not deleted, so the object tree does not change with every warning.
 
-## General Behaviour
-- No duplicate messages should be sent for one and the same thing. DWD is very particular about this.
-- If `none` is selected as the template, no notifications are sent for it.
-- States in .alerts contain arrays for start, end, warning type, now active and headline, grouped by warning type. One warning per group is displayed filtered by the following criteria: 
-  1) Warning is **now** active (the one with the highest level).
-  
+## General behaviour
+
+- No duplicate messages for the same warning: updates of a warning are only sent if it is a new warning for you.
+- `alerts.<type>` shows one warning per type: the one that is active **now** with the highest level, otherwise the next one in the future.
+- Times are shown in the time zone of the ioBroker host – make sure the host uses a real zone like `Europe/Berlin`, not a fixed offset.
+
 ## Icons
 
-DWD Icon: Copyright by Deutscher Wetterdienst
-ZAMG Icon: Copyright by 
+DWD icon: Copyright by Deutscher Wetterdienst
 
-others:
+ZAMG icon: Copyright by GeoSphere Austria
 
-Creator: [Adri Ansyah](https://www.youtube.com/channel/UChLOv1L-ftAFc2ZizdEAKgw?view_as=subscriber)
-
-Changes: In the original they are blue, other colours are changes to the original. 
-
-Licence: [CC BY 4.0 LEGAL CODE](https://creativecommons.org/licenses/by/4.0/legalcode)
-
-Iconpage: https://www.flaticon.com/packs/weather-613
+Weather icons:
+- Creator: [Adri Ansyah](https://www.youtube.com/channel/UChLOv1L-ftAFc2ZizdEAKgw?view_as=subscriber)
+- Iconpage: https://www.flaticon.com/packs/weather-613
+- Licence: [CC BY 4.0 LEGAL CODE](https://creativecommons.org/licenses/by/4.0/legalcode)
+- Changes: in the original they are blue, other colours are changes to the original.
 
 Flood icon (`flood.png`): "Flooding icon by Adriansyah, Creative Commons, via ToSVG" - https://tosvg.com/icon/flooding-1044958 (recoloured)
 
@@ -151,6 +215,12 @@ Hazard icon (`civil_protection.png`): "Danger Triangle icon by Paweł Gleń, Cre
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+- (ticaki) **NEW**: NINA (warning app of the German Federal Office of Civil Protection) as fourth provider: MoWaS, KATWARN, BIWAPP, police, optional DWD and floods; location by coordinates
+- (ticaki) **NEW**: warning types `flood` and `civil_protection` with icons
+- (ticaki) **NEW**: the level filters show the colour of each level
+- (ticaki) **FIXED**: an error of one provider no longer stops the polling of all providers
+- (ticaki) **FIXED**: template editor: long preview titles no longer push the editor out of the window
+- (ticaki) **NEW**: README rewritten with current screenshots
 - (ticaki) **NEW**: the nine duplicated notification-service tabs (telegram, whatsapp, pushover, gotify, nspanel, alexa2, sayit, json, history, email) were replaced by a single admin custom component. The shared option set is now generated once instead of being copy/pasted per service, which removes ~2700 lines from `admin/jsonConfig.json`.
 - (ticaki) **BREAKING**: the admin custom component now uses React 19 / MUI 9 / `@iobroker/gui-components` and requires admin 8.1.0 or newer (needed by json-config 10)
 - (ticaki) **NEW**: notification-service settings are stored in the structured `notificationServices` config object. Existing installations are migrated automatically on first start (one restart).
