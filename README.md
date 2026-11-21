@@ -214,7 +214,7 @@ Hazard icon (`civil_protection.png`): "Danger Triangle icon by Paweł Gleń, Cre
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 1.0.0 (2026-11-21)
 - (ticaki) **BREAKING**: requires admin 8.1.0 or newer
 - (ticaki) **NEW**: NINA, the official German warning app (BBK), is available as a new provider: civil protection warnings (MoWaS), KATWARN, BIWAPP and police, optionally DWD and flood warnings. The location is taken from coordinates, prefilled from the system settings
 - (ticaki) **NEW**: new warning types "flood" and "hazard" (civil protection) with icons and alert states
@@ -241,15 +241,6 @@ Hazard icon (`civil_protection.png`): "Danger Triangle icon by Paweł Gleń, Cre
 
 ### 0.11.1 (2026-06-18)
 - (ticaki) **FIXED**: spoken/written color name for DWD heat warnings (`warnlevelcolorname`) is now correct: the light violet DWD heat color (`#cc99ff`) was misclassified as "green" and is now named "violet", matching email/vis (#220)
-
-### 0.11.0 (2026-06-02)
-- (copilot) **BREAKING**: Adapter requires node.js >= 22 now
-- (ticaki) **NEW**: added DWD warning type 86 "extreme black ice" (extremes Glatteis) (#251)
-- (ticaki) **NEW**: added global aggregate states `provider.hasActiveWarning` (boolean), `provider.maxLevel` (number) and `provider.maxLevelText` (text)
-- (ticaki) **FIXED**: alexa2 notification no longer crashes when a warning type has no assigned sound
-- (ticaki) **FIXED**: per-provider deactivation of datapoint categories (warning/alerts/formatedKeys) is applied again on restart
-- (ticaki) **FIXED**: addressed ioBroker repository checker findings (node >= 22, `source-map-support` moved to runtime dependencies, admin jsonConfig schema issues, missing translations) (#300, #112)
-- (ticaki) **FIXED**: DWD color name (`warnlevelcolorname`, e.g. spoken by Alexa) now matches the actual DWD warning color shown in email/vis instead of being derived from severity (#220)
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

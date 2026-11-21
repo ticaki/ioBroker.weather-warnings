@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "weather-warnings",
-    "version": "0.12.0",
+    "version": "1.0.0",
     "news": {
       "1.0.0": {
         "en": "**BREAKING**: requires admin 8.1.0 or newer\n**NEW**: NINA, the official German warning app (BBK), is available as a new provider: civil protection warnings (MoWaS), KATWARN, BIWAPP and police, optionally DWD and flood warnings. The location is taken from coordinates, prefilled from the system settings\n**NEW**: new warning types \"flood\" and \"hazard\" (civil protection) with icons and alert states\n**NEW**: all notification services are configured on one tab \"Notification services\" with clearly arranged sections. Existing settings are taken over automatically; the adapter restarts once after the update\n**NEW**: new template editor: search, insert placeholders with a click, see which services use a template, rename it safely and check the result in a live preview with the current warnings\n**NEW**: the level filters show the colour of each warning level\n**NEW**: NSPanel: warnings can be shown as popup, as headline in the screensaver or both\n**FIXED**: NSPanel: the option \"always on\" is now applied to the popup\n**FIXED**: Telegram: the chat ID entered in the settings is now used\n**FIXED**: an error in one provider no longer stops the updates of all providers\n**FIXED**: times of warnings that start or end on the other side of a daylight saving change are no longer shown one hour off\n**FIXED**: the countdown of warnings that are active for more than a month shows the correct number of days\n**NEW**: documentation rewritten with current screenshots (English and German)",
@@ -93,19 +93,6 @@
         "pl": "* *FIXED* *: Błędy sieciowe (np. w dół internetu, awaria DNS, błędy HTTP) pokazują teraz jasną, czytelną wiadomość zamiast '[obiekt Object]' lub bezużyteczny ślad stosu ",
         "uk": "**FIXED***: мережеві помилки (наприклад, інтернет вниз, DNS помилки, помилки HTTP) тепер показують чітке, прочитане повідомлення замість `[об'єкт об'єкта]` або без використання слід",
         "zh-cn": "** FIXED**:网络错误(例如互联网下行、DNS故障、HTTP错误)现在显示一个清晰、可读的信息,而不是`[对象对象]'或一个无用的堆栈跟踪"
-      },
-      "0.10.0": {
-        "en": "update deps\nfix a problem with \"remove\" key\nsupport added for nspanel-lovelace-ui (>= v0.8.0)",
-        "de": "update deps\nproblem mit \"remove\" Key behoben\nUnterstützung für nspanel-lovelace-ui (>= v0.8.0) hinzugefügt",
-        "ru": "обновление deps\nустранение проблемы с «удалением» ключа\nподдержка, добавленная для nspanel-lovelace-ui (>= v0.8.0)",
-        "pt": "atualizar deps\ncorrigir um problema com a chave \"remover\"\nsuporte adicionado para nspanel-lovelace-ui (>= v08.0)",
-        "nl": "update deps\neen probleem oplossen met \"verwijderen\" sleutel\nondersteuning toegevoegd voor nspanel-lovelace-ui (>= v0.8.0)",
-        "fr": "mettre à jour les deps\nrésoudre un problème avec la clé \"supprimer\"\nsupport ajouté pour nspanel-lovelace-ui (>= v0,8.0)",
-        "it": "aggiornamento dep\nrisolvere un problema con la chiave \"remove\"\nsupporto aggiunto per nspanel-lovelace-ui (>= v0.8.0)",
-        "es": "actualización de los deps\nsolucionar un problema con la tecla \"remove\"\nsoporte añadido para nspanel-lovelace-ui ( confianza= v0.8.0)",
-        "pl": "aktualizacje deps\nnaprawić problem z \"usuń\" klucz\nsupport added for nspanel- lovelace- ui (> = v0.8.0)",
-        "uk": "оновлення deps\nвиправити проблему з ключем \"попередня\"\nпідтримка додано для nspanel-lovelace-ui (>= v0.8.0)",
-        "zh-cn": "更新代码\n解决“ 移动” 密钥的问题\n为 nspanel-lovelace-ui 添加了支持(%% v0.8.0)"
       }
     },
     "titleLang": {
