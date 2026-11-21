@@ -56,6 +56,10 @@ export function resolveNotificationServices(
         if (cfg[`${notificationService}_ZamgEnabled`]) {
             service.push('zamgService');
         }
+        // NINA came later: a missing key (older configs) counts as enabled
+        if (cfg[`${notificationService}_NinaEnabled`] !== false) {
+            service.push('ninaService');
+        }
         const template: NotificationType.ActionsType = {
             new:
                 cfg[`${notificationService}_MessageNew`] !== undefined

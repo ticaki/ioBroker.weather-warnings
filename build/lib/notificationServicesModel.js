@@ -126,7 +126,9 @@ function flatEntryToModel(service, flat) {
     providers: {
       dwd: !!flat[`${service}_DwdEnabled`],
       uwz: !!flat[`${service}_UwzEnabled`],
-      zamg: !!flat[`${service}_ZamgEnabled`]
+      zamg: !!flat[`${service}_ZamgEnabled`],
+      // NINA came later: a missing key (older configs) counts as enabled
+      nina: flat[`${service}_NinaEnabled`] !== false
     },
     filter: {
       auto: {
@@ -163,31 +165,32 @@ function flatEntryToModel(service, flat) {
   return entry;
 }
 function modelEntryToFlat(service, entry) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t;
   const caps = SERVICE_CAPS[service];
   const flat = {};
   flat[`${service}_DwdEnabled`] = !!((_a = entry.providers) == null ? void 0 : _a.dwd);
   flat[`${service}_UwzEnabled`] = !!((_b = entry.providers) == null ? void 0 : _b.uwz);
   flat[`${service}_ZamgEnabled`] = !!((_c = entry.providers) == null ? void 0 : _c.zamg);
-  flat[`${service}_TypeFilter`] = (_f = (_e = (_d = entry.filter) == null ? void 0 : _d.auto) == null ? void 0 : _e.type) != null ? _f : [];
-  flat[`${service}_LevelFilter`] = (_i = (_h = (_g = entry.filter) == null ? void 0 : _g.auto) == null ? void 0 : _h.level) != null ? _i : 0;
+  flat[`${service}_NinaEnabled`] = ((_d = entry.providers) == null ? void 0 : _d.nina) !== false;
+  flat[`${service}_TypeFilter`] = (_g = (_f = (_e = entry.filter) == null ? void 0 : _e.auto) == null ? void 0 : _f.type) != null ? _g : [];
+  flat[`${service}_LevelFilter`] = (_j = (_i = (_h = entry.filter) == null ? void 0 : _h.auto) == null ? void 0 : _i.level) != null ? _j : 0;
   if (caps.adapter === "single") {
-    flat[`${service}_Adapter`] = (_j = entry.adapter) != null ? _j : "none";
+    flat[`${service}_Adapter`] = (_k = entry.adapter) != null ? _k : "none";
   } else if (caps.adapter === "array") {
-    flat[`${service}_Adapter_Array`] = (_k = entry.adapters) != null ? _k : [];
+    flat[`${service}_Adapter_Array`] = (_l = entry.adapters) != null ? _l : [];
   }
   if (caps.manualFilter) {
-    flat[`${service}_ManualTypeFilter`] = (_n = (_m = (_l = entry.filter) == null ? void 0 : _l.manual) == null ? void 0 : _m.type) != null ? _n : [];
-    flat[`${service}_ManualLevelFilter`] = (_q = (_p = (_o = entry.filter) == null ? void 0 : _o.manual) == null ? void 0 : _p.level) != null ? _q : 0;
+    flat[`${service}_ManualTypeFilter`] = (_o = (_n = (_m = entry.filter) == null ? void 0 : _m.manual) == null ? void 0 : _n.type) != null ? _o : [];
+    flat[`${service}_ManualLevelFilter`] = (_r = (_q = (_p = entry.filter) == null ? void 0 : _p.manual) == null ? void 0 : _q.level) != null ? _r : 0;
   }
   for (const key of caps.messages) {
-    const v = (_r = entry.messages) == null ? void 0 : _r[key];
+    const v = (_s = entry.messages) == null ? void 0 : _s[key];
     if (v !== void 0) {
       flat[`${service}_${MESSAGE_SUFFIX[key]}`] = v;
     }
   }
   for (const suffix of caps.extras) {
-    const v = (_s = entry.extras) == null ? void 0 : _s[suffix];
+    const v = (_t = entry.extras) == null ? void 0 : _t[suffix];
     if (v !== void 0) {
       flat[`${service}_${suffix}`] = v;
     }

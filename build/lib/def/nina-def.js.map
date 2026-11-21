@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/lib/def/nina-def.ts"],
+  "sourcesContent": ["/** NINA sub sources (`payload.data.provider` of a dashboard entry, upper case). */\nexport const ninaSources = ['MOWAS', 'KATWARN', 'BIWAPP', 'POLICE', 'DWD', 'LHP'] as const;\nexport type ninaSourceType = (typeof ninaSources)[number];\n/** sources that are active when the user did not choose any (DWD is its own provider, LHP is too local) */\nexport const ninaDefaultSources: ninaSourceType[] = ['MOWAS', 'KATWARN', 'BIWAPP', 'POLICE'];\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AACO,MAAM,cAAc,CAAC,SAAS,WAAW,UAAU,UAAU,OAAO,KAAK;AAGzE,MAAM,qBAAuC,CAAC,SAAS,WAAW,UAAU,QAAQ;",
+  "names": []
+}

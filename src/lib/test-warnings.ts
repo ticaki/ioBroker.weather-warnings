@@ -1,5 +1,5 @@
 import type { WeatherWarnings } from './WeatherWarnings';
-import type { DataImportType } from './def/provider-def';
+import type { DataImportType, dataImportNinaTypeProperties } from './def/provider-def';
 
 /**
  * Returns true, if test data shall be used.
@@ -99,6 +99,33 @@ export const defaultData = {
         warntypid: 0,
         nachrichtentyp: '',
         location: '',
+    },
+    // "no warning" placeholder of a NINA slot - same epoch times as the dwd placeholder
+    ninaService: {
+        ID: '',
+        VERSION: 0,
+        SOURCE: '',
+        MSGTYPE: '',
+        STATUS: '',
+        SEVERITY: '',
+        URGENCY: '',
+        CERTAINTY: '',
+        EVENTCODE: '',
+        TYPE: 0,
+        EVENT: '',
+        HEADLINE: '',
+        DESCRIPTION: '',
+        INSTRUCTION: '',
+        SENDERNAME: '',
+        AREADESC: '',
+        WEB: '',
+        LANGUAGE: '',
+        SENT: 3_600_000,
+        ONSET: 3_600_000,
+        EXPIRES: 3_600_000,
+        LEVEL: 0,
+        UNTILREVOKED: '',
+        REFERENCES: '',
     },
 };
 
@@ -551,6 +578,9 @@ export function getTestData(service: string, _that: WeatherWarnings): DataImport
             }
         }
         return result.zamgService;
+    } else if (service == 'ninaService') {
+        // no NINA test warnings: an empty dashboard clears the real ones while the test mode is on
+        return [];
     }
     return null;
 }
@@ -594,6 +624,36 @@ export function getPreviewSample(service: string): any {
             w.properties.rawinfo.start = String(start / 1000);
             w.properties.rawinfo.end = String(end / 1000);
             return w.properties;
+        }
+        case 'ninaService': {
+            // already the flat form the NINA provider builds (see NINAProvider.normalize)
+            const sample: dataImportNinaTypeProperties = {
+                ID: 'mow.DE-XX-SAMPLE-0001',
+                VERSION: 1,
+                SOURCE: 'MOWAS',
+                MSGTYPE: 'Alert',
+                STATUS: 'Actual',
+                SEVERITY: 'Moderate',
+                URGENCY: 'Immediate',
+                CERTAINTY: 'Observed',
+                EVENTCODE: 'BBK-EVC-069',
+                TYPE: 69,
+                EVENT: 'Trinkwasserverschmutzung',
+                HEADLINE: 'Bakteriologische Beeinträchtigung des Trinkwassers',
+                DESCRIPTION: 'Im Ortsteil wurde eine mikrobiologische Verunreinigung des Trinkwassers festgestellt.',
+                INSTRUCTION: 'Kochen Sie das Leitungswasser vor dem Trinken ab.',
+                SENDERNAME: 'Katastrophenschutzbehörde',
+                AREADESC: 'Musterstadt',
+                WEB: '',
+                LANGUAGE: 'de',
+                SENT: start,
+                ONSET: start,
+                EXPIRES: end,
+                LEVEL: 2,
+                UNTILREVOKED: 'bis auf Widerruf',
+                REFERENCES: '',
+            };
+            return sample;
         }
     }
     return undefined;

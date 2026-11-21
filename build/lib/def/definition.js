@@ -286,6 +286,51 @@ const genericStateObjects = {
     }
   }
 };
+function ninaRawStates() {
+  const keys = {
+    ID: "string",
+    VERSION: "number",
+    SOURCE: "string",
+    MSGTYPE: "string",
+    STATUS: "string",
+    SEVERITY: "string",
+    URGENCY: "string",
+    CERTAINTY: "string",
+    EVENTCODE: "string",
+    TYPE: "number",
+    EVENT: "string",
+    HEADLINE: "string",
+    DESCRIPTION: "string",
+    INSTRUCTION: "string",
+    SENDERNAME: "string",
+    AREADESC: "string",
+    WEB: "string",
+    LANGUAGE: "string",
+    SENT: "number",
+    ONSET: "number",
+    EXPIRES: "number",
+    LEVEL: "number",
+    UNTILREVOKED: "string",
+    REFERENCES: "string"
+  };
+  const result = {};
+  for (const [key, type] of Object.entries(keys)) {
+    const isTime = key === "SENT" || key === "ONSET" || key === "EXPIRES";
+    result[key] = {
+      _id: key,
+      type: "state",
+      common: {
+        name: key,
+        type,
+        role: isTime ? "value.time" : type === "number" ? "value" : "text",
+        read: true,
+        write: false
+      },
+      native: {}
+    };
+  }
+  return result;
+}
 const statesObjectsWarnings = {
   dwdService: {
     _channel: {
@@ -1507,6 +1552,27 @@ const statesObjectsWarnings = {
       }
     }
   },
+  ninaService: {
+    _channel: {
+      _id: "nina",
+      type: "device",
+      common: {
+        name: "statesObjectsWarnings.ninaService._channel"
+      },
+      native: {}
+    },
+    raw: {
+      ...ninaRawStates(),
+      _channel: {
+        _id: "raw",
+        type: "channel",
+        common: {
+          name: "statesObjectsWarnings.ninaService.raw._channel"
+        },
+        native: {}
+      }
+    }
+  },
   allService: {
     formatedkeys: {
       _channel: {
@@ -2081,6 +2147,17 @@ const statesObjectsWarnings = {
         ...messagesDef.genericWarntypState,
         _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.thaw" } }
       },
+      flood: {
+        ...messagesDef.genericWarntypState,
+        _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.flood" } }
+      },
+      civil_protection: {
+        ...messagesDef.genericWarntypState,
+        _channel: {
+          ...defaultChannel,
+          common: { name: "statesObjectsWarnings.allService.alerts.civil_protection" }
+        }
+      },
       unknown: {
         ...messagesDef.genericWarntypState,
         _channel: { ...defaultChannel, common: { name: "statesObjectsWarnings.allService.alerts.unknown" } }
@@ -2373,7 +2450,14 @@ const PROVIDER_OPTIONS = {
     warncellUrl: `https://feed.alertspro.meteogroup.com/AlertsPro/AlertsProPollService.php?method=lookupCoord&lat=#  #&lon=#+  +#`
   },
   ninaService: {
-    url: "${warncellid}"
+    /** dashboard of a district: ARS with the last 7 digits set to 0 */
+    url: "https://warnung.bund.de/api31/dashboard/#  #.json",
+    /** detail warning (CAP) */
+    warningUrl: "https://warnung.bund.de/api31/warnings/#  #.json",
+    /** event code names (BBK-EVC-xxx) per language */
+    labelsUrl: "https://warnung.bund.de/api31/appdata/gsb/labels/#  #_labels.json",
+    /** coordinates (lat lon) -> DWD district warncell `1KKKKK000`, KKKKK = first 5 digits of the ARS */
+    districtUrl: "https://maps.dwd.de/geoserver/dwd/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=dwd%3AWarngebiete_Kreise&propertyName=WARNCELLID,NAME&outputFormat=application%2Fjson&CQL_FILTER=INTERSECTS(SHAPE,POINT(#  #%20#+  +#))"
   },
   noService: {
     url: ""

@@ -5,11 +5,12 @@ import * as definitionen from './def/definition';
 import type { Library } from './library';
 import { BaseClass } from './library';
 import type * as providerDef from './def/provider-def';
-import { MessagesClass } from './messages';
+import { MessagesClass, NINA_NO_END } from './messages';
 import * as NotificationClass from './notification';
 import { getTestData } from './test-warnings';
 import * as NotificationType from './def/notificationService-def';
 import * as messagesDef from './def/messages-def';
+import { ninaDefaultSources } from './def/nina-def';
 export const DIV = '-';
 
 type ProviderOptionsTypeInternal = {
@@ -17,7 +18,7 @@ type ProviderOptionsTypeInternal = {
     warncellId: string | [string, string];
 } & (StringProviderOptionsType | CoordinateProviderOptionsType);
 
-type ProviderOptionsType = ProviderOptionsTypeInternal;
+type ProviderOptionsType = ProviderOptionsTypeInternal & { sources?: string[] };
 
 type StringProviderOptionsType = BaseProviderOptionsType & {
     warncellId: string;
@@ -250,7 +251,8 @@ export class BaseProvider extends BaseClass {
                     reply[name] = {
                         level: m.level,
                         start: m.starttime,
-                        end: m.endtime,
+                        // NINA warnings without an end use an internal far-future endtime - publish 0 instead
+                        end: m.endtime === NINA_NO_END ? 0 : m.endtime,
                         headline: m.formatedData !== undefined ? String(m.formatedData.headline) : '',
                         active: m.starttime <= Date.now() && m.endtime >= Date.now(),
                         type: m.genericType,
@@ -739,20 +741,428 @@ export class UWZProvider extends BaseProvider {
     }
 }
 
+/** Options of the NINA provider: `warncellId` is the ARS (any level, reduced to the district). */
+type NinaProviderOptionsType = StringProviderOptionsType & {
+    /** active NINA sub sources (MOWAS, KATWARN, ...) */
+    sources?: string[];
+};
+
 /**
- * Represents a NINA provider.
+ * Represents a NINA provider (BBK warning app, `https://warnung.bund.de/api31`).
  *
- * This class extends the BaseProvider class and provides specific functionality for the NINA provider.
+ * The dashboard of a district lists the active warnings of all sub sources (MoWaS, KATWARN, BIWAPP,
+ * police, DWD, flood centres). The detail warning (CAP) is only loaded when an entry is new or
+ * changed. Both are merged into a flat {@link providerDef.dataImportNinaTypeProperties} object which
+ * becomes the `rawWarning` of the message.
  */
 export class NINAProvider extends BaseProvider {
+    /** active sub sources, upper case */
+    private sources: string[];
+    /** preferred languages for the CAP info block and the event names */
+    private languages: string[];
+    /** detail warnings by dashboard id, `key` = version + hash of the dashboard entry */
+    private detailCache = new Map<string, { key: string; data: providerDef.dataImportNinaWarningType | null }>();
+    /** event code names per language, shared by all NINA providers */
+    private static labels: Record<string, { ts: number; data: Record<string, string> | null }> = {};
+
     /**
      * Initializes a new instance of the NINAProvider class.
      *
      * @param adapter The WeatherWarnings adapter instance.
      * @param options The options for the provider.
      */
-    constructor(adapter: WeatherWarnings, options: CoordinateProviderOptionsType) {
+    constructor(adapter: WeatherWarnings, options: NinaProviderOptionsType) {
         super(adapter, { ...options, service: 'ninaService' }, `nina`);
+        this.warncellId = NINAProvider.toDistrictArs(options.warncellId);
+        this.url = BaseProvider.getUrl('', [this.warncellId], this.service);
+        const lang = (options.language || 'de').slice(0, 2).toLowerCase();
+        this.languages = lang === 'de' ? ['de'] : [...new Set([lang, 'en', 'de'])];
+        this.sources = (options.sources && options.sources.length > 0 ? options.sources : ninaDefaultSources).map(a =>
+            a.toUpperCase(),
+        );
+    }
+
+    /**
+     * Reduces an ARS (Amtlicher Regionalschlüssel) to the district level the NINA dashboard needs:
+     * the first 5 digits, filled up with zeros to 12 digits.
+     *
+     * @param ars ARS or AGS of a municipality or district
+     * @returns the district ARS or '' if the input has less than 5 digits
+     */
+    static toDistrictArs(ars: string): string {
+        const digits = String(ars ?? '').replace(/\D/g, '');
+        return digits.length >= 5 ? digits.slice(0, 5).padEnd(12, '0') : '';
+    }
+
+    /**
+     * Looks up the district ARS for coordinates via the DWD district warn cells. A DWD district
+     * warncell is `1KKKKK000`, where KKKKK are the first 5 digits of the ARS.
+     *
+     * @param coordinates latitude and longitude
+     * @param that adapter instance for fetch and logging
+     * @returns ARS and district name or null
+     */
+    static async getArsFromCoordinates(
+        coordinates: [string, string],
+        that: WeatherWarnings,
+    ): Promise<{ ars: string; name: string } | null> {
+        try {
+            const result = (await that.fetch(
+                BaseProvider.getUrl(
+                    definitionen.PROVIDER_OPTIONS.ninaService.districtUrl,
+                    [String(Number(coordinates[0])), String(Number(coordinates[1]))],
+                    'ninaService',
+                ),
+            )) as { features?: Array<{ properties?: { WARNCELLID?: number; NAME?: string } }> } | undefined;
+            const p = result?.features?.[0]?.properties;
+            if (p && p.WARNCELLID) {
+                const ars = NINAProvider.toDistrictArs(String(p.WARNCELLID).slice(1, 6));
+                if (ars) {
+                    return { ars, name: p.NAME ?? '' };
+                }
+            }
+            that.log.error(`NINA: no district found for coordinates ${coordinates.join('/')}`);
+        } catch (error) {
+            that.handleFetchError(error);
+        }
+        return null;
+    }
+
+    /**
+     * Converts CAP text with HTML (`<br/>`, tags, entities) to plain text.
+     *
+     * @param text the text from the api
+     * @returns plain text
+     */
+    static cleanText(text: string | undefined): string {
+        if (!text) {
+            return '';
+        }
+        return text
+            .replace(/<br\s*\/?>/gi, '\n')
+            .replace(/<\/p>/gi, '\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/&#(\d+);/g, (_m, n: string) => String.fromCodePoint(Number(n)))
+            .replace(/&#x([0-9a-f]+);/gi, (_m, n: string) => String.fromCodePoint(parseInt(n, 16)))
+            .replace(/&nbsp;/g, ' ')
+            .replace(/&quot;/g, '"')
+            .replace(/&apos;/g, "'")
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&amp;/g, '&')
+            .replace(/[ \t]+\n/g, '\n')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+    }
+
+    /**
+     * CAP severity (+ urgency) to the generic level 0-4.
+     *
+     * @param severity CAP severity
+     * @returns level 1-4; `Unknown` (e.g. flood pre-warnings) becomes 1
+     */
+    static severityToLevel(severity: string | undefined): number {
+        switch ((severity ?? '').toLowerCase()) {
+            case 'extreme':
+                return 4;
+            case 'severe':
+                return 3;
+            case 'moderate':
+                return 2;
+            default:
+                return 1;
+        }
+    }
+
+    /**
+     * DWD warning type (EC_II) to a BBK event code of the same generic warn type, so DWD warnings
+     * delivered by NINA get the same generic type as from the DWD provider.
+     *
+     * @param dwdType DWD EC_II
+     * @returns BBK event code number, 999 if unknown
+     */
+    static dwdTypeToEventCode(dwdType: number): number {
+        // same priority as MessagesClass.updateFormated
+        const order: messagesDef.genericWarntypeNumberType[] = [10, 7, 2, 4, 3, 8, 9, 5, 6, 11, 12, 13, 14, 1];
+        for (const wt of order) {
+            const w = messagesDef.genericWarntyp[wt];
+            if (w.dwdService.includes(dwdType) && w.ninaService && w.ninaService.length > 0) {
+                return w.ninaService[0];
+            }
+        }
+        return 999;
+    }
+
+    /**
+     * Checks if an event code number belongs to a generic warn type.
+     *
+     * @param code BBK event code number
+     * @returns true if any generic warn type lists it
+     */
+    static isKnownEventCode(code: number): boolean {
+        return Object.values(messagesDef.genericWarntyp).some(w => (w.ninaService ?? []).includes(code));
+    }
+
+    /**
+     * Parses an ISO date with offset.
+     *
+     * @param date ISO date string
+     * @returns ms or 0 if missing/invalid
+     */
+    private static toMs(date: string | undefined): number {
+        if (!date) {
+            return 0;
+        }
+        const t = new Date(date).getTime();
+        return isNaN(t) ? 0 : t;
+    }
+
+    /**
+     * Returns the event code names for the preferred language (falls back to German).
+     *
+     * @returns map BBK-EVC-xxx -> name
+     */
+    private async getLabels(): Promise<Record<string, string>> {
+        for (const lang of [...this.languages, 'de']) {
+            const cached = NINAProvider.labels[lang];
+            // a failed download is retried after 10 minutes, a good one is kept for a day
+            if (cached && cached.ts > Date.now() - (cached.data ? 86_400_000 : 600_000)) {
+                if (cached.data) {
+                    return cached.data;
+                }
+                continue;
+            }
+            let data: Record<string, string> | null = null;
+            try {
+                data = (await this.adapter.fetch(
+                    BaseProvider.getUrl(definitionen.PROVIDER_OPTIONS.ninaService.labelsUrl, [lang], this.service),
+                )) as Record<string, string>;
+            } catch {
+                data = null;
+            }
+            NINAProvider.labels[lang] = { ts: Date.now(), data: data && typeof data === 'object' ? data : null };
+            if (NINAProvider.labels[lang].data) {
+                return NINAProvider.labels[lang].data;
+            }
+        }
+        return {};
+    }
+
+    /**
+     * Returns the detail warning of a dashboard entry, cached until version or hash change.
+     *
+     * @param item dashboard entry
+     * @returns the CAP warning or null if not available (404 for some ids)
+     */
+    private async getDetail(
+        item: providerDef.dataImportNinaDashboardItem,
+    ): Promise<providerDef.dataImportNinaWarningType | null> {
+        const key = `${item.payload?.version}-${item.payload?.hash}`;
+        const cached = this.detailCache.get(item.id);
+        if (cached && cached.key === key) {
+            return cached.data;
+        }
+        let data: providerDef.dataImportNinaWarningType | null = null;
+        try {
+            data = (await this.adapter.fetch(
+                BaseProvider.getUrl(
+                    definitionen.PROVIDER_OPTIONS.ninaService.warningUrl,
+                    [encodeURIComponent(item.id)],
+                    this.service,
+                ),
+            )) as providerDef.dataImportNinaWarningType;
+        } catch (error) {
+            this.log.debug(`No detail warning for ${item.id}: ${String(error)}`);
+            // some dashboard ids have no detail (404) - remember that; other errors are retried next time
+            if (String(error).includes('HTTP 404')) {
+                this.detailCache.set(item.id, { key, data: null });
+            }
+            return null;
+        }
+        this.detailCache.set(item.id, { key, data: data && Array.isArray(data.info) ? data : null });
+        return this.detailCache.get(item.id)!.data;
+    }
+
+    /**
+     * Picks the info block of the preferred language. `de-LS` (easy language) is only a last resort.
+     *
+     * @param info CAP info blocks
+     * @returns the chosen block or undefined
+     */
+    private pickInfo(info: providerDef.dataImportNinaInfo[] | undefined): providerDef.dataImportNinaInfo | undefined {
+        if (!info || info.length === 0) {
+            return undefined;
+        }
+        for (const lang of [...this.languages, 'de']) {
+            const hit = info.find(i => {
+                const l = (i.language ?? '').toLowerCase();
+                return l === lang || (l.startsWith(`${lang}-`) && l !== 'de-ls');
+            });
+            if (hit) {
+                return hit;
+            }
+        }
+        return info.find(i => (i.language ?? '').toLowerCase() !== 'de-ls') ?? info[0];
+    }
+
+    /**
+     * Builds the flat NINA warning out of the dashboard entry and the detail warning.
+     *
+     * @param item dashboard entry
+     * @param detail CAP warning or null
+     * @param labels event code names
+     * @returns the flat warning or null if it is no active warning (cancel/all clear, test)
+     */
+    private normalize(
+        item: providerDef.dataImportNinaDashboardItem,
+        detail: providerDef.dataImportNinaWarningType | null,
+        labels: Record<string, string>,
+    ): providerDef.dataImportNinaTypeProperties | null {
+        const data = item.payload?.data ?? ({} as providerDef.dataImportNinaDashboardItem['payload']['data']);
+        const info = this.pickInfo(detail?.info);
+        const msgType = detail?.msgType ?? data.msgType ?? '';
+        const status = detail?.status ?? 'Actual';
+        if (status !== 'Actual') {
+            return null;
+        }
+        // an all clear ends the referenced warning - it is no warning on its own
+        if (msgType.toLowerCase() === 'cancel' || (info?.responseType ?? []).some(r => r === 'AllClear')) {
+            return null;
+        }
+        const eventCode =
+            info?.eventCode?.find(e => e.valueName === 'profile:DE-BBK-EVENTCODE')?.value ??
+            data.transKeys?.event ??
+            '';
+        const source = (data.provider ?? '').toUpperCase();
+        let type = Number(/^BBK-EVC-(\d+)$/.exec(eventCode)?.[1] ?? NaN);
+        if (isNaN(type)) {
+            // DWD and the flood centres send no BBK event code
+            const dwdType = Number(info?.eventCode?.find(e => e.valueName === 'II')?.value ?? NaN);
+            type = !isNaN(dwdType) ? NINAProvider.dwdTypeToEventCode(dwdType) : source === 'LHP' ? 38 : 999;
+        }
+        if (!NINAProvider.isKnownEventCode(type)) {
+            // a code without a generic warn type would be filtered out by every type filter
+            type = 999;
+        }
+        const lang2 = this.languages[0];
+        const headline =
+            NINAProvider.cleanText(info?.headline) ||
+            item.i18nTitle?.[lang2] ||
+            item.i18nTitle?.de ||
+            NINAProvider.cleanText(data.headline);
+        const sender = info?.senderName ?? info?.parameter?.find(p => p.valueName === 'sender_langname')?.value ?? '';
+        const sent = NINAProvider.toMs(detail?.sent ?? item.sent);
+        // `sender,identifier,sent sender,identifier,sent ...` -> identifiers of the replaced warnings
+        const references = (detail?.references ?? '')
+            .split(/\s+/)
+            .map(r => r.split(',')[1])
+            .filter(r => !!r);
+        return {
+            ID: item.id,
+            VERSION: Number(item.payload?.version ?? 0),
+            SOURCE: source,
+            MSGTYPE: msgType,
+            STATUS: status,
+            SEVERITY: info?.severity ?? data.severity ?? '',
+            URGENCY: info?.urgency ?? data.urgency ?? '',
+            CERTAINTY: info?.certainty ?? '',
+            EVENTCODE: eventCode,
+            TYPE: type,
+            // flood centres send no event code and an english CAP event ("Flood") - use the BBK name
+            EVENT: labels[eventCode] ?? (source === 'LHP' ? labels['BBK-EVC-038'] : undefined) ?? info?.event ?? '',
+            HEADLINE: headline,
+            DESCRIPTION: NINAProvider.cleanText(info?.description),
+            INSTRUCTION: NINAProvider.cleanText(info?.instruction),
+            SENDERNAME: NINAProvider.cleanText(sender),
+            AREADESC: (info?.area ?? []).map(a => a.areaDesc).join(', '),
+            WEB: info?.web ?? '',
+            LANGUAGE: info?.language ?? '',
+            SENT: sent,
+            ONSET:
+                NINAProvider.toMs(info?.onset ?? item.onset) ||
+                NINAProvider.toMs(info?.effective ?? item.effective) ||
+                sent,
+            EXPIRES: NINAProvider.toMs(info?.expires ?? item.expires),
+            LEVEL: NINAProvider.severityToLevel(info?.severity ?? data.severity),
+            UNTILREVOKED: this.library.getTranslation('ninaUntilRevoked'),
+            REFERENCES: references.join(' '),
+        };
+    }
+
+    /**
+     * Retrieves the dashboard, loads new/changed detail warnings and updates the messages.
+     *
+     * @returns A Promise that resolves when the data has been written.
+     */
+    async updateData(): Promise<void> {
+        if (!this.warncellId) {
+            this.log.warn(`NINA: no valid ARS - skip update`);
+            return;
+        }
+        const result = (await this.getDataFromProvider()) as providerDef.dataImportNinaDashboardType;
+        if (!result || !Array.isArray(result)) {
+            return;
+        }
+        const items = result.filter(
+            a => a && a.id && this.sources.includes((a.payload?.data?.provider ?? '').toUpperCase()),
+        );
+        this.log.debug(`Got ${result.length} warnings from server, ${items.length} from the active sources`);
+        // forget details of warnings that left the dashboard
+        for (const id of [...this.detailCache.keys()]) {
+            if (!result.some(a => a && a.id === id)) {
+                this.detailCache.delete(id);
+            }
+        }
+        const labels = await this.getLabels();
+        const warnings: providerDef.dataImportNinaTypeProperties[] = [];
+        for (const item of items) {
+            if (this.unload) {
+                return;
+            }
+            const w = this.normalize(item, await this.getDetail(item), labels);
+            if (!w) {
+                continue;
+            }
+            if (this.filter.hours > 0 && w.ONSET > Date.now() + this.filter.hours * 3_600_000) {
+                continue;
+            }
+            if (w.EXPIRES > 0 && w.EXPIRES < Date.now()) {
+                continue;
+            }
+            warnings.push(w);
+        }
+        warnings.sort((a, b) => a.ONSET - b.ONSET);
+        this.messages.forEach(a => (a.notDeleted = false));
+        for (let a = 0; a < this.adapter.config.numOfRawWarnings && a < warnings.length; a++) {
+            const w = warnings[a];
+            await super.updateData(w, a);
+            const index = this.messages.findIndex(m => m.rawWarning.ID == w.ID);
+            if (index == -1) {
+                const nmessage = new MessagesClass(this.adapter, 'nina-msg', this, w, this.providerController);
+                await nmessage.updateFormated();
+                if (nmessage && nmessage.filter(this.filter)) {
+                    // an update gets a new id (MoWaS, flood centres) and references the replaced warning:
+                    // replace it silently instead of sending "warning lifted" + "new warning"
+                    const refs = w.REFERENCES ? w.REFERENCES.split(' ') : [];
+                    const old = this.messages.findIndex(
+                        m =>
+                            m.rawWarning.ID !== w.ID &&
+                            refs.some(r => m.rawWarning.ID === r || m.rawWarning.ID.endsWith(`.${r}`)),
+                    );
+                    if (old != -1) {
+                        nmessage.silentUpdate();
+                        this.log.debug(
+                            `Replace ${this.messages[old].rawWarning.ID} by its update ${w.ID} (Silent Update)`,
+                        );
+                        this.messages.splice(old, 1);
+                    }
+                    this.messages.push(nmessage);
+                }
+            } else {
+                await this.messages[index].updateData(w);
+            }
+        }
+        await this.finishUpdateData();
     }
 }
 
@@ -1091,14 +1501,13 @@ export class ProviderController extends BaseClass {
                     });
                     break;
                 case 'ninaService':
-                    if (!Array.isArray(options.warncellId)) {
-                        throw new Error('Error 125 warncellId is not an Array');
+                    if (Array.isArray(options.warncellId)) {
+                        throw new Error('Error 125 warncellId is a Array');
                     }
                     p = new NINAProvider(this.adapter, {
                         ...options,
                         warncellId: options.warncellId,
                         providerController: this,
-                        language: this.adapter.config.dwdLanguage,
                     });
                     break;
                 default:

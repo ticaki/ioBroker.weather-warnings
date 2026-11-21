@@ -43,6 +43,13 @@ declare global {
             dwdwarncellTable: { dwdSelectId: number; dwdCityname: string }[];
             uwzwarncellTable: { uwzSelectId: string; uwzCityname: string; realWarncell: string }[];
             zamgwarncellTable: { zamgSelectId: string; zamgCityname: string }[];
+            /** ninaSelectId: coordinates "lat/lon"; realArs/realArsFor: resolved district ARS and the coordinates it belongs to */
+            ninawarncellTable: { ninaSelectId: string; ninaCityname: string; realArs?: string; realArsFor?: string }[];
+            ninaEnabled: boolean;
+            ninaSources: string[];
+            ninaHourFilter: number;
+            ninaTypeFilter: number[];
+            ninaLevelFilter: number;
 
             /**
              * Structured configuration of all output/notification services.
@@ -82,6 +89,7 @@ declare global {
             telegram_DwdEnabled: boolean;
             telegram_UwzEnabled: boolean;
             telegram_ZamgEnabled: boolean;
+            telegram_NinaEnabled?: boolean;
             telegram_TypeFilter: number[];
             telegram_LevelFilter: number;
             telegram_Enabled: boolean;
@@ -97,6 +105,7 @@ declare global {
             whatsapp_DwdEnabled: boolean;
             whatsapp_UwzEnabled: boolean;
             whatsapp_ZamgEnabled: boolean;
+            whatsapp_NinaEnabled?: boolean;
             whatsapp_TypeFilter: number[];
             whatsapp_LevelFilter: number;
             whatsapp_Enabled: boolean;
@@ -109,6 +118,7 @@ declare global {
             pushover_DwdEnabled: boolean;
             pushover_UwzEnabled: boolean;
             pushover_ZamgEnabled: boolean;
+            pushover_NinaEnabled?: boolean;
             pushover_TypeFilter: number[];
             pushover_LevelFilter: number;
             pushover_Enabled: boolean;
@@ -124,6 +134,7 @@ declare global {
             gotify_DwdEnabled: boolean;
             gotify_UwzEnabled: boolean;
             gotify_ZamgEnabled: boolean;
+            gotify_NinaEnabled?: boolean;
             gotify_TypeFilter: number[];
             gotify_LevelFilter: number;
             gotify_Enabled: boolean;
@@ -138,6 +149,7 @@ declare global {
             nspanel_DwdEnabled: boolean;
             nspanel_UwzEnabled: boolean;
             nspanel_ZamgEnabled: boolean;
+            nspanel_NinaEnabled?: boolean;
             nspanel_TypeFilter: number[];
             nspanel_LevelFilter: number;
             nspanel_Enabled: boolean;
@@ -154,6 +166,7 @@ declare global {
             json_DwdEnabled: boolean;
             json_UwzEnabled: boolean;
             json_ZamgEnabled: boolean;
+            json_NinaEnabled?: boolean;
             json_TypeFilter: number[];
             json_LevelFilter: number;
             json_Enabled: boolean;
@@ -164,6 +177,7 @@ declare global {
             history_DwdEnabled: boolean;
             history_UwzEnabled: boolean;
             history_ZamgEnabled: boolean;
+            history_NinaEnabled?: boolean;
             history_TypeFilter: number[];
             history_LevelFilter: number;
             history_Enabled: boolean;
@@ -176,6 +190,7 @@ declare global {
             email_DwdEnabled: boolean;
             email_UwzEnabled: boolean;
             email_ZamgEnabled: boolean;
+            email_NinaEnabled?: boolean;
             email_TypeFilter: number[];
             email_LevelFilter: number;
             email_ManualTypeFilter: number[];
@@ -193,6 +208,7 @@ declare global {
             alexa2_DwdEnabled: boolean;
             alexa2_UwzEnabled: boolean;
             alexa2_ZamgEnabled: boolean;
+            alexa2_NinaEnabled?: boolean;
             alexa2_TypeFilter: number[];
             alexa2_LevelFilter: number;
             alexa2_Enabled: boolean;
@@ -207,6 +223,7 @@ declare global {
             sayit_DwdEnabled: boolean;
             sayit_UwzEnabled: boolean;
             sayit_ZamgEnabled: boolean;
+            sayit_NinaEnabled?: boolean;
             sayit_TypeFilter: number[];
             sayit_LevelFilter: number;
             sayit_Enabled: boolean;

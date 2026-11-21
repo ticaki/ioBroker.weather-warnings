@@ -551,13 +551,14 @@ export function buildServiceSchema(service: ServiceType): Record<string, any> {
     // 2. weather services (only the globally enabled ones are shown)
     items[`${service}_secProviders`] = section(
         'svc_section_providers',
-        '!data.dwdEnabled && !data.uwzEnabled && !data.zamgEnabled',
+        '!data.dwdEnabled && !data.uwzEnabled && !data.zamgEnabled && !data.ninaEnabled',
     );
     let firstProvider = true;
     for (const [prov, flag, label] of [
         ['Dwd', 'dwdEnabled', 'DWD'],
         ['Uwz', 'uwzEnabled', 'UWZ'],
         ['Zamg', 'zamgEnabled', 'ZAMG'],
+        ['Nina', 'ninaEnabled', 'NINA'],
     ] as const) {
         items[`${service}_${prov}Enabled`] = {
             type: 'checkbox',

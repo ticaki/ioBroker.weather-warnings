@@ -204,6 +204,30 @@ class WeatherWarnings extends utils.Adapter {
                     this.log.info('Update configuration. Reason: alexa2_sounds');
                     obj.native.alexa2_sounds = sounds;
                 }
+                // after the migration the structured model is the source of the sounds - add new warn types there too
+                const modelExtras = obj.native.notificationServices?.alexa2?.extras;
+                if (modelExtras && Array.isArray(modelExtras.sounds)) {
+                    const modelSounds = modelExtras.sounds as {
+                        warntype: string;
+                        sound: string;
+                        warntypenumber: number;
+                    }[];
+                    let modelChange = false;
+                    for (const s of sounds as { warntype: string; sound: string; warntypenumber: number }[]) {
+                        const hit = modelSounds.find(a => a.warntypenumber == s.warntypenumber);
+                        if (!hit) {
+                            modelSounds.push({ ...s, sound: '' });
+                            modelChange = true;
+                        } else if (hit.warntype != s.warntype) {
+                            hit.warntype = s.warntype;
+                            modelChange = true;
+                        }
+                    }
+                    if (modelChange) {
+                        change = true;
+                        this.log.info('Update configuration. Reason: notificationServices.alexa2 sounds');
+                    }
+                }
             }
 
             /** write default templates to config if template 0 == translation token */
@@ -399,11 +423,60 @@ class WeatherWarnings extends utils.Adapter {
                     }
                 }
             }
-            if (JSON.stringify(tempTable) != JSON.stringify(this.config.uwzwarncellTable)) {
+            const ninaTempTable = JSON.stringify(this.config.ninawarncellTable ?? []);
+            const ninaDistricts = new Set<string>();
+            for (const id of this.config.ninawarncellTable ?? []) {
+                if (!this.config.ninaEnabled || !id || typeof id.ninaSelectId !== 'string' || !id.ninaSelectId) {
+                    continue;
+                }
+                // resolve the coordinates once to the district ARS and keep it in the config
+                if (!id.realArs || id.realArsFor !== id.ninaSelectId) {
+                    const coords = id.ninaSelectId.split('/') as [string, string];
+                    const found =
+                        coords.length == 2 ? await providerDef.NINAProvider.getArsFromCoordinates(coords, this) : null;
+                    if (this.providerController.unload) {
+                        return;
+                    }
+                    if (!found) {
+                        this.log.warn(`NINA: no district found for ${id.ninaSelectId}!`);
+                        continue;
+                    }
+                    id.realArs = found.ars;
+                    id.realArsFor = id.ninaSelectId;
+                    this.log.info(`NINA: ${id.ninaSelectId} is in ${found.name} (ARS ${found.ars}).`);
+                }
+                if (ninaDistricts.has(id.realArs)) {
+                    // NINA warns per district - a second place in the same district adds nothing
+                    this.log.info(
+                        `NINA: ${id.ninaCityname || id.ninaSelectId} is in an already active district (ARS ${id.realArs}) - skipped.`,
+                    );
+                    continue;
+                }
+                ninaDistricts.add(id.realArs);
+                this.log.info(`NINA ${id.realArs} activated. Retrieve data.`);
+                this.providerController.createProviderIfNotExist({
+                    filter: {
+                        type: this.config.ninaTypeFilter ?? [],
+                        level: this.config.ninaLevelFilter,
+                        hours: this.config.ninaHourFilter,
+                    },
+                    service: 'ninaService',
+                    warncellId: id.realArs,
+                    providerController: this.providerController,
+                    language: this.library.language,
+                    customName: id.ninaCityname,
+                    sources: this.config.ninaSources,
+                });
+            }
+            const uwzChanged = JSON.stringify(tempTable) != JSON.stringify(this.config.uwzwarncellTable);
+            const ninaChanged = ninaTempTable != JSON.stringify(this.config.ninawarncellTable ?? []);
+            if (uwzChanged || ninaChanged) {
+                // one write for both tables - every write of the instance object restarts the adapter
                 const obj = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
                 if (obj) {
-                    this.log.debug('change config uwzwarncellTable');
+                    this.log.debug('change config uwzwarncellTable/ninawarncellTable');
                     obj.native.uwzwarncellTable = this.config.uwzwarncellTable;
+                    obj.native.ninawarncellTable = this.config.ninawarncellTable;
                     await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj);
                 }
             }

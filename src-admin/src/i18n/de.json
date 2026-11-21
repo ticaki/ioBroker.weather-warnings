@@ -1,4 +1,8 @@
 {
     "notificationServices": "Benachrichtigungsdienste",
-    "noNotificationServiceEnabled": "Es ist noch kein Benachrichtigungsdienst aktiviert. Aktiviere zuerst einen Dienst in den Grundeinstellungen und konfiguriere ihn anschließend hier."
+    "noNotificationServiceEnabled": "Es ist noch kein Benachrichtigungsdienst aktiviert. Aktiviere zuerst einen Dienst in den Grundeinstellungen und konfiguriere ihn anschließend hier.",
+    "NINA": "NINA",
+    "genericWarntyp.13.name": "Hochwasser",
+    "genericWarntyp.14.name": "Gefahrenlage",
+    "ninaUntilRevoked": "bis auf Widerruf"
 }

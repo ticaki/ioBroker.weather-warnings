@@ -39,7 +39,7 @@ describe('notificationServicesModel', () => {
     it('round-trips a telegram entry flat -> model -> flat', () => {
         const entry = flatEntryToModel('telegram', telegramFlat);
         expect(entry.adapter).to.equal('telegram.0');
-        expect(entry.providers).to.deep.equal({ dwd: true, uwz: false, zamg: true });
+        expect(entry.providers).to.deep.equal({ dwd: true, uwz: false, zamg: true, nina: true });
         expect(entry.filter.auto).to.deep.equal({ type: [1, 2], level: 3 });
         expect(entry.filter.manual).to.deep.equal({ type: [4], level: 2 });
         expect(entry.messages.new).to.equal('NewMessage');
@@ -92,7 +92,7 @@ describe('resolveNotificationServices', () => {
         const { options } = resolveNotificationServices(config, noopLog);
         expect(options.telegram).to.not.equal(undefined);
         expect(options.telegram!.adapter).to.equal('telegram.0');
-        expect(options.telegram!.service).to.deep.equal(['dwdService', 'zamgService']);
+        expect(options.telegram!.service).to.deep.equal(['dwdService', 'zamgService', 'ninaService']);
         expect(options.telegram!.chatid).to.equal('c1');
         expect(options.telegram!.userid).to.equal('u1');
         expect(options.telegram!.actions.new).to.equal('NewMessage');

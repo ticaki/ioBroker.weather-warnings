@@ -139,7 +139,11 @@ Changes: In the original they are blue, other colours are changes to the origina
 
 Licence: [CC BY 4.0 LEGAL CODE](https://creativecommons.org/licenses/by/4.0/legalcode)
 
-Iconpage: https://icon-icons.com/de/symbol/Wetter-wind-cloud-Blitz-Regen/189105
+Iconpage: https://www.flaticon.com/packs/weather-613
+
+Flood icon (`flood.png`): "Flooding icon by Adriansyah, Creative Commons, via ToSVG" - https://tosvg.com/icon/flooding-1044958 (recoloured)
+
+Hazard icon (`civil_protection.png`): "Danger Triangle icon by Paweł Gleń, Creative Commons, via ToSVG" - https://tosvg.com/icon/danger-triangle-1046822 (recoloured)
 
 ## Changelog
 <!--
