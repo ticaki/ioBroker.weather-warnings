@@ -148,7 +148,7 @@ export interface ServiceConfigEntry {
     /** Target adapter instances (services with `adapter: 'array'`, e.g. sayit). */
     adapters?: Array<{ sayit_Adapter: string }>;
     /** Per provider activation. */
-    providers: { dwd: boolean; uwz: boolean; zamg: boolean };
+    providers: { dwd: boolean; uwz: boolean; zamg: boolean; nina?: boolean };
     /** Automatic (and optional manual) warning filter. */
     filter: { auto: ServiceFilter; manual?: ServiceFilter };
     /** Selected message templates keyed by canonical message key. */
@@ -176,6 +176,8 @@ export function flatEntryToModel(service: ServiceType, flat: FlatConfig): Servic
             dwd: !!flat[`${service}_DwdEnabled`],
             uwz: !!flat[`${service}_UwzEnabled`],
             zamg: !!flat[`${service}_ZamgEnabled`],
+            // NINA came later: a missing key (older configs) counts as enabled
+            nina: flat[`${service}_NinaEnabled`] !== false,
         },
         filter: {
             auto: {
@@ -230,6 +232,7 @@ export function modelEntryToFlat(service: ServiceType, entry: ServiceConfigEntry
     flat[`${service}_DwdEnabled`] = !!entry.providers?.dwd;
     flat[`${service}_UwzEnabled`] = !!entry.providers?.uwz;
     flat[`${service}_ZamgEnabled`] = !!entry.providers?.zamg;
+    flat[`${service}_NinaEnabled`] = entry.providers?.nina !== false;
 
     flat[`${service}_TypeFilter`] = entry.filter?.auto?.type ?? [];
     flat[`${service}_LevelFilter`] = entry.filter?.auto?.level ?? 0;

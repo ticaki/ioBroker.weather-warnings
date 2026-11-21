@@ -59,6 +59,9 @@ function resolveNotificationServices(config, log) {
     if (cfg[`${notificationService}_ZamgEnabled`]) {
       service.push("zamgService");
     }
+    if (cfg[`${notificationService}_NinaEnabled`] !== false) {
+      service.push("ninaService");
+    }
     const template = {
       new: cfg[`${notificationService}_MessageNew`] !== void 0 ? cfg[`${notificationService}_MessageNew`] : "none",
       remove: cfg[`${notificationService}_MessageRemove`],

@@ -19,13 +19,18 @@ var __reExport = (target, mod, secondTarget) => (__copyProps(target, mod, "defau
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var provider_def_exports = {};
 __export(provider_def_exports, {
+  ninaDefaultSources: () => import_nina_def.ninaDefaultSources,
+  ninaSources: () => import_nina_def.ninaSources,
   providerServicesArray: () => providerServicesArray
 });
 module.exports = __toCommonJS(provider_def_exports);
 __reExport(provider_def_exports, require("../provider"), module.exports);
-const providerServicesArray = ["dwdService", "zamgService", "uwzService"];
+var import_nina_def = require("./nina-def");
+const providerServicesArray = ["dwdService", "zamgService", "uwzService", "ninaService"];
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  ninaDefaultSources,
+  ninaSources,
   providerServicesArray,
   ...require("../provider")
 });

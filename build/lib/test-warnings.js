@@ -114,6 +114,33 @@ const defaultData = {
     warntypid: 0,
     nachrichtentyp: "",
     location: ""
+  },
+  // "no warning" placeholder of a NINA slot - same epoch times as the dwd placeholder
+  ninaService: {
+    ID: "",
+    VERSION: 0,
+    SOURCE: "",
+    MSGTYPE: "",
+    STATUS: "",
+    SEVERITY: "",
+    URGENCY: "",
+    CERTAINTY: "",
+    EVENTCODE: "",
+    TYPE: 0,
+    EVENT: "",
+    HEADLINE: "",
+    DESCRIPTION: "",
+    INSTRUCTION: "",
+    SENDERNAME: "",
+    AREADESC: "",
+    WEB: "",
+    LANGUAGE: "",
+    SENT: 36e5,
+    ONSET: 36e5,
+    EXPIRES: 36e5,
+    LEVEL: 0,
+    UNTILREVOKED: "",
+    REFERENCES: ""
   }
 };
 const testData = {
@@ -538,6 +565,8 @@ function getTestData(service, _that) {
       }
     }
     return result.zamgService;
+  } else if (service == "ninaService") {
+    return [];
   }
   return null;
 }
@@ -573,6 +602,35 @@ function getPreviewSample(service) {
       w.properties.rawinfo.start = String(start / 1e3);
       w.properties.rawinfo.end = String(end / 1e3);
       return w.properties;
+    }
+    case "ninaService": {
+      const sample = {
+        ID: "mow.DE-XX-SAMPLE-0001",
+        VERSION: 1,
+        SOURCE: "MOWAS",
+        MSGTYPE: "Alert",
+        STATUS: "Actual",
+        SEVERITY: "Moderate",
+        URGENCY: "Immediate",
+        CERTAINTY: "Observed",
+        EVENTCODE: "BBK-EVC-069",
+        TYPE: 69,
+        EVENT: "Trinkwasserverschmutzung",
+        HEADLINE: "Bakteriologische Beeintr\xE4chtigung des Trinkwassers",
+        DESCRIPTION: "Im Ortsteil wurde eine mikrobiologische Verunreinigung des Trinkwassers festgestellt.",
+        INSTRUCTION: "Kochen Sie das Leitungswasser vor dem Trinken ab.",
+        SENDERNAME: "Katastrophenschutzbeh\xF6rde",
+        AREADESC: "Musterstadt",
+        WEB: "",
+        LANGUAGE: "de",
+        SENT: start,
+        ONSET: start,
+        EXPIRES: end,
+        LEVEL: 2,
+        UNTILREVOKED: "bis auf Widerruf",
+        REFERENCES: ""
+      };
+      return sample;
     }
   }
   return void 0;

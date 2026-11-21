@@ -397,7 +397,7 @@ class NotificationClass extends library.BaseClass {
               } else {
                 this.adapter.sendTo(this.options.adapter, "send", opt);
               }
-              await library.sleep(20);
+              await this.adapter.delay(20);
               this.log.debug(`Send the message: ${msg.text}`);
             } catch (error) {
               if (error.message == "Timeout exceeded") {
@@ -820,7 +820,7 @@ class NotificationClass extends library.BaseClass {
           try {
             this.adapter.sendTo(this.options.adapter, "send", opt);
             this.log.debug(`Send the message: ${JSON.stringify(opt)}`);
-            await library.sleep(200);
+            await this.adapter.delay(200);
           } catch (error) {
             if (error.message == "Timeout exceeded") {
               this.log.warn(

@@ -36,6 +36,9 @@ type messageCmdType =
     | 'iconbase64'
     | 'getEmoji'
     | 'fullday';
+/** endtime of a NINA warning without an end: largest valid Date value */
+export const NINA_NO_END = 8_640_000_000_000_000;
+
 /**
  * MessageClass
  */
@@ -536,6 +539,59 @@ export class MessagesClass extends library.BaseClass {
                 node: '',
             },
         },
+        ninaService: {
+            starttime: { node: `$fromMillis(ONSET,"[H#1]:[m01]","\${this.timeOffset}")` },
+            startdate: { node: `$fromMillis(ONSET,"[D01].[M01]","\${this.timeOffset}")` },
+            endtime: {
+                node: `EXPIRES > 0 ? $fromMillis(EXPIRES,"[H#1]:[m01]","\${this.timeOffset}") : UNTILREVOKED`,
+            },
+            enddate: { node: `EXPIRES > 0 ? $fromMillis(EXPIRES,"[D01].[M01]","\${this.timeOffset}") : ""` },
+            startdayofweek: { node: `ONSET`, cmd: 'dayoftheweek' },
+            enddayofweek: { node: `EXPIRES > 0 ? EXPIRES : ""`, cmd: 'dayoftheweek' },
+            headline: { node: `HEADLINE` },
+            description: { node: `DESCRIPTION` },
+            impact: { node: `` },
+            ceiling: { node: `` },
+            altitude: { node: `` },
+            warnlevelcolorname: {
+                node: `$lookup(${JSON.stringify(MessageType.color.textuwz)},$string(LEVEL))`,
+                cmd: 'translate',
+            },
+            warnlevelnumber: { node: `LEVEL` },
+            warnlevelcolorhex: { node: `$lookup(${JSON.stringify(MessageType.color.uwzColor)},$string(LEVEL))` },
+            warnlevelname: {
+                node: `$lookup(${JSON.stringify(MessageType.textLevels.textGeneric)},$string(LEVEL))`,
+                cmd: 'translate',
+            },
+            warntypename: { node: `EVENT` },
+            location: { node: `AREADESC` },
+            instruction: { node: `INSTRUCTION` },
+            warntypegenericname: { cmd: undefined, node: '' },
+            provider: { cmd: undefined, node: '' },
+            locationcustom: { cmd: undefined, node: '' },
+            startdayofweekshort: { node: `ONSET`, cmd: 'dayoftheweekshort' },
+            enddayofweekshort: { node: `EXPIRES > 0 ? EXPIRES : ""`, cmd: 'dayoftheweekshort' },
+            countdown: { cmd: 'countdown', node: 'ONSET' },
+            status: { cmd: undefined, node: '' },
+            starttimems: { cmd: undefined, node: '' },
+            endtimems: { cmd: undefined, node: '' },
+            iconurl: { cmd: 'geticon', node: '' },
+            startday: { cmd: undefined, node: `$fromMillis(ONSET,"[D01]","\${this.timeOffset}")` },
+            startmonth: { cmd: undefined, node: `$fromMillis(ONSET,"[M01]","\${this.timeOffset}")` },
+            endday: { cmd: undefined, node: `EXPIRES > 0 ? $fromMillis(EXPIRES,"[D01]","\${this.timeOffset}") : ""` },
+            endmonth: { cmd: undefined, node: `EXPIRES > 0 ? $fromMillis(EXPIRES,"[M01]","\${this.timeOffset}") : ""` },
+            warntypegeneric: { cmd: undefined, node: '' },
+            cdminute: { cmd: 'countdownminutes', node: 'ONSET' },
+            cdhour: { cmd: 'countdownhours', node: 'ONSET' },
+            cdfuture: { cmd: 'countdownfuture', node: 'ONSET' },
+            startdaytime: { cmd: 'daytime', node: 'ONSET' },
+            enddaytime: { cmd: 'daytime', node: 'EXPIRES > 0 ? EXPIRES : ""' },
+            startadverb: { cmd: 'adverb', node: 'ONSET' },
+            warningcount: { cmd: 'warningcount', node: '' },
+            htmlicon: { cmd: 'iconbase64', node: '' },
+            weatheremoji: { cmd: 'getEmoji', node: '' },
+            zamgdayPeriod: { cmd: 'fullday', node: '' },
+        },
         default: {
             starttime: { node: `` },
             startdate: { node: `` },
@@ -691,6 +747,7 @@ export class MessagesClass extends library.BaseClass {
             case `dwdService`:
             case `uwzService`:
             case `zamgService`:
+            case `ninaService`:
                 if (provider && provider.service) {
                     const json = this.formatedKeyCommand[provider.service];
                     for (const k in json) {
@@ -724,6 +781,12 @@ export class MessagesClass extends library.BaseClass {
                         {
                             this.rawWarning = defaultData.zamgService;
                             this.rawWarning.text = this.library.getTranslation('NoWarning');
+                        }
+                        break;
+                    case `ninaService`:
+                        {
+                            this.rawWarning = { ...defaultData.ninaService };
+                            this.rawWarning.HEADLINE = this.library.getTranslation('NoWarning');
                         }
                         break;
                     default:
@@ -800,6 +863,18 @@ export class MessagesClass extends library.BaseClass {
                     this.type = Number(await this.library.readWithJsonata(this.rawWarning, `rawinfo.wtype`));
                 }
                 break;
+            case 'ninaService':
+                {
+                    const raw = this.rawWarning as Provider.dataImportNinaTypeProperties;
+                    this.starttime = raw.ONSET;
+                    // no end given (MoWaS): valid until revoked - the warning ends when it leaves the dashboard
+                    this.endtime = raw.EXPIRES > 0 ? raw.EXPIRES : NINA_NO_END;
+                    this.ceiling = -1;
+                    this.altitude = -1;
+                    this.level = raw.LEVEL;
+                    this.type = raw.TYPE;
+                }
+                break;
             default: {
                 this.starttime = 1;
                 this.endtime = 1;
@@ -815,7 +890,7 @@ export class MessagesClass extends library.BaseClass {
             this.newMessage = false;
         }
         const sortedWarntypes: Required<MessageType.genericWarntypeNumberType>[] = [
-            10, 7, 2, 4, 3, 8, 9, 5, 6, 11, 12, 1,
+            10, 7, 2, 4, 3, 8, 9, 5, 6, 11, 12, 13, 14, 1,
         ];
         if (this.provider) {
             for (const wt of sortedWarntypes) {
@@ -909,6 +984,24 @@ export class MessagesClass extends library.BaseClass {
         };
     };
 
+    /** jsonata expressions that format the end of a warning */
+    static END_TIME_FIELDS = /EXPIRES|dtgEnd|rawinfo\.end/;
+
+    /**
+     * Offset of the host time zone at the given moment as `+HHMM` / `-HHMM` (jsonata $fromMillis).
+     *
+     * @param ms the moment in ms; invalid values use the current moment
+     * @returns the offset string, e.g. `+0100` in winter and `+0200` in summer for Europe/Berlin
+     */
+    static timeOffsetAt(ms: number): string {
+        let minutes = -new Date(ms).getTimezoneOffset();
+        if (!Number.isFinite(minutes)) {
+            minutes = -new Date().getTimezoneOffset();
+        }
+        const abs = Math.abs(minutes);
+        return `${minutes < 0 ? '-' : '+'}${`00${Math.floor(abs / 60)}`.slice(-2)}${`00${abs % 60}`.slice(-2)}`;
+    }
+
     /**
      * Update the formated Data.
      *
@@ -920,12 +1013,10 @@ export class MessagesClass extends library.BaseClass {
         }
 
         {
-            const timeOffset =
-                (Math.floor(new Date().getTimezoneOffset() / 60) < 0 || new Date().getTimezoneOffset() % 60 < 0
-                    ? '+'
-                    : '-') +
-                `00${Math.abs(Math.floor(new Date().getTimezoneOffset() / 60))}`.slice(-2) +
-                `00${Math.abs(new Date().getTimezoneOffset() % 60)}`.slice(-2);
+            // offset of the host time zone at the warning's own start/end - not "now": a warning that
+            // starts or ends on the other side of a daylight saving change would be shown 1 h off
+            const offsetStart = MessagesClass.timeOffsetAt(this.starttime);
+            const offsetEnd = MessagesClass.timeOffsetAt(this.endtime === NINA_NO_END ? Date.now() : this.endtime);
             const status = this.newMessage
                 ? MessageType.status.new
                 : this.notDeleted && this.name != 'noMessage'
@@ -935,10 +1026,13 @@ export class MessagesClass extends library.BaseClass {
             for (const key in this.formatedKeysJsonataDefinition) {
                 const obj = this.formatedKeysJsonataDefinition[key as keyof MessageType.customFormatedKeysDef];
                 if (obj !== undefined) {
-                    // reset the offset because of daylight saving time
+                    // expressions on the end time get the offset at the end, all others the one at the start
                     const cmd =
                         obj.node !== undefined && obj.node != ''
-                            ? obj.node.replace(`\${this.timeOffset}`, timeOffset)
+                            ? obj.node.replace(
+                                  `\${this.timeOffset}`,
+                                  MessagesClass.END_TIME_FIELDS.test(obj.node) ? offsetEnd : offsetStart,
+                              )
                             : '';
 
                     let result =
@@ -992,7 +1086,8 @@ export class MessagesClass extends library.BaseClass {
             throw new Error(`${this.log.getName()} formatedDate is empty!`);
         }
         this.formatedData.starttimems = this.starttime;
-        this.formatedData.endtimems = this.endtime;
+        // NINA warnings without an end use an internal far-future endtime - publish 0 instead
+        this.formatedData.endtimems = this.endtime === NINA_NO_END ? 0 : this.endtime;
         this.cache.ts = Date.now();
         this.cache.messages = {};
         for (let a = 0; a < this.adapter.config.templateTable.length; a++) {
@@ -1026,11 +1121,17 @@ export class MessagesClass extends library.BaseClass {
             }
             // eslint-disable-next-line
             case 'dayoftheweek': {
+                if (data === '' || data === undefined || data === null) {
+                    return '';
+                }
                 return new Date(data as string | number | Date).toLocaleDateString(this.library.getLocalLanguage(), {
                     weekday: 'long',
                 });
             }
             case 'dayoftheweekshort': {
+                if (data === '' || data === undefined || data === null) {
+                    return '';
+                }
                 return new Date(data as string | number | Date).toLocaleDateString(this.library.getLocalLanguage(), {
                     weekday: 'short',
                 });
@@ -1083,6 +1184,9 @@ export class MessagesClass extends library.BaseClass {
                 }
                 break;
             case 'daytime': {
+                if (data === '' || data === undefined || data === null) {
+                    return '';
+                }
                 const hour = new Date(data).getHours();
                 let daytime: MessageType.daytimesType = 'noon';
                 for (const a in MessageType.daytimes) {
@@ -1190,7 +1294,8 @@ export class MessagesClass extends library.BaseClass {
     getCountdown(time: number, typ: 'minutes' | 'hours' | 'full' | 'future'): string {
         const diff = time - Date.now();
         const remain = new Date(Math.abs(diff));
-        const d = remain.getUTCDate() - 1;
+        // whole days of the difference - getUTCDate() would start again at 1 after a month
+        const d = Math.floor(Math.abs(diff) / 86_400_000);
 
         switch (typ) {
             case 'future':
@@ -1200,7 +1305,7 @@ export class MessagesClass extends library.BaseClass {
             case 'hours':
                 return String(d * 24 + remain.getUTCHours());
             case 'full': {
-                const h = d > 0 ? `00${String(remain.getUTCHours())}`.slice(2) : String(remain.getUTCHours());
+                const h = d > 0 ? `00${String(remain.getUTCHours())}`.slice(-2) : String(remain.getUTCHours());
                 return `${diff < 0 ? '-' : ''}${d > 0 ? `${String(d)}:` : ''}${h}:${`00${String(remain.getUTCMinutes())}`.slice(
                     -2,
                 )}`;

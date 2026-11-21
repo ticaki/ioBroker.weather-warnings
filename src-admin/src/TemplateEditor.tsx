@@ -525,8 +525,9 @@ class TemplateEditor extends ConfigGeneric<ConfigGenericProps, TemplateEditorSta
                             <Typography
                                 variant="caption"
                                 color="text.secondary"
-                                sx={{ flex: 1 }}
+                                sx={{ flex: 1, minWidth: 0 }}
                                 noWrap
+                                title={p.label}
                             >
                                 {p.label}
                             </Typography>
@@ -653,7 +654,7 @@ class TemplateEditor extends ConfigGeneric<ConfigGenericProps, TemplateEditorSta
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
+                        gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: 'minmax(0, 1fr) minmax(0, 1fr)' },
                         gap: 2,
                     }}
                 >
@@ -746,7 +747,7 @@ class TemplateEditor extends ConfigGeneric<ConfigGenericProps, TemplateEditorSta
                 sx={{
                     width: '100%',
                     display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', md: 'minmax(220px, 1fr) 3fr' },
+                    gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(220px, 1fr) minmax(0, 3fr)' },
                     gap: 2,
                     alignItems: 'start',
                 }}

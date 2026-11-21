@@ -57,6 +57,7 @@ class WeatherWarnings extends utils.Adapter {
    * Is called when databases are connected and adapter received configuration.
    */
   async onReady() {
+    var _a, _b;
     if (!this.providerController) {
       throw new Error("Provider controller doesnt exists.");
     }
@@ -203,6 +204,25 @@ class WeatherWarnings extends utils.Adapter {
           this.log.info("Update configuration. Reason: alexa2_sounds");
           obj.native.alexa2_sounds = sounds;
         }
+        const modelExtras = (_b = (_a = obj.native.notificationServices) == null ? void 0 : _a.alexa2) == null ? void 0 : _b.extras;
+        if (modelExtras && Array.isArray(modelExtras.sounds)) {
+          const modelSounds = modelExtras.sounds;
+          let modelChange = false;
+          for (const s of sounds) {
+            const hit = modelSounds.find((a) => a.warntypenumber == s.warntypenumber);
+            if (!hit) {
+              modelSounds.push({ ...s, sound: "" });
+              modelChange = true;
+            } else if (hit.warntype != s.warntype) {
+              hit.warntype = s.warntype;
+              modelChange = true;
+            }
+          }
+          if (modelChange) {
+            change = true;
+            this.log.info("Update configuration. Reason: notificationServices.alexa2 sounds");
+          }
+        }
       }
       if (obj && obj.native && obj.native.templateTable[0] && obj.native.templateTable[0].template == "template.NewMessage") {
         this.log.info(`First start after installation detected.`);
@@ -230,7 +250,7 @@ class WeatherWarnings extends utils.Adapter {
     }
     this.config.numOfRawWarnings = typeof this.config.numOfRawWarnings == "number" && this.config.numOfRawWarnings > 0 ? this.config.numOfRawWarnings : 5;
     this.startDelay = this.setTimeout(async () => {
-      var _a;
+      var _a2, _b2, _c, _d, _e;
       if (!this.providerController) {
         return;
       }
@@ -240,7 +260,7 @@ class WeatherWarnings extends utils.Adapter {
       await this.providerController.init();
       this.log.info(`Refresh Interval: ${this.providerController.refreshTime / 6e4} minutes`);
       {
-        const existing = (_a = this.config.notificationServices) != null ? _a : {};
+        const existing = (_a2 = this.config.notificationServices) != null ? _a2 : {};
         const merged = { ...existing };
         let migrated = false;
         for (const service of import_notificationServicesModel.SERVICE_TYPES) {
@@ -366,11 +386,56 @@ class WeatherWarnings extends utils.Adapter {
           }
         }
       }
-      if (JSON.stringify(tempTable) != JSON.stringify(this.config.uwzwarncellTable)) {
+      const ninaTempTable = JSON.stringify((_b2 = this.config.ninawarncellTable) != null ? _b2 : []);
+      const ninaDistricts = /* @__PURE__ */ new Set();
+      for (const id of (_c = this.config.ninawarncellTable) != null ? _c : []) {
+        if (!this.config.ninaEnabled || !id || typeof id.ninaSelectId !== "string" || !id.ninaSelectId) {
+          continue;
+        }
+        if (!id.realArs || id.realArsFor !== id.ninaSelectId) {
+          const coords = id.ninaSelectId.split("/");
+          const found = coords.length == 2 ? await providerDef.NINAProvider.getArsFromCoordinates(coords, this) : null;
+          if (this.providerController.unload) {
+            return;
+          }
+          if (!found) {
+            this.log.warn(`NINA: no district found for ${id.ninaSelectId}!`);
+            continue;
+          }
+          id.realArs = found.ars;
+          id.realArsFor = id.ninaSelectId;
+          this.log.info(`NINA: ${id.ninaSelectId} is in ${found.name} (ARS ${found.ars}).`);
+        }
+        if (ninaDistricts.has(id.realArs)) {
+          this.log.info(
+            `NINA: ${id.ninaCityname || id.ninaSelectId} is in an already active district (ARS ${id.realArs}) - skipped.`
+          );
+          continue;
+        }
+        ninaDistricts.add(id.realArs);
+        this.log.info(`NINA ${id.realArs} activated. Retrieve data.`);
+        this.providerController.createProviderIfNotExist({
+          filter: {
+            type: (_d = this.config.ninaTypeFilter) != null ? _d : [],
+            level: this.config.ninaLevelFilter,
+            hours: this.config.ninaHourFilter
+          },
+          service: "ninaService",
+          warncellId: id.realArs,
+          providerController: this.providerController,
+          language: this.library.language,
+          customName: id.ninaCityname,
+          sources: this.config.ninaSources
+        });
+      }
+      const uwzChanged = JSON.stringify(tempTable) != JSON.stringify(this.config.uwzwarncellTable);
+      const ninaChanged = ninaTempTable != JSON.stringify((_e = this.config.ninawarncellTable) != null ? _e : []);
+      if (uwzChanged || ninaChanged) {
         const obj2 = await this.getForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`);
         if (obj2) {
-          this.log.debug("change config uwzwarncellTable");
+          this.log.debug("change config uwzwarncellTable/ninawarncellTable");
           obj2.native.uwzwarncellTable = this.config.uwzwarncellTable;
+          obj2.native.ninawarncellTable = this.config.ninawarncellTable;
           await this.setForeignObjectAsync(`system.adapter.${this.name}.${this.instance}`, obj2);
         }
       }

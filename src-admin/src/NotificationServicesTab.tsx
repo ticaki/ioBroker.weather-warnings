@@ -71,6 +71,10 @@ class NotificationServicesTab extends ConfigGeneric<ConfigGenericProps, Notifica
                         flat[key] = data[key];
                     }
                 }
+                // NINA came later: a missing key counts as enabled (same as the backend)
+                if (flat[`${service}_NinaEnabled`] === undefined) {
+                    flat[`${service}_NinaEnabled`] = true;
+                }
             }
         }
         // context fields used by hidden/disabled/validator expressions
@@ -78,6 +82,7 @@ class NotificationServicesTab extends ConfigGeneric<ConfigGenericProps, Notifica
         flat.dwdEnabled = data.dwdEnabled;
         flat.uwzEnabled = data.uwzEnabled;
         flat.zamgEnabled = data.zamgEnabled;
+        flat.ninaEnabled = data.ninaEnabled;
         flat.imExpert = data.imExpert;
         return flat;
     }

@@ -45,6 +45,7 @@ var NotificationClass = __toESM(require("./notification"));
 var import_test_warnings = require("./test-warnings");
 var NotificationType = __toESM(require("./def/notificationService-def"));
 var messagesDef = __toESM(require("./def/messages-def"));
+var import_nina_def = require("./def/nina-def");
 const DIV = "-";
 class BaseProvider extends import_library.BaseClass {
   service;
@@ -244,7 +245,8 @@ class BaseProvider extends import_library.BaseClass {
           reply2[name] = {
             level: m.level,
             start: m.starttime,
-            end: m.endtime,
+            // NINA warnings without an end use an internal far-future endtime - publish 0 instead
+            end: m.endtime === import_messages.NINA_NO_END ? 0 : m.endtime,
             headline: m.formatedData !== void 0 ? String(m.formatedData.headline) : "",
             active: m.starttime <= Date.now() && m.endtime >= Date.now(),
             type: m.genericType
@@ -674,6 +676,16 @@ class UWZProvider extends BaseProvider {
   }
 }
 class NINAProvider extends BaseProvider {
+  /** active sub sources, upper case */
+  sources;
+  /** preferred languages for the CAP info block and the event names */
+  languages;
+  /** detail warnings by dashboard id, `key` = version + hash of the dashboard entry */
+  detailCache = /* @__PURE__ */ new Map();
+  /** upper limit of NINA messages per district (states are limited by numOfRawWarnings) */
+  static maxWarnings = 30;
+  /** event code names per language, shared by all NINA providers */
+  static labels = {};
   /**
    * Initializes a new instance of the NINAProvider class.
    *
@@ -682,6 +694,446 @@ class NINAProvider extends BaseProvider {
    */
   constructor(adapter, options) {
     super(adapter, { ...options, service: "ninaService" }, `nina`);
+    this.warncellId = NINAProvider.toDistrictArs(options.warncellId);
+    this.url = BaseProvider.getUrl("", [this.warncellId], this.service);
+    const lang = (options.language || "de").slice(0, 2).toLowerCase();
+    this.languages = lang === "de" ? ["de"] : [.../* @__PURE__ */ new Set([lang, "en", "de"])];
+    this.sources = (options.sources && options.sources.length > 0 ? options.sources : import_nina_def.ninaDefaultSources).map(
+      (a) => a.toUpperCase()
+    );
+  }
+  /**
+   * Reduces an ARS (Amtlicher Regionalschlüssel) to the district level the NINA dashboard needs:
+   * the first 5 digits, filled up with zeros to 12 digits.
+   *
+   * @param ars ARS or AGS of a municipality or district
+   * @returns the district ARS or '' if the input has less than 5 digits
+   */
+  static toDistrictArs(ars) {
+    const digits = String(ars != null ? ars : "").replace(/\D/g, "");
+    return digits.length >= 5 ? digits.slice(0, 5).padEnd(12, "0") : "";
+  }
+  /**
+   * Looks up the district ARS for coordinates via the DWD district warn cells. A DWD district
+   * warncell is `1KKKKK000`, where KKKKK are the first 5 digits of the ARS.
+   *
+   * @param coordinates latitude and longitude
+   * @param that adapter instance for fetch and logging
+   * @returns ARS and district name or null
+   */
+  static async getArsFromCoordinates(coordinates, that) {
+    var _a, _b, _c;
+    try {
+      const result = await that.fetch(
+        BaseProvider.getUrl(
+          definitionen.PROVIDER_OPTIONS.ninaService.districtUrl,
+          [String(Number(coordinates[0])), String(Number(coordinates[1]))],
+          "ninaService"
+        )
+      );
+      const p = (_b = (_a = result == null ? void 0 : result.features) == null ? void 0 : _a[0]) == null ? void 0 : _b.properties;
+      if (p && p.WARNCELLID) {
+        const ars = NINAProvider.toDistrictArs(String(p.WARNCELLID).slice(1, 6));
+        if (ars) {
+          return { ars, name: (_c = p.NAME) != null ? _c : "" };
+        }
+      }
+      that.log.error(`NINA: no district found for coordinates ${coordinates.join("/")}`);
+    } catch (error) {
+      that.handleFetchError(error);
+    }
+    return null;
+  }
+  /**
+   * Converts CAP text with HTML (`<br/>`, tags, entities) to plain text.
+   *
+   * @param text the text from the api
+   * @returns plain text
+   */
+  static cleanText(text) {
+    if (typeof text !== "string" && typeof text !== "number") {
+      return "";
+    }
+    const codePoint = (n, raw) => Number.isFinite(n) && n >= 0 && n <= 1114111 ? String.fromCodePoint(n) : raw;
+    return String(text).replace(/<!--[\s\S]*?-->/g, "").replace(/<br\s*\/?>/gi, "\n").replace(/<\/p>/gi, "\n").replace(/<\/?[a-zA-Z][^<>]*>/g, "").replace(/&#(\d+);/g, (m, n) => codePoint(Number(n), m)).replace(/&#x([0-9a-f]+);/gi, (m, n) => codePoint(parseInt(n, 16), m)).replace(/&([a-zA-Z]+);/g, (m, name) => {
+      var _a;
+      return (_a = NINAProvider.namedEntities[name]) != null ? _a : m;
+    }).replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+  }
+  /** named HTML entities that occur in German CAP texts (&amp; etc. last, see cleanText) */
+  static namedEntities = {
+    nbsp: " ",
+    quot: '"',
+    apos: "'",
+    lt: "<",
+    gt: ">",
+    amp: "&",
+    auml: "\xE4",
+    ouml: "\xF6",
+    uuml: "\xFC",
+    Auml: "\xC4",
+    Ouml: "\xD6",
+    Uuml: "\xDC",
+    szlig: "\xDF",
+    euro: "\u20AC",
+    deg: "\xB0",
+    ndash: "\u2013",
+    mdash: "\u2014",
+    hellip: "\u2026",
+    bdquo: "\u201E",
+    ldquo: "\u201C",
+    rdquo: "\u201D",
+    sbquo: "\u201A",
+    lsquo: "\u2018",
+    rsquo: "\u2019",
+    sup2: "\xB2",
+    sup3: "\xB3"
+  };
+  /**
+   * Returns the value as array (API fields can be missing or of a wrong type).
+   *
+   * @param value any value
+   * @returns the value if it is an array, else an empty array
+   */
+  static arr(value) {
+    return Array.isArray(value) ? value : [];
+  }
+  /**
+   * Identifier without the source prefix (`mow.`, `dwd.`, `dwdmap.`, `lhp.` ...) for comparisons.
+   *
+   * @param id dashboard id or CAP identifier
+   * @returns the id without the first `xxx.` part
+   */
+  static bareId(id) {
+    return String(id != null ? id : "").replace(/^(mow|dwd|dwdmap|lhp|kat|biw|pol|police)\./i, "");
+  }
+  /**
+   * CAP severity (+ urgency) to the generic level 0-4.
+   *
+   * @param severity CAP severity
+   * @returns level 1-4; `Unknown` (e.g. flood pre-warnings) becomes 1
+   */
+  static severityToLevel(severity) {
+    switch ((severity != null ? severity : "").toLowerCase()) {
+      case "extreme":
+        return 4;
+      case "severe":
+        return 3;
+      case "moderate":
+        return 2;
+      default:
+        return 1;
+    }
+  }
+  /**
+   * DWD warning type (EC_II) to a BBK event code of the same generic warn type, so DWD warnings
+   * delivered by NINA get the same generic type as from the DWD provider.
+   *
+   * @param dwdType DWD EC_II
+   * @returns BBK event code number, 999 if unknown
+   */
+  static dwdTypeToEventCode(dwdType) {
+    const order = [10, 7, 2, 4, 3, 8, 9, 5, 6, 11, 12, 13, 14, 1];
+    for (const wt of order) {
+      const w = messagesDef.genericWarntyp[wt];
+      if (w.dwdService.includes(dwdType) && w.ninaService && w.ninaService.length > 0) {
+        return w.ninaService[0];
+      }
+    }
+    return 999;
+  }
+  /**
+   * Joins area names: unique, at most 300 characters.
+   *
+   * @param areas area names
+   * @returns comma separated, shortened with "…"
+   */
+  static areaText(areas) {
+    const text = [...new Set(areas.map((a) => a.trim()).filter((a) => a))].join(", ");
+    return text.length > 300 ? `${text.slice(0, 299).replace(/,?\s*[^,]*$/, "")} \u2026` : text;
+  }
+  /**
+   * Checks if an event code number belongs to a generic warn type.
+   *
+   * @param code BBK event code number
+   * @returns true if any generic warn type lists it
+   */
+  static isKnownEventCode(code) {
+    return Object.values(messagesDef.genericWarntyp).some((w) => {
+      var _a;
+      return ((_a = w.ninaService) != null ? _a : []).includes(code);
+    });
+  }
+  /**
+   * Parses an ISO date with offset.
+   *
+   * @param date ISO date string
+   * @returns ms or 0 if missing/invalid
+   */
+  static toMs(date) {
+    if (!date) {
+      return 0;
+    }
+    const t = new Date(date).getTime();
+    return isNaN(t) ? 0 : t;
+  }
+  /**
+   * Returns the event code names for the preferred language (falls back to German).
+   *
+   * @returns map BBK-EVC-xxx -> name
+   */
+  async getLabels() {
+    for (const lang of [...this.languages, "de"]) {
+      const cached = NINAProvider.labels[lang];
+      if (cached && cached.ts > Date.now() - (cached.data ? 864e5 : 6e5)) {
+        if (cached.data) {
+          return cached.data;
+        }
+        continue;
+      }
+      let data = null;
+      try {
+        data = await this.adapter.fetch(
+          BaseProvider.getUrl(definitionen.PROVIDER_OPTIONS.ninaService.labelsUrl, [lang], this.service)
+        );
+      } catch {
+        data = null;
+      }
+      NINAProvider.labels[lang] = { ts: Date.now(), data: data && typeof data === "object" ? data : null };
+      if (NINAProvider.labels[lang].data) {
+        return NINAProvider.labels[lang].data;
+      }
+    }
+    return {};
+  }
+  /**
+   * Returns the detail warning of a dashboard entry, cached until version or hash change.
+   *
+   * @param item dashboard entry
+   * @returns the CAP warning, null if there is none (404 for some ids) or 'failed' on a temporary error
+   */
+  async getDetail(item) {
+    var _a, _b;
+    const key = `${(_a = item.payload) == null ? void 0 : _a.version}-${(_b = item.payload) == null ? void 0 : _b.hash}`;
+    const cached = this.detailCache.get(item.id);
+    if (cached && cached.key === key) {
+      return cached.data;
+    }
+    let data = null;
+    try {
+      data = await this.adapter.fetch(
+        BaseProvider.getUrl(
+          definitionen.PROVIDER_OPTIONS.ninaService.warningUrl,
+          [encodeURIComponent(item.id)],
+          this.service
+        )
+      );
+    } catch (error) {
+      this.log.debug(`No detail warning for ${item.id}: ${String(error)}`);
+      if (String(error).includes("HTTP 404")) {
+        this.detailCache.set(item.id, { key, data: null });
+        return null;
+      }
+      return "failed";
+    }
+    this.detailCache.set(item.id, { key, data: data && Array.isArray(data.info) ? data : null });
+    return this.detailCache.get(item.id).data;
+  }
+  /**
+   * Picks the info block of the preferred language. `de-LS` (easy language) is only a last resort.
+   *
+   * @param info CAP info blocks
+   * @returns the chosen block or undefined
+   */
+  pickInfo(info) {
+    var _a;
+    if (!info || info.length === 0) {
+      return void 0;
+    }
+    for (const lang of [...this.languages, "de"]) {
+      const hit = info.find((i) => {
+        var _a2;
+        const l = ((_a2 = i.language) != null ? _a2 : "").toLowerCase();
+        return l === lang || l.startsWith(`${lang}-`) && l !== "de-ls";
+      });
+      if (hit) {
+        return hit;
+      }
+    }
+    return (_a = info.find((i) => {
+      var _a2;
+      return ((_a2 = i.language) != null ? _a2 : "").toLowerCase() !== "de-ls";
+    })) != null ? _a : info[0];
+  }
+  /**
+   * Builds the flat NINA warning out of the dashboard entry and the detail warning.
+   *
+   * @param item dashboard entry
+   * @param detail CAP warning or null
+   * @param labels event code names
+   * @returns the flat warning or null if it is no active warning (cancel/all clear, test)
+   */
+  normalize(item, detail, labels) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D, _E, _F, _G, _H, _I, _J, _K;
+    const data = (_b = (_a = item.payload) == null ? void 0 : _a.data) != null ? _b : {};
+    const info = this.pickInfo(NINAProvider.arr(detail == null ? void 0 : detail.info));
+    const msgType = String((_d = (_c = detail == null ? void 0 : detail.msgType) != null ? _c : data.msgType) != null ? _d : "");
+    const status = String((_e = detail == null ? void 0 : detail.status) != null ? _e : "Actual");
+    if (status !== "Actual") {
+      return null;
+    }
+    if (msgType.toLowerCase() === "cancel" || NINAProvider.arr(info == null ? void 0 : info.responseType).includes("AllClear")) {
+      return null;
+    }
+    const eventCodes = NINAProvider.arr(info == null ? void 0 : info.eventCode);
+    const eventCode = String(
+      (_i = (_h = (_f = eventCodes.find((e) => (e == null ? void 0 : e.valueName) === "profile:DE-BBK-EVENTCODE")) == null ? void 0 : _f.value) != null ? _h : (_g = data.transKeys) == null ? void 0 : _g.event) != null ? _i : ""
+    );
+    const source = String((_j = data.provider) != null ? _j : "").toUpperCase();
+    let type = Number((_l = (_k = /^BBK-EVC-(\d+)$/.exec(eventCode)) == null ? void 0 : _k[1]) != null ? _l : NaN);
+    if (isNaN(type)) {
+      const dwdType = Number((_n = (_m = eventCodes.find((e) => (e == null ? void 0 : e.valueName) === "II")) == null ? void 0 : _m.value) != null ? _n : NaN);
+      type = !isNaN(dwdType) ? NINAProvider.dwdTypeToEventCode(dwdType) : source === "LHP" ? 38 : 999;
+    }
+    if (!NINAProvider.isKnownEventCode(type)) {
+      type = 999;
+    }
+    const lang2 = this.languages[0];
+    const headline = NINAProvider.cleanText(info == null ? void 0 : info.headline) || ((_o = item.i18nTitle) == null ? void 0 : _o[lang2]) || ((_p = item.i18nTitle) == null ? void 0 : _p.de) || NINAProvider.cleanText(data.headline);
+    const sender = (_s = (_r = info == null ? void 0 : info.senderName) != null ? _r : (_q = NINAProvider.arr(info == null ? void 0 : info.parameter).find(
+      (p) => (p == null ? void 0 : p.valueName) === "sender_langname"
+    )) == null ? void 0 : _q.value) != null ? _s : "";
+    const sent = NINAProvider.toMs((_t = detail == null ? void 0 : detail.sent) != null ? _t : item.sent);
+    const references = String((_u = detail == null ? void 0 : detail.references) != null ? _u : "").split(/\s+/).map((r) => r.split(",")[1]).filter((r) => !!r);
+    return {
+      ID: item.id,
+      VERSION: Number((_w = (_v = item.payload) == null ? void 0 : _v.version) != null ? _w : 0),
+      SOURCE: source,
+      MSGTYPE: msgType,
+      STATUS: status,
+      SEVERITY: String((_y = (_x = info == null ? void 0 : info.severity) != null ? _x : data.severity) != null ? _y : ""),
+      URGENCY: String((_A = (_z = info == null ? void 0 : info.urgency) != null ? _z : data.urgency) != null ? _A : ""),
+      CERTAINTY: String((_B = info == null ? void 0 : info.certainty) != null ? _B : ""),
+      EVENTCODE: eventCode,
+      TYPE: type,
+      // flood centres send no event code and an english CAP event ("Flood") - use the BBK name
+      EVENT: String(
+        (_E = (_D = (_C = labels[eventCode]) != null ? _C : source === "LHP" ? labels["BBK-EVC-038"] : void 0) != null ? _D : info == null ? void 0 : info.event) != null ? _E : ""
+      ),
+      HEADLINE: headline,
+      DESCRIPTION: NINAProvider.cleanText(info == null ? void 0 : info.description),
+      INSTRUCTION: NINAProvider.cleanText(info == null ? void 0 : info.instruction),
+      SENDERNAME: NINAProvider.cleanText(sender),
+      // the same area can be listed many times (one entry per polygon) - unique and limited
+      AREADESC: NINAProvider.areaText(
+        NINAProvider.arr(info == null ? void 0 : info.area).map((a) => {
+          var _a2;
+          return String((_a2 = a == null ? void 0 : a.areaDesc) != null ? _a2 : "");
+        })
+      ),
+      WEB: String((_F = info == null ? void 0 : info.web) != null ? _F : ""),
+      LANGUAGE: String((_G = info == null ? void 0 : info.language) != null ? _G : ""),
+      SENT: sent,
+      ONSET: NINAProvider.toMs((_H = info == null ? void 0 : info.onset) != null ? _H : item.onset) || NINAProvider.toMs((_I = info == null ? void 0 : info.effective) != null ? _I : item.effective) || sent,
+      EXPIRES: NINAProvider.toMs((_J = info == null ? void 0 : info.expires) != null ? _J : item.expires),
+      LEVEL: NINAProvider.severityToLevel((_K = info == null ? void 0 : info.severity) != null ? _K : data.severity),
+      UNTILREVOKED: this.library.getTranslation("ninaUntilRevoked"),
+      REFERENCES: references.join(" ")
+    };
+  }
+  /**
+   * Retrieves the dashboard, loads new/changed detail warnings and updates the messages.
+   *
+   * @returns A Promise that resolves when the data has been written.
+   */
+  async updateData() {
+    if (!this.warncellId) {
+      this.log.warn(`NINA: no valid ARS - skip update`);
+      return;
+    }
+    const result = await this.getDataFromProvider();
+    if (!result) {
+      return;
+    }
+    if (!Array.isArray(result)) {
+      this.log.warn(`NINA: unexpected answer from the dashboard (no list) - keep the current warnings`);
+      return;
+    }
+    const items = result.filter(
+      (a) => {
+        var _a, _b, _c;
+        return a && typeof a.id === "string" && this.sources.includes(String((_c = (_b = (_a = a.payload) == null ? void 0 : _a.data) == null ? void 0 : _b.provider) != null ? _c : "").toUpperCase());
+      }
+    );
+    this.log.debug(`Got ${result.length} warnings from server, ${items.length} from the active sources`);
+    for (const id of [...this.detailCache.keys()]) {
+      if (!result.some((a) => a && a.id === id)) {
+        this.detailCache.delete(id);
+      }
+    }
+    const labels = await this.getLabels();
+    const warnings = [];
+    const pending = /* @__PURE__ */ new Set();
+    for (const item of items) {
+      if (this.unload) {
+        return;
+      }
+      try {
+        const detail = await this.getDetail(item);
+        if (detail === "failed") {
+          pending.add(item.id);
+          continue;
+        }
+        const w = this.normalize(item, detail, labels);
+        if (!w) {
+          continue;
+        }
+        if (this.filter.hours > 0 && w.ONSET > Date.now() + this.filter.hours * 36e5) {
+          continue;
+        }
+        if (w.EXPIRES > 0 && w.EXPIRES < Date.now()) {
+          continue;
+        }
+        warnings.push(w);
+      } catch (error) {
+        this.log.warn(`NINA: skip warning ${item.id} - unexpected data: ${String(error)}`);
+      }
+    }
+    const replaced = new Set(
+      warnings.flatMap((w) => w.REFERENCES ? w.REFERENCES.split(" ").map((r) => NINAProvider.bareId(r)) : [])
+    );
+    const current = warnings.filter((w) => !replaced.has(NINAProvider.bareId(w.ID)));
+    current.sort((a, b) => b.LEVEL - a.LEVEL || b.SENT - a.SENT);
+    current.splice(NINAProvider.maxWarnings);
+    this.messages.forEach((a) => a.notDeleted = pending.has(a.rawWarning.ID));
+    for (let a = 0; a < current.length; a++) {
+      const w = current[a];
+      if (a < this.adapter.config.numOfRawWarnings) {
+        await super.updateData(w, a);
+      }
+      const index = this.messages.findIndex((m) => m.rawWarning.ID == w.ID);
+      if (index == -1) {
+        const nmessage = new import_messages.MessagesClass(this.adapter, "nina-msg", this, w, this.providerController);
+        await nmessage.updateFormated();
+        if (nmessage && nmessage.filter(this.filter)) {
+          const refs = w.REFERENCES ? w.REFERENCES.split(" ").map((r) => NINAProvider.bareId(r)) : [];
+          const old = this.messages.findIndex(
+            (m) => m.rawWarning.ID !== w.ID && refs.includes(NINAProvider.bareId(m.rawWarning.ID))
+          );
+          if (old != -1) {
+            if (w.LEVEL <= Number(this.messages[old].rawWarning.LEVEL)) {
+              nmessage.silentUpdate();
+            }
+            this.log.debug(`Replace ${this.messages[old].rawWarning.ID} by its update ${w.ID}`);
+            this.messages.splice(old, 1);
+          }
+          this.messages.push(nmessage);
+        }
+      } else {
+        await this.messages[index].updateData(w);
+      }
+    }
+    await this.finishUpdateData();
   }
 }
 class METROProvider extends BaseProvider {
@@ -920,14 +1372,13 @@ class ProviderController extends import_library.BaseClass {
           });
           break;
         case "ninaService":
-          if (!Array.isArray(options.warncellId)) {
-            throw new Error("Error 125 warncellId is not an Array");
+          if (Array.isArray(options.warncellId)) {
+            throw new Error("Error 125 warncellId is a Array");
           }
           p = new NINAProvider(this.adapter, {
             ...options,
             warncellId: options.warncellId,
-            providerController: this,
-            language: this.adapter.config.dwdLanguage
+            providerController: this
           });
           break;
         default:
@@ -988,9 +1439,16 @@ class ProviderController extends import_library.BaseClass {
         tasks.push(this.providers[index].updateData());
       }
     }
-    await Promise.all(tasks);
-    await this.doEndOfUpdater();
-    await this.updateAlertEndless(false);
+    try {
+      await Promise.all(tasks);
+      await this.doEndOfUpdater();
+      await this.updateAlertEndless(false);
+    } catch (error) {
+      this.log.error(`Error while updating the providers: ${String(error)}`);
+    }
+    if (this.unload) {
+      return;
+    }
     this.refreshTimeRef = this.adapter.setTimeout(this.updateEndless, this.refreshTime || 6e5);
   };
   /**

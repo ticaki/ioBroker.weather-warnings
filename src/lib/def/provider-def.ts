@@ -4,7 +4,7 @@ export * from '../provider';
 /**Available provider identifier strings */
 export type providerServices = 'dwdService' | 'zamgService' | 'ninaService' | 'uwzService' | 'metroService';
 
-export const providerServicesArray: providerServices[] = ['dwdService', 'zamgService', 'uwzService']; //, 'uwzService', 'metroService'];
+export const providerServicesArray: providerServices[] = ['dwdService', 'zamgService', 'uwzService', 'ninaService'];
 export type ProviderClassType =
     | Provider.DWDProvider
     | Provider.ZAMGProvider
@@ -230,7 +230,108 @@ export type dataImportMOWASType = Array<{
     }>;
 }>;
 
-export type DataImportType = nullType | dataImportDwdType | dataImportZamgType | dataImportUWZType;
+export { ninaSources, ninaDefaultSources, type ninaSourceType } from './nina-def';
+
+/** One entry of `https://warnung.bund.de/api31/dashboard/{ARS}.json`. */
+export type dataImportNinaDashboardItem = {
+    id: string;
+    payload: {
+        version: number;
+        type: string;
+        id: string;
+        hash: string;
+        data: {
+            headline: string;
+            provider: string;
+            severity: string;
+            urgency?: string;
+            msgType: string;
+            transKeys?: { event?: string };
+            valid?: boolean;
+        };
+    };
+    i18nTitle?: Record<string, string>;
+    sent: string;
+    onset?: string;
+    expires?: string;
+    effective?: string;
+};
+export type dataImportNinaDashboardType = dataImportNinaDashboardItem[];
+
+/** CAP info block of `https://warnung.bund.de/api31/warnings/{id}.json`. */
+export type dataImportNinaInfo = {
+    language: string;
+    category?: string[];
+    event?: string;
+    urgency?: string;
+    severity?: string;
+    certainty?: string;
+    responseType?: string[];
+    eventCode?: Array<{ valueName: string; value: string }>;
+    headline?: string;
+    description?: string;
+    instruction?: string;
+    senderName?: string;
+    web?: string;
+    contact?: string;
+    onset?: string;
+    effective?: string;
+    expires?: string;
+    parameter?: Array<{ valueName: string; value: string }>;
+    area?: Array<{ areaDesc: string }>;
+};
+/** `https://warnung.bund.de/api31/warnings/{id}.json` */
+export type dataImportNinaWarningType = {
+    identifier: string;
+    sender?: string;
+    sent: string;
+    status: string;
+    msgType: string;
+    scope?: string;
+    references?: string;
+    info: dataImportNinaInfo[];
+};
+
+/**
+ * Flat, cleaned-up NINA warning as built by the NINA provider out of the dashboard entry and the
+ * detail warning. Language chosen, HTML stripped, times in ms. This is the `rawWarning` of a NINA
+ * message, so the jsonata expressions in messages.ts stay trivial.
+ */
+export type dataImportNinaTypeProperties = {
+    ID: string;
+    VERSION: number;
+    SOURCE: string;
+    MSGTYPE: string;
+    STATUS: string;
+    SEVERITY: string;
+    URGENCY: string;
+    CERTAINTY: string;
+    /** BBK event code, e.g. `BBK-EVC-069` */
+    EVENTCODE: string;
+    /** numeric part of the event code, 999 if unknown */
+    TYPE: number;
+    /** translated event name */
+    EVENT: string;
+    HEADLINE: string;
+    DESCRIPTION: string;
+    INSTRUCTION: string;
+    SENDERNAME: string;
+    AREADESC: string;
+    WEB: string;
+    LANGUAGE: string;
+    SENT: number;
+    ONSET: number;
+    /** 0 = no end given (valid until revoked) */
+    EXPIRES: number;
+    LEVEL: number;
+    /** translated text for a missing end ("until further notice") */
+    UNTILREVOKED: string;
+    /** identifiers of the warnings this one replaces (CAP references), space separated */
+    REFERENCES: string;
+};
+
+export type DataImportType =
+    nullType | dataImportDwdType | dataImportZamgType | dataImportUWZType | dataImportNinaDashboardType;
 
 /*const dataImport: DataImportType = {
     dwdService: {

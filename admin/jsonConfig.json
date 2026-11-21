@@ -97,6 +97,16 @@
                     "label": "zamgEnabled",
                     "newLine": true
                 },
+                "ninaEnabled": {
+                    "type": "checkbox",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 3,
+                    "label": "ninaEnabled",
+                    "newLine": false
+                },
                 "pushover_Enabled": {
                     "type": "checkbox",
                     "xs": 12,
@@ -532,6 +542,7 @@
                         {
                             "attr": "dwdSelectId",
                             "type": "autocomplete",
+                            "noTranslation": true,
                             "options": [
                                 {
                                     "label": "Aach (Gemeinde/RP)",
@@ -47466,9 +47477,34 @@
                     "newLine": true
                 },
                 "dwdLevelFilter": {
-                    "type": "selectSendTo",
-                    "command": "filterLevel",
-                    "jsonData": "{ \"service\": \"dwdService\" }",
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "textLevels.textGeneric.0",
+                            "value": 0,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%2300ff00%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.1",
+                            "value": 1,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ffeb3b%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.2",
+                            "value": 2,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23fb8c00%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.3",
+                            "value": 3,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23e53935%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.4",
+                            "value": 4,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23880e4f%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        }
+                    ],
                     "xs": 12,
                     "sm": 12,
                     "md": 8,
@@ -47596,10 +47632,34 @@
                     "newLine": true
                 },
                 "uwzLevelFilter": {
-                    "type": "selectSendTo",
-                    "command": "filterLevel",
-                    "jsonData": "{ \"service\": \"uwzService\" }",
-                    "manual": false,
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "textLevels.textGeneric.0",
+                            "value": 0,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%2300ff00%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.1",
+                            "value": 1,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23fffc04%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.2",
+                            "value": 2,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ffb400%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.3",
+                            "value": 3,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ff0000%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.4",
+                            "value": 4,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ff00ff%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        }
+                    ],
                     "xs": 12,
                     "sm": 12,
                     "md": 5,
@@ -47699,10 +47759,205 @@
                     "newLine": true
                 },
                 "zamgLevelFilter": {
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "textLevels.textGeneric.0",
+                            "value": 0,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%2301df3a%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.1",
+                            "value": 1,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23fffc04%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.2",
+                            "value": 2,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ffc400%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.3",
+                            "value": 3,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ff0404%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.4",
+                            "value": 4,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ff00ff%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        }
+                    ],
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 8,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "LevelFilter",
+                    "newLine": true
+                }
+            }
+        },
+        "_ninapanel": {
+            "type": "panel",
+            "label": "NINA",
+            "hidden": "!data.ninaEnabled",
+            "items": {
+                "ninaInfo": {
+                    "type": "staticText",
+                    "text": "ninaInfo",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
+                    "newLine": true
+                },
+                "ninawarncellTable": {
+                    "type": "table",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 8,
+                    "xl": 8,
+                    "label": "ninaSelectId",
+                    "uniqueColumns": [
+                        "ninaSelectId"
+                    ],
+                    "items": [
+                        {
+                            "attr": "ninaSelectId",
+                            "autoInit": true,
+                            "type": "coordinates",
+                            "divider": "/",
+                            "newLine": true,
+                            "label": "COORDINATES",
+                            "width": "40% ",
+                            "title": "ninaSelectId"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "ninaCityname",
+                            "width": "35% ",
+                            "title": "dwdCityname",
+                            "tooltip": "dwdCitynameTip",
+                            "filter": false,
+                            "sort": false,
+                            "default": ""
+                        },
+                        {
+                            "type": "text",
+                            "attr": "realArs",
+                            "readOnly": true,
+                            "width": "20% ",
+                            "title": "ninaRealArs",
+                            "tooltip": "ninaRealArsTip",
+                            "filter": false,
+                            "sort": false,
+                            "default": ""
+                        }
+                    ]
+                },
+                "ninaSources": {
+                    "type": "select",
+                    "multiple": true,
+                    "label": "ninaSources",
+                    "tooltip": "ninaSourcesTip",
+                    "options": [
+                        {
+                            "label": "ninaSource_MOWAS",
+                            "value": "MOWAS"
+                        },
+                        {
+                            "label": "ninaSource_KATWARN",
+                            "value": "KATWARN"
+                        },
+                        {
+                            "label": "ninaSource_BIWAPP",
+                            "value": "BIWAPP"
+                        },
+                        {
+                            "label": "ninaSource_POLICE",
+                            "value": "POLICE"
+                        },
+                        {
+                            "label": "ninaSource_DWD",
+                            "value": "DWD"
+                        },
+                        {
+                            "label": "ninaSource_LHP",
+                            "value": "LHP"
+                        }
+                    ],
+                    "default": [
+                        "MOWAS",
+                        "KATWARN",
+                        "BIWAPP",
+                        "POLICE"
+                    ],
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 8,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "ninaHourFilter": {
+                    "type": "number",
+                    "min": 0,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "xl": 6,
+                    "tooltip": "HourFilterTip",
+                    "label": "HourFilter",
+                    "newLine": true
+                },
+                "ninaTypeFilter": {
                     "type": "selectSendTo",
-                    "command": "filterLevel",
-                    "jsonData": "{ \"service\": \"zamgService\" }",
+                    "command": "filterType",
+                    "jsonData": "{ \"service\": \"ninaService\" }",
                     "manual": false,
+                    "multiple": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 8,
+                    "lg": 4,
+                    "xl": 4,
+                    "label": "TypeFilter",
+                    "tooltip": "TypeFilter",
+                    "newLine": true
+                },
+                "ninaLevelFilter": {
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "textLevels.textGeneric.0",
+                            "value": 0,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%2300ff00%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.1",
+                            "value": 1,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23fffc04%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.2",
+                            "value": 2,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ffb400%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.3",
+                            "value": 3,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ff0000%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        },
+                        {
+                            "label": "textLevels.textGeneric.4",
+                            "value": 4,
+                            "icon": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23ff00ff%22%20stroke%3D%22%23808080%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E"
+                        }
+                    ],
                     "xs": 12,
                     "sm": 12,
                     "md": 8,
