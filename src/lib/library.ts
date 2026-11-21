@@ -920,13 +920,3 @@ export class Library extends BaseClass {
         })}`;
     }
 }
-
-/**
- * Pauses execution for a specified amount of time.
- *
- * @param time The duration to sleep in milliseconds.
- * @returns A promise that resolves after the specified duration.
- */
-export async function sleep(time: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
